@@ -4,37 +4,13 @@ from typing import List
 from rnn.rnn import RNN
 from logger import logger
 from visualizer import Visualizer
-from program.base_block import PromptBlock
 
 class TemplateController:
-    def __init__(self, blocks:List[PromptBlock], hidden_dim: int = 128, lr=1e-3):
-        self.blocks = blocks
-        self.search_space = [dim for block in blocks for dim in block.get_search_space()]
-        self.model:RNN = RNN(self.search_space, hidden_dim)
+    def __init__(self, search_space:List[int], hidden_dim: int = 128, lr=1e-3):
+        self.model:RNN = RNN(search_space, hidden_dim)
         self.optimizer = Adam(self.model.parameters(), lr=lr)
         self.baseline = 0.0
         self.baseline_alpha = 0.9
-
-
-    def decode(self, flat_params: List[int]) -> List[str]:
-        """
-        将 RNN 输出的超参数扁平向量转换为每个 Block 的渲染文本
-        """
-        idx = 0
-        results = []
-        for block in self.blocks:
-            num_slots = block.get_num_slots()
-            params = flat_params[idx:idx + num_slots]
-            rendered = block.render(params)
-            results.append(rendered)
-            idx += num_slots
-        return results
-    
-    def get_slot_dims(self) -> List[int]:
-        return self.search_space
-
-    def render_prompt(self, flat_params: List[int]) -> str:
-        return "\n".join(self.decode(flat_params))
     
     def train_step(self):
         self.model.train()

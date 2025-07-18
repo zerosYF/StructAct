@@ -42,8 +42,7 @@ class PromptNode(Node):
         return list(self.action_set)
     
     def take_action(self, action:OptimizeAction):
-        self.structure_template.update_by_rnn(self.evaluator, self.current_prompt)
-        self.current_prompt = self.structure_template.sync_semantics(self.current_prompt)
+        self.current_prompt = self.structure_template.update_by_controller(self.evaluator, self.current_prompt)
         new_prompt = action.do(self.current_prompt, self.structure_template.describe())
         return PromptNode(
             action_set=self.action_set,

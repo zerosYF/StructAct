@@ -6,13 +6,14 @@ from search.prompt_node import PromptNode
 from search.config import SearchConfig
 from typing import List, Set
 from visualizer import Visualizer
-from rnn.controller import TemplateController
+from program.base_block import PromptBlock
 from program.prompt_template import PromptTemplate
 from program.prompt_blocks import get_all_blocks
 from mcts.select import get_select_strategy
 from mcts.expand import get_expand_strategy
 from mcts.rollout import get_rollout_strategy
 from mcts.choose import get_choose_strategy
+from program.strategy_actions import define_full_actions
 from logger import logger
 
 class SearchController:
@@ -20,20 +21,16 @@ class SearchController:
                  evaluator:PromptEvaluator, 
                  config:SearchConfig, 
                  task:TaskBase, 
-                 actions:Set[OptimizeAction]
                  ):
-        self.actions:Set[OptimizeAction] = actions
+        self.actions:Set[OptimizeAction] = define_full_actions(task)
+        self.blocks:List[PromptBlock] = get_all_blocks()
         self.evaluator:PromptEvaluator = evaluator
         self.config:SearchConfig= config
         self.task:TaskBase = task
     
     def search(self):
-        blocks = get_all_blocks()
-        rnn_controller = TemplateController(
-                blocks=blocks, 
-                hidden_dim=self.config.rnn_hidden_dim, 
-                lr=self.config.rnn_lr)
-        template = PromptTemplate(controller=rnn_controller, blocks=blocks, task=self.task)
+        template = PromptTemplate(config=self.config, blocks=self.blocks, task=self.task)
+        logger.info(f"🔍 初始模板约束:{template.render()}")
 
         root_node = PromptNode(action_set=self.actions, 
                                action_seq=[], 

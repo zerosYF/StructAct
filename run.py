@@ -2,8 +2,6 @@ from task.big_bench_hard import BBHTask
 from search.controller import SearchController
 from search.config import SearchConfig
 from search.evaluator import PromptEvaluator
-from model.model import Model, model
-from program.strategy_actions import define_full_actions
 from logger import logger
 
 import os
@@ -13,8 +11,7 @@ def run():
     config = SearchConfig()
     bbh_task = BBHTask(config=config)
     evaluator = PromptEvaluator(bbh_task, config.reward_thread_num)
-    action_set = define_full_actions(bbh_task)
-    controller = SearchController(evaluator, config, bbh_task, action_set)
+    controller = SearchController(evaluator, config, bbh_task)
     logger.info("🔍 Training best action sequence...")
     best_template, best_sequence, best_prompt = controller.search()
     logger.info(f"✅ Best PromptTemplate:\n{best_template}")
