@@ -41,7 +41,7 @@ class MCTS:
         return self.expand_strategy.expand(node, self, max_expand)
 
     def _rollout(self, node:Node):
-        return self.rollout_strategy.rollout(node, self)
+        return self.rollout_strategy.rollout(node)
     
     def _backpropagate(self, path, reward):
         for node in reversed(path):
