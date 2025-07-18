@@ -3,10 +3,18 @@ from model.model import Model, model
 from task.base_task import TaskBase
 from program.base_action import OptimizeAction
 
+tester_model = model
+rewriter_model = model
+checker_model = model
+builder_model = model
+evaluator_model = model
+
 class TestReflectRewriteAction(OptimizeAction):
     def __init__(self, task, name="TestReflectRewriteAction", original_prompt=None):
         super().__init__(task, name, original_prompt)
-        self.model: Model = model
+        self.tester_model: Model = tester_model
+        self.rewriter_model: Model = rewriter_model
+
         self.tester_system_prompt = """
         你是一个严谨的回答生成模型，负责根据输入提示词和问题生成准确且合适的回答。
         请务必保持回答的专业性和准确性。
@@ -22,7 +30,7 @@ class TestReflectRewriteAction(OptimizeAction):
         gold_answers = [self.task.extract_tuple(s)[1] for s in samples]
         final_inputs = [self.task.inject_final_input(current_prompt, inp) for inp in inputs]
 
-        answers = [self.model.api_call(self.tester_system_prompt, fin) for fin in final_inputs]
+        answers = [self.tester_model.api_call(self.tester_system_prompt, fin) for fin in final_inputs]
 
         evaluation_blocks = []
         for i, (inp, ans, gold) in enumerate(zip(inputs, answers, gold_answers)):
@@ -38,13 +46,14 @@ class TestReflectRewriteAction(OptimizeAction):
             f"请根据以上内容，综合判断当前提示词的问题并优化它，返回修改后的提示词："
         )
 
-        rewritten_prompt = self.model.api_call(self.rewriter_system_prompt, rewriting_prompt)
-        return rewritten_prompt
+        return self.rewriter_model.api_call(self.rewriter_system_prompt, rewriting_prompt)
 
 class ConstraintBlockRefiner(OptimizeAction):
     def __init__(self, task, name="ConstraintBlockRefiner", original_prompt=None):
         super().__init__(task, name, original_prompt)
-        self.model: Model = model
+        self.checker_model: Model = checker_model
+        self.rewriter_model: Model = rewriter_model
+
         self.checker_system_prompt = """
         你是一个提示词约束检查员，负责判断输出是否违反提示词设定的限制或禁忌。若存在，请返回违反说明；若无，请返回空字符串。
         """
@@ -63,7 +72,7 @@ class ConstraintBlockRefiner(OptimizeAction):
                 f"提示词：\n{current_prompt}\n\n"
                 f"模型输入：{input_}\n期望输出：{expected}"
             )
-            response = self.model.api_call(self.checker_system_prompt, checker_input)
+            response = self.checker_model.api_call(self.checker_system_prompt, checker_input)
             if response.strip():
                 violations.append(response)
 
@@ -75,12 +84,14 @@ class ConstraintBlockRefiner(OptimizeAction):
             "请改写提示词："
         )
 
-        return self.model.api_call(self.rewriter_system_prompt, rewriting_input)
+        return self.rewriter_model.api_call(self.rewriter_system_prompt, rewriting_input)
 
 class FewShotExampleBuilder(OptimizeAction):
     def __init__(self, task, name="FewShotExampleBuilder", original_prompt=None):
         super().__init__(task, name, original_prompt)
-        self.model: Model = model
+        self.builder_model: Model = builder_model
+        self.rewriter_model: Model = rewriter_model
+
         self.builder_system_prompt = """
         你是一个提示词构造助手。根据已有的few-shot示例、当前提示词和结构说明，构造1~2个新的高质量问答对。
         """
@@ -101,7 +112,7 @@ class FewShotExampleBuilder(OptimizeAction):
             f"请补充1~2个风格一致的新问答示例。"
         )
 
-        new_examples = self.model.api_call(self.builder_system_prompt, builder_prompt)
+        new_examples = self.builder_model.api_call(self.builder_system_prompt, builder_prompt)
 
         rewriting_prompt = (
             f"当前提示词：\n{current_prompt}\n\n"
@@ -110,12 +121,14 @@ class FewShotExampleBuilder(OptimizeAction):
             f"请将示例自然嵌入提示词并返回新提示词。"
         )
 
-        return self.model.api_call(self.rewriter_system_prompt, rewriting_prompt)
+        return self.rewriter_model.api_call(self.rewriter_system_prompt, rewriting_prompt)
 
 class StructureOptimizerByPerformance(OptimizeAction):
     def __init__(self, task, name="StructureOptimizerByPerformance", original_prompt=None):
         super().__init__(task, name, original_prompt)
-        self.model: Model = model
+        self.tester_model: Model = tester_model
+        self.rewriter_model: Model = rewriter_model
+
         self.tester_system_prompt = """
         你是一个任务执行助手，请根据提示词和输入生成尽可能正确的输出。
         """
@@ -129,15 +142,15 @@ class StructureOptimizerByPerformance(OptimizeAction):
         golds = [self.task.extract_tuple(s)[1] for s in samples]
         final_inputs = [self.task.inject_final_input(current_prompt, inp) for inp in inputs]
 
-        responses = [self.model.api_call(self.tester_system_prompt, x) for x in final_inputs]
+        responses = [self.tester_model.api_call(self.tester_system_prompt, x) for x in final_inputs]
 
         score_prompt = "\n".join([
             f"参考答案：{gold}\n模型回答：{pred}\n" for gold, pred in zip(golds, responses)
         ])
         score_input = (
-            "请为以下回答给出平均任务完成度评分（0~1之间），仅返回数字：\n" + score_prompt
+            "你是一个提示词评估员，请为以下回答给出平均任务完成度评分（0~1之间），仅返回数字：\n" + score_prompt
         )
-        avg_score = float(self.model.api_call("", score_input).strip())
+        avg_score = float(self.rewriter_model.api_call(self.rewriter_system_prompt, score_input).strip())
 
         rewriting_prompt = (
             f"当前提示词：\n{current_prompt}\n\n"
@@ -145,12 +158,14 @@ class StructureOptimizerByPerformance(OptimizeAction):
             f"结构约束如下：\n{template_structure}\n\n"
             "请优化提示词表达，使其更有效。"
         )
-        return self.model.api_call(self.rewriter_system_prompt, rewriting_prompt)
+        return self.rewriter_model.api_call(self.rewriter_system_prompt, rewriting_prompt)
 
 class InstructionSimplifierByAbstraction(OptimizeAction):
     def __init__(self, task, name="InstructionSimplifierByAbstraction", original_prompt=None):
         super().__init__(task, name, original_prompt)
-        self.model: Model = model
+        self.evaluator_model: Model = evaluator_model
+        self.rewriter_model: Model = rewriter_model
+
         self.evaluator_system_prompt = """
         你是一个任务总结助手，擅长从多个问答对中抽象任务目标。
         """
@@ -163,10 +178,9 @@ class InstructionSimplifierByAbstraction(OptimizeAction):
         qa_text = self.task.samples2text(samples)
 
         abstract_prompt = (
-            self.evaluator_system_prompt +
-            "\n请基于以下问答对总结这类任务目标，只输出总结文本：\n" + qa_text
+            f"{self.evaluator_system_prompt}\n请基于以下问答对总结这类任务目标，只输出总结文本：\n" + qa_text
         )
-        abstract_goal = self.model.api_call("", abstract_prompt)
+        abstract_goal = self.evaluator_model.api_call(self.evaluator_system_prompt, abstract_prompt)
 
         rewriting_content = (
             f"当前提示词：\n{current_prompt}\n\n"
@@ -174,7 +188,7 @@ class InstructionSimplifierByAbstraction(OptimizeAction):
             f"结构约束：\n{template_structure}\n\n"
             "请重写提示词，将总结融入其中。"
         )
-        return self.model.api_call(self.rewriter_system_prompt, rewriting_content)
+        return self.rewriter_model.api_call(self.rewriter_system_prompt, rewriting_content)
 
 # 工厂函数
 def define_full_actions(task: TaskBase):
