@@ -103,7 +103,7 @@ class FewShotExampleBuilder(OptimizeAction):
         samples = self.task.sample_train()
         original_fewshot = samples[:2]
 
-        original_text = "\n\n".join([f"Q: {s['input']}\nA: {s['output']}" for s in original_fewshot])
+        original_text = self.task.samples2text(original_fewshot)
 
         builder_prompt = (
             f"当前提示词结构说明：\n{template_description}\n\n"
