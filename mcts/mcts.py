@@ -1,28 +1,28 @@
-from abc import ABC, abstractmethod
 from collections import defaultdict
 from typing import Any
+from mcts.expand import ExpandStrategy
 from mcts.choose import ChooseStrategy
-from mcts.choose import MaxLeafQnStrategy
 from mcts.rollout import RolloutStrategy
-from mcts.rollout import MultiPathRollout
-from mcts.uct import UCTStrategy
-from mcts.uct import ClassicUCTStrategy
+from mcts.select import UCTStrategy
 from logger import logger
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from mcts.node import Node
 
-class MCTS(ABC):
+class MCTS:
     def __init__(self, 
-                 choose_strategy:ChooseStrategy=None, 
+                 select_strategy:UCTStrategy=None,
+                 expand_strategy:ExpandStrategy=None,
                  rollout_strategy:RolloutStrategy=None,
-                 uct_strategy:UCTStrategy=None):
+                 choose_strategy:ChooseStrategy=None, 
+                ):
         self.Q = defaultdict(int) #路径历史奖励
         self.N = defaultdict(int) #节点探索次数
         self.children:dict[Node, list[Node]] = dict() #树结构存储
         self.untried_actions:dict[Node, list[Any]] = dict() 
-        self.choose_strategy = choose_strategy or MaxLeafQnStrategy()
-        self.rollout_strategy = rollout_strategy or MultiPathRollout()
-        self.uct_strategy = uct_strategy or ClassicUCTStrategy()
+        self.select_strategy = select_strategy
+        self.expand_strategy = expand_strategy
+        self.rollout_strategy = rollout_strategy
+        self.choose_strategy = choose_strategy
     def _select(self, node:Node):
         path = []
         while True:
@@ -34,27 +34,11 @@ class MCTS(ABC):
                 return path
             node = self._uct_select(node)
     
+    def _uct_select(self, node:Node):
+        return self.select_strategy.select(node, self)
+    
     def _expand(self, node: Node, max_expand: int = None):
-        if node not in self.children:
-            self.children[node] = []
-            self.untried_actions[node] = node.get_untried_actions()
-
-        actions = self.untried_actions[node]
-        if not actions:
-            return None
-
-        # 默认展开所有，或最多 max_expand 个动作
-        k = len(actions) if max_expand is None else min(max_expand, len(actions))
-        children = []
-
-        for _ in range(k):
-            action = actions.pop()
-            child = node.take_action(action)
-            self.children[node].append(child)
-            self.untried_actions[child] = child.get_untried_actions()
-            children.append(child)
-
-        return children
+        return self.expand_strategy.expand(node, self, max_expand)
 
     def _rollout(self, node:Node):
         return self.rollout_strategy.rollout(node, self)
@@ -88,9 +72,6 @@ class MCTS(ABC):
     
     def choose(self, root:Node) -> Node:
         return self.choose_strategy.choose(root, self)
-
-    def _uct_select(self, node:Node):
-        return self.uct_strategy.select(node, self)
     
     def _run_rollout_batch(self, rollout_targets, path, rollout_parallel):
         results = []
@@ -113,5 +94,5 @@ class MCTS(ABC):
                 results.append((rollout_path, reward))
 
         return results
-    
+       
         

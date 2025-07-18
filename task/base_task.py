@@ -13,10 +13,10 @@ class TaskBase(ABC):
     def sample_train(self) -> List[Dict]:
         return random.sample(self.train_data, self.config.batch_size)
     
-    def get_val(self):
+    def get_val(self) -> List[Dict]:
         return self.val_data
     
-    def get_test(self):
+    def get_test(self) -> List[Dict]:
         return self.test_data
     
     @abstractmethod
@@ -28,5 +28,11 @@ class TaskBase(ABC):
         pass
 
     @abstractmethod
-    def extract_tuple(self, sample:dict):
+    def extract_tuple(self, sample:dict) -> tuple:
         pass
+
+    @abstractmethod
+    def samples2text(self, samples:List[Dict]) -> str:
+        """
+        将样本列表转换为文本格式，便于输出或调试
+        """

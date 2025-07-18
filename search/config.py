@@ -14,7 +14,7 @@ class SearchConfig:
 
         # MCTS 搜索控制
         self.exploration_weight: float = 1.5   # UCT 中的探索因子
-        self.iter_num: int = 10                # MCTS 主循环迭代次数
+        self.iter_num: int = 5                # MCTS 主循环迭代次数
         self.depth_threshold: int = 4          # 搜索最大深度
 
         # 节点拓展与 rollout 配置

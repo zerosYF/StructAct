@@ -1,9 +1,8 @@
-from search.action import OptimizeAction
+from program.base_action import OptimizeAction
 from search.evaluator import PromptEvaluator
 from mcts.node import Node
-from rnn.template import PromptTemplate
+from program.prompt_template import PromptTemplate
 from typing import List, Set
-from visualizer import Visualizer
 from logger import logger
 
 class PromptNode(Node):

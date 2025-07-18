@@ -1,2 +1,2 @@
-dataset BBH  GSM8K
+dataset BBH  GSM8K  mmlu
 baselines APE OPRO APO LPO PHASEEVO PromptAgent

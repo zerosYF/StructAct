@@ -1,13 +1,14 @@
 import random
 from typing import Dict, List
 from task.base_task import TaskBase
+from search.config import SearchConfig
 import json
 from logger import logger
 
 class BBHTask(TaskBase):
-    def __init__(self, config, split_ratio=0.7, split_ratio_val=0.8, seed=42):
+    def __init__(self, config:SearchConfig):
         super().__init__(config)
-        path = "Experiment/dataset/BBH/epistemic.json"
+        path = "dataset/BBH/epistemic.json"
         with open(path, "r", encoding="utf-8") as f:
             data:Dict = json.load(f)
         self.origin_prompt = data.get("description","")
@@ -23,15 +24,17 @@ class BBHTask(TaskBase):
             }
             all_examples.append(sample)
         logger.info(f"✅ [BBH数据集] 样本容量: {len(all_examples)}")
-        random.seed(seed)
+        random.seed(config.shuffle_seed)
         random.shuffle(all_examples)
-        split = int(len(all_examples) * split_ratio)
+        split = int(len(all_examples) * config.split_ratio)
         self.train_data = all_examples[:split]
         self.test_data = all_examples[split:]
         
-        split_1 = int(len(self.train_data) * split_ratio_val)
-        self.train_data = self.train_data[:split_1]
-        self.val_data = self.train_data[split_1:]
+        full_train_data = self.train_data  # 备份原始数据
+        split_1 = int(len(full_train_data) * config.split_ratio_)
+
+        self.train_data = full_train_data[:split_1]
+        self.val_data = full_train_data[split_1:]
 
         self.system_prompt = "你是一个拥有广博知识的答题人，请回答问题。"
 
@@ -43,6 +46,9 @@ class BBHTask(TaskBase):
     
     def extract_tuple(self, sample):
         return sample.get("question"), sample.get("answer")
+    
+    def samples2text(self, samples):
+        return "\n".join([f"Q: {s['question']}\nA: {s['answer']}" for s in samples])
 
     
     

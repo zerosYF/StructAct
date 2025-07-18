@@ -1,31 +1,7 @@
-from typing import List, Set, Dict
 from abc import ABC, abstractmethod
 from model.model import Model, model
 from task.base_task import TaskBase
-class OptimizeAction(ABC):
-    def __init__(self, 
-                 task:TaskBase,
-                 name:str=None, 
-                 original_prompt:str=None,
-                 ):
-        self.name = name
-        self.system_prompt = f"""
-            你是一个提示词工程师,你的任务是针对当前提示词给出优化后的提示词。
-            只给出修改过后的提示词即可，并保持中性、务实的描述风格。
-            未经过任何修改的初始提示词是:{original_prompt}。
-            """
-        self.task = task
-    
-    @abstractmethod
-    def do(self, 
-           current_prompt: str, 
-           template_structure: str) -> str:
-        """
-        samples: List[dict] like [{"input": ..., "output": ...}, ...]
-        structure: 当前的prompt结构模板
-        return: 更新后的提示词
-        """
-        pass
+from program.base_action import OptimizeAction
 
 class TestReflectRewriteAction(OptimizeAction):
     def __init__(self, task, name="TestReflectRewriteAction", original_prompt=None):
@@ -44,7 +20,7 @@ class TestReflectRewriteAction(OptimizeAction):
         请返回一个经过改进、更加清晰、有效且符合约束的提示词文本。
         """
 
-    def do(self, current_prompt, template_structure):
+    def do(self, current_prompt, template_description):
         # Step 1: 采样与构造输入
         samples = self.task.sample_train()
         inputs = [self.task.extract_tuple(s)[0] for s in samples]
@@ -70,7 +46,7 @@ class TestReflectRewriteAction(OptimizeAction):
         rewriting_prompt = (
             f"当前提示词：\n{current_prompt}\n\n"
             f"模型输出示例：\n{combined_eval_input}\n\n"
-            f"提示词结构约束：\n{template_structure}\n\n"
+            f"提示词结构约束：\n{template_description}\n\n"
             f"请根据以上内容，综合判断当前提示词的问题并优化它，返回修改后的提示词："
         )
 
@@ -84,7 +60,7 @@ class ConstraintBlockRefiner(OptimizeAction):
         super().__init__(task, name, original_prompt)
         self.model:Model = model
 
-    def do(self, current_prompt, template_structure):
+    def do(self, current_prompt, template_description):
         samples = self.task.sample_train()
         violations = []
 
@@ -111,7 +87,7 @@ class ConstraintBlockRefiner(OptimizeAction):
         content = (
             f"当前提示词：\n{current_prompt}\n\n"
             f"模型约束反馈：\n{constraint_summary}\n\n"
-            f"约束模块文本：\n{template_structure.get('ConstraintBlock', '')}\n\n"
+            f"约束模块文本：\n{template_description}\n\n"
             f"请改写提示词："
         )
 
@@ -133,14 +109,14 @@ class FewShotExampleBuilder(OptimizeAction):
         你将使用给定的 few-shot 示例、结构描述与当前提示词，生成优化后的新提示词。
         """
 
-    def do(self, current_prompt, template_structure):
+    def do(self, current_prompt, template_description):
         samples = self.task.sample_train()
         original_fewshot = samples[:2]
 
         original_text = "\n\n".join([f"Q: {s['input']}\nA: {s['output']}" for s in original_fewshot])
 
         builder_prompt = (
-            f"当前任务提示词结构说明：\n{template_structure}\n\n"
+            f"当前任务提示词结构说明：\n{template_description}\n\n"
             f"当前提示词内容：\n{current_prompt}\n\n"
             f"已有的真实问答对示例：\n{original_text}\n\n"
             f"请基于当前提示词和以上示例，构造1~2个新的few-shot问答对示例文本，"
@@ -151,7 +127,7 @@ class FewShotExampleBuilder(OptimizeAction):
         rewriting_prompt = (
             f"当前提示词：\n{current_prompt}\n\n"
             f"可选的新 few-shot 示例如下：\n{new_fewshot_text}\n\n"
-            f"提示结构描述如下：\n{template_structure}\n\n"
+            f"提示结构描述如下：\n{template_description}\n\n"
             f"请将新示例合理融合进提示词中，保持整体结构清晰自然，输出最终重写后的提示词："
         )
 
@@ -195,6 +171,10 @@ class StructureOptimizerByPerformance(OptimizeAction):
 class InstructionSimplifierByAbstraction(OptimizeAction):
     def __init__(self, task, name="InstructionSimplifierByAbstraction", original_prompt=None):
         super().__init__(task, name, original_prompt)
+        self.evaluator_model: Model = model
+        self.evaluator_system_prompt = """
+        你是一个具有概况总结能力的论证专家，能够根据多组问答对总结这一类任务的任务目标
+        """
         self.rewriter_model:Model = model
         self.rewriter_system_prompt = """
         你是一个提示词优化专家，负责抽象总结任务目标并将其融入提示词，使提示更简洁且表达明确。
@@ -202,10 +182,9 @@ class InstructionSimplifierByAbstraction(OptimizeAction):
 
     def do(self, current_prompt, template_structure):
         samples = self.task.sample_train()
-        goals = [self.evaluator_model.extract_task_goal(s["input"], s["output"]) for s in samples]
-        abstract_goal = self.rewriter_model.api_call(
-            self.rewriter_system_prompt,
-            f"请基于以下任务目标进行抽象总结：\n" + "\n".join(goals) + "\n\n请给出简洁明确的总结。"
+        abstract_goal = self.evaluator_model.api_call(
+            self.evaluator_system_prompt,
+            f"请基于以下问答对进行抽象总结：\n" + "\n" + self.task.samples2text(samples) + "\n\n并请给出简洁明确的总结。"
         )
 
         rewriting_content = (
@@ -217,41 +196,6 @@ class InstructionSimplifierByAbstraction(OptimizeAction):
         rewritten_prompt = self.rewriter_model.api_call(self.rewriter_system_prompt, rewriting_content)
         return rewritten_prompt
 
-
-class StructureSyncAction(OptimizeAction):
-    def __init__(self, task, name="StructureSyncAction", original_prompt=None):
-        super().__init__(task, name, original_prompt)
-        self.rewriter_model: Model = None
-
-    def do(self, current_prompt, template_structure):
-        # 采样样本，用于填充具体内容（如 fewshot、约束等）
-        samples = self.task.sample_train()
-
-        # 生成结构性提示语（如 block 的自然语言约束）
-        structure_description = self.task.describe_template(template_structure)
-
-        # 构造 few-shot 示例片段（抽取真实问答）
-        example_texts = "\n\n".join([
-            f"Q: {s['input']}\nA: {s['output']}"
-            for s in samples[:3]  # 控制量
-        ])
-
-        system_prompt = (
-            "你是一个提示词构造助手，你的任务是根据结构模板与样本信息，重写提示词，使其内容与结构一致。\n"
-            "不允许更改结构参数，只更新提示内容。\n"
-            "请保持风格统一、表达准确，避免冗余。"
-        )
-
-        rewrite_prompt = (
-            f"【当前提示词】：\n{current_prompt}\n\n"
-            f"【结构模板约束说明】：\n{structure_description}\n\n"
-            f"【参考样本问答对】：\n{example_texts}\n\n"
-            f"请基于当前结构，利用样本中的信息，补充/重写提示内容，使之与结构一致。\n"
-            f"禁止改动结构设置。"
-        )
-
-        rewritten_prompt = self.rewriter_model.api_call(system_prompt, rewrite_prompt)
-        return rewritten_prompt
 # 工厂函数
 def define_full_actions(task: TaskBase):
     return [
@@ -261,5 +205,3 @@ def define_full_actions(task: TaskBase):
         StructureOptimizerByPerformance(task),
         InstructionSimplifierByAbstraction(task),
     ]
-
-    

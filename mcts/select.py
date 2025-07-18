@@ -1,6 +1,6 @@
+from search.config import SearchConfig  
 from abc import ABC, abstractmethod
 import math
-from search.config import SearchConfig  
 
 class UCTStrategy(ABC):
     @abstractmethod
@@ -52,7 +52,7 @@ class PriorUCTStrategy(UCTStrategy):
 
         return max(children, key=uct_value)
 
-def get_uct_strategy(config:SearchConfig, policy=None):
+def get_select_strategy(config:SearchConfig, policy=None):
         if config.uct_idx == 0:
             return ClassicUCTStrategy(config.exploration_weight)
         else:

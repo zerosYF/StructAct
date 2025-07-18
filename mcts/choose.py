@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from Experiment.mcts.prompt_node import PromptNode
+from mcts.node import Node
 from search.config import SearchConfig
 import math
 
@@ -10,7 +10,7 @@ class ChooseStrategy(ABC):
         pass
 
 class MaxLeafQnStrategy(ChooseStrategy):
-    def choose(self, root:PromptNode, mcts):
+    def choose(self, root:Node, mcts):
         best_node = None
         best_score = float("-inf")
         visited = set()
@@ -38,7 +38,7 @@ class MaxLeafQnStrategy(ChooseStrategy):
             return []
 
 class MaxPathAvgQnStrategy(ChooseStrategy):
-    def choose(self, root:PromptNode, mcts):
+    def choose(self, root:Node, mcts):
         best_path = []
         best_score = float("-inf")
         stack = [(root, [])]
@@ -65,7 +65,7 @@ class MaxPathAvgQnStrategy(ChooseStrategy):
         return best_path[-1]
 
 class WeightedPathQnStrategy(ChooseStrategy):
-    def choose(self, root:PromptNode, mcts):
+    def choose(self, root:Node, mcts):
         best_path = []
         best_score = float("-inf")
         stack = [(root, [])]
@@ -97,7 +97,7 @@ class SoftmaxPathQnStrategy(ChooseStrategy):
     def __init__(self, alpha=1.0):
         self.alpha = alpha
 
-    def choose(self, root:PromptNode, mcts):
+    def choose(self, root:Node, mcts):
         best_path = []
         best_score = float("-inf")
         stack = [(root, [])]
@@ -127,7 +127,7 @@ class SoftmaxPathQnStrategy(ChooseStrategy):
         return best_path[-1]
 
 class MaxQNStrategy(ChooseStrategy):
-    def choose(self, root:PromptNode, mcts):
+    def choose(self, root:Node, mcts):
         best_node = None
         best_qn = float("-inf")
 
@@ -149,7 +149,7 @@ class MaxQNStrategy(ChooseStrategy):
             return root  # 如果找不到合适的节点，可以考虑返回根节点或其他回退策略
 
 class MaxFinalQnOnLongestPathStrategy(ChooseStrategy):
-    def choose(self, root:PromptNode, mcts):
+    def choose(self, root:Node, mcts):
         stack = [(root, [])]
         best_node = None
         best_qn = float("-inf")

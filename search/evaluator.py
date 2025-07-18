@@ -5,10 +5,9 @@ from concurrent.futures import ThreadPoolExecutor
 from logger import logger
 
 class PromptEvaluator:
-    def __init__(self, task:TaskBase, few_shot_num:int, thread_num:int):
+    def __init__(self, task:TaskBase, thread_num:int):
         self.model:Model = getModel()
         self.task = task
-        self.few_shot_num = few_shot_num
         self.thread_num = thread_num
     
     def reward(self, current_prompt:str, sample:dict) -> float:

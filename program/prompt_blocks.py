@@ -1,31 +1,5 @@
-from abc import ABC, abstractmethod
-from typing import List, Dict
-
-class PromptBlock(ABC):
-    @abstractmethod
-    def name(self) -> str:
-        pass
-
-    @abstractmethod
-    def get_search_space(self) -> List[int]:
-        pass
-
-    @abstractmethod
-    def set_hyperparams(self, hyperparams: List[int]):
-        pass
-
-    @abstractmethod
-    def render(self) -> dict:
-        pass
-
-    @abstractmethod
-    def describe(self) -> str:
-        pass
-
-    def get_num_slots(self) -> int:
-        return len(self.get_search_space())
-
-
+from program.base_block import PromptBlock
+from typing import List
 # 1. TaskObjectiveBlock
 class TaskObjectiveBlock(PromptBlock):
     def __init__(self):
@@ -194,7 +168,6 @@ class CautionBlock(PromptBlock):
             f"插入位置在提示{self.position}，共提供 {self.count} 条提醒。"
         )
 
-
 # 6. SummaryClosureBlock
 class SummaryClosureBlock(PromptBlock):
     def __init__(self):
@@ -231,7 +204,3 @@ def get_all_blocks():
         CautionBlock(),
         SummaryClosureBlock(),
     ]
-    
-
-
-

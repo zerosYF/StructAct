@@ -1,12 +1,12 @@
 import torch
 from torch.optim import Adam
 from typing import List
-from Experiment.rnn.rnn import RNN
+from rnn.rnn import RNN
 from logger import logger
 from visualizer import Visualizer
-from Experiment.rnn.blocks import PromptBlock
+from program.base_block import PromptBlock
 
-class RNNController:
+class TemplateController:
     def __init__(self, blocks:List[PromptBlock], hidden_dim: int = 128, lr=1e-3):
         self.blocks = blocks
         self.search_space = [dim for block in blocks for dim in block.get_search_space()]
@@ -42,7 +42,7 @@ class RNNController:
         return actions, log_prob, entropy
 
     def reinforce(self, log_prob_sum, reward: float, entropy:torch.Tensor):
-        """用前向生成出的动作序列和 reward，执行一次 REINFORCE 学习"""
+        """执行一次 REINFORCE 学习"""
         self.model.train()
         advantage = reward - self.baseline
         self.baseline = self.baseline_alpha * self.baseline + (1 - self.baseline_alpha) * reward

@@ -3,7 +3,7 @@ import random
 from search.config import SearchConfig
 from concurrent.futures import ThreadPoolExecutor
 from search.evaluator import PromptEvaluator
-from Experiment.mcts.prompt_node import PromptNode
+from mcts.node import Node
 from logger import logger
 
 class RolloutStrategy(ABC):
@@ -18,7 +18,7 @@ class MultiPathRollout(RolloutStrategy):
         self.rollout_depth = rollout_depth
         self.evaluator = evaluator
 
-    def rollout(self, node:PromptNode) -> float:
+    def rollout(self, node:Node) -> float:
         # 使用线程池并行执行 rollout
         with ThreadPoolExecutor(max_workers=self.num_paths) as executor:
             futures = [
@@ -31,7 +31,7 @@ class MultiPathRollout(RolloutStrategy):
         logger.info(f"🧠 多路径并行 rollout 平均 reward：{avg_reward:.4f}")
         return avg_reward
     
-    def _rollout_single_path(self, node:PromptNode, path_id: int) -> float:
+    def _rollout_single_path(self, node:Node, path_id: int) -> float:
         current = node
         depth = 0
         rewards = []

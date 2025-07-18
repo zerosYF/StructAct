@@ -1,18 +1,17 @@
 from typing import List
 from logger import logger
-from rnn.rnn_controller import RNNController
+from rnn.controller import TemplateController
 from search.evaluator import PromptEvaluator
-from rnn.blocks import PromptBlock
-from search.action import StructureSyncAction
+from program.base_block import PromptBlock
+from program.base_action import StructureSyncAction
 from task.base_task import TaskBase
-from rnn.rnn_controller import RNNController
 
 class PromptTemplate:
-    def __init__(self, controller:RNNController, blocks: List[PromptBlock], task:TaskBase = None):
+    def __init__(self, controller:TemplateController, blocks: List[PromptBlock], task:TaskBase = None):
         self.controller = controller
         self.blocks = blocks
         self.task = task
-        self.sync_action = StructureSyncAction(task)
+        self.sync_action = StructureSyncAction(task, self.task.extract_origin_prompt())
 
     def render(self) -> str:
         return "\n".join([block.render() for block in self.blocks])
@@ -31,11 +30,8 @@ class PromptTemplate:
             block.set_hyperparams(flat_params[idx:idx + num])
             idx += num
 
-        # Step 3: 渲染完整 prompt（作为结构提示）
-        structure_prompt = self.render()
-
         # Step 4: 用当前 prompt 在 evaluator 上打分（可自定义评分方式）
-        val_samples = evaluator.task.get_val()
+        val_samples = self.task.get_val()
         total_score = sum(evaluator.batch_reward(current_prompt, val_samples))
         avg_score = total_score / len(val_samples)
 
@@ -51,5 +47,5 @@ class PromptTemplate:
         template_description = self.describe()
         return self.sync_action.do(
             current_prompt=current_prompt,
-            template_structure=template_description,
+            template_description=template_description,
         )
