@@ -1,13 +1,13 @@
 from abc import ABC, abstractmethod
-from model.model import Model, model
+from model.model import Model, getModel
 from task.base_task import TaskBase
 from program.base_action import OptimizeAction
 
-tester_model = model
-rewriter_model = model
-checker_model = model
-builder_model = model
-evaluator_model = model
+tester_model = getModel()
+rewriter_model = getModel()
+checker_model = getModel()
+builder_model = getModel()
+evaluator_model = getModel()
 
 class TestReflectRewriteAction(OptimizeAction):
     def __init__(self, task, name="TestReflectRewriteAction", original_prompt=None):

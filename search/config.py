@@ -35,3 +35,12 @@ class SearchConfig:
         self.rollout_idx: int = 0              # 当前 rollout 路径编号
         self.choose_idx: int = 0               # 当前选择动作编号
         self.uct_idx: int = 0                  # 当前 UCT 路径编号
+
+         # 模型配置
+        self.model_name: str = "zhiyan3"
+        self.api_key: str = "zhiyan123"
+        self.base_url: str = "http://192.168.200.222:12025/v1"
+
+        # Ollama 模型配置
+        self.ollama_model_name: str = "llama3.1:8b"     # Ollama 模型名称
+        self.ollama_base_url: str = "http://localhost:11434"  # Ollama 本地服务地址
