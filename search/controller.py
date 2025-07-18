@@ -30,7 +30,7 @@ class SearchController:
     
     def search(self):
         template = PromptTemplate(config=self.config, blocks=self.blocks, task=self.task)
-        logger.info(f"🔍 初始模板约束:{template.render()}")
+        logger.info(f"🔍 初始模板约束:\n{template.render()}")
 
         root_node = PromptNode(action_set=self.actions, 
                                action_seq=[], 

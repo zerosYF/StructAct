@@ -8,6 +8,10 @@ class TaskObjectiveBlock(PromptBlock):
         self.structure_options = ["不包含结构提示", "包含结构提示"]
         self.hyperparams = [0, 0, 0]
 
+        self.tone = self.tone_options[self.hyperparams[0]]
+        self.verb = self.verb_options[self.hyperparams[1]]
+        self.structure = self.structure_options[self.hyperparams[2]]
+
     def name(self): return "TaskObjective"
 
     def get_search_space(self): 
@@ -38,6 +42,11 @@ class RoleConstraintBlock(PromptBlock):
         self.stance_options = ["引导用户", "服从指令"]
         self.detail_options = ["简略身份", "身份+职责", "身份+职责+交流风格"]
         self.hyperparams = [0, 0, 0, 0]
+
+        self.role = self.role_options[self.hyperparams[0]]
+        self.tone = self.tone_options[self.hyperparams[1]]
+        self.stance = self.stance_options[self.hyperparams[2]]
+        self.detail = self.detail_options[self.hyperparams[3]]
 
     def name(self): return "RoleConstraint"
 
@@ -75,6 +84,10 @@ class FewShotExampleBlock(PromptBlock):
         self.content_options = ["展示完整问答", "只展示回答部分"]
         self.hyperparams = [0, 0, 0]
 
+        self.num = self.num_options[self.hyperparams[0]]
+        self.order = self.order_options[self.hyperparams[1]]
+        self.content = self.content_options[self.hyperparams[2]]
+
     def name(self): return "FewShotExamples"
 
     def get_search_space(self): 
@@ -105,6 +118,10 @@ class ConstraintBlock(PromptBlock):
         self.style_options = ["简洁", "详细"]
         self.format_options = ["段落", "列表"]
         self.hyperparams = [0, 0, 0]
+
+        self.num_constraints = self.num_options[self.hyperparams[0]]
+        self.style = self.style_options[self.hyperparams[1]]
+        self.format_style = self.format_options[self.hyperparams[2]]
 
     def name(self): return "ConstraintBlock"
 
@@ -141,6 +158,11 @@ class CautionBlock(PromptBlock):
         self.count_options = [0, 1, 2, 3, 4]
         self.hyperparams = [0, 0, 0, 0]
 
+        self.caution_type = self.type_options[self.hyperparams[0]]
+        self.style = self.style_options[self.hyperparams[1]]
+        self.position = self.position_options[self.hyperparams[2]]
+        self.count = self.count_options[self.hyperparams[3]]
+
     def name(self): return "CautionBlock"
 
     def get_search_space(self): 
@@ -174,6 +196,9 @@ class SummaryClosureBlock(PromptBlock):
         self.include_summary = ["不包含总结", "包含总结"]
         self.include_next_step = ["不包含后续建议", "包含下一步建议"]
         self.hyperparams = [0, 0]
+
+        self.summary = self.include_summary[self.hyperparams[0]]
+        self.next_step = self.include_next_step[self.hyperparams[1]]
 
     def name(self): return "SummaryClosure"
 

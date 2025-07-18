@@ -15,15 +15,15 @@ class PromptEvaluator:
         #logger.info(f"reward prompt:{prompt}")
         output = self.model.api_call(self.task.system_prompt, prompt)
         logger.info(f"reward model answer:{output.strip().lower()}")
-        logger.info(f"reward gold answer:{sample["answer"].strip().lower()}")
-        return 1.0 if output.strip().lower() == sample["answer"].strip().lower() else 0.0
+        logger.info(f"reward gold answer:{sample['answer'].strip().lower()}")
+        return 1.0 if output.strip().lower() == sample['answer'].strip().lower() else 0.0
     
     def batch_reward(self, current_prompt: str, samples: List[dict]) -> List[float]:
         def _reward_one(s):
             output = self.model.api_call(self.task.system_prompt, current_prompt)
             logger.info(f"reward model answer:{output.strip().lower()}")
             logger.info(f"reward gold answer:{s['answer'].strip().lower()}")
-            return 1.0 if output.strip().lower() == s["answer"].strip().lower() else 0.0
+            return 1.0 if output.strip().lower() == s['answer'].strip().lower() else 0.0
 
         with ThreadPoolExecutor(max_workers=self.thread_num) as executor:
             return list(executor.map(_reward_one, samples))
@@ -33,7 +33,7 @@ class PromptEvaluator:
 
         def _evaluate_one(item):
             output = self.model.api_call(self.task.system_prompt, final_prompt)
-            gold = item["answer"]
+            gold = item['answer']
             correct = int(output.strip().lower() == gold.strip().lower())
             return {
                 "prompt": final_prompt,
@@ -47,7 +47,7 @@ class PromptEvaluator:
             results = list(executor.map(_evaluate_one, test_data))
 
         correct = sum(r["correct"] for r in results)
-        outputs = [{"prompt": r["prompt"], "output": r["output"], "answer": r["answer"]} for r in results]
+        outputs = [{'answer': r["prompt"], "output": r["output"], "answer": r["answer"]} for r in results]
 
         return {
             "accuracy": correct / total,

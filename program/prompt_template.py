@@ -9,10 +9,10 @@ from task.base_task import TaskBase
 
 class PromptTemplate:
     def __init__(self, config:SearchConfig, blocks: List[PromptBlock], task:TaskBase = None):
+        self.blocks = blocks
         self.controller = TemplateController(search_space=self._get_serch_space(),
                                              hidden_dim=config.rnn_hidden_dim,
                                              lr=config.rnn_lr)
-        self.blocks = blocks
         self.task = task
         self.sync_action = StructureSyncAction(task, self.task.extract_origin_prompt())
     
@@ -26,7 +26,7 @@ class PromptTemplate:
         return search_space
 
     def render(self) -> str:
-        return "\n".join([block.render() for block in self.blocks])
+        return "\n".join([f"{block.render()}" for block in self.blocks])
 
     def describe(self) -> str:
         return "\n".join([block.describe() for block in self.blocks])

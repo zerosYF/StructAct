@@ -17,9 +17,9 @@ def run():
     logger.info(f"✅ Best PromptTemplate:\n{best_template}")
     logger.info(f"✅ Best ActionSequence:\n{chr(10).join([action.name for action in best_sequence])}")
     acc_mcts = evaluator.evaluate(bbh_task.get_test(), best_prompt)
-    logger.info(f"📊 MCTS Test Accuracy:{acc_mcts.get("accuracy")}")
+    logger.info(f"📊 MCTS Test Accuracy:{acc_mcts.get('accuracy')}")
     acc_origin = evaluator.evaluate(bbh_task.get_test(), bbh_task.extract_origin_prompt())
-    logger.info(f"📊 Original Test Accuracy:{acc_origin.get("accuracy")}")
+    logger.info(f"📊 Original Test Accuracy:{acc_origin.get('accuracy')}")
 
  
 if __name__ == "__main__":
