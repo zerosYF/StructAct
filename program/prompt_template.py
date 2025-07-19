@@ -96,7 +96,7 @@ class PromptTemplate:
             template_description=template_description,
         )
 
-    def _structure_attribution(self, params, evaluator, val_samples, current_prompt):
+    def _structure_attribution(self, params, evaluator:PromptEvaluator, val_samples, current_prompt):
         """
         Perturb each slot in the parameter vector and measure its effect on reward.
         This gives per-slot attribution scores.
