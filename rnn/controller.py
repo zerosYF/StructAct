@@ -56,11 +56,9 @@ class TemplateController:
             # Normalize slot rewards into a probability distribution
             target_probs = torch.softmax(slot_rewards_tensor, dim=0).detach()  # [num_slots]
 
-            aux_loss = 0.0
-            for i, logits in enumerate(self.last_logits):
-                pred_log_probs = torch.stack([F.log_softmax(logits, dim=-1) for logits in self.last_logits])  # [slot_num, slot_dim]
-                target_probs = torch.softmax(torch.tensor(slot_rewards, device=pred_log_probs.device), dim=0).unsqueeze(1).expand_as(pred_log_probs)
-                aux_loss = F.kl_div(pred_log_probs, target_probs, reduction='batchmean')
+            pred_log_probs = torch.stack([F.log_softmax(logits, dim=-1) for logits in self.last_logits])  # [slot_num, slot_dim]
+            target_probs = torch.softmax(torch.tensor(slot_rewards, device=pred_log_probs.device), dim=0).unsqueeze(1).expand_as(pred_log_probs)
+            aux_loss = F.kl_div(pred_log_probs, target_probs, reduction='batchmean')
 
             loss += self.aux_loss_coef * aux_loss
             logger.info(f"🧩 [RNNController] 加入结构归因辅助 loss = {aux_loss.item():.4f}")

@@ -11,18 +11,21 @@ class PromptEvaluator:
         self.thread_num = thread_num
     
     def reward(self, current_prompt:str, sample:dict) -> float:
-        prompt = current_prompt
-        output = self.model.api_call(self.task.system_prompt, prompt)
+        q, a = self.task.extract_tuple(sample)
+        final_input = self.task.inject_final_input(current_prompt, q)
+        output = self.model.api_call(self.task.system_prompt, final_input)
         logger.info(f"reward model answer:{output.strip().lower()}")
-        logger.info(f"reward gold answer:{sample['answer'].strip().lower()}")
-        return 1.0 if output.strip().lower() == sample['answer'].strip().lower() else 0.0
+        logger.info(f"reward gold answer:{a.strip().lower()}")
+        return 1.0 if output.strip().lower() == a.strip().lower() else 0.0
     
     def batch_reward(self, current_prompt: str, samples: List[dict]) -> List[float]:
         def _reward_one(s):
-            output = self.model.api_call(self.task.system_prompt, current_prompt)
+            q, a = self.task.extract_tuple(s)
+            final_input = self.task.inject_final_input(current_prompt, q)
+            output = self.model.api_call(self.task.system_prompt, final_input)
             logger.info(f"reward model answer:{output.strip().lower()}")
-            logger.info(f"reward gold answer:{s['answer'].strip().lower()}")
-            return 1.0 if output.strip().lower() == s['answer'].strip().lower() else 0.0
+            logger.info(f"reward gold answer:{a.strip().lower()}")
+            return 1.0 if output.strip().lower() == a.strip().lower() else 0.0
 
         with ThreadPoolExecutor(max_workers=self.thread_num) as executor:
             return list(executor.map(_reward_one, samples))
@@ -31,8 +34,10 @@ class PromptEvaluator:
         total = len(test_data)
 
         def _evaluate_one(item):
-            output = self.model.api_call(self.task.system_prompt, final_prompt)
-            gold = item['answer']
+            q, a = self.task.extract_tuple(item)
+            final_input = self.task.inject_final_input(final_prompt, q)
+            output = self.model.api_call(self.task.system_prompt, final_input)
+            gold = a
             correct = int(output.strip().lower() == gold.strip().lower())
             return {
                 "prompt": final_prompt,
@@ -45,7 +50,7 @@ class PromptEvaluator:
             results = list(executor.map(_evaluate_one, test_data))
 
         correct = sum(r["correct"] for r in results)
-        outputs = [{'answer': r["prompt"], "output": r["output"], "answer": r["answer"]} for r in results]
+        outputs = [{'prompt': r["prompt"], "output": r["output"], "answer": r["answer"]} for r in results]
 
         return {
             "accuracy": correct / total,

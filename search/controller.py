@@ -64,9 +64,9 @@ class SearchController:
         for iter_id in range(self.config.iter_num):
             mcts.do_iter(
                 root_node,
-                width_threshold=self.config.width_threshold,
+                width=self.config.width_threshold,
                 expand_num=self.config.expand_num,
-                parallel=self.config.rollout_parallel
+                rollout_parallel=self.config.rollout_parallel
             )
 
             if iter_id % 5 == 0 or iter_id == self.config.iter_num - 1:
