@@ -58,4 +58,32 @@ class StructureSyncAction(OptimizeAction):
         rewritten_prompt = self.rewriter_model.api_call(system_prompt, rewrite_prompt)
         return rewritten_prompt
 
+class FormatConstraintSummarizerAction(OptimizeAction):
+    def __init__(self, task, name="FormatConstraintSummarizerAction", original_prompt=None):
+        super().__init__(task, name, original_prompt)
+        self.model:Model = getModel()
+        self.summarizer_system_prompt = """
+        你是一个提示词格式分析专家。根据以下训练样例的输入和输出，总结输出的格式约束。
+        请只返回简洁的格式描述，不要其他多余内容。
+        """
+        self.rewriter_system_prompt = """
+        你是一个提示词优化专家。根据当前提示词和格式约束，总结并将格式约束自然融入提示词中，确保模型输出符合格式要求。
+        """
+
+    def do(self, current_prompt, template_description):
+        samples = self.task.sample_train()
+        io_text = self.task.samples2text(samples)
+
+        # 1. 总结格式约束
+        format_summary = self.model.api_call(self.summarizer_system_prompt, io_text)
+
+        # 2. 用格式约束改写提示词
+        rewriting_prompt = (
+            f"当前提示词：\n{current_prompt}\n\n"
+            f"格式约束总结：\n{format_summary}\n\n"
+            f"请将格式约束融入提示词，返回改写后的提示词："
+        )
+        rewritten_prompt = self.model.api_call(self.rewriter_system_prompt, rewriting_prompt)
+        return rewritten_prompt
+
     
