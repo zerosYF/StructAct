@@ -23,9 +23,9 @@ class SearchConfig:
         self.batch_size: int = 10              # 每次需要的训练batch
         self.expand_num: int = 3               # 每轮可扩展节点数量（用于并行）
         assert self.expand_num <= self.width_threshold
-        self.rollout_parallel: bool = True     # 是否并行执行 rollout
+        self.rollout_parallel: bool = False     # 是否并行执行 rollout
         self.rollout_length: int = 3           # rollout 路径深度（定长模拟）
-        self.rollout_path_num: int = 3         # 每次 rollout 的路径数量
+        self.rollout_path_num: int = 1         # 每次 rollout 的路径数量
 
         # RNN Controller 设置
         self.rnn_hidden_dim: int = 128         # RNN 隐藏层维度
