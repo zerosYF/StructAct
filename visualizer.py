@@ -14,7 +14,6 @@ class MCTSVisualizer:
         self.root = root
         self.interval = interval
         self.max_nodes = max_nodes
-        self.losses = []
         self.rewards = []
         self.entropies = []
         self._stop_event = threading.Event()
@@ -32,8 +31,7 @@ class MCTSVisualizer:
         self.root = root
         self.max_nodes = max_nodes
 
-    def log_train(self, loss: float, reward: float, entropy:float):
-        self.losses.append(loss)
+    def log_train(self, reward: float, entropy:float):
         self.rewards.append(reward)
         self.entropies.append(entropy)
 
@@ -61,25 +59,24 @@ class MCTSVisualizer:
         plt.show()
 
     def _draw_train_curve(self, ax_l, ax_r):
-        if not self.losses:
+        if not self.rewards:
             ax_l.set_title("waiting for rnn data...")
             return
         else:
             ax_l.set_title("RNN")
 
-        x = list(range(len(self.losses)))
+        x = list(range(len(self.rewards)))
         ax_l.set_xlabel("Step")
         
         ax_l.clear()
-        ax_l.set_ylabel("Loss", color="red")
-        ax_l.tick_params(axis='y', labelcolor='red')
-        ax_l.plot(x, self.losses, label="Loss", color="red")
+        ax_l.set_ylabel("Reward", color="green")
+        ax_l.tick_params(axis='y', labelcolor="green")
+        ax_l.plot(x, self.rewards, label="Loss", color="green")
 
         ax_r.cla()
         ax_r.yaxis.set_label_position("right")
-        ax_r.set_ylabel("Reward / Entropy", color="green")
-        ax_r.tick_params(axis='y', labelcolor='green')
-        ax_r.plot(x, self.rewards, label="Reward", color="green")
+        ax_r.set_ylabel("Entropy", color="blue")
+        ax_r.tick_params(axis='y', labelcolor="blue")
         ax_r.plot(x, self.entropies, label="Entropy", color="blue")
 
         lines, labels = ax_l.get_legend_handles_labels()

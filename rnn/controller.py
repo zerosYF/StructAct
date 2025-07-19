@@ -38,19 +38,28 @@ class TemplateController:
                   reward: float,
                   entropy: torch.Tensor,
                   slot_rewards: Optional[List[float]] = None):
-        """主策略梯度 + slot-level KL归因辅助"""
-
         self.model.train()
-
+        print(log_prob_sum)
         # ---- 主策略梯度更新 ----
         advantage = reward - self.baseline
         self.baseline = self.baseline_alpha * self.baseline + (1 - self.baseline_alpha) * reward
         entropy_weight = 0.01
-
         loss = -advantage * log_prob_sum - entropy_weight * entropy
 
         # ---- slot-level 结构归因辅助 loss ----
-        if self.iter_count % self.attribution_interval == 0 and slot_rewards is not None and self.last_logits is not None:
+        self._slot_level_atrribution(slot_rewards)
+
+        # ---- 参数更新 ----
+        self.optimizer.zero_grad()
+        loss.backward()
+        torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1.0)
+        self.optimizer.step()
+
+        logger.info(f"📈 [RNNController] REINFORCE 完成 - reward={reward:.4f}, loss={loss.item():.4f}, entropy={entropy.item():.4f}")
+        Visualizer.log_train(reward, entropy.item())
+    
+    def _slot_level_atrribution(self, slot_rewards=None):
+        if slot_rewards is not None and self.iter_count % self.attribution_interval == 0 and self.last_logits is not None:
             slot_rewards_tensor = torch.tensor(slot_rewards, dtype=torch.float32)
 
             # Normalize slot rewards into a probability distribution
@@ -62,13 +71,3 @@ class TemplateController:
 
             loss += self.aux_loss_coef * aux_loss
             logger.info(f"🧩 [RNNController] 加入结构归因辅助 loss = {aux_loss.item():.4f}")
-
-        # ---- 参数更新 ----
-        self.optimizer.zero_grad()
-        loss.backward()
-        torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1.0)
-        self.optimizer.step()
-
-        logger.info(f"📈 [RNNController] REINFORCE 完成 - reward={reward:.4f}, loss={loss.item():.4f}, entropy={entropy.item():.4f}")
-        Visualizer.log_train(loss.item(), reward, entropy.item())
-    
