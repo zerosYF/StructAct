@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 from typing import List
 from mcts.node import Node
 from search.config import SearchConfig
-import random
 import numpy as np
 
 class ExpandStrategy(ABC):
@@ -31,7 +30,7 @@ class DefaultExpandStrategy(ExpandStrategy):
 
         children = []
         for action in selected_actions:
-            child = node.take_action(action)
+            child:Node = node.take_action(action)
             mcts.children[node].append(child)
             mcts.untried_actions[child] = child.get_untried_actions()
             children.append(child)

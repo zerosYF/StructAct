@@ -46,7 +46,7 @@ class PromptTemplate:
         new_prompt = self._sync_semantics(current_prompt)
 
         # Step 4: 用新 prompt 打分
-        val_samples = self.task.get_val()
+        val_samples = self.task.get_val_rl()
         total_score = sum(evaluator.batch_reward(new_prompt, val_samples))
         avg_score = total_score / len(val_samples)
         logger.info(f"🎯 [PromptTemplate] 使用当前结构超参数得到的新prompt得分 = {avg_score:.4f}")

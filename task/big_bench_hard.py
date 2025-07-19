@@ -34,7 +34,10 @@ class BBHTask(TaskBase):
         split_1 = int(len(full_train_data) * config.split_ratio_)
 
         self.train_data = full_train_data[:split_1]
-        self.val_data = full_train_data[split_1:]
+        full_val_data = full_train_data[split_1:]
+        split_2 = int(len(full_val_data) * config.split_ratio_val)
+        self.val_data_eval = full_val_data[:split_2]
+        self.val_data_rl = full_val_data[split_2:]
 
         self.system_prompt = "你是一个拥有广博知识的答题人，请回答问题。"
 

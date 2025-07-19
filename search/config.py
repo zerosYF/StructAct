@@ -8,8 +8,9 @@ class SearchConfig:
 
     def __init__(self):
         # 数据集划分设置
-        self.split_ratio: float = 0.7      # (训练集 + 验证集) / 总数据
+        self.split_ratio: float = 0.6      # (训练集 + 验证集) / 总数据
         self.split_ratio_: float = 0.8     # 训练集 / (训练集 + 验证集)
+        self.split_ratio_val: float = 0.5
         self.shuffle_seed: int = 42        # 数据打乱的随机种子
 
         # MCTS 搜索控制

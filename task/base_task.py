@@ -6,7 +6,8 @@ class TaskBase(ABC):
     def __init__(self, config:SearchConfig):
         self.config = config
         self.train_data = None
-        self.val_data = None
+        self.val_data_eval = None
+        self.val_data_rl = None
         self.test_data = None
         self.system_prompt = None
 
@@ -14,7 +15,10 @@ class TaskBase(ABC):
         return random.sample(self.train_data, self.config.batch_size)
     
     def get_val(self) -> List[Dict]:
-        return self.val_data
+        return self.val_data_eval
+    
+    def get_val_rl(self) -> List[Dict]:
+        return self.val_data_rl
     
     def get_test(self) -> List[Dict]:
         return self.test_data
