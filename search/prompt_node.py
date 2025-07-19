@@ -28,13 +28,13 @@ class PromptNode(Node):
         self.max_depth = max_depth
     
     def __hash__(self):
-        return hash(tuple(self.action_seq))
+        return hash(self.current_prompt)
 
     def __eq__(self, other):
-        return isinstance(other, PromptNode) and self.action_seq == other.action_seq
+        return isinstance(other, PromptNode) and self.current_prompt == other.current_prompt
 
     def get_untried_actions(self):
-        # 只是 MCTS 初始拷贝一次，然后控制器负责 pop 掉
+        # 只是 MCTS 新节点初始拷贝一次，然后控制器负责 pop 掉
         return list(self.action_set)
     
     def get_possible_actions(self):

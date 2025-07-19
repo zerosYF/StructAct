@@ -16,10 +16,12 @@ class SearchConfig:
         self.exploration_weight: float = 1.5   # UCT 中的探索因子
         self.iter_num: int = 5                # MCTS 主循环迭代次数
         self.depth_threshold: int = 4          # 搜索最大深度
+        self.width_threshold: int = 3
 
         # 节点拓展与 rollout 配置
         self.batch_size: int = 10              # 每轮可扩展节点数量（用于并行）
         self.expand_num: int = 3               # 每个节点拓展出多少子节点
+        assert self.expand_num <= self.width_threshold
         self.rollout_parallel: bool = True     # 是否并行执行 rollout
         self.rollout_length: int = 3           # rollout 路径深度（定长模拟）
         self.rollout_path_num: int = 3         # 每次 rollout 的路径数量

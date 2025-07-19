@@ -31,11 +31,11 @@ class SearchController:
     def search(self):
         template = PromptTemplate(config=self.config, blocks=self.blocks, task=self.task)
         logger.info(f"🔍 初始模板约束:\n{template.render()}")
-
+        initial_prompt = template.update_by_controller(self.evaluator, self.task.extract_origin_prompt())
         root_node = PromptNode(action_set=self.actions, 
                                action_seq=[], 
                                structure_template=template,
-                               prompt=self.task.extract_origin_prompt(), 
+                               prompt=initial_prompt, 
                                evaluator=self.evaluator, 
                                depth=0, 
                                max_depth=self.config.depth_threshold,
@@ -52,7 +52,7 @@ class SearchController:
         Visualizer.start()
 
         for iter_id in range(self.config.iter_num):
-            mcts.do_iter(root_node, self.config.expand_num, self.config.rollout_parallel)
+            mcts.do_iter(root_node, self.config.width_threshold, self.config.expand_num, self.config.rollout_parallel)
 
             if iter_id % 5 == 0 or iter_id == self.config.iter_num - 1:
                 logger.info(f"  当前累计节点数: {len(mcts.N)}")

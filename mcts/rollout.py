@@ -32,7 +32,7 @@ class MultiPathRollout(RolloutStrategy):
         return avg_reward
     
     def _rollout_single_path(self, node:Node, path_id: int) -> float:
-        current = node
+        current:Node = node
         depth = 0
         rewards = []
 

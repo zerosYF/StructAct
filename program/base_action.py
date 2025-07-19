@@ -14,6 +14,7 @@ class OptimizeAction(ABC):
             未经过任何修改的初始提示词是:{original_prompt}。
             """
         self.task = task
+        self.usage_count = 0
     
     @abstractmethod
     def do(self, 
@@ -24,7 +25,7 @@ class OptimizeAction(ABC):
         structure: 当前的prompt结构模板
         return: 更新后的提示词
         """
-        pass
+        self.usage_count += 1
 
 class StructureSyncAction(OptimizeAction):
     def __init__(self, task, name="StructureSyncAction", original_prompt=None):
@@ -32,6 +33,7 @@ class StructureSyncAction(OptimizeAction):
         self.rewriter_model: Model = getModel()
 
     def do(self, current_prompt, template_description):
+        super().do(current_prompt, template_description)
         # 采样样本，用于填充具体内容（如 fewshot、约束等）
         samples = self.task.sample_train()
 

@@ -23,14 +23,17 @@ class MCTS:
         self.expand_strategy = expand_strategy
         self.rollout_strategy = rollout_strategy
         self.choose_strategy = choose_strategy
-    def _select(self, node:Node):
+    def _select(self, node:Node, max_width:int):
         path = []
         while True:
             path.append(node)
             if node not in self.children:
                 return path
             unexplored = self.untried_actions.get(node, [])
-            if unexplored:
+            children_count = len(self.children.get(node, []))
+
+            # 只有子节点没达到上限且有未尝试动作才返回当前节点，否则继续下探
+            if unexplored and children_count < max_width:
                 return path
             node = self._uct_select(node)
     
@@ -48,10 +51,10 @@ class MCTS:
             self.N[node] += 1
             self.Q[node] += reward
     
-    def do_iter(self, node:Node, expand_num:int=1, rollout_parallel=False):
+    def do_iter(self, node:Node, width:int=1, expand_num:int=1, rollout_parallel=False):
         logger.info("--------------Start Iteration----------------")
         logger.info("Step 1: 执行Select")
-        path = self._select(node)
+        path = self._select(node, max_width=width)
         leaf = path[-1]
         logger.info(f"已选叶子结点类型:{leaf.type}")
         logger.info("Step 2: 执行Expand")

@@ -25,6 +25,7 @@ class TestReflectRewriteAction(OptimizeAction):
         """
 
     def do(self, current_prompt, template_description):
+        super().do(current_prompt, template_description)
         samples = self.task.sample_train()
         inputs = [self.task.extract_tuple(s)[0] for s in samples]
         gold_answers = [self.task.extract_tuple(s)[1] for s in samples]
@@ -63,6 +64,7 @@ class ConstraintBlockRefiner(OptimizeAction):
         """
 
     def do(self, current_prompt, template_description):
+        super().do(current_prompt, template_description)
         samples = self.task.sample_train()
         violations = []
 
@@ -100,6 +102,7 @@ class FewShotExampleBuilder(OptimizeAction):
         """
 
     def do(self, current_prompt, template_description):
+        super().do(current_prompt, template_description)
         samples = self.task.sample_train()
         original_fewshot = samples[:2]
 
@@ -136,7 +139,8 @@ class StructureOptimizerByPerformance(OptimizeAction):
         你是一个提示词优化专家，负责根据任务表现反馈和结构约束，优化提示词表达，使其更明确有效。
         """
 
-    def do(self, current_prompt, template_structure):
+    def do(self, current_prompt, template_description):
+        super().do(current_prompt, template_description)
         samples = self.task.sample_train()
         inputs = [self.task.extract_tuple(s)[0] for s in samples]
         golds = [self.task.extract_tuple(s)[1] for s in samples]
@@ -155,7 +159,7 @@ class StructureOptimizerByPerformance(OptimizeAction):
         rewriting_prompt = (
             f"当前提示词：\n{current_prompt}\n\n"
             f"当前任务完成度为：{avg_score:.2f}\n\n"
-            f"结构约束如下：\n{template_structure}\n\n"
+            f"结构约束如下：\n{template_description}\n\n"
             "请优化提示词表达，使其更有效。"
         )
         return self.rewriter_model.api_call(self.rewriter_system_prompt, rewriting_prompt)
@@ -174,6 +178,7 @@ class InstructionSimplifierByAbstraction(OptimizeAction):
         """
 
     def do(self, current_prompt, template_structure):
+        super().do(current_prompt, template_structure)
         samples = self.task.sample_train()
         qa_text = self.task.samples2text(samples)
 
