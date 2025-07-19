@@ -50,5 +50,8 @@ config = SearchConfig()
 model = Model(config)
 ollama_model = OllamaModel(config)
 def getModel():
-    return ollama_model
+    if config.model_idx == 0:
+        return model
+    else:
+        return ollama_model
 

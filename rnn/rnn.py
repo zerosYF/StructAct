@@ -15,15 +15,19 @@ class RNN(nn.Module):
         self.rnn = nn.LSTMCell(hidden_dim, hidden_dim)
         self.heads = nn.ModuleList([nn.Linear(hidden_dim, dim) for dim in slot_dims])
 
-    def forward(self, input_h_vec=None):
-        h = torch.zeros(1, self.hidden_dim)
+        # 可学习的起始输入向量，作为 x₀（input_emb₀）
+        self.start_token = nn.Parameter(torch.zeros(1, hidden_dim))
+
+
+    def forward(self):
+        h = torch.zeros(1, self.hidden_dim)   # ← 每次都初始化
         c = torch.zeros_like(h)
-        input_emb = torch.zeros_like(h)
+        input_emb = self.start_token
 
         decisions, log_probs, entropies = [], [], []
 
         for i in range(self.slot_num):
-            h, c = self.rnn(input_emb, (h, c))
+            h, c = self.rnn(input_emb, (h, c))   # ← 使用局部状态
             logits = self.heads[i](h)
             probs = F.softmax(logits, dim=-1).squeeze(0)
             dist = Categorical(probs)

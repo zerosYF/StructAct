@@ -7,6 +7,7 @@ from visualizer import Visualizer
 
 class TemplateController:
     def __init__(self, search_space:List[int], hidden_dim: int = 128, lr=1e-3):
+        logger.info(f"📈 [RNNController] 模板超参数个数 - ={len(search_space)}")
         self.model:RNN = RNN(search_space, hidden_dim)
         self.optimizer = Adam(self.model.parameters(), lr=lr)
         self.baseline = 0.0
@@ -14,8 +15,8 @@ class TemplateController:
     
     def train_step(self):
         self.model.train()
-        actions, log_prob, entropy = self.model()
-        return actions, log_prob, entropy
+        flat_params, log_prob, entropy = self.model()
+        return flat_params, log_prob, entropy
 
     def reinforce(self, log_prob_sum, reward: float, entropy:torch.Tensor):
         """执行一次 REINFORCE 学习"""
@@ -28,6 +29,6 @@ class TemplateController:
         loss.backward()
         torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1.0) #防止梯度爆炸
         self.optimizer.step()
-        logger.info(f"📈 [RNNController] REINFORCE 更新完成 - reward={reward:.4f}, loss={loss.item():.4f}")
+        logger.info(f"📈 [RNNController] REINFORCE 更新完成 - reward={reward:.4f}, loss={loss.item():.4f}, entropy={entropy.detach().item():.4f}")
         Visualizer.log_train(loss.detach().item(), reward, entropy.detach().item())
     

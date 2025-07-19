@@ -35,6 +35,7 @@ class SearchConfig:
         self.rollout_idx: int = 0              # 当前 rollout 路径编号
         self.choose_idx: int = 0               # 当前选择动作编号
         self.uct_idx: int = 0                  # 当前 UCT 路径编号
+        self.model_idx: int = 0                # 当前api模型编号
 
          # 模型配置
         self.model_name: str = "zhiyan3"

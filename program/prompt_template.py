@@ -32,7 +32,7 @@ class PromptTemplate:
         return "\n".join([block.describe() for block in self.blocks])
 
     def update_by_controller(self, evaluator: PromptEvaluator, current_prompt: str):
-        # Step 1: 从 controller 中采样结构参数
+        # Step 1: 控制器生成结构参数
         flat_params, log_prob_sum, entropy = self.controller.train_step()
 
         # Step 2: 设置参数到各个 block 中
@@ -42,16 +42,19 @@ class PromptTemplate:
             block.set_hyperparams(flat_params[idx:idx + num])
             idx += num
 
-        # Step 4: 用当前 prompt 在 evaluator 上打分（可自定义评分方式）
-        val_samples = self.task.get_val()
-        total_score = sum(evaluator.batch_reward(current_prompt, val_samples))
-        avg_score = total_score / len(val_samples)
-        logger.info(f"🎯 [PromptTemplate] 使用当前结构超参数得分 = {avg_score:.4f}")
+        # ✅ Step 3: 根据新的 block 参数，重新生成 prompt
+        new_prompt = self._sync_semantics(current_prompt)
 
-        # Step 5: 执行一次 reinforce 更新 controller
+        # Step 4: 用新 prompt 打分
+        val_samples = self.task.get_val()
+        total_score = sum(evaluator.batch_reward(new_prompt, val_samples))
+        avg_score = total_score / len(val_samples)
+        logger.info(f"🎯 [PromptTemplate] 使用当前结构超参数得到的新prompt得分 = {avg_score:.4f}")
+
+        # Step 5: reinforce 更新 controller
         self.controller.reinforce(log_prob_sum, avg_score, entropy)
 
-        return self._sync_semantics(current_prompt)
+        return new_prompt
     
     def _sync_semantics(self, current_prompt) -> str:
         """
