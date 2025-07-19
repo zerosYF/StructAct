@@ -50,7 +50,7 @@ class BBHTask(TaskBase):
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
         """Injects the input question into the current prompt for evaluation."""
-        return current_prompt +"\nAnswer 'entailment' or 'non-entailment'.\n" + f"\n\nQuestion: {input}"
+        return current_prompt +"\nAnswer only 'entailment' or 'non-entailment'.\n" + f"\n\nQuestion: {input}"
 
     def extract_origin_prompt(self) -> str:
         """Returns the original task prompt description."""
