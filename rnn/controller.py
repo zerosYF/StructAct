@@ -19,12 +19,16 @@ class TemplateController:
         self.last_logits: list = None
 
         logger.info(f"📈 [RNNController] Initialized - params counts: {len(search_space)}")
+
+        self.iter_count = 0
+        self.attribution_interval = 10  # 每10步调用一次归因
     
     def get_slot_dim(self, slot_index: int) -> int:
         return self.search_space[slot_index]
 
     def train_step(self):
         self.model.train()
+        self.iter_count += 1
         flat_params, log_prob, entropy, logits_list = self.model(return_logits=True)
         self.last_logits = logits_list  
         return flat_params, log_prob, entropy
@@ -46,7 +50,7 @@ class TemplateController:
         loss = -advantage * log_prob_sum - entropy_weight * entropy
 
         # ---- slot-level 结构归因辅助 loss ----
-        if slot_rewards is not None and self.last_logits is not None:
+        if self.iter_count % self.attribution_interval == 0 and slot_rewards is not None and self.last_logits is not None:
             slot_rewards_tensor = torch.tensor(slot_rewards, dtype=torch.float32)
 
             # Normalize slot rewards into a probability distribution
@@ -54,17 +58,9 @@ class TemplateController:
 
             aux_loss = 0.0
             for i, logits in enumerate(self.last_logits):
-                pred_log_prob = F.log_softmax(logits.unsqueeze(0), dim=1)  # logits shape: [slot_dim] -> [1, slot_dim]
-                target_prob_expanded = target_probs[i].unsqueeze(0).expand_as(pred_log_prob)  # [1, slot_dim]
-
-                # KL divergence between pred and target probabilities for this slot
-                # 这里 target_prob_expanded 是标量扩展，实际上 KL 用标量没意义，应该用 slot_rewards[i] 指向某个具体类别概率
-                # 如果 slot_rewards 是 scalar reward per slot，直接用它做 softmax不合理
-                # 通常 slot_rewards 应该是每个 slot 各个动作的 reward向量，若是标量则需要设计不同的辅助信号。
-                # 此处简单做比例放大辅助，或者你可以用 slot_rewards 做权重加权
-                # 这里先用简化的 MSE loss 替代示范
-                target_dist = torch.full_like(pred_log_prob, target_probs[i].item())  # 让目标分布是均匀或定值(示例)
-                aux_loss += F.kl_div(pred_log_prob, target_dist, reduction='batchmean')
+                pred_log_probs = torch.stack([F.log_softmax(logits, dim=-1) for logits in self.last_logits])  # [slot_num, slot_dim]
+                target_probs = torch.softmax(torch.tensor(slot_rewards, device=pred_log_probs.device), dim=0).unsqueeze(1).expand_as(pred_log_probs)
+                aux_loss = F.kl_div(pred_log_probs, target_probs, reduction='batchmean')
 
             loss += self.aux_loss_coef * aux_loss
             logger.info(f"🧩 [RNNController] 加入结构归因辅助 loss = {aux_loss.item():.4f}")
