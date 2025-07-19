@@ -12,27 +12,13 @@ class RolloutStrategy(ABC):
         """Perform a rollout starting from the given node and return the final reward"""
         pass
 
-class MultiPathRollout(RolloutStrategy):
-    def __init__(self, evaluator: PromptEvaluator, num_paths: int = 1, rollout_depth: int = 5):
-        self.num_paths = num_paths
+class ClassicPathRollout(RolloutStrategy):
+    def __init__(self, evaluator: PromptEvaluator, rollout_depth: int = 5):
         self.rollout_depth = rollout_depth
         self.evaluator = evaluator
 
     def rollout(self, node: Node) -> float:
-        # Use a thread pool to perform rollouts in parallel
-        with ThreadPoolExecutor(max_workers=self.num_paths) as executor:
-            futures = [
-                executor.submit(self._rollout_single_path, node.clone_node(), path_id)
-                for path_id in range(self.num_paths)
-            ]
-            rewards = [f.result() for f in futures]
-
-        avg_reward = sum(rewards) / len(rewards) if rewards else 0.0
-        logger.info(f"🧠 Multi-path parallel rollout average reward: {avg_reward:.4f}")
-        return avg_reward
-
-    def _rollout_single_path(self, node: Node, path_id: int) -> float:
-        current: Node = node
+        current: Node = node.clone_node()
         depth = 0
         rewards = []
 
@@ -42,14 +28,17 @@ class MultiPathRollout(RolloutStrategy):
                 break
             action = random.choice(actions)
             current = current.take_action(action)
-            rewards.append(current.reward())
 
-            avg_reward = sum(rewards) / len(rewards)
-            logger.info(f"[Path {path_id+1}] Step {depth+1} action: {getattr(action, 'name', 'Unknown action')}, Reward={avg_reward:.4f}")
+            reward = current.reward()
+            rewards.append(reward)
+
+            logger.info(f"[Rollout] Step {depth+1}, Action: {getattr(action, 'name', 'Unknown')}, Reward: {reward:.4f}")
             depth += 1
 
-        return avg_reward if rewards else 0.0
+        avg_reward = sum(rewards) / len(rewards) if rewards else 0.0
+        logger.info(f"🧠 Single-path rollout average reward: {avg_reward:.4f}")
+        return avg_reward
 
 def get_rollout_strategy(evaluator: PromptEvaluator, config: SearchConfig):
     if config.rollout_idx == 0:
-        return MultiPathRollout(evaluator, config.rollout_path_num, config.rollout_length)
+        return ClassicPathRollout(evaluator, config.rollout_length)

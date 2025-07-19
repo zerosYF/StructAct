@@ -12,15 +12,17 @@ class TemplateController:
         self.optimizer = Adam(self.model.parameters(), lr=lr)
         self.search_space = search_space
 
-        self.baseline = 0.0
+        self.baseline = 0.6
         self.baseline_alpha = 0.9
         self.aux_loss_coef = aux_loss_coef
+        self.min_entropy_weight = 0.01
+        self.max_entropy_weight = 0.05
+        self.iter_count = 0
 
         self.last_logits: list = None
 
         logger.info(f"📈 [RNNController] Initialized - params counts: {len(search_space)}")
 
-        self.iter_count = 0
         self.attribution_interval = 10  # 每10步调用一次归因
     
     def get_slot_dim(self, slot_index: int) -> int:
@@ -39,11 +41,10 @@ class TemplateController:
                   entropy: torch.Tensor,
                   slot_rewards: Optional[List[float]] = None):
         self.model.train()
-        print(log_prob_sum)
         # ---- 主策略梯度更新 ----
         advantage = reward - self.baseline
         self.baseline = self.baseline_alpha * self.baseline + (1 - self.baseline_alpha) * reward
-        entropy_weight = 0.01
+        entropy_weight = max(self.min_entropy_weight, self.max_entropy_weight * (0.98 ** self.iter_count))
         loss = -advantage * log_prob_sum - entropy_weight * entropy
 
         # ---- slot-level 结构归因辅助 loss ----

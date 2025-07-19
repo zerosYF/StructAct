@@ -52,7 +52,7 @@ class MCTS:
             self.N[node] += 1
             self.Q[node] += reward
 
-    def do_iter(self, node: Node, width: int = 1, expand_num: int = 1, rollout_parallel=False):
+    def do_iter(self, node: Node, width: int = 1, expand_num: int = 1):
         logger.info("--------------Start Iteration----------------")
         logger.info("Step 1: Performing Select")
         path = self._select(node, max_width=width)
@@ -65,8 +65,14 @@ class MCTS:
         else:
             rollout_targets = children
 
-        logger.info("Step 3: Running Rollouts in Parallel")
-        results = self._run_rollout_batch(rollout_targets, path, rollout_parallel)
+        logger.info("Step 3: Running Rollouts")
+        results = []
+        for child in rollout_targets:
+            rollout_path = path.copy()
+            rollout_path.append(child)
+            reward = self._rollout(child)
+            logger.info(f"Child node {child} rollout score: {reward:.2f}")
+            results.append((rollout_path, reward))
 
         logger.info("Step 4: Backpropagating reward for each child node")
         for rollout_path, reward in results:
@@ -76,26 +82,4 @@ class MCTS:
 
     def choose(self, root: Node) -> Node:
         return self.choose_strategy.choose(root, self)
-
-    def _run_rollout_batch(self, rollout_targets, path, rollout_parallel):
-        results = []
-
-        def rollout_fn(child):
-            rollout_path = path.copy()
-            rollout_path.append(child)
-            reward = self._rollout(child)  # Can call RNN and train here
-            return rollout_path, reward
-
-        if rollout_parallel:
-            with ThreadPoolExecutor(max_workers=len(rollout_targets)) as executor:
-                futures = [executor.submit(rollout_fn, child) for child in rollout_targets]
-                for future in as_completed(futures):
-                    results.append(future.result())
-        else:
-            for child in rollout_targets:
-                rollout_path, reward = rollout_fn(child)
-                logger.info(f"Child node {child} rollout score: {reward:.2f}")
-                results.append((rollout_path, reward))
-
-        return results
         

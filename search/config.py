@@ -15,17 +15,15 @@ class SearchConfig:
 
         # MCTS search control
         self.exploration_weight: float = 1.5   # Exploration factor in UCT formula
-        self.iter_num: int = 5                 # Number of iterations in MCTS main loop
-        self.depth_threshold: int = 4          # Maximum search depth
+        self.iter_num: int = 50                 # Number of iterations in MCTS main loop
+        self.depth_threshold: int = 10          # Maximum search depth
         self.width_threshold: int = 3          # Number of children per expanded node
 
         # Node expansion and rollout config
         self.batch_size: int = 10              # Batch size for training
         self.expand_num: int = 3               # Number of nodes to expand per iteration (for parallelism)
         assert self.expand_num <= self.width_threshold
-        self.rollout_parallel: bool = False    # Whether to run rollouts in parallel
-        self.rollout_length: int = 3           # Rollout path depth (fixed-length simulation)
-        self.rollout_path_num: int = 1         # Number of paths to simulate per rollout
+        self.rollout_length: int = 5           # Rollout path depth (fixed-length simulation)
 
         # RNN Controller settings
         self.rnn_hidden_dim: int = 128         # Hidden dimension of RNN

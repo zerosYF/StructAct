@@ -66,7 +66,6 @@ class SearchController:
                 root_node,
                 width=self.config.width_threshold,
                 expand_num=self.config.expand_num,
-                rollout_parallel=self.config.rollout_parallel
             )
 
             if iter_id % 5 == 0 or iter_id == self.config.iter_num - 1:

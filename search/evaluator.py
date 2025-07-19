@@ -34,10 +34,9 @@ class PromptEvaluator:
         total = len(test_data)
 
         def _evaluate_one(item):
-            q, a = self.task.extract_tuple(item)
-            final_input = self.task.inject_final_input(final_prompt, q)
+            question, gold = self.task.extract_tuple(item)
+            final_input = self.task.inject_final_input(final_prompt, question)
             output = self.model.api_call(self.task.system_prompt, final_input)
-            gold = a
             correct = int(output.strip().lower() == gold.strip().lower())
             return {
                 "prompt": final_prompt,
