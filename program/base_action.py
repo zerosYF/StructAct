@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from model.model import Model, getModel
 from task.base_task import TaskBase
+from logger import logger
 
 class OptimizeAction(ABC):
     def __init__(self, task: TaskBase, name: str = None):
@@ -23,6 +24,7 @@ class OptimizeAction(ABC):
             structure: current prompt structural template
         """
         self.usage_count += 1
+        logger.info(f"📊 Current Template_description:{template_description}")
 
 class StructureSyncAction(OptimizeAction):
     def __init__(self, task, name="StructureSyncAction"):

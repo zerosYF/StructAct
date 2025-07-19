@@ -42,7 +42,7 @@ class TemplateController:
                   slot_rewards: Optional[List[float]] = None):
         self.model.train()
         # ---- 主策略梯度更新 ----
-        advantage = reward - self.baseline
+        advantage = (reward - self.baseline) * 10
         self.baseline = self.baseline_alpha * self.baseline + (1 - self.baseline_alpha) * reward
         entropy_weight = max(self.min_entropy_weight, self.max_entropy_weight * (0.98 ** self.iter_count))
         loss = -advantage * log_prob_sum - entropy_weight * entropy
