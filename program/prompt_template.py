@@ -35,9 +35,14 @@ class PromptTemplate:
 
     def describe(self) -> str:
         """
-        Generate a natural language description of the current structure.
+        Generate a structured natural language description of the full template.
         """
-        return "\n".join([block.describe() for block in self.blocks])
+        header = (
+            "This is a structured prompt template composed of the following functional blocks. "
+            "Each block plays a distinct role in guiding the model’s behavior:\n"
+        )
+        block_descriptions = "\n".join([f"- {block.describe()}" for block in self.blocks])
+        return header + block_descriptions
 
     def update_by_controller(self, evaluator: PromptEvaluator, current_prompt: str):
         """

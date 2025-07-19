@@ -33,7 +33,10 @@ class TaskObjectiveBlock(PromptBlock):
         }
 
     def describe(self):
-        return f"This task objective section should be written in a “{self.tone}” tone, {self.verb}, and {self.structure}."
+        return (
+            f"Block: TaskObjective - This section should be written in a “{self.tone}” tone, "
+            f"with {self.verb.lower()}, and {self.structure.lower()}."
+        )
 
 # 2. RoleConstraintBlock
 class RoleConstraintBlock(PromptBlock):
@@ -72,8 +75,8 @@ class RoleConstraintBlock(PromptBlock):
 
     def describe(self):
         return (
-            f"The model will act as a “{self.role}”, using a “{self.tone}” tone, "
-            f"{'guiding the user' if self.stance == 'Guide the user' else 'strictly obeying instructions'}, "
+            f"Block: RoleConstraint - The model will act as a “{self.role}”, using a “{self.tone}” tone, "
+            f"{'guiding the user' if self.stance == 'Guide the user' else 'obeying instructions'}, "
             f"with a role description of “{self.detail}”."
         )
 
@@ -109,7 +112,10 @@ class FewShotExampleBlock(PromptBlock):
         }
 
     def describe(self):
-        return f"This section provides {self.num} examples, ordered by {self.order}, displaying: {self.content}."
+        return (
+            f"Block: FewShotExamples - Provides {self.num} example(s), ordered by {self.order.lower()}, "
+            f"displaying: {self.content.lower()}."
+        )
 
 # 4. ConstraintBlock
 class ConstraintBlock(PromptBlock):
@@ -144,9 +150,8 @@ class ConstraintBlock(PromptBlock):
 
     def describe(self):
         return (
-            f"This block defines the constraints the model must follow in its response. "
-            f"Currently: {self.num_constraints} constraints, style is “{self.style}”, "
-            f"displayed in {self.format_style} format."
+            f"Block: ConstraintBlock - Contains {self.num_constraints} constraint(s), "
+            f"written in a “{self.style}” style and displayed in {self.format_style.lower()} format."
         )
 
 # 5. CautionBlock
@@ -186,8 +191,8 @@ class CautionBlock(PromptBlock):
 
     def describe(self):
         return (
-            f"This block provides “{self.caution_type}” reminders, styled as “{self.style}”, "
-            f"inserted {self.position}, with {self.count} total reminders."
+            f"Block: CautionBlock - Provides “{self.caution_type}” cautions, styled as “{self.style}”, "
+            f"placed {self.position.lower()}, with {self.count} total warning(s)."
         )
 
 # 6. SummaryClosureBlock
@@ -218,7 +223,10 @@ class SummaryClosureBlock(PromptBlock):
         }
 
     def describe(self):
-        return f"The closing section {self.summary}, and {self.next_step}."
+        return (
+            f"Block: SummaryClosure - Includes summary: {self.summary.lower()}, "
+            f"and next step: {self.next_step.lower()}."
+        )
 
 # Utility to get all blocks
 def get_all_blocks():
