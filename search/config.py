@@ -30,6 +30,7 @@ class SearchConfig:
         # RNN Controller settings
         self.rnn_hidden_dim: int = 128         # Hidden dimension of RNN
         self.rnn_lr: float = 1e-3              # Learning rate for RNN
+        self.rnn_structure_contribution = False
 
         # Multi-threaded reward evaluation
         self.reward_thread_num: int = 16       # Number of threads for reward evaluation

@@ -68,12 +68,17 @@ class PromptTemplate:
         logger.info(f"🎯 [PromptTemplate] New prompt score with current structure = {avg_score:.4f}")
 
         # Step 4.5: Perform slot-level structure attribution
-        slot_rewards = self._structure_attribution(
-            params=flat_params,
-            evaluator=evaluator,
-            val_samples=val_samples,
-            current_prompt=current_prompt
-        )
+        if self.task.config.rnn_structure_contribution:
+            logger.info("🔍 [PromptTemplate] Performing slot-level structure attribution...")
+            # Get per-slot rewards by perturbing each slot
+            slot_rewards = self._structure_attribution(
+                params=flat_params,
+                evaluator=evaluator,
+                val_samples=val_samples,
+                current_prompt=current_prompt
+            )
+        else:
+            slot_rewards = None
 
         # Step 5: Reinforce update for the controller
         self.controller.reinforce(log_prob_sum, avg_score, entropy, slot_rewards)
