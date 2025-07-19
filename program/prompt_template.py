@@ -51,8 +51,11 @@ class PromptTemplate:
         avg_score = total_score / len(val_samples)
         logger.info(f"🎯 [PromptTemplate] 使用当前结构超参数得到的新prompt得分 = {avg_score:.4f}")
 
+        # ✅ Step 4.5: 插入结构归因器
+        slot_rewards = self._structure_attribution(flat_params, evaluator, val_samples, current_prompt)
+
         # Step 5: reinforce 更新 controller
-        self.controller.reinforce(log_prob_sum, avg_score, entropy)
+        self.controller.reinforce(log_prob_sum, avg_score, entropy, slot_rewards)
 
         return new_prompt
     
@@ -65,3 +68,28 @@ class PromptTemplate:
             current_prompt=current_prompt,
             template_description=template_description,
         )
+    
+    def _structure_attribution(self, params, evaluator, val_samples, current_prompt):
+        """对结构参数中的每个 slot 做扰动归因，输出 slot_reward 列表"""
+        slot_rewards = []
+        for i in range(len(params)):
+            perturbed = params.copy()
+
+            # 小技巧：+1 取模扰动一个 slot
+            slot_dim = self.controller.get_slot_dim(i)
+            perturbed[i] = (perturbed[i] + 1) % slot_dim
+
+            # 设置扰动后的结构参数到 block
+            idx = 0
+            for block in self.blocks:
+                num = block.get_num_slots()
+                block.set_hyperparams(perturbed[idx:idx + num])
+                idx += num
+
+            # 生成新 prompt 并打分
+            new_prompt = self._sync_semantics(current_prompt)
+            reward = sum(evaluator.batch_reward(new_prompt, val_samples)) / len(val_samples)
+            slot_rewards.append(reward)
+
+        # 对比原始 reward，做归一化或优势计算也可以
+        return slot_rewards

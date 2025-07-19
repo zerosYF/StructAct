@@ -10,8 +10,8 @@ builder_model = getModel()
 evaluator_model = getModel()
 
 class TestReflectRewriteAction(OptimizeAction):
-    def __init__(self, task, name="TestReflectRewriteAction", original_prompt=None):
-        super().__init__(task, name, original_prompt)
+    def __init__(self, task, name="TestReflectRewriteAction"):
+        super().__init__(task, name)
         self.tester_model: Model = tester_model
         self.rewriter_model: Model = rewriter_model
 
@@ -50,8 +50,8 @@ class TestReflectRewriteAction(OptimizeAction):
         return self.rewriter_model.api_call(self.rewriter_system_prompt, rewriting_prompt)
 
 class ConstraintBlockRefiner(OptimizeAction):
-    def __init__(self, task, name="ConstraintBlockRefiner", original_prompt=None):
-        super().__init__(task, name, original_prompt)
+    def __init__(self, task, name="ConstraintBlockRefiner"):
+        super().__init__(task, name)
         self.checker_model: Model = checker_model
         self.rewriter_model: Model = rewriter_model
 
@@ -89,8 +89,8 @@ class ConstraintBlockRefiner(OptimizeAction):
         return self.rewriter_model.api_call(self.rewriter_system_prompt, rewriting_input)
 
 class FewShotExampleBuilder(OptimizeAction):
-    def __init__(self, task, name="FewShotExampleBuilder", original_prompt=None):
-        super().__init__(task, name, original_prompt)
+    def __init__(self, task, name="FewShotExampleBuilder"):
+        super().__init__(task, name)
         self.builder_model: Model = builder_model
         self.rewriter_model: Model = rewriter_model
 
@@ -127,8 +127,8 @@ class FewShotExampleBuilder(OptimizeAction):
         return self.rewriter_model.api_call(self.rewriter_system_prompt, rewriting_prompt)
 
 class OptimizerByPerformance(OptimizeAction):
-    def __init__(self, task, name="OptimizerByPerformance", original_prompt=None):
-        super().__init__(task, name, original_prompt)
+    def __init__(self, task, name="OptimizerByPerformance"):
+        super().__init__(task, name)
         self.tester_model: Model = tester_model
         self.rewriter_model: Model = rewriter_model
 
@@ -161,8 +161,8 @@ class OptimizerByPerformance(OptimizeAction):
         return self.rewriter_model.api_call(self.rewriter_system_prompt, rewriting_prompt)
 
 class InstructionSimplifierByAbstraction(OptimizeAction):
-    def __init__(self, task, name="InstructionSimplifierByAbstraction", original_prompt=None):
-        super().__init__(task, name, original_prompt)
+    def __init__(self, task, name="InstructionSimplifierByAbstraction"):
+        super().__init__(task, name)
         self.evaluator_model: Model = evaluator_model
         self.rewriter_model: Model = rewriter_model
 
