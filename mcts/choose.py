@@ -6,11 +6,11 @@ import math
 class ChooseStrategy(ABC):
     @abstractmethod
     def choose(self, root, mcts):
-        """给定根节点和 MCTS 树，返回最优动作序列"""
+        """Given the root node and the MCTS tree, return the best action sequence"""
         pass
 
 class MaxLeafQnStrategy(ChooseStrategy):
-    def choose(self, root:Node, mcts):
+    def choose(self, root: Node, mcts):
         best_node = None
         best_score = float("-inf")
         visited = set()
@@ -34,11 +34,11 @@ class MaxLeafQnStrategy(ChooseStrategy):
         if best_node:
             return best_node
         else:
-            mcts.logger.warning("⚠️ MaxLeafQnStrategy 未找到合法动作序列")
+            mcts.logger.warning("⚠️ MaxLeafQnStrategy did not find a valid action sequence")
             return []
 
 class MaxPathAvgQnStrategy(ChooseStrategy):
-    def choose(self, root:Node, mcts):
+    def choose(self, root: Node, mcts):
         best_path = []
         best_score = float("-inf")
         stack = [(root, [])]
@@ -52,7 +52,7 @@ class MaxPathAvgQnStrategy(ChooseStrategy):
 
             path = path + [node]
             if node.is_terminal() or node not in mcts.children:
-                scores = [mcts.Q[n]/mcts.N[n] for n in path if mcts.N[n] > 0]
+                scores = [mcts.Q[n] / mcts.N[n] for n in path if mcts.N[n] > 0]
                 if scores:
                     avg_score = sum(scores) / len(scores)
                     if avg_score > best_score:
@@ -65,7 +65,7 @@ class MaxPathAvgQnStrategy(ChooseStrategy):
         return best_path[-1]
 
 class WeightedPathQnStrategy(ChooseStrategy):
-    def choose(self, root:Node, mcts):
+    def choose(self, root: Node, mcts):
         best_path = []
         best_score = float("-inf")
         stack = [(root, [])]
@@ -97,7 +97,7 @@ class SoftmaxPathQnStrategy(ChooseStrategy):
     def __init__(self, alpha=1.0):
         self.alpha = alpha
 
-    def choose(self, root:Node, mcts):
+    def choose(self, root: Node, mcts):
         best_path = []
         best_score = float("-inf")
         stack = [(root, [])]
@@ -127,17 +127,17 @@ class SoftmaxPathQnStrategy(ChooseStrategy):
         return best_path[-1]
 
 class MaxQNStrategy(ChooseStrategy):
-    def choose(self, root:Node, mcts):
+    def choose(self, root: Node, mcts):
         best_node = None
         best_qn = float("-inf")
 
-        # 选择 Q/N 比最大的节点
+        # Choose the node with the highest Q/N value
         for node, q in mcts.Q.items():
-            if node == root:  # 排除根节点
+            if node == root:  # Exclude the root node
                 continue
             n = mcts.N.get(node, 0)
-            if n > 0:  # 只有访问次数大于 0 的节点才参与选择
-                qn = q / n  # Q 和 N 结合来考虑
+            if n > 0:  # Only nodes with visit count greater than 0 participate in selection
+                qn = q / n  # Consider both Q and N
                 if qn > best_qn:
                     best_qn = qn
                     best_node = node
@@ -145,11 +145,11 @@ class MaxQNStrategy(ChooseStrategy):
         if best_node is not None:
             return best_node
         else:
-            mcts.logger.warning("⚠️ MaxQNStrategy 找不到合适节点, 返回根节点")
-            return root  # 如果找不到合适的节点，可以考虑返回根节点或其他回退策略
+            mcts.logger.warning("⚠️ MaxQNStrategy did not find a suitable node, returning the root node")
+            return root  # If no suitable node is found, consider returning the root node or another fallback strategy
 
 class MaxFinalQnOnLongestPathStrategy(ChooseStrategy):
-    def choose(self, root:Node, mcts):
+    def choose(self, root: Node, mcts):
         stack = [(root, [])]
         best_node = None
         best_qn = float("-inf")
@@ -169,11 +169,11 @@ class MaxFinalQnOnLongestPathStrategy(ChooseStrategy):
                     stack.append((child, new_path))
 
         return best_node or root
-    
-def get_choose_strategy(config:SearchConfig):
-        if config.choose_idx == 0:
-            return MaxQNStrategy()
-        elif config.choose_idx == 1:
-            return MaxPathAvgQnStrategy()
-        else:
-            return MaxFinalQnOnLongestPathStrategy()
+
+def get_choose_strategy(config: SearchConfig):
+    if config.choose_idx == 0:
+        return MaxQNStrategy()
+    elif config.choose_idx == 1:
+        return MaxPathAvgQnStrategy()
+    else:
+        return MaxFinalQnOnLongestPathStrategy()

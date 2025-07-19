@@ -11,17 +11,24 @@ class RNN(nn.Module):
         self.slot_num = len(slot_dims)
         self.slot_dims = slot_dims
 
+        # One embedding layer per slot
         self.embeddings = nn.ModuleList([
             nn.Embedding(dim, hidden_dim) for dim in slot_dims
         ])
+
+        # LSTM cell for step-by-step generation
         self.rnn = nn.LSTMCell(hidden_dim, hidden_dim)
+
+        # One output head per slot to predict logits
         self.heads = nn.ModuleList([
             nn.Linear(hidden_dim, dim) for dim in slot_dims
         ])
 
+        # Learnable start token for the first input
         self.start_token = nn.Parameter(torch.zeros(1, hidden_dim))
 
     def forward(self, return_logits: bool = False):
+        # Initialize LSTM hidden and cell states
         h = torch.zeros(1, self.hidden_dim, device=self.start_token.device)
         c = torch.zeros_like(h)
         input_emb = self.start_token
@@ -32,19 +39,23 @@ class RNN(nn.Module):
         logits_list = []
 
         for i in range(self.slot_num):
-            h, c = self.rnn(input_emb, (h, c))  # 逐slot生成
+            # Step-by-step generation through the RNN
+            h, c = self.rnn(input_emb, (h, c))
+
+            # Predict logits for the current slot
             logits = self.heads[i](h)  # shape: [1, slot_dim]
             probs = F.softmax(logits, dim=-1).squeeze(0)
             dist = Categorical(probs)
 
-            choice = dist.sample()                      # 选一个具体的参数
+            # Sample one parameter value from the distribution
+            choice = dist.sample()
             log_prob = dist.log_prob(choice)
             entropy = dist.entropy()
 
-            # 更新下一步输入
+            # Update the next-step input embedding
             input_emb = self.embeddings[i](choice.unsqueeze(0))
 
-            # 记录
+            # Record values
             decisions.append(choice.item())
             log_probs.append(log_prob)
             entropies.append(entropy)

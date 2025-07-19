@@ -33,7 +33,6 @@ class MCTSVisualizer:
         self.max_nodes = max_nodes
 
     def log_train(self, loss: float, reward: float, entropy:float):
-        """供外部调用，更新RNN训练曲线"""
         self.losses.append(loss)
         self.rewards.append(reward)
         self.entropies.append(entropy)
@@ -41,7 +40,7 @@ class MCTSVisualizer:
     def _run(self):
         plt.ion()
         fig = plt.figure(figsize=(12, 8))
-        gs = GridSpec(2, 1, height_ratios=[1, 2])  # 上1行：训练图，下2行：树结构
+        gs = GridSpec(2, 1, height_ratios=[1, 2]) 
         ax_train = fig.add_subplot(gs[0])
         ax_train_ = ax_train.twinx()
         ax_tree = fig.add_subplot(gs[1])
@@ -70,13 +69,12 @@ class MCTSVisualizer:
 
         x = list(range(len(self.losses)))
         ax_l.set_xlabel("Step")
-        # 主轴清除
+        
         ax_l.clear()
         ax_l.set_ylabel("Loss", color="red")
         ax_l.tick_params(axis='y', labelcolor='red')
         ax_l.plot(x, self.losses, label="Loss", color="red")
 
-        # 副轴：清空+绘制 reward
         ax_r.cla()
         ax_r.yaxis.set_label_position("right")
         ax_r.set_ylabel("Reward / Entropy", color="green")
@@ -84,7 +82,6 @@ class MCTSVisualizer:
         ax_r.plot(x, self.rewards, label="Reward", color="green")
         ax_r.plot(x, self.entropies, label="Entropy", color="blue")
 
-        # 合并图例到右上角，挂在右轴上
         lines, labels = ax_l.get_legend_handles_labels()
         lines2, labels2 = ax_r.get_legend_handles_labels()
         ax_r.legend(lines + lines2, labels + labels2, loc="upper right")
@@ -116,13 +113,12 @@ class MCTSVisualizer:
                 queue.append(child)
 
         if len(G.nodes) == 0:
-            ax.set_title("无可视化节点")
             return
 
         try:
-            pos = nx.nx_agraph.graphviz_layout(G, prog='dot')  # 层次布局
+            pos = nx.nx_agraph.graphviz_layout(G, prog='dot')  
         except Exception:
-            pos = nx.spring_layout(G, seed=42)  # 回退方案
+            pos = nx.spring_layout(G, seed=42)  
 
         nx.draw(
             G, pos, with_labels=False, node_color='lightblue',

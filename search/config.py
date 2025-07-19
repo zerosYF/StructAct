@@ -1,50 +1,50 @@
 class SearchConfig:
     """
-    SearchConfig 用于配置结构化提示词优化任务中的搜索参数。
-    包含数据划分比例、搜索深度、RNN 超参数、MCTS 相关参数等。
+    SearchConfig configures the parameters for structured prompt optimization tasks.
+    It includes settings for data splitting, search depth, RNN parameters, MCTS control, etc.
 
-    注意：字段名保持不变，以保证外部兼容。
+    Note: Field names remain unchanged to ensure external compatibility.
     """
 
     def __init__(self):
-        # 数据集划分设置
-        self.split_ratio: float = 0.6      # (训练集 + 验证集) / 总数据
-        self.split_ratio_: float = 0.8     # 训练集 / (训练集 + 验证集)
-        self.split_ratio_val: float = 0.5
-        self.shuffle_seed: int = 42        # 数据打乱的随机种子
+        # Dataset split settings
+        self.split_ratio: float = 0.6      # (Training + Validation) / Total data
+        self.split_ratio_: float = 0.8     # Training / (Training + Validation)
+        self.split_ratio_val: float = 0.5  # Proportion of training vs val for inner splits
+        self.shuffle_seed: int = 42        # Random seed for data shuffling
 
-        # MCTS 搜索控制
-        self.exploration_weight: float = 1.5   # UCT 中的探索因子
-        self.iter_num: int = 5                # MCTS 主循环迭代次数
-        self.depth_threshold: int = 4          # 搜索最大深度
-        self.width_threshold: int = 3           # 每个节点拓展出多少子节点
+        # MCTS search control
+        self.exploration_weight: float = 1.5   # Exploration factor in UCT formula
+        self.iter_num: int = 5                 # Number of iterations in MCTS main loop
+        self.depth_threshold: int = 4          # Maximum search depth
+        self.width_threshold: int = 3          # Number of children per expanded node
 
-        # 节点拓展与 rollout 配置
-        self.batch_size: int = 10              # 每次需要的训练batch
-        self.expand_num: int = 3               # 每轮可扩展节点数量（用于并行）
+        # Node expansion and rollout config
+        self.batch_size: int = 10              # Batch size for training
+        self.expand_num: int = 3               # Number of nodes to expand per iteration (for parallelism)
         assert self.expand_num <= self.width_threshold
-        self.rollout_parallel: bool = False     # 是否并行执行 rollout
-        self.rollout_length: int = 3           # rollout 路径深度（定长模拟）
-        self.rollout_path_num: int = 1         # 每次 rollout 的路径数量
+        self.rollout_parallel: bool = False    # Whether to run rollouts in parallel
+        self.rollout_length: int = 3           # Rollout path depth (fixed-length simulation)
+        self.rollout_path_num: int = 1         # Number of paths to simulate per rollout
 
-        # RNN Controller 设置
-        self.rnn_hidden_dim: int = 128         # RNN 隐藏层维度
-        self.rnn_lr: float = 1e-3              # RNN 学习率
+        # RNN Controller settings
+        self.rnn_hidden_dim: int = 128         # Hidden dimension of RNN
+        self.rnn_lr: float = 1e-3              # Learning rate for RNN
 
-        # 多线程评估配置
-        self.reward_thread_num: int = 16       # reward 评估并行线程数
+        # Multi-threaded reward evaluation
+        self.reward_thread_num: int = 16       # Number of threads for reward evaluation
 
-        # 调试标记（可用于分析）
-        self.rollout_idx: int = 0              # 当前 rollout 路径编号
-        self.choose_idx: int = 0               # 当前选择动作编号
-        self.uct_idx: int = 0                  # 当前 UCT 路径编号
-        self.model_idx: int = 0                # 当前api模型编号
+        # Debugging indicators (for tracing internal states)
+        self.rollout_idx: int = 0              # Current rollout path index
+        self.choose_idx: int = 0               # Current chosen action index
+        self.uct_idx: int = 0                  # Current UCT path index
+        self.model_idx: int = 0                # Current API model index
 
-         # 模型配置
+        # Model configuration
         self.model_name: str = "zhiyan3"
         self.api_key: str = "zhiyan123"
         self.base_url: str = "http://192.168.200.222:12025/v1"
 
-        # Ollama 模型配置
-        self.ollama_model_name: str = "llama3.1:8b"     # Ollama 模型名称
-        self.ollama_base_url: str = "http://localhost:11434"  # Ollama 本地服务地址
+        # Ollama model configuration
+        self.ollama_model_name: str = "llama3.1:8b"          # Name of the Ollama model
+        self.ollama_base_url: str = "http://localhost:11434"  # Base URL for local Ollama server

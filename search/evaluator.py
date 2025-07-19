@@ -12,7 +12,6 @@ class PromptEvaluator:
     
     def reward(self, current_prompt:str, sample:dict) -> float:
         prompt = current_prompt
-        #logger.info(f"reward prompt:{prompt}")
         output = self.model.api_call(self.task.system_prompt, prompt)
         logger.info(f"reward model answer:{output.strip().lower()}")
         logger.info(f"reward gold answer:{sample['answer'].strip().lower()}")
@@ -42,7 +41,6 @@ class PromptEvaluator:
                 "correct": correct,
             }
 
-        # 并行处理所有样本
         with ThreadPoolExecutor(max_workers=self.thread_num) as executor:
             results = list(executor.map(_evaluate_one, test_data))
 

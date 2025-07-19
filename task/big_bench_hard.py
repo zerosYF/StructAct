@@ -6,31 +6,38 @@ import json
 from logger import logger
 
 class BBHTask(TaskBase):
-    def __init__(self, config:SearchConfig):
+    def __init__(self, config: SearchConfig):
         super().__init__(config)
         path = "dataset/BBH/epistemic.json"
         with open(path, "r", encoding="utf-8") as f:
-            data:Dict = json.load(f)
-        self.origin_prompt = data.get("description","")
+            data: Dict = json.load(f)
+        
+        self.origin_prompt = data.get("description", "")
         self.name = data.get("name", "unknown_task")
+
         all_examples = []
         for ex in data["examples"]:
             input_text = ex["input"]
             target_scores = ex["target_scores"]
-            gold = max(target_scores.items(), key=lambda x: x[1])[0]  # 取得分最高答案
+            # Select the answer with the highest score
+            gold = max(target_scores.items(), key=lambda x: x[1])[0]
             sample = {
                 "question": input_text,
                 "answer": gold
             }
             all_examples.append(sample)
-        logger.info(f"✅ [BBH数据集] 样本容量: {len(all_examples)}")
+
+        logger.info(f"✅ [BBH Dataset] Number of samples: {len(all_examples)}")
+
         random.seed(config.shuffle_seed)
         random.shuffle(all_examples)
+
         split = int(len(all_examples) * config.split_ratio)
         self.train_data = all_examples[:split]
         self.test_data = all_examples[split:]
-        
-        full_train_data = self.train_data  # 备份原始数据
+
+        # Further split training data into train/validation subsets
+        full_train_data = self.train_data  # backup original training set
         split_1 = int(len(full_train_data) * config.split_ratio_)
 
         self.train_data = full_train_data[:split_1]
@@ -39,18 +46,22 @@ class BBHTask(TaskBase):
         self.val_data_eval = full_val_data[:split_2]
         self.val_data_rl = full_val_data[split_2:]
 
-        self.system_prompt = "你是一个拥有广博知识的答题人，请回答问题。"
+        self.system_prompt = "you are a helpful assistant. Answer the question based on the provided context."
 
-    def inject_final_input(self, current_prompt:str, input:str):
-        return current_prompt + f"\n\nQuestion:{input}"
-    
-    def extract_origin_prompt(self):
+    def inject_final_input(self, current_prompt: str, input: str) -> str:
+        """Injects the input question into the current prompt for evaluation."""
+        return current_prompt + f"\n\nQuestion: {input}"
+
+    def extract_origin_prompt(self) -> str:
+        """Returns the original task prompt description."""
         return self.origin_prompt
-    
-    def extract_tuple(self, sample):
+
+    def extract_tuple(self, sample) -> tuple:
+        """Extracts question and answer tuple from a sample."""
         return sample.get("question"), sample.get("answer")
-    
-    def samples2text(self, samples):
+
+    def samples2text(self, samples: List[dict]) -> str:
+        """Converts a list of samples to a text block of Q&A pairs."""
         return "\n".join([f"Q: {s['question']}\nA: {s['answer']}" for s in samples])
 
     

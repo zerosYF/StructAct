@@ -2,7 +2,7 @@ import torch
 import torch.nn.functional as F
 from torch.optim import Adam
 from typing import List, Optional
-from .rnn import RNN  # 假设你的RNN定义在.rnn模块中
+from .rnn import RNN
 from logger import logger
 from visualizer import Visualizer 
 
@@ -16,10 +16,12 @@ class TemplateController:
         self.baseline_alpha = 0.9
         self.aux_loss_coef = aux_loss_coef
 
-        # 存储 forward 时的 logit 用于结构归因
         self.last_logits: list = None
 
-        logger.info(f"📈 [RNNController] 初始化完成 - 参数个数: {len(search_space)}")
+        logger.info(f"📈 [RNNController] Initialized - params counts: {len(search_space)}")
+    
+    def get_slot_dim(self, slot_index: int) -> int:
+        return self.search_space[slot_index]
 
     def train_step(self):
         self.model.train()

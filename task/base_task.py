@@ -37,6 +37,4 @@ class TaskBase(ABC):
 
     @abstractmethod
     def samples2text(self, samples:List[Dict]) -> str:
-        """
-        将样本列表转换为文本格式，便于输出或调试
-        """
+        pass

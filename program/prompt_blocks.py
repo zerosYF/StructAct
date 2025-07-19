@@ -1,11 +1,12 @@
 from program.base_block import PromptBlock
 from typing import List
+
 # 1. TaskObjectiveBlock
 class TaskObjectiveBlock(PromptBlock):
     def __init__(self):
-        self.tone_options = ["简洁", "正式", "鼓励", "命令"]
-        self.verb_options = ["不使用动词", "使用动词", "动词+副词组合"]
-        self.structure_options = ["不包含结构提示", "包含结构提示"]
+        self.tone_options = ["Concise", "Formal", "Encouraging", "Commanding"]
+        self.verb_options = ["No verbs", "Use verbs", "Verb + adverb combination"]
+        self.structure_options = ["No structure hint", "Include structure hint"]
         self.hyperparams = [0, 0, 0]
 
         self.tone = self.tone_options[self.hyperparams[0]]
@@ -32,15 +33,15 @@ class TaskObjectiveBlock(PromptBlock):
         }
 
     def describe(self):
-        return f"该任务目标部分要求以「{self.tone}」语气书写，{self.verb}，且{self.structure}。"
+        return f"This task objective section should be written in a “{self.tone}” tone, {self.verb}, and {self.structure}."
 
 # 2. RoleConstraintBlock
 class RoleConstraintBlock(PromptBlock):
     def __init__(self):
-        self.role_options = ["通用助手", "领域专家", "教师", "代码生成器", "批判性分析者"]
-        self.tone_options = ["中性", "亲和", "权威"]
-        self.stance_options = ["引导用户", "服从指令"]
-        self.detail_options = ["简略身份", "身份+职责", "身份+职责+交流风格"]
+        self.role_options = ["General Assistant", "Domain Expert", "Teacher", "Code Generator", "Critical Analyst"]
+        self.tone_options = ["Neutral", "Friendly", "Authoritative"]
+        self.stance_options = ["Guide the user", "Obey instructions"]
+        self.detail_options = ["Brief identity", "Identity + responsibilities", "Identity + responsibilities + communication style"]
         self.hyperparams = [0, 0, 0, 0]
 
         self.role = self.role_options[self.hyperparams[0]]
@@ -71,17 +72,17 @@ class RoleConstraintBlock(PromptBlock):
 
     def describe(self):
         return (
-            f"模型将作为“{self.role}”执行任务，语气为“{self.tone}”，"
-            f"{'引导用户' if self.stance == '引导用户' else '严格服从指令'}，"
-            f"角色描述为“{self.detail}”。"
+            f"The model will act as a “{self.role}”, using a “{self.tone}” tone, "
+            f"{'guiding the user' if self.stance == 'Guide the user' else 'strictly obeying instructions'}, "
+            f"with a role description of “{self.detail}”."
         )
 
 # 3. FewShotExampleBlock
 class FewShotExampleBlock(PromptBlock):
     def __init__(self):
         self.num_options = [0, 1, 2, 3, 4, 5]
-        self.order_options = ["随机排序", "按难度递增", "按语义相似度排序"]
-        self.content_options = ["展示完整问答", "只展示回答部分"]
+        self.order_options = ["Random order", "Increasing difficulty", "Semantic similarity order"]
+        self.content_options = ["Show full QA", "Only show answers"]
         self.hyperparams = [0, 0, 0]
 
         self.num = self.num_options[self.hyperparams[0]]
@@ -108,15 +109,14 @@ class FewShotExampleBlock(PromptBlock):
         }
 
     def describe(self):
-        return f"该示例部分提供 {self.num} 个样例，样例{self.order}，内容为：{self.content}。"
-
+        return f"This section provides {self.num} examples, ordered by {self.order}, displaying: {self.content}."
 
 # 4. ConstraintBlock
 class ConstraintBlock(PromptBlock):
     def __init__(self):
         self.num_options = [0, 1, 2, 3, 4, 5]
-        self.style_options = ["简洁", "详细"]
-        self.format_options = ["段落", "列表"]
+        self.style_options = ["Concise", "Detailed"]
+        self.format_options = ["Paragraph", "List"]
         self.hyperparams = [0, 0, 0]
 
         self.num_constraints = self.num_options[self.hyperparams[0]]
@@ -144,17 +144,17 @@ class ConstraintBlock(PromptBlock):
 
     def describe(self):
         return (
-            f"该模块用于设定模型在回答中必须遵守的限制。当前配置为："
-            f"{self.num_constraints} 条约束，风格为“{self.style}”，"
-            f"采用{self.format_style}形式展示。"
+            f"This block defines the constraints the model must follow in its response. "
+            f"Currently: {self.num_constraints} constraints, style is “{self.style}”, "
+            f"displayed in {self.format_style} format."
         )
 
 # 5. CautionBlock
 class CautionBlock(PromptBlock):
     def __init__(self):
-        self.type_options = ["事实准确", "安全风险", "道德约束", "禁止推测", "避免重复"]
-        self.style_options = ["温和提醒", "明确警告", "简洁提示"]
-        self.position_options = ["任务前", "任务后"]
+        self.type_options = ["Factual accuracy", "Safety risk", "Moral boundaries", "No speculation", "Avoid repetition"]
+        self.style_options = ["Gentle reminder", "Clear warning", "Brief note"]
+        self.position_options = ["Before the task", "After the task"]
         self.count_options = [0, 1, 2, 3, 4]
         self.hyperparams = [0, 0, 0, 0]
 
@@ -186,15 +186,15 @@ class CautionBlock(PromptBlock):
 
     def describe(self):
         return (
-            f"该模块提供“{self.caution_type}”类提醒，风格为“{self.style}”，"
-            f"插入位置在提示{self.position}，共提供 {self.count} 条提醒。"
+            f"This block provides “{self.caution_type}” reminders, styled as “{self.style}”, "
+            f"inserted {self.position}, with {self.count} total reminders."
         )
 
 # 6. SummaryClosureBlock
 class SummaryClosureBlock(PromptBlock):
     def __init__(self):
-        self.include_summary = ["不包含总结", "包含总结"]
-        self.include_next_step = ["不包含后续建议", "包含下一步建议"]
+        self.include_summary = ["No summary", "Include summary"]
+        self.include_next_step = ["No next step", "Include next step suggestion"]
         self.hyperparams = [0, 0]
 
         self.summary = self.include_summary[self.hyperparams[0]]
@@ -218,8 +218,9 @@ class SummaryClosureBlock(PromptBlock):
         }
 
     def describe(self):
-        return f"结尾部分{self.summary}，并{self.next_step}。"
+        return f"The closing section {self.summary}, and {self.next_step}."
 
+# Utility to get all blocks
 def get_all_blocks():
     return [
         TaskObjectiveBlock(),

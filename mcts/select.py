@@ -5,6 +5,7 @@ import math
 class UCTStrategy(ABC):
     @abstractmethod
     def select(self, node, mcts):
+        """Select a child node from the given node using UCT strategy."""
         pass
 
 class ClassicUCTStrategy(UCTStrategy):
@@ -34,15 +35,16 @@ class PriorUCTStrategy(UCTStrategy):
         if not children:
             return None
 
-        # 当前节点访问次数
+        # Visit count of the current node
         log_N_parent = math.log(mcts.N.get(node, 1) + 1e-6)
 
+        # Placeholder for prior probabilities (can be replaced with actual policy output)
         prior_probs = 1.0
 
         def uct_value(child_node):
             try:
                 action = child_node.action_seq[-1]
-                pi = prior_probs
+                pi = prior_probs  # Replace with actual policy if available
             except (ValueError, IndexError):
                 pi = 1.0 
 
@@ -52,8 +54,8 @@ class PriorUCTStrategy(UCTStrategy):
 
         return max(children, key=uct_value)
 
-def get_select_strategy(config:SearchConfig, policy=None):
-        if config.uct_idx == 0:
-            return ClassicUCTStrategy(config.exploration_weight)
-        else:
-            return PriorUCTStrategy(policy, config.exploration_weight)
+def get_select_strategy(config: SearchConfig, policy=None):
+    if config.uct_idx == 0:
+        return ClassicUCTStrategy(config.exploration_weight)
+    else:
+        return PriorUCTStrategy(policy, config.exploration_weight)
