@@ -55,7 +55,6 @@ class RNN(nn.Module):
         entropy_mean = torch.stack(entropies).mean()
 
         if return_logits:
-            logits_tensor = torch.stack(logits_list, dim=0)  # shape: [slot_num, slot_dim]
-            return decisions, log_prob_sum, entropy_mean, logits_tensor
+            return decisions, log_prob_sum, entropy_mean, logits_list
         else:
             return decisions, log_prob_sum, entropy_mean

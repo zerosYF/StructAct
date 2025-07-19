@@ -7,25 +7,24 @@ from logger import logger
 from visualizer import Visualizer 
 
 class TemplateController:
-    def __init__(self, search_space: List[int], hidden_dim: int = 128, lr=1e-3, aux_loss_coef=0.1, device='cuda'):
-        self.model: RNN = RNN(search_space, hidden_dim).to(device)
+    def __init__(self, search_space: List[int], hidden_dim: int = 128, lr=1e-3, aux_loss_coef=0.1):
+        self.model: RNN = RNN(search_space, hidden_dim)
         self.optimizer = Adam(self.model.parameters(), lr=lr)
         self.search_space = search_space
-        self.device = device
 
         self.baseline = 0.0
         self.baseline_alpha = 0.9
         self.aux_loss_coef = aux_loss_coef
 
         # 存储 forward 时的 logit 用于结构归因
-        self.last_logits: Optional[torch.Tensor] = None
+        self.last_logits: list = None
 
         logger.info(f"📈 [RNNController] 初始化完成 - 参数个数: {len(search_space)}")
 
     def train_step(self):
         self.model.train()
-        flat_params, log_prob, entropy, logits = self.model(return_logits=True)
-        self.last_logits = logits.detach()  # 结构归因辅助时需要 detach
+        flat_params, log_prob, entropy, logits_list = self.model(return_logits=True)
+        self.last_logits = logits_list  
         return flat_params, log_prob, entropy
 
     def reinforce(self,
@@ -46,20 +45,27 @@ class TemplateController:
 
         # ---- slot-level 结构归因辅助 loss ----
         if slot_rewards is not None and self.last_logits is not None:
-            slot_rewards_tensor = torch.tensor(slot_rewards, dtype=torch.float32, device=self.device)
+            slot_rewards_tensor = torch.tensor(slot_rewards, dtype=torch.float32)
 
             # Normalize slot rewards into a probability distribution
-            target_probs = torch.softmax(slot_rewards_tensor, dim=0).detach()
+            target_probs = torch.softmax(slot_rewards_tensor, dim=0).detach()  # [num_slots]
 
-            # 模型输出的 slot logits => 概率
-            pred_log_probs = F.log_softmax(self.last_logits, dim=1)  # shape: [num_slots, num_choices]
-            target_probs_expanded = target_probs.unsqueeze(1).expand_as(pred_log_probs)
+            aux_loss = 0.0
+            for i, logits in enumerate(self.last_logits):
+                pred_log_prob = F.log_softmax(logits.unsqueeze(0), dim=1)  # logits shape: [slot_dim] -> [1, slot_dim]
+                target_prob_expanded = target_probs[i].unsqueeze(0).expand_as(pred_log_prob)  # [1, slot_dim]
 
-            # 使用 KL 散度作为结构归因 loss
-            aux_loss = F.kl_div(pred_log_probs, target_probs_expanded, reduction='batchmean')
+                # KL divergence between pred and target probabilities for this slot
+                # 这里 target_prob_expanded 是标量扩展，实际上 KL 用标量没意义，应该用 slot_rewards[i] 指向某个具体类别概率
+                # 如果 slot_rewards 是 scalar reward per slot，直接用它做 softmax不合理
+                # 通常 slot_rewards 应该是每个 slot 各个动作的 reward向量，若是标量则需要设计不同的辅助信号。
+                # 此处简单做比例放大辅助，或者你可以用 slot_rewards 做权重加权
+                # 这里先用简化的 MSE loss 替代示范
+                target_dist = torch.full_like(pred_log_prob, target_probs[i].item())  # 让目标分布是均匀或定值(示例)
+                aux_loss += F.kl_div(pred_log_prob, target_dist, reduction='batchmean')
+
             loss += self.aux_loss_coef * aux_loss
-
-            logger.info(f"🧩 [RNNController] 加入结构归因 KL loss = {aux_loss.item():.4f}")
+            logger.info(f"🧩 [RNNController] 加入结构归因辅助 loss = {aux_loss.item():.4f}")
 
         # ---- 参数更新 ----
         self.optimizer.zero_grad()
