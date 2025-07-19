@@ -48,6 +48,7 @@ class PromptNode(Node):
         self.current_prompt = self.structure_template.update_by_controller(self.evaluator, self.current_prompt)
         # Then apply the strategy-level semantic transformation.
         new_prompt = action.do(self.current_prompt, self.structure_template.describe())
+        logger.info(f"📊 Current Prompt:\n{new_prompt}")
         return PromptNode(
             action_set=self.action_set,
             action_seq=self.action_seq + [action],
