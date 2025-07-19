@@ -13,10 +13,10 @@ class TemplateController:
         self.search_space = search_space
 
         self.baseline = 0.6
-        self.baseline_alpha = 0.9
+        self.baseline_alpha = 0.99
         self.aux_loss_coef = aux_loss_coef
-        self.min_entropy_weight = 0.01
-        self.max_entropy_weight = 0.05
+        self.min_entropy_weight = 0.001
+        self.max_entropy_weight = 0.01
         self.iter_count = 0
 
         self.last_logits: list = None
@@ -44,7 +44,7 @@ class TemplateController:
         # ---- 主策略梯度更新 ----
         advantage = (reward - self.baseline) * 10
         self.baseline = self.baseline_alpha * self.baseline + (1 - self.baseline_alpha) * reward
-        entropy_weight = max(self.min_entropy_weight, self.max_entropy_weight * (0.98 ** self.iter_count))
+        entropy_weight = max(self.min_entropy_weight, self.max_entropy_weight * (0.95 ** self.iter_count))
         loss = -advantage * log_prob_sum - entropy_weight * entropy
 
         # ---- slot-level 结构归因辅助 loss ----

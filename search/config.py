@@ -23,7 +23,7 @@ class SearchConfig:
         self.batch_size: int = 10              # Batch size for training
         self.expand_num: int = 3               # Number of nodes to expand per iteration (for parallelism)
         assert self.expand_num <= self.width_threshold
-        self.rollout_length: int = 5           # Rollout path depth (fixed-length simulation)
+        self.rollout_length: int = 4           # Rollout path depth (fixed-length simulation)
 
         # RNN Controller settings
         self.rnn_hidden_dim: int = 128         # Hidden dimension of RNN
