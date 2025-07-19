@@ -38,7 +38,7 @@ class DefaultExpandStrategy(ExpandStrategy):
 
         return children
     
-    def _weighted_random_choice(actions: list, k: int, temperature: float = 1.0):
+    def _weighted_random_choice(self, actions: list, k: int, temperature: float = 1.0):
         """根据 usage_count 做 softmax 加权随机选择"""
         usage_counts = np.array([a.usage_count for a in actions])
         # usage 越大，概率越低；加1防止除0

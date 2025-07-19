@@ -7,7 +7,7 @@ from visualizer import Visualizer
 
 class TemplateController:
     def __init__(self, search_space:List[int], hidden_dim: int = 128, lr=1e-3):
-        logger.info(f"📈 [RNNController] 模板超参数个数 - ={len(search_space)}")
+        logger.info(f"📈 [RNNController] 模板超参数个数 - {len(search_space)}")
         self.model:RNN = RNN(search_space, hidden_dim)
         self.optimizer = Adam(self.model.parameters(), lr=lr)
         self.baseline = 0.0
