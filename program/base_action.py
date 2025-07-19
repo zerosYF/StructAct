@@ -24,7 +24,7 @@ class OptimizeAction(ABC):
             structure: current prompt structural template
         """
         self.usage_count += 1
-        logger.info(f"📊 Current Template_description:{template_description}")
+        logger.info(f"📊 Current Template_description:\n{template_description}")
 
 class StructureSyncAction(OptimizeAction):
     def __init__(self, task, name="StructureSyncAction"):
