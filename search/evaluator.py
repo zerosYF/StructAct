@@ -19,16 +19,8 @@ class PromptEvaluator:
         return 1.0 if output.strip().lower() == a.strip().lower() else 0.0
     
     def batch_reward(self, current_prompt: str, samples: List[dict]) -> List[float]:
-        def _reward_one(s):
-            q, a = self.task.extract_tuple(s)
-            final_input = self.task.inject_final_input(current_prompt, q)
-            output = self.model.api_call(self.task.system_prompt, final_input)
-            logger.info(f"reward model answer:{output.strip().lower()}")
-            logger.info(f"reward gold answer:{a.strip().lower()}")
-            return 1.0 if output.strip().lower() == a.strip().lower() else 0.0
-
         with ThreadPoolExecutor(max_workers=self.thread_num) as executor:
-            return list(executor.map(_reward_one, samples))
+            return list(executor.map(self.reward, current_prompt, samples))
 
     def evaluate(self, test_data: list[dict], final_prompt: str) -> dict:
         total = len(test_data)
