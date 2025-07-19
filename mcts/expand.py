@@ -15,7 +15,7 @@ class DefaultExpandStrategy(ExpandStrategy):
             mcts.children[node] = []
             mcts.untried_actions[node] = node.get_untried_actions()
 
-        actions = mcts.untried_actions[node]
+        actions = list(mcts.untried_actions[node])
         if not actions:
             return []
 
