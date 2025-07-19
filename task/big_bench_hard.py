@@ -42,7 +42,7 @@ class BBHTask(TaskBase):
         self.system_prompt = "你是一个拥有广博知识的答题人，请回答问题。"
 
     def inject_final_input(self, current_prompt:str, input:str):
-        return current_prompt + f"\n\nquestion:{input}"
+        return current_prompt + f"\n\nQuestion:{input}"
     
     def extract_origin_prompt(self):
         return self.origin_prompt

@@ -14,7 +14,6 @@ from mcts.expand import get_expand_strategy
 from mcts.rollout import get_rollout_strategy
 from mcts.choose import get_choose_strategy
 from program.strategy_actions import define_full_actions
-from program.base_action import FormatConstraintSummarizerAction
 from logger import logger
 
 class SearchController:
@@ -33,7 +32,6 @@ class SearchController:
         template = PromptTemplate(config=self.config, blocks=self.blocks, task=self.task)
         logger.info(f"🔍 初始模板约束:\n{template.render()}")
         initial_prompt = template.update_by_controller(self.evaluator, self.task.extract_origin_prompt())
-        initial_prompt = FormatConstraintSummarizerAction(self.task, original_prompt=initial_prompt).do(initial_prompt, template.render())
         root_node = PromptNode(action_set=self.actions, 
                                action_seq=[], 
                                structure_template=template,

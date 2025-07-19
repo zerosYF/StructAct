@@ -79,7 +79,7 @@ class RoleConstraintBlock(PromptBlock):
 # 3. FewShotExampleBlock
 class FewShotExampleBlock(PromptBlock):
     def __init__(self):
-        self.num_options = [0, 1, 3, 5]
+        self.num_options = [0, 1, 2, 3, 4, 5]
         self.order_options = ["随机排序", "按难度递增", "按语义相似度排序"]
         self.content_options = ["展示完整问答", "只展示回答部分"]
         self.hyperparams = [0, 0, 0]
