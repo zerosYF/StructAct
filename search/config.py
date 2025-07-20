@@ -16,7 +16,7 @@ class SearchConfig:
         # MCTS search control
         self.exploration_weight: float = 1.5   # Exploration factor in UCT formula
         self.iter_num: int = 50                 # Number of iterations in MCTS main loop
-        self.depth_threshold: int = 10          # Maximum search depth
+        self.depth_threshold: int = 5          # Maximum search depth
         self.width_threshold: int = 3          # Number of children per expanded node
 
         # Node expansion and rollout config
