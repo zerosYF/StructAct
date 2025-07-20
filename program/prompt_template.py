@@ -54,22 +54,21 @@ class PromptTemplate:
         - Compute slot-level attributions
         - Reinforce update
         """
-        # Step 1: Sample structure parameters from the controller
-        flat_params, log_prob_sum, entropy = self.controller.train_step()
-
-        # Step 2: Assign parameters to each block
-        idx = 0
-        for block in self.blocks:
-            num = block.get_num_slots()
-            block.set_hyperparams(flat_params[idx:idx + num])
-            idx += num
-
-        # Step 3: Sync semantic content to match the new structure
-        new_prompt = self._sync_semantics(current_prompt)
-
-        # Step 4: Perform multiple epochs of training on RNN
+        # Perform multiple epochs of training on RNN
         for _ in range(self.task.config.rnn_mini_epoch):  # Add multiple training epochs
-            # Evaluate the prompt after each epoch and calculate reward
+            # Step 1: Sample structure parameters from the controller
+            flat_params, log_prob_sum, entropy = self.controller.train_step()
+
+            # Step 2: Assign parameters to each block
+            idx = 0
+            for block in self.blocks:
+                num = block.get_num_slots()
+                block.set_hyperparams(flat_params[idx:idx + num])
+                idx += num
+
+            # Step 3: Sync semantic content to match the new structure
+            new_prompt = self._sync_semantics(current_prompt)
+            ## Step 4: Evaluate the new prompt using the evaluator
             val_samples = self.task.sample_train()  # Sample a subset of the training set
             total_score = sum(evaluator.batch_reward(new_prompt, val_samples))
             avg_score = total_score / len(val_samples)
