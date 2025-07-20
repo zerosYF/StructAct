@@ -69,7 +69,7 @@ class PromptTemplate:
             # Step 3: Sync semantic content to match the new structure
             new_prompt = self._sync_semantics(current_prompt)
             ## Step 4: Evaluate the new prompt using the evaluator
-            val_samples = self.task.sample_train()  # Sample a subset of the training set
+            val_samples = self.task.sample_train_rnn()  # Sample a subset of the training set
             total_score = sum(evaluator.batch_reward(new_prompt, val_samples))
             avg_score = total_score / len(val_samples)
             logger.info(f"🎯 [PromptTemplate] New prompt score with current structure = {avg_score:.4f}")
