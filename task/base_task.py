@@ -5,20 +5,20 @@ import random
 class TaskBase(ABC):
     def __init__(self, config:SearchConfig):
         self.config = config
-        self.train_data = None
-        self.val_data_eval = None
-        self.val_data_rl = None
+        self.train_data_mcts = None
+        self.train_data_rnn = None
+        self.val_data = None
         self.test_data = None
         self.system_prompt = None
 
     def sample_train(self) -> List[Dict]:
-        return random.sample(self.train_data, self.config.batch_size)
+        return random.sample(self.train_data_mcts, self.config.batch_size)
+    
+    def sample_train_rnn(self) -> List[Dict]:
+        return random.sample(self.train_data_rnn, self.config.rnn_batch_size)
     
     def get_val(self) -> List[Dict]:
-        return self.val_data_eval
-    
-    def get_val_rl(self) -> List[Dict]:
-        return self.val_data_rl
+        return self.val_data
     
     def get_test(self) -> List[Dict]:
         return self.test_data

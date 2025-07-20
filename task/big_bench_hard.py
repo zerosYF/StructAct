@@ -33,18 +33,16 @@ class BBHTask(TaskBase):
         random.shuffle(all_examples)
 
         split = int(len(all_examples) * config.split_ratio)
-        self.train_data = all_examples[:split]
+        train_val_data = all_examples[:split]
         self.test_data = all_examples[split:]
 
-        # Further split training data into train/validation subsets
-        full_train_data = self.train_data  # backup original training set
-        split_1 = int(len(full_train_data) * config.split_ratio_)
+        split_1 = int(len(train_val_data) * config.split_ratio_train_val)
+        full_train_data = train_val_data[:split_1]
+        self.val_data = train_val_data[split_1:]
 
-        self.train_data = full_train_data[:split_1]
-        full_val_data = full_train_data[split_1:]
-        split_2 = int(len(full_val_data) * config.split_ratio_val)
-        self.val_data_eval = full_val_data[:split_2]
-        self.val_data_rl = full_val_data[split_2:]
+        split_2 = int(len(full_train_data) * config.split_ratio_train)
+        self.train_data_mcts = full_train_data[:split_2]
+        self.train_data_rnn = full_train_data[split_2:]
 
         self.system_prompt = "you are a helpful assistant. Answer the question based on the provided context."
 

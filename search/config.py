@@ -8,9 +8,9 @@ class SearchConfig:
 
     def __init__(self):
         # Dataset split settings
-        self.split_ratio: float = 0.6      # (Training + Validation) / Total data
-        self.split_ratio_: float = 0.8     # Training / (Training + Validation)
-        self.split_ratio_val: float = 0.5  # Proportion of training vs val for inner splits
+        self.split_ratio: float = 0.7      # (Training + Validation) / Total data
+        self.split_ratio_train_val: float = 0.8     # Training / (Training + Validation)
+        self.split_ratio_train: float = 0.5  # Train_mcts/ (Train_mcts + Train_rnn)
         self.shuffle_seed: int = 42        # Random seed for data shuffling
 
         # MCTS search control
@@ -26,6 +26,8 @@ class SearchConfig:
         self.rollout_length: int = 4           # Rollout path depth (fixed-length simulation)
 
         # RNN Controller settings
+        self.rnn_batch_size: int = 32         # Batch size for RNN training
+        self.rnn_mini_epoch: int = 10          # Number of training epochs for RNN controller
         self.rnn_hidden_dim: int = 128         # Hidden dimension of RNN
         self.rnn_lr: float = 1e-3              # Learning rate for RNN
         self.rnn_structure_contribution = False
