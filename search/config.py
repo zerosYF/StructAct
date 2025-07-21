@@ -30,7 +30,6 @@ class SearchConfig:
 
         # RNN Controller settings
         self.rnn_batch_size: int = 32         # Batch size for RNN training
-        self.rnn_mini_epoch: int = 1          # Number of training epochs for RNN controller
         self.rnn_hidden_dim: int = 128         # Hidden dimension of RNN
         self.rnn_lr: float = 1e-3              # Learning rate for RNN
         self.rnn_structure_contribution = False

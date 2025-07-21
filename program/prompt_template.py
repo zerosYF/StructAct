@@ -17,6 +17,7 @@ class PromptTemplate:
         )
         self.task = task
         self.sync_action = StructureSyncAction(task, self.task.extract_origin_prompt())
+        self.last_sampled_params = None
 
     def _get_search_space(self) -> List[int]:
         """
@@ -54,43 +55,46 @@ class PromptTemplate:
         - Compute slot-level attributions
         - Reinforce update
         """
-        # Perform multiple epochs of training on RNN
-        for _ in range(self.task.config.rnn_mini_epoch):  # Add multiple training epochs
-            # Step 1: Sample structure parameters from the controller
-            flat_params, log_prob_sum, entropy = self.controller.train_step()
+        # Step 1: Sample structure parameters from the controller
+        flat_params, log_prob_sum, entropy = self.controller.train_step()
 
-            # Step 2: Assign parameters to each block
-            idx = 0
-            for block in self.blocks:
-                num = block.get_num_slots()
-                block.set_hyperparams(flat_params[idx:idx + num])
-                idx += num
+        if flat_params == self.last_sampled_params:
+            logger.warning("Repeated parameters detected, skipping update.")
+            return current_prompt
+        
+        self.last_sampled_params = flat_params
+        # Step 2: Assign parameters to each block
+        idx = 0
+        for block in self.blocks:
+            num = block.get_num_slots()
+            block.set_hyperparams(flat_params[idx:idx + num])
+            idx += num
 
-            # Step 3: Sync semantic content to match the new structure
-            new_prompt = self._sync_semantics(current_prompt)
-            ## Step 4: Evaluate the new prompt using the evaluator
-            val_samples = self.task.sample_train_rnn()  # Sample a subset of the training set
-            total_score = sum(evaluator.batch_reward(new_prompt, val_samples))
-            avg_score = total_score / len(val_samples)
-            logger.info(f"🎯 [PromptTemplate] New prompt score with current structure = {avg_score:.4f}")
+        # Step 3: Sync semantic content to match the new structure
+        new_prompt = self._sync_semantics(current_prompt)
+        ## Step 4: Evaluate the new prompt using the evaluator
+        val_samples = self.task.sample_train_rnn()  # Sample a subset of the training set
+        total_score = sum(evaluator.batch_reward(new_prompt, val_samples))
+        avg_score = total_score / len(val_samples)
+        logger.info(f"🎯 [PromptTemplate] New prompt score with current structure = {avg_score:.4f}")
 
-            # Step 4.5: Perform slot-level structure attribution if enabled
-            if self.task.config.rnn_structure_contribution:
-                logger.info("🔍 [PromptTemplate] Performing slot-level structure attribution...")
-                # Get per-slot rewards by perturbing each slot
-                slot_rewards = self._structure_attribution(
-                    params=flat_params,
-                    evaluator=evaluator,
-                    val_samples=val_samples,
-                    current_prompt=current_prompt
-                )
-            else:
-                slot_rewards = None
+        # Step 4.5: Perform slot-level structure attribution if enabled
+        if self.task.config.rnn_structure_contribution:
+            logger.info("🔍 [PromptTemplate] Performing slot-level structure attribution...")
+            # Get per-slot rewards by perturbing each slot
+            slot_rewards = self._structure_attribution(
+                params=flat_params,
+                evaluator=evaluator,
+                val_samples=val_samples,
+                current_prompt=current_prompt
+            )
+        else:
+            slot_rewards = None
 
-            # Step 5: Perform forward pass to compute log_prob_sum and entropy
-            # Ensure forward pass is done here to calculate log_prob_sum and entropy
-            # Perform reinforcement learning update (the actual reinforcement step)
-            self.controller.reinforce(log_prob_sum, avg_score, entropy, slot_rewards)
+        # Step 5: Perform forward pass to compute log_prob_sum and entropy
+        # Ensure forward pass is done here to calculate log_prob_sum and entropy
+        # Perform reinforcement learning update (the actual reinforcement step)
+        self.controller.reinforce(log_prob_sum, avg_score, entropy, slot_rewards)
 
         return new_prompt
 
