@@ -67,7 +67,6 @@ class SearchController:
                 width=self.config.width_threshold,
                 expand_num=self.config.expand_num,
             )
-
             if iter_id % 5 == 0 or iter_id == self.config.iter_num - 1:
                 logger.info(f"  Total expanded nodes: {len(mcts.N)}")
 

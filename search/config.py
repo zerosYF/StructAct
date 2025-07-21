@@ -30,7 +30,7 @@ class SearchConfig:
 
         # RNN Controller settings
         self.rnn_batch_size: int = 32         # Batch size for RNN training
-        self.rnn_mini_epoch: int = 5          # Number of training epochs for RNN controller
+        self.rnn_mini_epoch: int = 1          # Number of training epochs for RNN controller
         self.rnn_hidden_dim: int = 128         # Hidden dimension of RNN
         self.rnn_lr: float = 1e-3              # Learning rate for RNN
         self.rnn_structure_contribution = False
@@ -40,7 +40,7 @@ class SearchConfig:
 
         # Debugging indicators (for tracing internal states)
         self.rollout_idx: int = 1              # Current rollout path index
-        self.choose_idx: int = 0               # Current chosen action index
+        self.choose_idx: int = 2               # Current chosen action index
         self.uct_idx: int = 0                  # Current UCT path index
         self.model_idx: int = 0                # Current API model index
 
