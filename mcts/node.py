@@ -16,3 +16,6 @@ class Node(ABC):
     @abstractmethod
     def take_action(self, action):
         pass
+    @abstractmethod
+    def clone_node(self):
+        pass

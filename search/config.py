@@ -24,6 +24,9 @@ class SearchConfig:
         self.expand_num: int = 3               # Number of nodes to expand per iteration (for parallelism)
         assert self.expand_num <= self.width_threshold
         self.rollout_length: int = 4           # Rollout path depth (fixed-length simulation)
+        self.rollout_width: int = 3
+        self.rollout_early_stop_rounds: int = 3
+        self.rollout_early_stop_delta: float = 0.01
 
         # RNN Controller settings
         self.rnn_batch_size: int = 32         # Batch size for RNN training
@@ -36,7 +39,7 @@ class SearchConfig:
         self.reward_thread_num: int = 16       # Number of threads for reward evaluation
 
         # Debugging indicators (for tracing internal states)
-        self.rollout_idx: int = 0              # Current rollout path index
+        self.rollout_idx: int = 1              # Current rollout path index
         self.choose_idx: int = 0               # Current chosen action index
         self.uct_idx: int = 0                  # Current UCT path index
         self.model_idx: int = 0                # Current API model index
