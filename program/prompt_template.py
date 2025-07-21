@@ -60,21 +60,20 @@ class PromptTemplate:
 
         if flat_params == self.last_sampled_params:
             logger.warning("Repeated parameters detected, skipping update.")
-            return current_prompt
-        
-        self.last_sampled_params = flat_params
-        # Step 2: Assign parameters to each block
-        idx = 0
-        for block in self.blocks:
-            num = block.get_num_slots()
-            block.set_hyperparams(flat_params[idx:idx + num])
-            idx += num
+        else:
+            self.last_sampled_params = flat_params
+            # Step 2: Assign parameters to each block
+            idx = 0
+            for block in self.blocks:
+                num = block.get_num_slots()
+                block.set_hyperparams(flat_params[idx:idx + num])
+                idx += num
 
-        # Step 3: Sync semantic content to match the new structure
-        new_prompt = self._sync_semantics(current_prompt)
+            # Step 3: Sync semantic content to match the new structure
+            current_prompt = self._sync_semantics(current_prompt)
         ## Step 4: Evaluate the new prompt using the evaluator
         val_samples = self.task.sample_train_rnn()  # Sample a subset of the training set
-        total_score = sum(evaluator.batch_reward(new_prompt, val_samples))
+        total_score = sum(evaluator.batch_reward(current_prompt, val_samples))
         avg_score = total_score / len(val_samples)
         logger.info(f"🎯 [PromptTemplate] New prompt score with current structure = {avg_score:.4f}")
 
@@ -96,7 +95,7 @@ class PromptTemplate:
         # Perform reinforcement learning update (the actual reinforcement step)
         self.controller.reinforce(log_prob_sum, avg_score, entropy, slot_rewards)
 
-        return new_prompt
+        return current_prompt
 
     def _sync_semantics(self, current_prompt: str) -> str:
         """
