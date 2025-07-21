@@ -18,6 +18,8 @@ class PromptTemplate:
         self.task = task
         self.sync_action = StructureSyncAction(task, self.task.extract_origin_prompt())
         self.last_sampled_params = None
+        self.count_max = config.action_structure_flush_ratio
+        self.count = 0
 
     def _get_search_space(self) -> List[int]:
         """
@@ -55,6 +57,10 @@ class PromptTemplate:
         - Compute slot-level attributions
         - Reinforce update
         """
+        if self.count != self.count_max:
+            self.count += 1
+            return current_prompt
+        self.count = 0
         # Step 1: Sample structure parameters from the controller
         flat_params, log_prob_sum, entropy = self.controller.train_step()
 
