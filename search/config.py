@@ -44,6 +44,9 @@ class SearchConfig:
         self.uct_idx: int = 0                  # Current UCT path index
         self.model_idx: int = 0                # Current API model index
 
+        self.rnn_reward_ratio: float = 0.5
+        self.self_rnn_reward_ratio:float = 0.5
+
         # Model configuration
         self.model_name: str = "zhiyan3"
         self.api_key: str = "zhiyan123"

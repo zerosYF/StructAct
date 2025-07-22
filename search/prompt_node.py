@@ -20,7 +20,7 @@ class PromptNode(Node):
         self.structure_template: PromptTemplate = structure_template
         self.evaluator: PromptEvaluator = evaluator
         self.current_prompt: str = prompt
-        logger.info(f"📜 Expanded new node at depth {depth} using action {action_seq[-1].name if len(action_seq) > 0 else None}")
+        logger.info(f"📜 Get new node at depth {depth} using action {action_seq[-1].name if len(action_seq) > 0 else None}")
         
         self.children: List[PromptNode] = None
         self.action_seq: List[OptimizeAction] = action_seq
@@ -66,7 +66,10 @@ class PromptNode(Node):
         val_samples = self.evaluator.task.get_val()
         total_score = sum(self.evaluator.batch_reward(self.current_prompt, val_samples))
         score = total_score / len(val_samples)
-        logger.info(f"🎯 Prompt evaluation score = {score:.4f}, Action sequence = {[a.name for a in self.action_seq]}")
+
+        struct_magnitude = self.evaluator.task.config.rnn_reward_ratio
+        score = score * (1 - struct_magnitude) + self.structure_template.last_reward * struct_magnitude
+        logger.info(f"🎯 [RolloutFinished] Prompt evaluation score = {score:.4f}, Action sequence = {[a.name for a in self.action_seq]}")
         return score
 
     def clone_node(self):
@@ -79,3 +82,7 @@ class PromptNode(Node):
             depth=self.depth,
             max_depth=self.max_depth,
         )
+    
+    def q_value(self, rollout_reward):
+        self_rnn_ratio = self.evaluator.task.config.self_rnn_reward_ratio
+        return rollout_reward * (1 - self_rnn_ratio) + self.structure_template.last_reward * self_rnn_ratio

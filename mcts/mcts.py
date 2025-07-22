@@ -24,7 +24,7 @@ class MCTS:
         self.rollout_strategy = rollout_strategy
         self.choose_strategy = choose_strategy
 
-    def _select(self, node: Node, max_width: int):
+    def _select(self, node: Node, max_width: int) -> list[Node]:
         path = []
         while True:
             path.append(node)
@@ -38,19 +38,19 @@ class MCTS:
                 return path
             node = self._uct_select(node)
 
-    def _uct_select(self, node: Node):
+    def _uct_select(self, node: Node) -> Node:
         return self.select_strategy.select(node, self)
 
-    def _expand(self, node: Node, max_expand: int = None):
+    def _expand(self, node: Node, max_expand: int = None) -> list[Node]:
         return self.expand_strategy.expand(node, self, max_expand)
 
     def _rollout(self, node: Node):
         return self.rollout_strategy.rollout(node)
 
-    def _backpropagate(self, path, reward):
+    def _backpropagate(self, path:list[Node], reward):
         for node in reversed(path):
             self.N[node] += 1
-            self.Q[node] += reward
+            self.Q[node] += node.q_value(reward)
 
     def do_iter(self, node: Node, width: int = 1, expand_num: int = 1):
         logger.info("--------------Start Iteration----------------")

@@ -20,6 +20,7 @@ class PromptTemplate:
         self.last_sampled_params = None
         self.count_max = config.action_structure_flush_ratio
         self.count = 1
+        self.last_reward = 0.0
 
     def _get_search_space(self) -> List[int]:
         """
@@ -81,6 +82,7 @@ class PromptTemplate:
         val_samples = self.task.sample_train_rnn()  # Sample a subset of the training set
         total_score = sum(evaluator.batch_reward(current_prompt, val_samples))
         avg_score = total_score / len(val_samples)
+        self.last_reward = avg_score
         logger.info(f"🎯 [PromptTemplate] New prompt score with current structure = {avg_score:.4f}")
 
         # Step 4.5: Perform slot-level structure attribution if enabled

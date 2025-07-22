@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import List
-from mcts.node import Node
+from mcts.node import Node, Step
 from search.config import SearchConfig
 import numpy as np
 
@@ -31,7 +31,7 @@ class DefaultExpandStrategy(ExpandStrategy):
 
         children = []
         for action in selected_actions:
-            child: Node = node.take_action(action)
+            child: Node = node.take_action(action, step_type=Step.Expand)
             mcts.children[node].append(child)
             mcts.untried_actions[child] = child.get_untried_actions()
             children.append(child)

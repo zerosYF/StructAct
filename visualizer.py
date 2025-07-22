@@ -102,7 +102,7 @@ class MCTSVisualizer:
             n = self.mcts.N.get(node, 0)
             qn_ratio = f"{(q / n):.2f}" if n else "?"
             action_name = node.action_seq[-1].name if node.action_seq else "Root"
-            labels[node] = f"{action_name}\nQ={q:.2f}, N={n}, Q/N={qn_ratio}"
+            labels[node] = f"{action_name}\nQ={q:.4f}, N={n}, Q/N={qn_ratio}"
 
             children = self.mcts.children.get(node, [])
             for child in children:

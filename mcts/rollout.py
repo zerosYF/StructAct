@@ -1,8 +1,7 @@
 from abc import ABC, abstractmethod
 from search.config import SearchConfig
-from concurrent.futures import ThreadPoolExecutor
 from search.evaluator import PromptEvaluator
-from mcts.node import Node
+from mcts.node import Node, Step
 import numpy as np
 import random
 from logger import logger
@@ -28,7 +27,7 @@ class ClassicPathRollout(RolloutStrategy):
             if not actions:
                 break
             action = random.choice(actions)
-            current = current.take_action(action)
+            current = current.take_action(action, step_type=Step.Rollout)
 
             reward = current.reward()
             rewards.append(reward)
@@ -70,7 +69,7 @@ class MultiPathRollout(RolloutStrategy):
                 if not actions:
                     break
                 action = random.choice(actions)
-                current = current.take_action(action)
+                current = current.take_action(action, step_type=Step.Rollout)
                 reward = current.reward()
                 path_rewards.append(reward)
 

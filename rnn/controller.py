@@ -24,6 +24,7 @@ class TemplateController:
         logger.info(f"📈 [RNNController] Initialized - params counts: {len(search_space)}")
 
         self.attribution_interval = 10  # 每10步调用一次归因
+        self.reward_mean = 0.0  # 用于记录平均奖励
     
     def get_slot_dim(self, slot_index: int) -> int:
         return self.search_space[slot_index]
@@ -56,8 +57,9 @@ class TemplateController:
         torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1.0)
         self.optimizer.step()
 
-        logger.info(f"📈 [RNNController] REINFORCE 完成 - reward={reward:.4f}, loss={loss.item():.4f}, entropy={entropy.item():.4f}")
-        Visualizer.log_train(reward, entropy.item())
+        self.reward_mean = (self.reward_mean + reward) / 2.0
+        logger.info(f"📈 [RNNController] REINFORCE 完成 - avg_reward={self.reward_mean:.4f}, loss={loss.item():.4f}, entropy={entropy.item():.4f}")
+        Visualizer.log_train(self.reward_mean, entropy.item())
     
     def _slot_level_atrribution(self, slot_rewards=None):
         if slot_rewards is not None and self.iter_count % self.attribution_interval == 0 and self.last_logits is not None:
