@@ -18,7 +18,7 @@ class SearchConfig:
         self.iter_num: int = 10                 # Number of iterations in MCTS main loop
         self.depth_threshold: int = 5          # Maximum search depth
         self.width_threshold: int = 3          # Number of children per expanded node
-        self.action_structure_flush_ratio: int = 1
+        self.action_structure_flush_ratio: int = 5
         assert self.action_structure_flush_ratio >= 1
 
         # Node expansion and rollout config
