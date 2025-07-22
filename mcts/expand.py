@@ -31,7 +31,7 @@ class DefaultExpandStrategy(ExpandStrategy):
 
         children = []
         for action in selected_actions:
-            child: Node = node.take_action(action, step_type=Step.Expand)
+            child: Node = node.take_action(action, Step.Expand)
             mcts.children[node].append(child)
             mcts.untried_actions[child] = child.get_untried_actions()
             children.append(child)

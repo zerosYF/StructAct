@@ -191,8 +191,8 @@ class CautionBlock(PromptBlock):
 
     def describe(self):
         return (
-            f"Block: CautionBlock - Provides “{self.count}” total warning(s)"
-            f"with“{self.caution_type}” cautions, styled as “{self.style}”,"
+            f"Block: CautionBlock - Provides “{self.count}” total warning(s),"
+            f"written with“{self.caution_type}” cautions, styled as “{self.style}”,"
             f"placed “{self.position.lower()}”."
         )
 

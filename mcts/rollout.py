@@ -27,7 +27,7 @@ class ClassicPathRollout(RolloutStrategy):
             if not actions:
                 break
             action = random.choice(actions)
-            current = current.take_action(action, step_type=Step.Rollout)
+            current = current.take_action(action, Step.Rollout)
 
             reward = current.reward()
             rewards.append(reward)
@@ -69,7 +69,7 @@ class MultiPathRollout(RolloutStrategy):
                 if not actions:
                     break
                 action = random.choice(actions)
-                current = current.take_action(action, step_type=Step.Rollout)
+                current = current.take_action(action, Step.Rollout)
                 reward = current.reward()
                 path_rewards.append(reward)
 
