@@ -21,7 +21,7 @@ class CasualJudgementTask(TaskBase):
             target_scores = ex["target_scores"]
             # Select the answer with the highest score
             gold = max(target_scores.items(), key=lambda x: x[1])[0]
-            option_text = "\n".join([f"{k}: {v}" for k, v in target_scores.items()])
+            option_text = "\n".join([f"{k}" for k in target_scores.keys()])
             sample = {
                 "question": f"Question:\n\n{input_text}\n\nOptions:\n{option_text}",
                 "answer": gold

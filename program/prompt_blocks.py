@@ -83,7 +83,7 @@ class RoleConstraintBlock(PromptBlock):
 # 3. FewShotExampleBlock
 class FewShotExampleBlock(PromptBlock):
     def __init__(self):
-        self.num_options = [0, 1, 2, 3, 4, 5]
+        self.num_options = [0, 3, 5, 7]
         self.order_options = ["Random order", "Increasing difficulty", "Semantic similarity order"]
         self.content_options = ["Show full QA", "Only show answers"]
         self.hyperparams = [0, 0, 0]
@@ -120,7 +120,7 @@ class FewShotExampleBlock(PromptBlock):
 # 4. ConstraintBlock
 class ConstraintBlock(PromptBlock):
     def __init__(self):
-        self.num_options = [0, 1, 2, 3, 4, 5]
+        self.num_options = [0, 3, 5, 7]
         self.style_options = ["Concise", "Detailed"]
         self.format_options = ["Paragraph", "List"]
         self.hyperparams = [0, 0, 0]
@@ -160,7 +160,7 @@ class CautionBlock(PromptBlock):
         self.type_options = ["Factual accuracy", "Safety risk", "Moral boundaries", "No speculation", "Avoid repetition"]
         self.style_options = ["Gentle reminder", "Clear warning", "Brief note"]
         self.position_options = ["Before the task", "After the task"]
-        self.count_options = [0, 1, 2, 3, 4]
+        self.count_options = [0, 3, 5, 7]
         self.hyperparams = [0, 0, 0, 0]
 
         self.caution_type = self.type_options[self.hyperparams[0]]
@@ -191,8 +191,9 @@ class CautionBlock(PromptBlock):
 
     def describe(self):
         return (
-            f"Block: CautionBlock - Provides “{self.caution_type}” cautions, styled as “{self.style}”, "
-            f"placed “{self.position.lower()}”, with “{self.count}” total warning(s)."
+            f"Block: CautionBlock - Provides “{self.count}” total warning(s)"
+            f"with“{self.caution_type}” cautions, styled as “{self.style}”,"
+            f"placed “{self.position.lower()}”."
         )
 
 # 6. SummaryClosureBlock
