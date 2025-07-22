@@ -71,7 +71,7 @@ class MCTSVisualizer:
         ax_l.clear()
         ax_l.set_ylabel("Reward", color="green")
         ax_l.tick_params(axis='y', labelcolor="green")
-        ax_l.plot(x, self.rewards, label="Loss", color="green")
+        ax_l.plot(x, self.rewards, label="Avg_Reward", color="green")
 
         ax_r.cla()
         ax_r.yaxis.set_label_position("right")
