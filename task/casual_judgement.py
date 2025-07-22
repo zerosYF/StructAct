@@ -5,10 +5,10 @@ from search.config import SearchConfig
 import json
 from logger import logger
 
-class BBHTask(TaskBase):
+class CasualJudgementTask(TaskBase):
     def __init__(self, config: SearchConfig):
         super().__init__(config)
-        path = "dataset/BBH/epistemic.json"
+        path = "dataset/BBH/casual_judgement.json"
         with open(path, "r", encoding="utf-8") as f:
             data: Dict = json.load(f)
         
@@ -48,7 +48,7 @@ class BBHTask(TaskBase):
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
         """Injects the input question into the current prompt for evaluation."""
-        return current_prompt +"\nAnswer only 'entailment' or 'non-entailment'.\n" + f"\n\nQuestion: {input}"
+        return current_prompt +"\nAnswer only 'yes' or 'no'.\n" + f"\n\nQuestion: {input}"
 
     def extract_origin_prompt(self) -> str:
         """Returns the original task prompt description."""
@@ -61,6 +61,3 @@ class BBHTask(TaskBase):
     def samples2text(self, samples: List[dict]) -> str:
         """Converts a list of samples to a text block of Q&A pairs."""
         return "\n".join([f"Q: {s['question']}\nA: {s['answer']}" for s in samples])
-
-    
-    

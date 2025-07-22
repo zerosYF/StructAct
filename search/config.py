@@ -19,6 +19,7 @@ class SearchConfig:
         self.depth_threshold: int = 5          # Maximum search depth
         self.width_threshold: int = 3          # Number of children per expanded node
         self.action_structure_flush_ratio: int = 1
+        assert self.action_structure_flush_ratio >= 1
 
         # Node expansion and rollout config
         self.batch_size: int = 10              # Batch size for training

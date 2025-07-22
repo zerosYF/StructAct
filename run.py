@@ -1,4 +1,4 @@
-from task.big_bench_hard import BBHTask
+from task.epistemic import EpistemicTask
 from search.controller import SearchController
 from search.config import SearchConfig
 from search.evaluator import PromptEvaluator
@@ -9,7 +9,7 @@ os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
 def run():
     config = SearchConfig()
-    bbh_task = BBHTask(config=config)
+    bbh_task = EpistemicTask(config=config)
     evaluator = PromptEvaluator(bbh_task, config.reward_thread_num)
     controller = SearchController(evaluator, config, bbh_task)
     logger.info("🔍 Training best action sequence...")
