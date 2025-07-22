@@ -49,7 +49,7 @@ class EpistemicTask(TaskBase):
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
         """Injects the input question into the current prompt for evaluation."""
-        return current_prompt +"\nOnly select one in options\n" + f"\n\nQuestion: {input}"
+        return current_prompt +"\nOnly select one in options as anwser\n" + f"\n\nQuestion: {input}\n Anwser:\n"
 
     def extract_origin_prompt(self) -> str:
         """Returns the original task prompt description."""

@@ -1,6 +1,6 @@
 from program.base_action import OptimizeAction
 from search.evaluator import PromptEvaluator
-from mcts.node import Node
+from mcts.node import Node, Step
 from program.prompt_template import PromptTemplate
 from typing import List, Set
 from logger import logger
@@ -43,7 +43,7 @@ class PromptNode(Node):
         # In each rollout, actions can be reselected.
         return list(self.action_set)
 
-    def take_action(self, action: OptimizeAction):
+    def take_action(self, action: OptimizeAction, step_type:Step):
         # First update the prompt by controller-based structural adjustment.
         self.current_prompt = self.structure_template.update_by_controller(self.evaluator, self.current_prompt)
         # Then apply the strategy-level semantic transformation.
