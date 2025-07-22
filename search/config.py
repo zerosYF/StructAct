@@ -15,7 +15,7 @@ class SearchConfig:
 
         # MCTS search control
         self.exploration_weight: float = 1.5   # Exploration factor in UCT formula
-        self.iter_num: int = 50                 # Number of iterations in MCTS main loop
+        self.iter_num: int = 10                 # Number of iterations in MCTS main loop
         self.depth_threshold: int = 5          # Maximum search depth
         self.width_threshold: int = 3          # Number of children per expanded node
         self.action_structure_flush_ratio: int = 1
@@ -25,7 +25,7 @@ class SearchConfig:
         self.batch_size: int = 10              # Batch size for training
         self.expand_num: int = 3               # Number of nodes to expand per iteration (for parallelism)
         assert self.expand_num <= self.width_threshold
-        self.rollout_length: int = 4           # Rollout path depth (fixed-length simulation)
+        self.rollout_length: int = 3           # Rollout path depth (fixed-length simulation)
         self.rollout_width: int = 3
         self.rollout_early_stop_rounds: int = 3
         self.rollout_early_stop_delta: float = 0.01
