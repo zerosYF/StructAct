@@ -21,8 +21,9 @@ class EpistemicTask(TaskBase):
             target_scores = ex["target_scores"]
             # Select the answer with the highest score
             gold = max(target_scores.items(), key=lambda x: x[1])[0]
+            option_text = "\n".join([f"{k}: {v}" for k, v in target_scores.items()])
             sample = {
-                "question": input_text,
+                "question": f"Question: {input_text}\nOptions:\n{option_text}",
                 "answer": gold
             }
             all_examples.append(sample)
@@ -48,7 +49,7 @@ class EpistemicTask(TaskBase):
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
         """Injects the input question into the current prompt for evaluation."""
-        return current_prompt +"\nAnswer only 'entailment' or 'non-entailment'.\n" + f"\n\nQuestion: {input}"
+        return current_prompt +"\nOnly select one in options\n" + f"\n\nQuestion: {input}"
 
     def extract_origin_prompt(self) -> str:
         """Returns the original task prompt description."""
@@ -61,6 +62,11 @@ class EpistemicTask(TaskBase):
     def samples2text(self, samples: List[dict]) -> str:
         """Converts a list of samples to a text block of Q&A pairs."""
         return "\n".join([f"Q: {s['question']}\nA: {s['answer']}" for s in samples])
+    
+    def get_reward(self, output:str, target:str) -> float:
+        logger.info(f"reward model answer:{output.strip().lower()}")
+        logger.info(f"reward gold answer:{target.strip().lower()}")
+        return 1.0 if output.strip().lower() == target.strip().lower() else 0.0
 
     
     

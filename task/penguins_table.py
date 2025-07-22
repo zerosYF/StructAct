@@ -5,10 +5,10 @@ from search.config import SearchConfig
 import json
 from logger import logger
 
-class CasualJudgementTask(TaskBase):
+class PenguinsTableTask(TaskBase):
     def __init__(self, config: SearchConfig):
         super().__init__(config)
-        path = "dataset/BBH/casual_judgement.json"
+        path = "dataset/BBH/penguins_in_a_table.json"
         with open(path, "r", encoding="utf-8") as f:
             data: Dict = json.load(f)
         
@@ -23,7 +23,7 @@ class CasualJudgementTask(TaskBase):
             gold = max(target_scores.items(), key=lambda x: x[1])[0]
             option_text = "\n".join([f"{k}: {v}" for k, v in target_scores.items()])
             sample = {
-                "question": f"Question:\n\n{input_text}\n\nOptions:\n{option_text}",
+                "question": f"Question: {input_text}\nOptions:\n{option_text}",
                 "answer": gold
             }
             all_examples.append(sample)
@@ -63,9 +63,7 @@ class CasualJudgementTask(TaskBase):
         """Converts a list of samples to a text block of Q&A pairs."""
         return "\n".join([f"Q: {s['question']}\nA: {s['answer']}" for s in samples])
     
-    def get_reward(self, output: str, target: str) -> float:
-        """Calculates the reward based on model output and target answer."""
+    def get_reward(self, output:str, target:str) -> float:
         logger.info(f"reward model answer:{output.strip().lower()}")
         logger.info(f"reward gold answer:{target.strip().lower()}")
-        if output.strip().lower() == target.strip().lower():
-            return 1.0
+        return 1.0 if output.strip().lower() == target.strip().lower() else 0.0

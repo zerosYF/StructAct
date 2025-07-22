@@ -14,9 +14,7 @@ class PromptEvaluator:
         q, a = self.task.extract_tuple(sample)
         final_input = self.task.inject_final_input(current_prompt, q)
         output = self.model.api_call(self.task.system_prompt, final_input)
-        logger.info(f"reward model answer:{output.strip().lower()}")
-        logger.info(f"reward gold answer:{a.strip().lower()}")
-        return 1.0 if output.strip().lower() == a.strip().lower() else 0.0
+        return self.task.get_reward(output, a)
     
     def batch_reward(self, current_prompt: str, samples: List[dict]) -> List[float]:
         with ThreadPoolExecutor(max_workers=self.thread_num) as executor:
@@ -29,7 +27,7 @@ class PromptEvaluator:
             question, gold = self.task.extract_tuple(item)
             final_input = self.task.inject_final_input(final_prompt, question)
             output = self.model.api_call(self.task.system_prompt, final_input)
-            correct = int(output.strip().lower() == gold.strip().lower())
+            correct = int(self.task.get_reward(output, gold) > 0)
             return {
                 "prompt": final_prompt,
                 "output": output,

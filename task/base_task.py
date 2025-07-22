@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Any
 from abc import ABC, abstractmethod
 from search.config import SearchConfig
 import random
@@ -37,4 +37,7 @@ class TaskBase(ABC):
 
     @abstractmethod
     def samples2text(self, samples:List[Dict]) -> str:
+        pass
+    @abstractmethod
+    def get_reward(self, output: Any, target: Any) -> float:
         pass

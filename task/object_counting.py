@@ -44,7 +44,7 @@ class ObjectCountingTask(TaskBase):
             input_text = ex["input"]
             target_scores = ex["target_scores"]
             # Select the answer with the highest score
-            gold = max(target_scores.items(), key=lambda x: x[1])[0]
+            gold = target_scores[0]
             sample = {
                 "question": input_text,
                 "answer": gold
@@ -72,7 +72,7 @@ class ObjectCountingTask(TaskBase):
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
         """Injects the input question into the current prompt for evaluation."""
-        return current_prompt +"\nAnswer only 'yes' or 'no'.\n" + f"\n\nQuestion: {input}"
+        return current_prompt +"\nOnly give me anwser without nothing else\n" + f"\n\nQuestion: {input}"
 
     def extract_origin_prompt(self) -> str:
         """Returns the original task prompt description."""
@@ -85,3 +85,20 @@ class ObjectCountingTask(TaskBase):
     def samples2text(self, samples: List[dict]) -> str:
         """Converts a list of samples to a text block of Q&A pairs."""
         return "\n".join([f"Q: {s['question']}\nA: {s['answer']}" for s in samples])
+    
+    def get_reward(self, output: str, target: str) -> float:
+        """
+        Evaluates the model's output against the target answer.
+        Returns 1.0 for a correct answer, 0.0 otherwise.
+        """
+        # Normalize the output and target to lowercase
+        output = output.strip().lower()
+        target = target.strip().lower()
+
+        # Convert number words to digits if necessary
+        if output in number_to_word_dict:
+            output = str(number_to_word_dict[output])
+        if target in number_to_word_dict:
+            target = str(number_to_word_dict[target])
+
+        return 1.0 if output == target else 0.0
