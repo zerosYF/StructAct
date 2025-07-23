@@ -48,7 +48,7 @@ class MultiPathRollout(RolloutStrategy):
         rollout_depth: int = 5,
         num_paths: int = 5,
         early_stop_rounds: int = 3,
-        early_stop_delta: float = 0.01,
+        early_stop_delta: float = 0.001,
     ):
         self.rollout_depth = rollout_depth
         self.num_paths = num_paths

@@ -94,7 +94,7 @@ class FewShotExampleBlock(PromptBlock):
 
     def describe(self):
         return (
-            f"Block: FewShotExamples - Examples: {self.num}, Order: “{self.order}”."
+            f"Block: FewShotExamples - {self.num} example(s), Order: “{self.order}”."
         )
 
 class ConstraintBlock(PromptBlock):

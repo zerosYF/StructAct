@@ -56,8 +56,10 @@ class TestReflectRewriteAction(OptimizeAction):
         prompt = (
             f"Current prompt:\n{current_prompt}\n"
             f"Analysis:\n{analysis}\n"
-            f"Prompt structure:\n{template_description}\n"
-            "Please revise the prompt accordingly:"
+            f"Prompt Template Structure description:\n{template_description}\n"
+            f"The template constraints must be strictly followed above all else.\n"
+            "Please revise the prompt accordingly.\n"
+            "only give me the revised prompt, do not add any other text.\n"
         )
         return self.rewriter_model.api_call(self.rewriter_system_prompt, prompt)
 
@@ -87,10 +89,12 @@ class FewShotExampleBuilder(OptimizeAction):
         rewriting_input = (
             f"Prompt:\n{current_prompt}\n"
             f"New examples model created you can select:\n{new_examples}\n"
-            f"Structure description:\n{template_description}\n"
+            f"Prompt Template Structure description:\n{template_description}\n"
+            f"The template constraints must be strictly followed above all else.\n"
             f"Integrate examples and return updated prompt.\n" 
             f"You can replace existing examples or add new ones.\n"
-            f"You should select the best examples and keep the structure consistent.\n\n"
+            f"You should select the best examples and keep the structure consistent.\n"
+            "only give me the revised prompt, do not add any other text.\n"
         )
         return self.rewriter_model.api_call(self.rewriter_system_prompt, rewriting_input)
 
@@ -113,8 +117,10 @@ class InstructionSimplifierByAbstraction(OptimizeAction):
         rewriting_input = (
             f"Prompt:\n{current_prompt}\n"
             f"Abstracted task goal:\n{abstract_goal}\n"
-            f"Prompt structure:\n{template_description}\n"
-            "Please revise the prompt accordingly:"
+            f"Prompt Template Structure description:\n{template_description}\n"
+            f"The template constraints must be strictly followed above all else.\n"
+            "Please revise the prompt accordingly.\n"
+            "only give me the revised prompt, do not add any other text.\n"
         )
         return self.rewriter_model.api_call(self.rewriter_system_prompt, rewriting_input)
 
@@ -131,9 +137,11 @@ class LexicalSimplifier(OptimizeAction):
     def do(self, current_prompt, template_description):
         super().do(current_prompt, template_description)
         prompt = (
-            f"Prompt:\n{current_prompt}\n\n"
-            f"Prompt structure:\n{template_description}\n\n"
-            f"Revise the prompt by simplifying complex phrases, eliminating redundancy, and improving clarity."
+            f"Prompt:\n{current_prompt}\n"
+            f"Prompt Template Structure description:\n{template_description}\n"
+            f"The template constraints must be strictly followed above all else.\n"
+            f"Revise the prompt by simplifying complex phrases, eliminating redundancy, and improving clarity.\n"
+            "only give me the revised prompt, do not add any other text.\n"
         )
         return self.rewriter_model.api_call(self.rewriter_system_prompt, prompt)
 
@@ -150,9 +158,11 @@ class StyleHarmonizer(OptimizeAction):
     def do(self, current_prompt, template_description):
         super().do(current_prompt, template_description)
         prompt = (
-            f"Prompt:\n{current_prompt}\n\n"
-            f"Structure:\n{template_description}\n\n"
-            f"Please make sure all parts follow the same tone and are stylistically consistent (e.g., formal or instructional)."
+            f"Prompt:\n{current_prompt}\n"
+            f"Prompt Template Structure description:\n{template_description}\n"
+            f"The template constraints must be strictly followed above all else.\n"
+            f"Please make sure all parts follow the same tone and are stylistically consistent (e.g., formal or instructional).\n"
+            "only give me the revised prompt, do not add any other text.\n"
         )
         return self.rewriter_model.api_call(self.rewriter_system_prompt, prompt)
 
@@ -169,8 +179,10 @@ class CohesionImprover(OptimizeAction):
         super().do(current_prompt, template_description)
         prompt = (
             f"Prompt:\n{current_prompt}\n\n"
-            f"Prompt structure:\n{template_description}\n\n"
-            f"Please revise the transitions and phrasing between blocks to improve fluency and coherence."
+            f"Prompt Template Structure description:\n{template_description}\n"
+            f"The template constraints must be strictly followed above all else.\n"
+            f"Please revise the transitions and phrasing between blocks to improve fluency and coherence.\n"
+            "only give me the revised prompt, do not add any other text.\n"
         )
         return self.rewriter_model.api_call(self.rewriter_system_prompt, prompt)
 
@@ -187,8 +199,10 @@ class AmbiguityReducer(OptimizeAction):
         super().do(current_prompt, template_description)
         prompt = (
             f"Prompt:\n{current_prompt}\n\n"
-            f"Prompt structure:\n{template_description}\n\n"
-            f"Please revise any parts that might be unclear or ambiguous, ensuring the prompt is fully precise."
+            f"Prompt Template Structure description:\n{template_description}\n"
+            f"The template constraints must be strictly followed above all else.\n"
+            f"Please revise any parts that might be unclear or ambiguous, ensuring the prompt is fully precise.\n"
+            "only give me the revised prompt, do not add any other text.\n"
         )
         return self.rewriter_model.api_call(self.rewriter_system_prompt, prompt)
     

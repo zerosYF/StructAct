@@ -23,7 +23,7 @@ class SearchConfig:
         self.expand_num: int = 3               # Number of nodes to expand per iteration (for parallelism)
         assert self.expand_num <= self.width_threshold
         self.rollout_length: int = 3           # Rollout path depth (fixed-length simulation)
-        self.rollout_width: int = 3
+        self.rollout_width: int = 1
         self.rollout_early_stop_rounds: int = 3
         self.rollout_early_stop_delta: float = 0.01
 
