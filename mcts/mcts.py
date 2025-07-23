@@ -5,8 +5,9 @@ from mcts.choose import ChooseStrategy
 from mcts.rollout import RolloutStrategy
 from mcts.select import UCTStrategy
 from logger import logger
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from mcts.node import Node
+import concurrent
+from threading import Lock
 
 class MCTS:
     def __init__(self, 
@@ -23,6 +24,7 @@ class MCTS:
         self.expand_strategy = expand_strategy
         self.rollout_strategy = rollout_strategy
         self.choose_strategy = choose_strategy
+        self.lock = Lock()
 
     def _select(self, node: Node, max_width: int) -> list[Node]:
         path = []
@@ -48,9 +50,10 @@ class MCTS:
         return self.rollout_strategy.rollout(node)
 
     def _backpropagate(self, path:list[Node], reward):
-        for node in reversed(path):
-            self.N[node] += 1
-            self.Q[node] = node.q_value(self.Q[node], reward)
+        with self.lock:
+            for node in reversed(path):
+                self.N[node] += 1
+                self.Q[node] = node.q_value(self.Q[node], reward)
 
     def do_iter(self, node: Node, width: int = 1, expand_num: int = 1):
         logger.info("--------------Start Iteration----------------")
@@ -65,18 +68,25 @@ class MCTS:
         else:
             rollout_targets = children
 
-        logger.info("Step 3: Running Rollouts")
+        logger.info(f"Step 3: Running Rollouts for {len(rollout_targets)} children (parallel)")
         results = []
-        for child in rollout_targets:
-            rollout_path = path.copy()
-            rollout_path.append(child)
-            reward = self._rollout(child)
-            logger.info(f"Child node {child} rollout score: {reward:.2f}")
-            results.append((rollout_path, reward))
 
-        logger.info("Step 4: Backpropagating reward for each child node")
-        for rollout_path, reward in results:
+        def rollout_and_backprop(child_node):
+            rollout_path = path.copy() + [child_node]
+            reward = self._rollout(child_node)
             self._backpropagate(rollout_path, reward)
+            logger.info(f"Child node {child_node} rollout score: {reward:.2f}")
+            return (rollout_path, reward)
+
+        # 并行执行 rollout + backprop
+        with concurrent.futures.ThreadPoolExecutor(max_workers=len(rollout_targets)) as executor:
+            futures = [executor.submit(rollout_and_backprop, child) for child in rollout_targets]
+            for future in concurrent.futures.as_completed(futures):
+                try:
+                    result = future.result()
+                    results.append(result)
+                except Exception as e:
+                    logger.error(f"⚠️ Error during rollout: {e}")
 
         logger.info("---------------End Iteration------------------")
 

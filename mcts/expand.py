@@ -31,19 +31,18 @@ class DefaultExpandStrategy(ExpandStrategy):
         for action in selected_actions:
             mcts.untried_actions[node].remove(action)
 
-        # Use ThreadPoolExecutor for parallel expansion of nodes
-        with concurrent.futures.ThreadPoolExecutor(max_workers=max_expand) as executor:
-            # Submit tasks to the thread pool for each selected action
-            future_child_action = {executor.submit(self._expand_action, node, action, mcts): action for action in selected_actions}
-            children = list(future_child_action.keys())
+        # 串行执行 Expand，并返回 child 节点
+        children = []
+        for action in selected_actions:
+            try:
+                child = node.take_action(action, Step.Expand)
+                mcts.children[node].append(child)
+                mcts.untried_actions[child] = child.get_untried_actions()
+                children.append(child)
+            except Exception as e:
+                logger.error(f"Error expanding action {getattr(action, 'name', 'Unknown')}: {e}")
+        
         return children
-
-    def _expand_action(self, node: Node, action, mcts) -> Node:
-        """Helper function to expand a single node by applying a single action."""
-        child: Node = node.take_action(action, Step.Expand)
-        mcts.children[node].append(child)
-        mcts.untried_actions[child] = child.get_untried_actions()
-        return child
     
     def _weighted_random_choice(self, actions: list, k: int, temperature: float = 1.0):
         """Softmax weighted random selection based on usage_count"""
