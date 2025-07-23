@@ -38,8 +38,7 @@ class MCTSVisualizer:
 
     def _run(self):
         plt.ion()
-        plt.title(self.title)
-        fig = plt.figure(figsize=(12, 8))
+        fig = plt.figure(figsize=(12, 8), num=self.title)
         gs = GridSpec(2, 1, height_ratios=[1, 2]) 
         ax_train = fig.add_subplot(gs[0])
         ax_train_ = ax_train.twinx()

@@ -4,30 +4,32 @@ from task.epistemic import EpistemicTask
 from search.controller import SearchController
 from search.config import SearchConfig
 from search.evaluator import PromptEvaluator
-from task.base_task import TaskBase
 from logger import logger
+import time
 
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
 config = SearchConfig()
-def run_task(task:TaskBase):
+def run_task(task_cls):
     try:
-        # 初始化任务、评估器和控制器
-        bbh_task = task
-        evaluator = PromptEvaluator(bbh_task, config.reward_thread_num)
-        controller = SearchController(evaluator, config, bbh_task)
+        task = task_cls(config)
+        evaluator = PromptEvaluator(task, config.reward_thread_num)
+        controller = SearchController(evaluator, config, task)
 
         logger.info(f"🚀 Running task: {task.name}")
+        start_time = time.time()
         best_template, best_sequence, best_prompt = controller.search()
 
-        acc_mcts = evaluator.evaluate(bbh_task.get_test(), best_prompt)
-        acc_origin = evaluator.evaluate(bbh_task.get_test(), bbh_task.extract_origin_prompt())
+        acc_mcts = evaluator.evaluate(task.get_test(), best_prompt)
+        acc_origin = evaluator.evaluate(task.get_test(), task.extract_origin_prompt())
 
-        # 创建结果目录
+        end_time = time.time()
+        duration = end_time - start_time  # 单位：秒
+        minutes, seconds = divmod(duration, 60)
+
         result_dir = os.path.join("results", task.name)
         os.makedirs(result_dir, exist_ok=True)
 
-        # 写入结果
         with open(os.path.join(result_dir, "result.txt"), "w", encoding="utf-8") as f:
             f.write(f"🔍 Task: {task.name}\n")
             f.write(f"✅ Best Prompt Template:\n{best_template}\n\n")
@@ -35,11 +37,12 @@ def run_task(task:TaskBase):
             f.write("\n".join([action.name for action in best_sequence]) + "\n\n")
             f.write(f"📊 MCTS Test Accuracy: {acc_mcts.get('accuracy')}\n")
             f.write(f"📊 Original Test Accuracy: {acc_origin.get('accuracy')}\n")
+            f.write(f"\n⏱️ Time Elapsed: {int(minutes)} min {int(seconds)} sec ({duration:.2f} seconds)\n")
 
-        logger.info(f"✅ Finished task: {task.name}")
+        logger.info(f"✅ Finished task: {task.name} in {int(minutes)} min {int(seconds)} sec")
 
     except Exception as e:
-        logger.error(f"❌ Error in task {task.name}: {str(e)}")
+        logger.error(f"❌ Error in task {task_cls.__name__}: {str(e)}")
         traceback.print_exc()
 
 import multiprocessing
@@ -49,15 +52,14 @@ from task.geometric_shapes import GeometricShapesTask
 from task.object_counting import ObjectCountingTask
 from task.penguins_table import PenguinsTableTask
 from task.temporal_sequences import TemporalSequencesTask
-# 替换为你要运行的子任务名称列表
 
 TASK_LIST = [
-    CausalJudgementTask(config=config),
-    EpistemicTask(config=config),
-    GeometricShapesTask(config=config),
-    ObjectCountingTask(config=config),
-    PenguinsTableTask(config=config), 
-    TemporalSequencesTask(config=config),
+    EpistemicTask,
+    TemporalSequencesTask,
+    ObjectCountingTask,
+    CausalJudgementTask,
+    GeometricShapesTask,
+    PenguinsTableTask,
 ]
 
 def run_all():
