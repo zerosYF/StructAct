@@ -32,6 +32,8 @@ class SearchController:
         template = PromptTemplate(config=self.config, blocks=self.blocks, task=self.task)
         logger.info(f"🔍 Initial template constraints:\n{template.render()}")
         best_prompt = self.task.extract_origin_prompt()
+
+        Visualizer.start(title=self.task.name)
         
         for _ in range(self.config.rnn_iter_num):
             best_prompt = template.pre_sample(best_prompt)
@@ -60,8 +62,7 @@ class SearchController:
             choose_strategy=get_choose_strategy(self.config)
         )
 
-        Visualizer.set_mcts(mcts, root_node, title=self.task.name)
-        Visualizer.start()
+        Visualizer.set_mcts(mcts, root_node)
 
         for iter_id in range(self.config.mcts_iter_num):
             mcts.do_iter(
@@ -83,6 +84,8 @@ class SearchController:
         template = PromptTemplate(config=self.config, blocks=self.blocks, task=self.task)
         logger.info(f"🔍 Initial template constraints:\n{template.render()}")
         best_prompt = self.task.extract_origin_prompt()
+
+        Visualizer.start(title=self.task.name)
         
         for _ in range(self.config.rnn_iter_num):
             samples = template.batch_sample_structs(self.config.struct_sample_count)
@@ -109,6 +112,7 @@ class SearchController:
             template.last_log_prob_sum = best_result["log_prob_sum"]
             template.last_entropy = best_result["entropy"]
             template.update(self.evaluator, best_prompt)
+            
         return template.render(), best_prompt
 
     def _mcts_workflow_for_batch(self, args):

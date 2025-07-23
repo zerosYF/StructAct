@@ -19,18 +19,18 @@ class MCTSVisualizer:
         self._stop_event = threading.Event()
         self._thread = threading.Thread(target=self._run)
 
-    def start(self):
+    def start(self, title: str = "MCTS Visualization"):
+        self.title = title
         self._thread.start()
 
     def stop(self):
         self._stop_event.set()
         self._thread.join()
     
-    def set_mcts(self, mcts, root, max_nodes=100, title: str = "MCTS Visualization"):
+    def set_mcts(self, mcts, root, max_nodes=100):
         self.mcts = mcts
         self.root = root
         self.max_nodes = max_nodes
-        self.title = title
 
     def log_train(self, reward: float, entropy:float):
         self.rewards.append(reward)
@@ -48,8 +48,9 @@ class MCTSVisualizer:
             ax_train.clear()
             self._draw_train_curve(ax_train, ax_train_)
 
-            ax_tree.clear()
-            self._draw_tree(ax_tree)
+            if self.mcts and self.root:
+                ax_tree.clear()
+                self._draw_tree(ax_tree)
 
             fig.tight_layout()
             fig.canvas.draw()
