@@ -4,6 +4,7 @@ from task.epistemic import EpistemicTask
 from search.controller import SearchController
 from search.config import SearchConfig
 from search.evaluator import PromptEvaluator
+from task.base_task import TaskBase
 from logger import logger
 import time
 
@@ -12,13 +13,13 @@ os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 config = SearchConfig()
 def run_task(task_cls):
     try:
-        task = task_cls(config)
+        task:TaskBase = task_cls(config)
         evaluator = PromptEvaluator(task, config.reward_thread_num)
         controller = SearchController(evaluator, config, task)
 
         logger.info(f"🚀 Running task: {task.name}")
         start_time = time.time()
-        best_template, best_sequence, best_prompt = controller.search()
+        best_template, best_sequence, best_prompt = controller.batch_search()
 
         acc_mcts = evaluator.evaluate(task.get_test(), best_prompt)
         acc_origin = evaluator.evaluate(task.get_test(), task.extract_origin_prompt())
