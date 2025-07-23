@@ -26,10 +26,11 @@ class MCTSVisualizer:
         self._stop_event.set()
         self._thread.join()
     
-    def set_mcts(self, mcts, root, max_nodes=100):
+    def set_mcts(self, mcts, root, max_nodes=100, title: str = "MCTS Visualization"):
         self.mcts = mcts
         self.root = root
         self.max_nodes = max_nodes
+        self.title = title
 
     def log_train(self, reward: float, entropy:float):
         self.rewards.append(reward)
@@ -37,6 +38,7 @@ class MCTSVisualizer:
 
     def _run(self):
         plt.ion()
+        plt.title(self.title)
         fig = plt.figure(figsize=(12, 8))
         gs = GridSpec(2, 1, height_ratios=[1, 2]) 
         ax_train = fig.add_subplot(gs[0])
