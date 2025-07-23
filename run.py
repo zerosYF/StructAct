@@ -21,8 +21,9 @@ def run():
     duration = end_time - start_time  # 单位：秒
     minutes, seconds = divmod(duration, 60)
     logger.info(f"✅ Finished search in {int(minutes)} min {int(seconds)} sec")
-
     logger.info(f"✅ Best PromptTemplate:\n{best_template}")
+    logger.info(f"🔍 Best prompt: {best_prompt}")
+
     acc_mcts = evaluator.evaluate(bbh_task.get_test(), best_prompt)
     logger.info(f"📊 MCTS Test Accuracy:{acc_mcts.get('accuracy')}")
     acc_origin = evaluator.evaluate(bbh_task.get_test(), bbh_task.extract_origin_prompt())
