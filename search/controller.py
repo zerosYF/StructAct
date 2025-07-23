@@ -14,7 +14,7 @@ from mcts.expand import get_expand_strategy
 from mcts.rollout import get_rollout_strategy
 from mcts.choose import get_choose_strategy
 from program.strategy_actions import define_full_actions
-from multiprocessing.dummy import Pool
+import concurrent.futures
 from logger import logger
 
 class SearchController:
@@ -102,8 +102,8 @@ class SearchController:
                 (self.blocks, self.task, flat_params, best_prompt, self.evaluator, self.config, False)
                     for (_, flat_params, _, _) in others
                 ]
-                with Pool(processes=self.config.struct_sample_top_k) as pool:
-                    other_results = pool.map(self._mcts_workflow_for_batch, args_list)
+                with concurrent.futures.ThreadPoolExecutor(max_workers=self.config.struct_sample_top_k) as executor:
+                    other_results = list(executor.map(self._mcts_workflow_for_batch, args_list))
             
             all_results = [main_result] + other_results
             for result in all_results:

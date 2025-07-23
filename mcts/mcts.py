@@ -6,7 +6,7 @@ from mcts.rollout import RolloutStrategy
 from mcts.select import UCTStrategy
 from logger import logger
 from mcts.node import Node
-import concurrent
+import concurrent.futures
 from threading import Lock
 
 class MCTS:
