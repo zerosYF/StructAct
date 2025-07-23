@@ -91,21 +91,29 @@ class SearchController:
             samples = template.batch_sample_structs(self.config.struct_sample_count)
             top_k = template.select_topk_structures(samples, self.config.struct_sample_top_k)
             logger.info(f"📌 Top-{self.config.struct_sample_top_k} structures selected. Starting parallel MCTS...")
-            args_list = [
-            (self.blocks, self.task, flat_params, best_prompt, self.evaluator, self.config)
-                for (_, flat_params, _, _) in top_k
-            ]
-            with Pool(processes=self.config.struct_sample_top_k) as pool:
-                results = pool.map(self._mcts_workflow_for_batch, args_list)
+            top1 = top_k[0]
+            others = top_k[1:]
+            main_result = self._mcts_workflow_for_batch(
+                [self.blocks, self.task, top1[1], best_prompt, self.evaluator, self.config], True
+            )
+            other_results = []
+            if self.config.struct_sample_top_k > 1:
+                args_list = [
+                (self.blocks, self.task, flat_params, best_prompt, self.evaluator, self.config, False)
+                    for (_, flat_params, _, _) in others
+                ]
+                with Pool(processes=self.config.struct_sample_top_k) as pool:
+                    other_results = pool.map(self._mcts_workflow_for_batch, args_list)
             
-            for result in results:
+            all_results = [main_result] + other_results
+            for result in all_results:
                 for _, flat_params, log_prob_sum, entropy in top_k:
                     if tuple(result["flat_params"]) == tuple(flat_params):
                         result["log_prob_sum"] = log_prob_sum
                         result["entropy"] = entropy
                         break
 
-            best_result = max(results, key=lambda x: x["reward"])
+            best_result = max(all_results, key=lambda x: x["reward"])
             best_prompt = best_result["prompt"]
 
             template.last_sampled_params = best_result["flat_params"]
@@ -115,7 +123,7 @@ class SearchController:
             
         return template.render(), best_prompt
 
-    def _mcts_workflow_for_batch(self, args):
+    def _mcts_workflow_for_batch(self, args, main_thread=False):
         blocks, task, flat_params, prompt, evaluator, config = args
 
         template = PromptTemplate(config=config, blocks=blocks, task=task)
@@ -142,6 +150,8 @@ class SearchController:
             rollout_strategy=get_rollout_strategy(evaluator, config),
             choose_strategy=get_choose_strategy(config)
         )
+        if main_thread:
+            Visualizer.set_mcts(mcts, root_node)
 
         for _ in range(config.mcts_iter_num):
             mcts.do_iter(
