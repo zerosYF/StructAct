@@ -55,7 +55,7 @@ class DefaultExpandStrategy(ExpandStrategy):
     def _expand_action_threadsafe(self, node: Node, action, mcts) -> Node:
         try:
             child: Node = node.take_action(action, Step.Expand)
-            with self._lock:
+            with self.lock:
                 mcts.children[node].append(child)
                 mcts.untried_actions[child] = child.get_untried_actions()
             return child
