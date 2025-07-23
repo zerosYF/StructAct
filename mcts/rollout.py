@@ -21,7 +21,6 @@ class ClassicPathRollout(RolloutStrategy):
     def rollout(self, node: Node) -> float:
         current: Node = node.clone_node()
         depth = 0
-        rewards = []
 
         while depth < self.rollout_depth:
             actions = current.get_possible_actions()
@@ -29,16 +28,11 @@ class ClassicPathRollout(RolloutStrategy):
                 break
             action = random.choice(actions)
             current = current.take_action(action, Step.Rollout)
-
-            reward = current.reward()
-            rewards.append(reward)
-
-            logger.info(f"[Rollout] Step {depth+1}, Action: {getattr(action, 'name', 'Unknown')}, Reward: {reward:.4f}")
             depth += 1
 
-        avg_reward = sum(rewards) / len(rewards) if rewards else 0.0
-        logger.info(f"🧠 Single-path rollout average reward: {avg_reward:.4f}")
-        return avg_reward
+        final_reward = current.reward()
+        logger.info(f"🧠 Single-path rollout reward: {final_reward:.4f}")
+        return final_reward
 
 
 class MultiPathRollout(RolloutStrategy):

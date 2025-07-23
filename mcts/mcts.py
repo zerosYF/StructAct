@@ -78,7 +78,6 @@ class MCTS:
             logger.info(f"Child node {child_node} rollout score: {reward:.2f}")
             return (rollout_path, reward)
 
-        # 并行执行 rollout + backprop
         with concurrent.futures.ThreadPoolExecutor(max_workers=len(rollout_targets)) as executor:
             futures = [executor.submit(rollout_and_backprop, child) for child in rollout_targets]
             for future in concurrent.futures.as_completed(futures):

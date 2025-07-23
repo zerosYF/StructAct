@@ -31,11 +31,10 @@ class DefaultExpandStrategy(ExpandStrategy):
         for action in selected_actions:
             mcts.untried_actions[node].remove(action)
 
-        # 串行执行 Expand，并返回 child 节点
         children = []
         for action in selected_actions:
             try:
-                child = node.take_action(action, Step.Expand)
+                child:Node = node.take_action(action, Step.Expand)
                 mcts.children[node].append(child)
                 mcts.untried_actions[child] = child.get_untried_actions()
                 children.append(child)

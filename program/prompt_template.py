@@ -60,6 +60,7 @@ class PromptTemplate:
 
         while len(results) < sample_k and trials < max_trials:
             flat_params, log_prob_sum, entropy = self.controller.train_step()
+            self.last_sampled_params = flat_params
             key = tuple(flat_params)
             if key not in seen:
                 seen.add(key)
@@ -109,7 +110,8 @@ class PromptTemplate:
         val_samples = self.task.sample_train_rnn()  # Sample a subset of the training set
         total_score = sum(evaluator.batch_reward(current_prompt, val_samples))
         avg_score = total_score / len(val_samples)
-        self.struct_reward_cache[tuple(self.last_sampled_params)] = avg_score
+        if self.last_sampled_params is not None:
+            self.struct_reward_cache[tuple(self.last_sampled_params)] = avg_score
 
         logger.info(f"🎯 [PromptTemplate] New prompt score with current structure = {avg_score:.4f}")
         return avg_score
@@ -123,7 +125,6 @@ class PromptTemplate:
         - Compute slot-level attributions
         - Reinforce update
         """
-        
         avg_score = self.get_reward(evaluator, current_prompt)
         # Perform slot-level structure attribution if enabled
         if self.task.config.rnn_structure_contribution:
