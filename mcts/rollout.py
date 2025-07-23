@@ -59,7 +59,6 @@ class MultiPathRollout(RolloutStrategy):
     def _rollout_path(self, node: Node, path_idx: int) -> float:
         current: Node = node.clone_node()
         depth = 0
-        path_rewards = []
 
         while depth < self.rollout_depth:
             actions = current.get_possible_actions()
@@ -67,43 +66,45 @@ class MultiPathRollout(RolloutStrategy):
                 break
             action = random.choice(actions)
             current = current.take_action(action, Step.Rollout)
-            reward = current.reward()
-            path_rewards.append(reward)
-
-            logger.info(f"[Rollout-{path_idx}] Step {depth + 1}, Action: {getattr(action, 'name', 'Unknown')}, Reward: {reward:.4f}")
             depth += 1
+            logger.info(f"[Rollout-{path_idx}] Step {depth}, Action: {getattr(action, 'name', 'Unknown')}")
 
-        return path_rewards
+        final_reward = current.reward()
+        logger.info(f"[Rollout-{path_idx}] Final reward: {final_reward:.4f}")
+        return final_reward
 
     def rollout(self, node: Node) -> float:
-        all_rewards = []
+        final_rewards = []
         avg_rewards_history = []
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=self.num_paths) as executor:
-            # Submit all rollout tasks in parallel
-            future_to_path = {executor.submit(self._rollout_path, node, path_idx): path_idx for path_idx in range(self.num_paths)}
+            future_to_path = {
+                executor.submit(self._rollout_path, node, path_idx): path_idx
+                for path_idx in range(self.num_paths)
+            }
 
             for future in concurrent.futures.as_completed(future_to_path):
                 path_idx = future_to_path[future]
                 try:
-                    path_rewards = future.result()
-                    all_rewards.extend(path_rewards)
+                    final_reward = future.result()
+                    final_rewards.append(final_reward)
 
-                    avg_reward_now = np.mean(all_rewards) if all_rewards else 0.0
+                    avg_reward_now = np.mean(final_rewards)
                     avg_rewards_history.append(avg_reward_now)
 
                     logger.info(f"[Rollout-{path_idx}] Current average reward: {avg_reward_now:.4f}")
 
-                    # Check early stop
+                    # Early stopping condition
                     if len(avg_rewards_history) >= self.early_stop_rounds:
                         recent = avg_rewards_history[-self.early_stop_rounds:]
                         if max(recent) - min(recent) < self.early_stop_delta:
                             logger.info(f"🛑 Early stopping triggered at path {path_idx + 1}. Avg reward: {avg_reward_now:.4f}")
                             break
+
                 except Exception as e:
                     logger.error(f"Error in rollout path {path_idx}: {e}")
 
-        final_avg_reward = np.mean(all_rewards) if all_rewards else 0.0
+        final_avg_reward = np.mean(final_rewards) if final_rewards else 0.0
         logger.info(f"✅ Multi-path rollout final average reward: {final_avg_reward:.4f}")
         return final_avg_reward
 
