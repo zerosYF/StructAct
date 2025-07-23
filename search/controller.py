@@ -57,7 +57,7 @@ class SearchController:
         )
 
         # Step 5: Launch visualizer (optional)
-        Visualizer.set_mcts(mcts, root_node, self.task.name)
+        Visualizer.set_mcts(mcts, root_node, title=self.task.name)
         Visualizer.start()
 
         # Step 6: Run MCTS iterations
