@@ -49,11 +49,24 @@ class PromptTemplate:
         block_descriptions = "\n".join([f"- {block.describe()}" for block in self.blocks])
         return header + block_descriptions
     
-    def batch_sample_structs(self, sample_k:int) -> list:
+    def batch_sample_structs(self, sample_k:int, oversample_factor: int = 2) -> list:
+        seen = set()
         results = []
-        for _ in range(sample_k):
+
+        max_trials = sample_k * oversample_factor
+        trials = 0
+
+        while len(results) < sample_k and trials < max_trials:
             flat_params, log_prob_sum, entropy = self.controller.train_step()
-            results.append((flat_params, log_prob_sum, entropy))
+            key = tuple(flat_params)
+            if key not in seen:
+                seen.add(key)
+                results.append((flat_params, log_prob_sum, entropy))
+            trials += 1
+
+        if len(results) < sample_k:
+            logger.warning(f"[PromptTemplate] Only {len(results)} unique structures found out of {sample_k} requested.")
+
         return results
     
     def get_struct_reward(self, params: List[float]) -> float:
@@ -67,7 +80,7 @@ class PromptTemplate:
             score = self.get_struct_reward(flat_params)
             scored.append((score, flat_params, log_prob_sum, entropy))
         scored.sort(reverse=True, key=lambda x: x[0])
-        return scored[:k]
+        return scored[:min(k, len(scored))]
     
     def pre_sample(self, current_prompt: str):
         flat_params, log_prob_sum, entropy = self.controller.train_step()
