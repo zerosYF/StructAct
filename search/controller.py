@@ -14,6 +14,7 @@ from mcts.expand import get_expand_strategy
 from mcts.rollout import get_rollout_strategy
 from mcts.choose import get_choose_strategy
 from program.strategy_actions import define_full_actions
+from multiprocessing import Pool
 from logger import logger
 
 class SearchController:
@@ -33,9 +34,8 @@ class SearchController:
         best_prompt = self.task.extract_origin_prompt()
         
         for _ in range(self.config.rnn_iter_num):
-            best_prompt, need_mcts = template.pre_sample(best_prompt)
-            if need_mcts:
-                best_prompt = self._mcts_workflow(template, best_prompt)
+            best_prompt = template.pre_sample(best_prompt)
+            self._mcts_workflow(template, best_prompt)
             template.update(self.evaluator, best_prompt)
         return template.render(), best_prompt
     
@@ -78,3 +78,78 @@ class SearchController:
             logger.info(f"  Step {i+1}: {action.name}")
         best_prompt = best_node.current_prompt
         return best_prompt
+    
+    def batch_search(self):
+        template = PromptTemplate(config=self.config, blocks=self.blocks, task=self.task)
+        logger.info(f"🔍 Initial template constraints:\n{template.render()}")
+        best_prompt = self.task.extract_origin_prompt()
+        
+        for _ in range(self.config.rnn_iter_num):
+            samples = template.batch_sample_structs(self.config.struct_sample_count)
+            top_k = template.select_topk_structures(samples, self.config.struct_sample_top_k)
+            logger.info(f"📌 Top-{self.config.struct_sample_top_k} structures selected. Starting parallel MCTS...")
+            args_list = [
+            (self.blocks, self.task, flat_params, best_prompt, self.evaluator, self.config)
+                for (_, flat_params, _, _) in top_k
+            ]
+            with Pool(processes=self.config.topk) as pool:
+                results = pool.map(self._mcts_workflow_for_batch, args_list)
+            
+            for result in results:
+                for _, flat_params, log_prob_sum, entropy in top_k:
+                    if tuple(result["flat_params"]) == tuple(flat_params):
+                        result["log_prob_sum"] = log_prob_sum
+                        result["entropy"] = entropy
+                        break
+
+            best_result = max(results, key=lambda x: x["reward"])
+            best_prompt = best_result["prompt"]
+
+            template.last_sampled_params = best_result["flat_params"]
+            template.last_log_prob_sum = best_result["log_prob_sum"]
+            template.last_entropy = best_result["entropy"]
+            template.update(self.evaluator, best_prompt)
+        return template.render(), best_prompt
+
+    def _mcts_workflow_for_batch(self, args):
+        blocks, task, flat_params, prompt, evaluator, config = args
+
+        template = PromptTemplate(config=config, blocks=blocks, task=task)
+        idx = 0
+        for block in template.blocks:
+            num = block.get_num_slots()
+            block.set_hyperparams(flat_params[idx:idx + num])
+            idx += num
+        prompt = template._sync_semantics(prompt)
+
+        root_node = PromptNode(
+            action_set=define_full_actions(task),
+            action_seq=[],
+            structure_template=template,
+            prompt=prompt,
+            evaluator=evaluator,
+            depth=0,
+            max_depth=config.depth_threshold,
+        )
+
+        mcts = MCTS(
+            select_strategy=get_select_strategy(config),
+            expand_strategy=get_expand_strategy(config),
+            rollout_strategy=get_rollout_strategy(evaluator, config),
+            choose_strategy=get_choose_strategy(config)
+        )
+
+        for _ in range(config.mcts_iter_num):
+            mcts.do_iter(
+                root_node,
+                width=config.width_threshold,
+                expand_num=config.expand_num,
+            )
+        best_node = mcts.choose(root_node)
+        return {
+            "prompt": best_node.current_prompt,
+            "reward": template.get_reward(evaluator, best_node.current_prompt),
+            "flat_params": flat_params,
+            "log_prob_sum": 0.0, 
+            "entropy": 0.0
+        }

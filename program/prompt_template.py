@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 from logger import logger
 from rnn.controller import TemplateController
 from search.evaluator import PromptEvaluator
@@ -17,7 +17,7 @@ class PromptTemplate:
         )
         self.task = task
         self.sync_action = StructureSyncAction(task, self.task.extract_origin_prompt())
-        self.last_reward = 0.0
+        self.struct_reward_cache = {}
         self.last_sampled_params = None
         self.last_log_prob_sum = 0.0
         self.last_entropy = 0.0
@@ -49,24 +49,48 @@ class PromptTemplate:
         block_descriptions = "\n".join([f"- {block.describe()}" for block in self.blocks])
         return header + block_descriptions
     
+    def batch_sample_structs(self, sample_k:int) -> list:
+        results = []
+        for _ in range(sample_k):
+            flat_params, log_prob_sum, entropy = self.controller.train_step()
+            results.append((flat_params, log_prob_sum, entropy))
+        return results
+    
+    def get_struct_reward(self, params: List[float]) -> float:
+        if tuple(params) in self.struct_reward_cache:
+            return self.struct_reward_cache[tuple(params)]
+        return -1e9  
+    
+    def select_topk_structures(self, samples: List[Tuple[List[int], float, float]], k: int):
+        scored = []
+        for flat_params, log_prob_sum, entropy in samples:
+            score = self.get_struct_reward(flat_params)
+            scored.append((score, flat_params, log_prob_sum, entropy))
+        scored.sort(reverse=True, key=lambda x: x[0])
+        return scored[:k]
+    
     def pre_sample(self, current_prompt: str):
         flat_params, log_prob_sum, entropy = self.controller.train_step()
-        need_mcts = True
-        if flat_params == self.last_sampled_params:
-            logger.warning("Repeated parameters detected, skipping update.")
-            need_mcts = False
-        else:
-            self.last_sampled_params = flat_params
-            idx = 0
-            for block in self.blocks:
-                num = block.get_num_slots()
-                block.set_hyperparams(flat_params[idx:idx + num])
-                idx += num
 
+        self.last_sampled_params = flat_params
+        idx = 0
+        for block in self.blocks:
+            num = block.get_num_slots()
+            block.set_hyperparams(flat_params[idx:idx + num])
+            idx += num
             current_prompt = self._sync_semantics(current_prompt)
         self.last_log_prob_sum = log_prob_sum
         self.last_entropy = entropy
-        return current_prompt, need_mcts
+        return current_prompt
+    
+    def get_reward(self, evaluator:PromptEvaluator,  current_prompt:str) -> float:
+        val_samples = self.task.sample_train_rnn()  # Sample a subset of the training set
+        total_score = sum(evaluator.batch_reward(current_prompt, val_samples))
+        avg_score = total_score / len(val_samples)
+        self.struct_reward_cache[tuple(self.last_sampled_params)] = avg_score
+
+        logger.info(f"🎯 [PromptTemplate] New prompt score with current structure = {avg_score:.4f}")
+        return avg_score
 
     def update(self, evaluator: PromptEvaluator, current_prompt: str):
         """
@@ -78,12 +102,7 @@ class PromptTemplate:
         - Reinforce update
         """
         
-        val_samples = self.task.sample_train_rnn()  # Sample a subset of the training set
-        total_score = sum(evaluator.batch_reward(current_prompt, val_samples))
-        avg_score = total_score / len(val_samples)
-        self.last_reward = avg_score
-        logger.info(f"🎯 [PromptTemplate] New prompt score with current structure = {avg_score:.4f}")
-
+        avg_score = self.get_reward(evaluator, current_prompt)
         # Perform slot-level structure attribution if enabled
         if self.task.config.rnn_structure_contribution:
             logger.info("🔍 [PromptTemplate] Performing slot-level structure attribution...")
@@ -91,7 +110,7 @@ class PromptTemplate:
             slot_rewards = self._structure_attribution(
                 params=self.last_sampled_params,
                 evaluator=evaluator,
-                val_samples=val_samples,
+                val_samples=self.task.sample_train_rnn(),
                 current_prompt=current_prompt
             )
         else:
