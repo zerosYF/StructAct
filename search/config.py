@@ -15,7 +15,7 @@ class SearchConfig:
 
         # MCTS search control
         self.exploration_weight: float = 1.5   # Exploration factor in UCT formula
-        self.mcts_iter_num: int = 5                 # Number of iterations in MCTS main loop
+        self.mcts_iter_num: int = 10                 # Number of iterations in MCTS main loop
         self.depth_threshold: int = 5          # Maximum search depth
         self.width_threshold: int = 3          # Number of children per expanded node
         # Node expansion and rollout config
@@ -30,14 +30,14 @@ class SearchConfig:
         # RNN Controller settings
         self.struct_sample_count: int = 10       # Number of structure samples per iteration
         self.struct_sample_top_k: int = 1          # Number of top structures to keep
-        self.rnn_iter_num: int = 10          # Number of training iterations for RNN
+        self.rnn_iter_num: int = 50          # Number of training iterations for RNN
         self.rnn_batch_size: int = 32         # Batch size for RNN training
         self.rnn_hidden_dim: int = 128         # Hidden dimension of RNN
         self.rnn_lr: float = 1e-3              # Learning rate for RNN
         self.rnn_structure_contribution = False
 
         # Multi-threaded reward evaluation
-        self.reward_thread_num: int = 16       # Number of threads for reward evaluation
+        self.reward_thread_num: int = 40       # Number of threads for reward evaluation
 
         # Debugging indicators (for tracing internal states)
         self.rollout_idx: int = 1              # Current rollout path index
