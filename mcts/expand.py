@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from typing import List
 from mcts.node import Node, Step
 from search.config import SearchConfig
+import threading
 import concurrent.futures
 import numpy as np
 from logger import logger
@@ -13,6 +14,9 @@ class ExpandStrategy(ABC):
         pass
 
 class DefaultExpandStrategy(ExpandStrategy):
+    def __init__(self):
+        self.lock = threading.Lock()
+
     def expand(self, node: Node, mcts, max_expand: int = None) -> List[Node]:
         if node not in mcts.children:
             mcts.children[node] = []
@@ -32,16 +36,32 @@ class DefaultExpandStrategy(ExpandStrategy):
             mcts.untried_actions[node].remove(action)
 
         children = []
-        for action in selected_actions:
-            try:
-                child:Node = node.take_action(action, Step.Expand)
+        with concurrent.futures.ThreadPoolExecutor(max_workers=k) as executor:
+            futures = {
+                executor.submit(self._expand_action_threadsafe, node, action, mcts): action
+                for action in selected_actions
+            }
+
+            for future in concurrent.futures.as_completed(futures):
+                try:
+                    child = future.result()
+                    if child is not None:
+                        children.append(child)
+                except Exception as e:
+                    action = futures[future]
+                    logger.error(f"Error expanding action {getattr(action, 'name', 'Unknown')}: {e}")
+        return children
+    
+    def _expand_action_threadsafe(self, node: Node, action, mcts) -> Node:
+        try:
+            child: Node = node.take_action(action, Step.Expand)
+            with self._lock:
                 mcts.children[node].append(child)
                 mcts.untried_actions[child] = child.get_untried_actions()
-                children.append(child)
-            except Exception as e:
-                logger.error(f"Error expanding action {getattr(action, 'name', 'Unknown')}: {e}")
-        
-        return children
+            return child
+        except Exception as e:
+            logger.error(f"Exception in take_action: {e}")
+            return None
     
     def _weighted_random_choice(self, actions: list, k: int, temperature: float = 1.0):
         """Softmax weighted random selection based on usage_count"""
