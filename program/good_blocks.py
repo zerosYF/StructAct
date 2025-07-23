@@ -94,7 +94,7 @@ class FewShotExampleBlock(PromptBlock):
 
     def describe(self):
         return (
-            f"Block: FewShotExamples - {self.num} example(s), Order: “{self.order}”."
+            f"Block: FewShotExamples - “{self.num}” example(s), Order: “{self.order}”."
         )
 
 class ConstraintBlock(PromptBlock):
@@ -125,7 +125,7 @@ class ConstraintBlock(PromptBlock):
 
     def describe(self):
         return (
-            f"Block: ConstraintBlock - {self.num} constraint(s), Format: “{self.format}”."
+            f"Block: ConstraintBlock - “{self.num}” constraint(s), Format: “{self.format}”."
         )
 
 class CautionBlock(PromptBlock):
@@ -157,7 +157,7 @@ class CautionBlock(PromptBlock):
 
     def describe(self):
         return (
-            f"Block: CautionBlock - {self.count} warning(s), Style: “{self.style}”."
+            f"Block: CautionBlock - “{self.count}” warning(s), Style: “{self.style}”."
         )
 
 class SummaryClosureBlock(PromptBlock):

@@ -42,9 +42,11 @@ class PromptTemplate:
         Generate a structured natural language description of the full template.
         """
         header = (
-            "This is a structured prompt template composed of the following functional blocks. \n"
-            "Information in “ ” is most important you should focus on.\n"
-            "Each block plays a distinct role in guiding the model’s behavior:\n"
+            "This is a structured prompt template composed of the following functional blocks.\n"
+            "Text within quotation marks (“ ”) indicates critical elements that must be preserved.\n"
+            "Each block plays a distinct role in shaping the model’s behavior.\n"
+            "You must strictly adhere to the structure and constraints defined by these blocks, "
+            "while ensuring the overall prompt remains coherent and fluent in natural language.\n"
         )
         block_descriptions = "\n".join([f"- {block.describe()}" for block in self.blocks])
         return header + block_descriptions
