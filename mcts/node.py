@@ -25,5 +25,5 @@ class Node(ABC):
     def clone_node(self):
         pass
     @abstractmethod
-    def q_value(self, rollout_reward):
+    def q_value(self, last_q, rollout_reward):
         pass

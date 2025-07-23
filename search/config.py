@@ -15,12 +15,9 @@ class SearchConfig:
 
         # MCTS search control
         self.exploration_weight: float = 1.5   # Exploration factor in UCT formula
-        self.iter_num: int = 1                 # Number of iterations in MCTS main loop
+        self.mcts_iter_num: int = 5                 # Number of iterations in MCTS main loop
         self.depth_threshold: int = 5          # Maximum search depth
         self.width_threshold: int = 3          # Number of children per expanded node
-        self.action_structure_flush_ratio: int = 5
-        assert self.action_structure_flush_ratio >= 1
-
         # Node expansion and rollout config
         self.batch_size: int = 10              # Batch size for training
         self.expand_num: int = 3               # Number of nodes to expand per iteration (for parallelism)
@@ -31,6 +28,7 @@ class SearchConfig:
         self.rollout_early_stop_delta: float = 0.01
 
         # RNN Controller settings
+        self.rnn_iter_num: int = 10          # Number of training iterations for RNN
         self.rnn_batch_size: int = 32         # Batch size for RNN training
         self.rnn_hidden_dim: int = 128         # Hidden dimension of RNN
         self.rnn_lr: float = 1e-3              # Learning rate for RNN
@@ -44,9 +42,6 @@ class SearchConfig:
         self.choose_idx: int = 2               # Current chosen action index
         self.uct_idx: int = 0                  # Current UCT path index
         self.model_idx: int = 0                # Current API model index
-
-        self.rnn_reward_ratio: float = 0.5
-        self.self_rnn_reward_ratio:float = 0.5
 
         # Model configuration
         self.model_name: str = "zhiyan3"

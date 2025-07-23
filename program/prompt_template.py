@@ -17,10 +17,10 @@ class PromptTemplate:
         )
         self.task = task
         self.sync_action = StructureSyncAction(task, self.task.extract_origin_prompt())
-        self.last_sampled_params = None
-        self.count_max = config.action_structure_flush_ratio
-        self.count = 1
         self.last_reward = 0.0
+        self.last_sampled_params = None
+        self.last_log_prob_sum = 0.0
+        self.last_entropy = 0.0
 
     def _get_search_space(self) -> List[int]:
         """
@@ -48,8 +48,27 @@ class PromptTemplate:
         )
         block_descriptions = "\n".join([f"- {block.describe()}" for block in self.blocks])
         return header + block_descriptions
+    
+    def pre_sample(self, current_prompt: str):
+        flat_params, log_prob_sum, entropy = self.controller.train_step()
+        need_mcts = True
+        if flat_params == self.last_sampled_params:
+            logger.warning("Repeated parameters detected, skipping update.")
+            need_mcts = False
+        else:
+            self.last_sampled_params = flat_params
+            idx = 0
+            for block in self.blocks:
+                num = block.get_num_slots()
+                block.set_hyperparams(flat_params[idx:idx + num])
+                idx += num
 
-    def update_by_controller(self, evaluator: PromptEvaluator, current_prompt: str):
+            current_prompt = self._sync_semantics(current_prompt)
+        self.last_log_prob_sum = log_prob_sum
+        self.last_entropy = entropy
+        return current_prompt, need_mcts
+
+    def update(self, evaluator: PromptEvaluator, current_prompt: str):
         """
         Run one RNN optimization step:
         - Sample new structure parameters
@@ -58,39 +77,19 @@ class PromptTemplate:
         - Compute slot-level attributions
         - Reinforce update
         """
-        if self.count != self.count_max:
-            self.count += 1
-            return current_prompt
-        self.count = 1
-        # Step 1: Sample structure parameters from the controller
-        flat_params, log_prob_sum, entropy = self.controller.train_step()
-
-        if flat_params == self.last_sampled_params:
-            logger.warning("Repeated parameters detected, skipping update.")
-        else:
-            self.last_sampled_params = flat_params
-            # Step 2: Assign parameters to each block
-            idx = 0
-            for block in self.blocks:
-                num = block.get_num_slots()
-                block.set_hyperparams(flat_params[idx:idx + num])
-                idx += num
-
-            # Step 3: Sync semantic content to match the new structure
-            current_prompt = self._sync_semantics(current_prompt)
-        ## Step 4: Evaluate the new prompt using the evaluator
+        
         val_samples = self.task.sample_train_rnn()  # Sample a subset of the training set
         total_score = sum(evaluator.batch_reward(current_prompt, val_samples))
         avg_score = total_score / len(val_samples)
         self.last_reward = avg_score
         logger.info(f"🎯 [PromptTemplate] New prompt score with current structure = {avg_score:.4f}")
 
-        # Step 4.5: Perform slot-level structure attribution if enabled
+        # Perform slot-level structure attribution if enabled
         if self.task.config.rnn_structure_contribution:
             logger.info("🔍 [PromptTemplate] Performing slot-level structure attribution...")
             # Get per-slot rewards by perturbing each slot
             slot_rewards = self._structure_attribution(
-                params=flat_params,
+                params=self.last_sampled_params,
                 evaluator=evaluator,
                 val_samples=val_samples,
                 current_prompt=current_prompt
@@ -98,12 +97,9 @@ class PromptTemplate:
         else:
             slot_rewards = None
 
-        # Step 5: Perform forward pass to compute log_prob_sum and entropy
         # Ensure forward pass is done here to calculate log_prob_sum and entropy
         # Perform reinforcement learning update (the actual reinforcement step)
-        self.controller.reinforce(log_prob_sum, avg_score, entropy, slot_rewards)
-
-        return current_prompt
+        self.controller.reinforce(self.last_log_prob_sum, avg_score, self.last_entropy, slot_rewards)
 
     def _sync_semantics(self, current_prompt: str) -> str:
         """

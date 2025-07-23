@@ -44,8 +44,6 @@ class PromptNode(Node):
         return list(self.action_set)
 
     def take_action(self, action: OptimizeAction, step_type:Step):
-        # First update the prompt by controller-based structural adjustment.
-        self.current_prompt = self.structure_template.update_by_controller(self.evaluator, self.current_prompt)
         # Then apply the strategy-level semantic transformation.
         new_prompt = action.do(self.current_prompt, self.structure_template.describe())
         logger.info(f"📊 Current Prompt:\n{new_prompt}")
@@ -66,9 +64,6 @@ class PromptNode(Node):
         val_samples = self.evaluator.task.get_val()
         total_score = sum(self.evaluator.batch_reward(self.current_prompt, val_samples))
         score = total_score / len(val_samples)
-
-        struct_magnitude = self.evaluator.task.config.rnn_reward_ratio
-        score = score * (1 - struct_magnitude) + self.structure_template.last_reward * struct_magnitude
         logger.info(f"🎯 [RolloutFinished] Prompt evaluation score = {score:.4f}, Action sequence = {[a.name for a in self.action_seq]}")
         return score
 
@@ -83,6 +78,5 @@ class PromptNode(Node):
             max_depth=self.max_depth,
         )
     
-    def q_value(self, rollout_reward):
-        self_rnn_ratio = self.evaluator.task.config.self_rnn_reward_ratio
-        return rollout_reward * (1 - self_rnn_ratio) + self.structure_template.last_reward * self_rnn_ratio
+    def q_value(self, last_q, rollout_reward):
+        return last_q + (rollout_reward ** 2)

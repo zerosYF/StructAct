@@ -2,7 +2,9 @@ from abc import ABC, abstractmethod
 from typing import List
 from mcts.node import Node, Step
 from search.config import SearchConfig
+import concurrent.futures
 import numpy as np
+from logger import logger
 
 class ExpandStrategy(ABC):
     @abstractmethod
@@ -29,14 +31,29 @@ class DefaultExpandStrategy(ExpandStrategy):
         for action in selected_actions:
             mcts.untried_actions[node].remove(action)
 
+        # Use ThreadPoolExecutor for parallel expansion of nodes
         children = []
-        for action in selected_actions:
-            child: Node = node.take_action(action, Step.Expand)
-            mcts.children[node].append(child)
-            mcts.untried_actions[child] = child.get_untried_actions()
-            children.append(child)
+        with concurrent.futures.ThreadPoolExecutor(max_workers=max_expand) as executor:
+            # Submit tasks to the thread pool for each selected action
+            future_to_action = {executor.submit(self._expand_action, node, action, mcts): action for action in selected_actions}
+
+            # Wait for the results and process them
+            for future in concurrent.futures.as_completed(future_to_action):
+                action = future_to_action[future]
+                try:
+                    child = future.result()
+                    mcts.children[node].append(child)
+                    mcts.untried_actions[child] = child.get_untried_actions()
+                    children.append(child)
+                except Exception as e:
+                    logger.error(f"Error expanding action {getattr(action, 'name', 'Unknown')}: {e}")
 
         return children
+
+    def _expand_action(self, node: Node, action, mcts) -> Node:
+        """Helper function to expand a single node by applying a single action."""
+        child: Node = node.take_action(action, Step.Expand)
+        return child
     
     def _weighted_random_choice(self, actions: list, k: int, temperature: float = 1.0):
         """Softmax weighted random selection based on usage_count"""

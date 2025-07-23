@@ -50,7 +50,7 @@ class MCTS:
     def _backpropagate(self, path:list[Node], reward):
         for node in reversed(path):
             self.N[node] += 1
-            self.Q[node] += node.q_value(reward)
+            self.Q[node] = node.q_value(self.Q[node], reward)
 
     def do_iter(self, node: Node, width: int = 1, expand_num: int = 1):
         logger.info("--------------Start Iteration----------------")
