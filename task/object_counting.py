@@ -72,7 +72,7 @@ class ObjectCountingTask(TaskBase):
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
         """Injects the input question into the current prompt for evaluation."""
-        return current_prompt +"\nOnly give me anwser without nothing else\n" + f"\n\nQuestion: {input} \nAnswer:\n"
+        return current_prompt +"\nOnly output anwser without nothing else\n" + f"\n\nQuestion: {input} \nAnswer:\n"
 
     def extract_origin_prompt(self) -> str:
         """Returns the original task prompt description."""

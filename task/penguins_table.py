@@ -49,7 +49,7 @@ class PenguinsTableTask(TaskBase):
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
         """Injects the input question into the current prompt for evaluation."""
-        return current_prompt +"\nOnly select one in options as anwser\n" + f"\n\nQuestion: {input}\n Anwser:\n"
+        return current_prompt +"\nOnly output one in options as anwser\n" + f"\n\nQuestion: {input}\n Anwser:\n"
 
     def extract_origin_prompt(self) -> str:
         """Returns the original task prompt description."""
@@ -64,6 +64,4 @@ class PenguinsTableTask(TaskBase):
         return "\n".join([f"Q: {s['question']}\nA: {s['answer']}" for s in samples])
     
     def get_reward(self, output:str, target:str) -> float:
-        logger.info(f"reward model answer:{output.strip().lower()}")
-        logger.info(f"reward gold answer:{target.strip().lower()}")
         return 1.0 if output.strip().lower() == target.strip().lower() else 0.0
