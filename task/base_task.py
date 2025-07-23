@@ -4,6 +4,7 @@ from search.config import SearchConfig
 import random
 class TaskBase(ABC):
     def __init__(self, config:SearchConfig):
+        self.name = "BaseTask"
         self.config = config
         self.train_data_mcts = None
         self.train_data_rnn = None

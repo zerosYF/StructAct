@@ -8,6 +8,7 @@ from logger import logger
 class EpistemicTask(TaskBase):
     def __init__(self, config: SearchConfig):
         super().__init__(config)
+        self.name = "epistemic"
         path = "dataset/BBH/epistemic.json"
         with open(path, "r", encoding="utf-8") as f:
             data: Dict = json.load(f)
@@ -28,7 +29,7 @@ class EpistemicTask(TaskBase):
             }
             all_examples.append(sample)
 
-        logger.info(f"✅ [BBH Dataset] Number of samples: {len(all_examples)}")
+        logger.info(f"✅ [{self.name} Dataset] Number of samples: {len(all_examples)}")
 
         random.seed(config.shuffle_seed)
         random.shuffle(all_examples)

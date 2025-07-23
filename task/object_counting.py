@@ -32,6 +32,7 @@ number_to_word_dict = {
 class ObjectCountingTask(TaskBase):
     def __init__(self, config: SearchConfig):
         super().__init__(config)
+        self.name = "object_counting"
         path = "dataset/BBH/object_counting.json"
         with open(path, "r", encoding="utf-8") as f:
             data: Dict = json.load(f)
@@ -42,7 +43,7 @@ class ObjectCountingTask(TaskBase):
         all_examples = []
         for ex in data["examples"]:
             input_text = ex["input"]
-            target_scores = ex["target_scores"]
+            target_scores = ex["target"]
             # Select the answer with the highest score
             gold = target_scores[0]
             sample = {
@@ -51,7 +52,7 @@ class ObjectCountingTask(TaskBase):
             }
             all_examples.append(sample)
 
-        logger.info(f"✅ [BBH Dataset] Number of samples: {len(all_examples)}")
+        logger.info(f"✅ [{self.name} Dataset] Number of samples: {len(all_examples)}")
 
         random.seed(config.shuffle_seed)
         random.shuffle(all_examples)
