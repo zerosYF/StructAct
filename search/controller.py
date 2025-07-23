@@ -127,12 +127,7 @@ class SearchController:
         blocks, task, flat_params, prompt, evaluator, config = args
 
         template = PromptTemplate(config=config, blocks=blocks, task=task)
-        idx = 0
-        for block in template.blocks:
-            num = block.get_num_slots()
-            block.set_hyperparams(flat_params[idx:idx + num])
-            idx += num
-        prompt = template._sync_semantics(prompt)
+        prompt = template.update_params(flat_params, prompt)
 
         root_node = PromptNode(
             action_set=define_full_actions(task),

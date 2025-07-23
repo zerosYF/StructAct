@@ -86,14 +86,21 @@ class PromptTemplate:
         flat_params, log_prob_sum, entropy = self.controller.train_step()
 
         self.last_sampled_params = flat_params
+        updated_prompt = self.update_params(flat_params, current_prompt)
+        self.last_log_prob_sum = log_prob_sum
+        self.last_entropy = entropy
+        return updated_prompt
+    
+    def update_params(self, flat_params: List[float], current_prompt: str) -> str:
+        """
+        Update the hyperparameters of each block based on the flat parameter vector.
+        """
         idx = 0
         for block in self.blocks:
             num = block.get_num_slots()
             block.set_hyperparams(flat_params[idx:idx + num])
             idx += num
             current_prompt = self._sync_semantics(current_prompt)
-        self.last_log_prob_sum = log_prob_sum
-        self.last_entropy = entropy
         return current_prompt
     
     def get_reward(self, evaluator:PromptEvaluator,  current_prompt:str) -> float:
@@ -157,15 +164,7 @@ class PromptTemplate:
             slot_dim = self.controller.get_slot_dim(i)
             perturbed[i] = (perturbed[i] + 1) % slot_dim
 
-            # Apply perturbed parameters to blocks
-            idx = 0
-            for block in self.blocks:
-                num = block.get_num_slots()
-                block.set_hyperparams(perturbed[idx:idx + num])
-                idx += num
-
-            # Regenerate prompt and evaluate
-            new_prompt = self._sync_semantics(current_prompt)
+            new_prompt = self.update_params(perturbed, current_prompt)
             reward = sum(evaluator.batch_reward(new_prompt, val_samples)) / len(val_samples)
             slot_rewards.append(reward)
 
