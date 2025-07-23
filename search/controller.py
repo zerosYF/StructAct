@@ -8,7 +8,7 @@ from typing import List, Set
 from visualizer import Visualizer
 from program.base_block import PromptBlock
 from program.prompt_template import PromptTemplate
-from program.prompt_blocks import get_all_blocks
+from program.mini_blocks import get_all_blocks
 from mcts.select import get_select_strategy
 from mcts.expand import get_expand_strategy
 from mcts.rollout import get_rollout_strategy
