@@ -34,10 +34,11 @@ class SearchController:
         best_prompt = self.task.extract_origin_prompt()
 
         Visualizer.start(title=self.task.name)
-        best_prompt = template.pre_sample(best_prompt)
+        
         for epoch in range(self.config.rnn_iter_num):
-            self._mcts_workflow(template, best_prompt, epoch)
-        template.update(self.evaluator, best_prompt)
+            best_prompt = template.pre_sample(best_prompt)
+            best_prompt = self._mcts_workflow(template, best_prompt, epoch)
+            template.update(self.evaluator, best_prompt)
         return template.render(), best_prompt
     
     
