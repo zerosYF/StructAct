@@ -16,7 +16,7 @@ def run():
     logger.info("🔍 Training to get best prompt...")
 
     start_time = time.time()
-    best_template, best_prompt = controller.batch_search()
+    best_template, best_prompt = controller.search()
     end_time = time.time()
     duration = end_time - start_time  # 单位：秒
     minutes, seconds = divmod(duration, 60)

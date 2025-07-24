@@ -103,7 +103,7 @@ class PromptTemplate:
             num = block.get_num_slots()
             block.set_hyperparams(flat_params[idx:idx + num])
             idx += num
-            current_prompt = self._sync_semantics(current_prompt)
+        current_prompt = self._sync_semantics(current_prompt)
         return current_prompt
     
     def get_reward(self, evaluator:PromptEvaluator,  current_prompt:str) -> float:

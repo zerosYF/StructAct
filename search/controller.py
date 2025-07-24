@@ -15,6 +15,7 @@ from mcts.rollout import get_rollout_strategy
 from mcts.choose import get_choose_strategy
 from program.strategy_actions import define_full_actions
 import concurrent.futures
+import math
 from logger import logger
 
 class SearchController:
@@ -23,26 +24,25 @@ class SearchController:
                  config: SearchConfig, 
                  task: TaskBase):
         self.actions: Set[OptimizeAction] = define_full_actions(task)
-        self.blocks: List[PromptBlock] = get_all_blocks()
         self.evaluator: PromptEvaluator = evaluator
         self.config: SearchConfig = config
         self.task: TaskBase = task
 
     def search(self):
-        template = PromptTemplate(config=self.config, blocks=self.blocks, task=self.task)
+        template = PromptTemplate(config=self.config, blocks=get_all_blocks(), task=self.task)
         logger.info(f"🔍 Initial template constraints:\n{template.render()}")
         best_prompt = self.task.extract_origin_prompt()
 
         Visualizer.start(title=self.task.name)
         
-        for _ in range(self.config.rnn_iter_num):
+        for epoch in range(self.config.rnn_iter_num):
             best_prompt = template.pre_sample(best_prompt)
-            self._mcts_workflow(template, best_prompt)
+            self._mcts_workflow(template, best_prompt, epoch)
             template.update(self.evaluator, best_prompt)
         return template.render(), best_prompt
     
     
-    def _mcts_workflow(self, template: PromptTemplate, best_prompt: str):
+    def _mcts_workflow(self, template: PromptTemplate, best_prompt: str, current_rnn_iter: int = 0):
         root_node = PromptNode(
                 action_set=self.actions,
                 action_seq=[],
@@ -52,24 +52,23 @@ class SearchController:
                 depth=0,
                 max_depth=self.config.depth_threshold,
             )
-            
-        logger.info(f"🔍 Starting MCTS search with {self.config.mcts_iter_num} iterations, max path depth = {self.config.depth_threshold}")
+
+        mcts_iters = self.schedule_mcts_iter(current_rnn_iter, self.config.rnn_iter_num, self.config.mcts_iter_num_min, self.config.mcts_iter_num_max)
+        rollout_len = self.schedule_rollout_length(current_rnn_iter, self.config.rnn_iter_num, self.config.rollout_length_min, self.config.rollout_length_max)
+        expand_count = self.schedule_expand_num(current_rnn_iter, self.config.rnn_iter_num, self.config.expand_num_min, self.config.expand_num_max)
+        print(f"MCTS Iterations: {mcts_iters}, Rollout Length: {rollout_len}, Expand Count: {expand_count}")
 
         mcts = MCTS(
             select_strategy=get_select_strategy(self.config),
-            expand_strategy=get_expand_strategy(self.config),
-            rollout_strategy=get_rollout_strategy(self.evaluator, self.config),
+            expand_strategy=get_expand_strategy(expand_count),
+            rollout_strategy=get_rollout_strategy(self.evaluator, rollout_len, self.config),
             choose_strategy=get_choose_strategy(self.config)
         )
 
         Visualizer.set_mcts(mcts, root_node)
 
-        for iter_id in range(self.config.mcts_iter_num):
-            mcts.do_iter(
-                root_node,
-                width=self.config.width_threshold,
-                expand_num=self.config.expand_num,
-            )
+        for iter_id in range(mcts_iters):
+            mcts.do_iter(root_node, width=self.config.width_threshold)
             if iter_id % 5 == 0 or iter_id == self.config.mcts_iter_num - 1:
                 logger.info(f"  Total expanded nodes: {len(mcts.N)}")
 
@@ -81,25 +80,25 @@ class SearchController:
         return best_prompt
     
     def batch_search(self):
-        template = PromptTemplate(config=self.config, blocks=self.blocks, task=self.task)
+        template = PromptTemplate(config=self.config, blocks=get_all_blocks(), task=self.task)
         logger.info(f"🔍 Initial template constraints:\n{template.render()}")
         best_prompt = self.task.extract_origin_prompt()
 
         Visualizer.start(title=self.task.name)
         
-        for _ in range(self.config.rnn_iter_num):
+        for epoch in range(self.config.rnn_iter_num):
             samples = template.batch_sample_structs(self.config.struct_sample_count)
             top_k = template.select_topk_structures(samples, self.config.struct_sample_top_k)
             logger.info(f"📌 Top-{self.config.struct_sample_top_k} structures selected. Starting parallel MCTS...")
             top1 = top_k[0]
             others = top_k[1:]
             main_result = self._mcts_workflow_for_batch(
-                [self.blocks, self.task, top1[1], best_prompt, self.evaluator, self.config], True
+                [template.blocks, self.task, top1[1], best_prompt], True, epoch
             )
             other_results = []
             if self.config.struct_sample_top_k > 1:
                 args_list = [
-                (self.blocks, self.task, flat_params, best_prompt, self.evaluator, self.config, False)
+                (template.blocks, self.task, flat_params, best_prompt, False, epoch)
                     for (_, flat_params, _, _) in others
                 ]
                 with concurrent.futures.ThreadPoolExecutor(max_workers=self.config.struct_sample_top_k) as executor:
@@ -123,10 +122,10 @@ class SearchController:
             
         return template.render(), best_prompt
 
-    def _mcts_workflow_for_batch(self, args, main_thread=False):
-        blocks, task, flat_params, prompt, evaluator, config = args
+    def _mcts_workflow_for_batch(self, args, main_thread=False, current_rnn_iter=0):
+        blocks, task, flat_params, prompt = args
 
-        template = PromptTemplate(config=config, blocks=blocks, task=task)
+        template = PromptTemplate(config=self.config, blocks=blocks, task=task)
         prompt = template.update_params(flat_params, prompt)
 
         root_node = PromptNode(
@@ -134,31 +133,69 @@ class SearchController:
             action_seq=[],
             structure_template=template,
             prompt=prompt,
-            evaluator=evaluator,
+            evaluator=self.evaluator,
             depth=0,
-            max_depth=config.depth_threshold,
+            max_depth=self.config.depth_threshold,
         )
 
+        mcts_iters = self.schedule_mcts_iter(current_rnn_iter, self.config.rnn_iter_num, self.config.mcts_iter_num_min, self.config.mcts_iter_num_max)
+        rollout_len = self.schedule_rollout_length(current_rnn_iter, self.config.rnn_iter_num, self.config.rollout_length_min, self.config.rollout_length_max)
+        expand_count = self.schedule_expand_num(current_rnn_iter, self.config.rnn_iter_num, self.config.expand_num_min, self.config.expand_num_max)
+        print(f"MCTS Iterations: {mcts_iters}, Rollout Length: {rollout_len}, Expand Count: {expand_count}")
+
         mcts = MCTS(
-            select_strategy=get_select_strategy(config),
-            expand_strategy=get_expand_strategy(config),
-            rollout_strategy=get_rollout_strategy(evaluator, config),
-            choose_strategy=get_choose_strategy(config)
+            select_strategy=get_select_strategy(self.config),
+            expand_strategy=get_expand_strategy(expand_count),
+            rollout_strategy=get_rollout_strategy(self.evaluator, rollout_len, self.config),
+            choose_strategy=get_choose_strategy(self.config)
         )
         if main_thread:
             Visualizer.set_mcts(mcts, root_node)
 
-        for _ in range(config.mcts_iter_num):
-            mcts.do_iter(
-                root_node,
-                width=config.width_threshold,
-                expand_num=config.expand_num,
-            )
+        for _ in range(mcts_iters):
+            mcts.do_iter(root_node, width=self.config.width_threshold)
         best_node = mcts.choose(root_node)
         return {
             "prompt": best_node.current_prompt,
-            "reward": template.get_reward(evaluator, best_node.current_prompt),
+            "reward": template.get_reward(self.evaluator, best_node.current_prompt),
             "flat_params": flat_params,
             "log_prob_sum": 0.0, 
             "entropy": 0.0
         }
+    
+    def nonlinear_schedule(
+        self,
+        rnn_iter: int,
+        total_iter: int,
+        min_val: int,
+        max_val: int,
+        steepness: float = 10.0,
+        pivot: float = 0.9
+    ) -> int:
+        """
+        Nonlinear scheduling using a sigmoid curve.
+
+        Args:
+            rnn_iter (int): Current RNN iteration index.
+            total_iter (int): Total RNN iterations.
+            min_val (int): Minimum scheduled value.
+            max_val (int): Maximum scheduled value.
+            steepness (float): Controls curve steepness.
+            pivot (float): Fraction [0,1] indicating where rapid increase starts.
+
+        Returns:
+            int: Scheduled integer value.
+        """
+        progress = rnn_iter / total_iter
+        sigmoid = 1 / (1 + math.exp(-steepness * (progress - pivot)))
+        value = min_val + (max_val - min_val) * sigmoid
+        return max(min_val, min(max_val, int(round(value))))
+
+    def schedule_mcts_iter(self, rnn_iter: int, total_iter: int, min_val=1, max_val=10) -> int:
+        return self.nonlinear_schedule(rnn_iter, total_iter, min_val=min_val, max_val=max_val, steepness=12.0, pivot=0.9)
+
+    def schedule_rollout_length(self, rnn_iter: int, total_iter: int, min_val=1, max_val=5) -> int:
+        return self.nonlinear_schedule(rnn_iter, total_iter, min_val=min_val, max_val=max_val, steepness=12.0, pivot=0.85)
+
+    def schedule_expand_num(self, rnn_iter: int, total_iter: int, min_val=0, max_val=3) -> int:
+        return self.nonlinear_schedule(rnn_iter, total_iter, min_val=min_val, max_val=max_val, steepness=12.0, pivot=0.8)

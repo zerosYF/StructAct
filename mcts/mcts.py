@@ -43,8 +43,8 @@ class MCTS:
     def _uct_select(self, node: Node) -> Node:
         return self.select_strategy.select(node, self)
 
-    def _expand(self, node: Node, max_expand: int = None) -> list[Node]:
-        return self.expand_strategy.expand(node, self, max_expand)
+    def _expand(self, node: Node) -> list[Node]:
+        return self.expand_strategy.expand(node, self)
 
     def _rollout(self, node: Node):
         return self.rollout_strategy.rollout(node)
@@ -55,14 +55,14 @@ class MCTS:
                 self.N[node] += 1
                 self.Q[node] = node.q_value(self.Q[node], reward)
 
-    def do_iter(self, node: Node, width: int = 1, expand_num: int = 1):
+    def do_iter(self, node: Node, width: int = 1):
         logger.info("--------------Start Iteration----------------")
         logger.info("Step 1: Performing Select")
         path = self._select(node, max_width=width)
         leaf = path[-1]
         logger.info(f"Selected leaf node type: {leaf.type}")
         logger.info("Step 2: Performing Expand")
-        children = self._expand(leaf, expand_num)
+        children = self._expand(leaf)
         if not children:
             rollout_targets = [leaf]
         else:

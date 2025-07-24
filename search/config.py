@@ -15,14 +15,17 @@ class SearchConfig:
 
         # MCTS search control
         self.exploration_weight: float = 1.5   # Exploration factor in UCT formula
-        self.mcts_iter_num: int = 10                 # Number of iterations in MCTS main loop
+        self.mcts_iter_num_max: int = 10          # Number of iterations in MCTS main loop
+        self.mcts_iter_num_min: int = 1           # Minimum MCTS iterations
         self.depth_threshold: int = 5          # Maximum search depth
         self.width_threshold: int = 3          # Number of children per expanded node
         # Node expansion and rollout config
         self.batch_size: int = 10              # Batch size for training
-        self.expand_num: int = 3               # Number of nodes to expand per iteration (for parallelism)
-        assert self.expand_num <= self.width_threshold
-        self.rollout_length: int = 3           # Rollout path depth (fixed-length simulation)
+        self.expand_num_min: int = 0               # Number of nodes to expand per iteration (for parallelism)
+        self.expand_num_max: int = 3               # Maximum number of nodes to expand
+        assert self.expand_num_max <= self.width_threshold
+        self.rollout_length_min: int = 1          # Minimum rollout path depth
+        self.rollout_length_max: int = 4           # Rollout path depth (fixed-length simulation)
         self.rollout_width: int = 1
         self.rollout_early_stop_rounds: int = 3
         self.rollout_early_stop_delta: float = 0.01
@@ -30,7 +33,7 @@ class SearchConfig:
         # RNN Controller settings
         self.struct_sample_count: int = 10       # Number of structure samples per iteration
         self.struct_sample_top_k: int = 1          # Number of top structures to keep
-        self.rnn_iter_num: int = 50          # Number of training iterations for RNN
+        self.rnn_iter_num: int = 100          # Number of training iterations for RNN
         self.rnn_batch_size: int = 32         # Batch size for RNN training
         self.rnn_hidden_dim: int = 128         # Hidden dimension of RNN
         self.rnn_lr: float = 1e-3              # Learning rate for RNN

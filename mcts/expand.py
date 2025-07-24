@@ -14,10 +14,11 @@ class ExpandStrategy(ABC):
         pass
 
 class DefaultExpandStrategy(ExpandStrategy):
-    def __init__(self):
+    def __init__(self, max_expand: int = 1):
         self.lock = threading.Lock()
+        self.max_expand = max_expand
 
-    def expand(self, node: Node, mcts, max_expand: int = None) -> List[Node]:
+    def expand(self, node: Node, mcts) -> List[Node]:
         if node not in mcts.children:
             mcts.children[node] = []
             mcts.untried_actions[node] = node.get_untried_actions()
@@ -26,7 +27,7 @@ class DefaultExpandStrategy(ExpandStrategy):
         if not actions:
             return []
 
-        k = len(actions) if max_expand is None else min(max_expand, len(actions))
+        k = len(actions) if self.max_expand is None else min(self.max_expand, len(actions))
 
         # 🚀 Use softmax weighted random selection based on usage_count to pick k actions
         selected_actions = self._weighted_random_choice(actions, k)
@@ -36,6 +37,9 @@ class DefaultExpandStrategy(ExpandStrategy):
             mcts.untried_actions[node].remove(action)
 
         children = []
+        if k == 0:
+            return children
+        
         with concurrent.futures.ThreadPoolExecutor(max_workers=k) as executor:
             futures = {
                 executor.submit(self._expand_action_threadsafe, node, action, mcts): action
@@ -73,5 +77,5 @@ class DefaultExpandStrategy(ExpandStrategy):
         selected_indices = np.random.choice(len(actions), size=k, replace=False, p=probs)
         return [actions[i] for i in selected_indices]
 
-def get_expand_strategy(config: SearchConfig):
-    return DefaultExpandStrategy()
+def get_expand_strategy(max_expand: int = None) -> ExpandStrategy:
+    return DefaultExpandStrategy(max_expand)

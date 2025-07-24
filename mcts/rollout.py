@@ -102,12 +102,12 @@ class MultiPathRollout(RolloutStrategy):
         logger.info(f"✅ Multi-path rollout final average reward: {final_avg_reward:.4f}")
         return final_avg_reward
 
-def get_rollout_strategy(evaluator: PromptEvaluator, config: SearchConfig):
+def get_rollout_strategy(evaluator: PromptEvaluator, rollout_length:int, config: SearchConfig):
     if config.rollout_idx == 0:
-        return ClassicPathRollout(evaluator, config.rollout_length)
+        return ClassicPathRollout(evaluator, rollout_length)
     elif config.rollout_idx == 1:
         return MultiPathRollout(evaluator, 
-                                config.rollout_length, 
+                                rollout_length, 
                                 config.rollout_width, 
                                 config.rollout_early_stop_rounds, 
                                 config.rollout_early_stop_delta)
