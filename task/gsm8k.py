@@ -11,15 +11,15 @@ class PrologMathTask(TaskBase):
     def __init__(self, config: SearchConfig):
         super().__init__(config)
         self.name = "prolog_math"
-        path = "dataset/GSM8K/gsm_prolog_test.json"
+        path = "dataset/GSM8K/gsm_prolog_test.jsonl"
         with open(path, "r", encoding="utf-8") as f:
-            data: Dict = json.load(f)
+            data = [json.loads(line.strip()) for line in f if line.strip()]
 
         self.origin_prompt = "Generate a piece of Prolog code to solve the given math problem."
-        self.name = data.get("name", "prolog_math")
+        self.name = "prolog_math"
 
         all_examples = []
-        for ex in data["examples"]:
+        for ex in data:
             instruction = ex.get("instruction", "")
             input_text = ex.get("input", "")
             output_code = ex.get("output", "")
@@ -62,10 +62,10 @@ class PrologMathTask(TaskBase):
     def samples2text(self, samples: List[dict]) -> str:
         return "\n\n".join([f"Q: {s['question']}\nA:\n{s['answer']}" for s in samples])
     
-    def _normalize_output(self, output: str) -> str:
+    def _normalize_answer(self, output: str) -> str:
         return output.strip()
 
     def get_reward(self, output: str, target: str) -> float:
-        output = self._normalize_output(output)
-        target = self._normalize_output(target)
+        output = self._normalize_answer(output)
+        target = self._normalize_answer(target)
         return 1.0 if output == target else 0.0
