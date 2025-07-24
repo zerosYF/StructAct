@@ -4,19 +4,19 @@ from typing import List, Dict
 from task.base_task import TaskBase
 from loguru import logger
 
-class GSM8KTask(TaskBase):
+class SimpleMathReasoningTask(TaskBase):
     def __init__(self, config):
         super().__init__(config)
-        self.name = "gsm8k"
-        path = "dataset/GSM8K/gsm8k.json"  # 你的文件路径
+        self.name = "simple_math_reasoning"
+        path = "dataset/GSM8K/simple_math.json"  # 你存放数据的路径
 
         with open(path, "r", encoding="utf-8") as f:
             data: List[Dict] = json.load(f)
 
         all_examples = []
         for ex in data:
-            question = ex["text"]
-            answer = str(ex["label"]).strip()
+            question = ex["question"].strip()
+            answer = str(ex["final_ans"]).strip()
             all_examples.append({
                 "question": question,
                 "answer": answer
@@ -39,13 +39,15 @@ class GSM8KTask(TaskBase):
         self.train_data_mcts = full_train_data[:split_2]
         self.train_data_rnn = full_train_data[split_2:]
 
-        self.system_prompt = "You are a helpful assistant. Solve the math problem and output only the final answer as a number."
+        self.system_prompt = (
+            "You are a helpful assistant. Please solve the math word problem carefully and return only the final numeric answer."
+        )
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
-        return current_prompt + "\nOnly output the final numeric answer, no explanation.\n" + f"\n\nQuestion: {input}\nAnswer:\n"
+        return current_prompt + "\nOnly output the final numeric answer, without explanation.\n" + f"\n\nQuestion: {input}\nAnswer:\n"
 
     def extract_origin_prompt(self) -> str:
-        return "Solve grade-school level math problems using numeric reasoning."
+        return "Solve simple arithmetic word problems with numeric answers."
 
     def extract_tuple(self, sample) -> tuple:
         return sample["question"], sample["answer"]

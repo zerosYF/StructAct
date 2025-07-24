@@ -19,7 +19,7 @@ def run_task(task_cls):
 
         logger.info(f"🚀 Running task: {task.name}")
         start_time = time.time()
-        best_template, best_sequence, best_prompt = controller.batch_search()
+        best_template, best_sequence, best_prompt = controller.search()
 
         acc_mcts = evaluator.evaluate(task.get_test(), best_prompt)
         acc_origin = evaluator.evaluate(task.get_test(), task.extract_origin_prompt())
@@ -53,16 +53,16 @@ from task.geometric_shapes import GeometricShapesTask
 from task.object_counting import ObjectCountingTask
 from task.penguins_table import PenguinsTableTask
 from task.temporal_sequences import TemporalSequencesTask
-from task.gsm8k import PrologMathTask
+from task.gsm8k import GSM8KTask
 
 TASK_LIST = [
     EpistemicTask,
     TemporalSequencesTask,
     ObjectCountingTask,
     CausalJudgementTask,
-    GeometricShapesTask,
-    PenguinsTableTask,
-    PrologMathTask,
+    #GeometricShapesTask,
+    #PenguinsTableTask,
+    #PrologMathTask,
 ]
 
 def run_all():
