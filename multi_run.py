@@ -54,15 +54,17 @@ from task.object_counting import ObjectCountingTask
 from task.penguins_table import PenguinsTableTask
 from task.temporal_sequences import TemporalSequencesTask
 from task.gsm8k import GSM8KTask
+from task.multi_arith import SimpleMathReasoningTask
 
 TASK_LIST = [
     EpistemicTask,
     TemporalSequencesTask,
     ObjectCountingTask,
     CausalJudgementTask,
-    #GeometricShapesTask,
-    #PenguinsTableTask,
-    #PrologMathTask,
+    GeometricShapesTask,
+    PenguinsTableTask,
+    GSM8KTask,
+    SimpleMathReasoningTask,
 ]
 
 def run_all():
