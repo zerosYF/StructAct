@@ -192,10 +192,10 @@ class SearchController:
         return max(min_val, min(max_val, int(round(value))))
 
     def schedule_mcts_iter(self, rnn_iter: int, total_iter: int, min_val=1, max_val=10) -> int:
-        return self.nonlinear_schedule(rnn_iter, total_iter, min_val=min_val, max_val=max_val, steepness=12.0, pivot=0.9)
+        return self.nonlinear_schedule(rnn_iter, total_iter, min_val=min_val, max_val=max_val, steepness=12.0, pivot=0.993)
 
     def schedule_rollout_length(self, rnn_iter: int, total_iter: int, min_val=1, max_val=5) -> int:
-        return self.nonlinear_schedule(rnn_iter, total_iter, min_val=min_val, max_val=max_val, steepness=12.0, pivot=0.85)
+        return self.nonlinear_schedule(rnn_iter, total_iter, min_val=min_val, max_val=max_val, steepness=12.0, pivot=0.993)
 
     def schedule_expand_num(self, rnn_iter: int, total_iter: int, min_val=0, max_val=3) -> int:
-        return self.nonlinear_schedule(rnn_iter, total_iter, min_val=min_val, max_val=max_val, steepness=12.0, pivot=0.8)
+        return self.nonlinear_schedule(rnn_iter, total_iter, min_val=min_val, max_val=max_val, steepness=12.0, pivot=0.993)
