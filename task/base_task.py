@@ -39,6 +39,12 @@ class TaskBase(ABC):
     @abstractmethod
     def samples2text(self, samples:List[Dict]) -> str:
         pass
+
+    @abstractmethod
+    def _normalize_answer(self, text: str) -> str:
+        """Normalize text by lowercasing, stripping, and removing punctuation."""
+        pass
+
     @abstractmethod
     def get_reward(self, output: Any, target: Any) -> float:
         pass

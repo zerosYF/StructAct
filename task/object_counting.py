@@ -3,6 +3,7 @@ from typing import Dict, List
 from task.base_task import TaskBase
 from search.config import SearchConfig
 import json
+import re
 from logger import logger
 
 number_to_word_dict = {
@@ -43,9 +44,9 @@ class ObjectCountingTask(TaskBase):
         all_examples = []
         for ex in data["examples"]:
             input_text = ex["input"]
-            target_scores = ex["target"]
+            target_scores = ex.get("target", [])
             # Select the answer with the highest score
-            gold = target_scores[0]
+            gold = target_scores[0] if target_scores else ""
             sample = {
                 "question": input_text,
                 "answer": gold
@@ -87,19 +88,18 @@ class ObjectCountingTask(TaskBase):
         """Converts a list of samples to a text block of Q&A pairs."""
         return "\n".join([f"Q: {s['question']}\nA: {s['answer']}" for s in samples])
     
+    def _normalize_answer(self, text: str) -> str:
+        """Normalize answer by lowercasing, stripping, converting number words to digits."""
+        text = text.strip().lower()
+        # Remove non-digit/non-word characters except for hyphens (for numbers like 'twenty-one')
+        text = re.sub(r"[^\w\s\-]", "", text)
+        # Convert number words to digits if possible
+        if text in number_to_word_dict:
+            text = str(number_to_word_dict[text])
+        return text
+    
     def get_reward(self, output: str, target: str) -> float:
-        """
-        Evaluates the model's output against the target answer.
-        Returns 1.0 for a correct answer, 0.0 otherwise.
-        """
-        # Normalize the output and target to lowercase
-        output = output.strip().lower()
-        target = target.strip().lower()
-
-        # Convert number words to digits if necessary
-        if output in number_to_word_dict:
-            output = str(number_to_word_dict[output])
-        if target in number_to_word_dict:
-            target = str(number_to_word_dict[target])
-
-        return 1.0 if output == target else 0.0
+        """Return 1.0 if normalized output matches normalized target, else 0.0"""
+        norm_out = self._normalize_answer(output)
+        norm_tgt = self._normalize_answer(target)
+        return 1.0 if norm_out == norm_tgt else 0.0

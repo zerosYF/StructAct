@@ -3,6 +3,7 @@ from typing import Dict, List
 from task.base_task import TaskBase
 from search.config import SearchConfig
 import json
+import re
 from logger import logger
 
 class GeometricShapesTask(TaskBase):
@@ -15,6 +16,7 @@ class GeometricShapesTask(TaskBase):
         
         self.origin_prompt = data.get("description", "")
         self.name = data.get("name", "unknown_task")
+        self.system_prompt = "you are a helpful assistant. Answer the question based on the provided context."
 
         all_examples = []
         for ex in data["examples"]:
@@ -22,10 +24,12 @@ class GeometricShapesTask(TaskBase):
             target_scores = ex["target_scores"]
             # Select the answer with the highest score
             gold = max(target_scores.items(), key=lambda x: x[1])[0]
-            option_text = "\n".join([f"{k}" for k in target_scores.keys()])
+            choices = list(target_scores.keys())
+            option_text = "\n".join([f"{k}" for k in choices])
             sample = {
                 "question": f"Question: {input_text}\nOptions:\n{option_text}",
-                "answer": gold
+                "answer": gold,
+                "choices": choices,
             }
             all_examples.append(sample)
 
@@ -46,7 +50,6 @@ class GeometricShapesTask(TaskBase):
         self.train_data_mcts = full_train_data[:split_2]
         self.train_data_rnn = full_train_data[split_2:]
 
-        self.system_prompt = "you are a helpful assistant. Answer the question based on the provided context."
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
         """Injects the input question into the current prompt for evaluation."""
@@ -64,5 +67,14 @@ class GeometricShapesTask(TaskBase):
         """Converts a list of samples to a text block of Q&A pairs."""
         return "\n".join([f"Q: {s['question']}\nA: {s['answer']}" for s in samples])
     
-    def get_reward(self, output:str, target:str) -> float:
-        return 1.0 if output.strip().lower() == target.strip().lower() else 0.0
+    def _normalize_answer(self, text: str) -> str:
+        """Normalize text by lowercasing, stripping, and removing punctuation."""
+        text = text.strip().lower()
+        text = re.sub(r"[^\w\s]", "", text)
+        return text
+    
+    def get_reward(self, output: str, target: str) -> float:
+        """Compares normalized output and target answer for reward calculation."""
+        norm_out = self._normalize_answer(output)
+        norm_gold = self._normalize_answer(target)
+        return 1.0 if norm_out == norm_gold else 0.0

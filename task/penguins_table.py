@@ -64,5 +64,11 @@ class PenguinsTableTask(TaskBase):
         """Converts a list of samples to a text block of Q&A pairs."""
         return "\n".join([f"Q: {s['question']}\nA: {s['answer']}" for s in samples])
     
-    def get_reward(self, output:str, target:str) -> float:
-        return 1.0 if output.strip().lower() == target.strip().lower() else 0.0
+    def _normalize_answer(self, text: str) -> str:
+        """Normalize by lowercasing and trimming whitespace."""
+        return text.strip().lower()
+    
+    def get_reward(self, output: str, target: str) -> float:
+        norm_out = self._normalize_answer(output)
+        norm_tgt = self._normalize_answer(target)
+        return 1.0 if norm_out == norm_tgt else 0.0

@@ -3,6 +3,7 @@ from typing import Dict, List
 from task.base_task import TaskBase
 from search.config import SearchConfig
 import json
+import re
 from logger import logger
 
 class CausalJudgementTask(TaskBase):
@@ -15,17 +16,19 @@ class CausalJudgementTask(TaskBase):
         
         self.origin_prompt = data.get("description", "")
         self.name = data.get("name", "unknown_task")
+        self.system_prompt = "you are a helpful assistant. Answer the question based on the provided context."
 
         all_examples = []
         for ex in data["examples"]:
             input_text = ex["input"]
-            target_scores = ex["target_scores"]
+            target_scores:dict = ex["target_scores"]
             # Select the answer with the highest score
             gold = max(target_scores.items(), key=lambda x: x[1])[0]
             option_text = "\n".join([f"{k}" for k in target_scores.keys()])
             sample = {
                 "question": f"Question:\n\n{input_text}\n\nOptions:\n{option_text}",
-                "answer": gold
+                "answer": gold,
+                "choices": list(target_scores.keys()),
             }
             all_examples.append(sample)
 
@@ -46,8 +49,6 @@ class CausalJudgementTask(TaskBase):
         self.train_data_mcts = full_train_data[:split_2]
         self.train_data_rnn = full_train_data[split_2:]
 
-        self.system_prompt = "you are a helpful assistant. Answer the question based on the provided context."
-
     def inject_final_input(self, current_prompt: str, input: str) -> str:
         """Injects the input question into the current prompt for evaluation."""
         return current_prompt +"\nOnly output one in options as anwser\n" + f"\n\nQuestion: {input}\n Anwser:\n"
@@ -64,7 +65,14 @@ class CausalJudgementTask(TaskBase):
         """Converts a list of samples to a text block of Q&A pairs."""
         return "\n".join([f"Q: {s['question']}\nA: {s['answer']}" for s in samples])
     
+    def _normalize_answer(self, text: str) -> str:
+        """Normalize text by lowercasing, stripping, and removing punctuation."""
+        text = text.strip().lower()
+        text = re.sub(r"[^\w\s]", "", text)
+        return text
+    
     def get_reward(self, output: str, target: str) -> float:
         """Calculates the reward based on model output and target answer."""
-        if output.strip().lower() == target.strip().lower():
-            return 1.0
+        norm_out = self._normalize_answer(output)
+        norm_gold = self._normalize_answer(target)
+        return 1.0 if norm_out == norm_gold else 0.0
