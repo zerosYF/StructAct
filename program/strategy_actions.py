@@ -1,4 +1,3 @@
-from abc import ABC, abstractmethod
 from model.model import Model, getModel
 from task.base_task import TaskBase
 from program.base_action import OptimizeAction
@@ -21,7 +20,11 @@ class TestReflectRewriteAction(OptimizeAction):
         self.rewriter_model = rewriter_model
         self.tester_system_prompt = "You're a QA assistant. Given prompt and input, generate accurate answers."
         self.analyzer_system_prompt = "Analysis the model outputs against expected answers. Provide detailed feedback."
-        self.rewriter_system_prompt = "You're a prompt engineer. Refine the prompt based on model outputs and structure."
+        self.rewriter_system_prompt = (
+            "You are a prompt editor. "
+            "You must strictly follow the given prompt structure. "
+            "You're a prompt engineer. Refine the prompt based on model outputs and structure."
+        )
     
     def _batch_api_call(self, inputs:list):
         def call(x):
@@ -69,8 +72,12 @@ class FewShotExampleBuilder(OptimizeAction):
         super().__init__(task, name)
         self.builder_model = builder_model
         self.rewriter_model = rewriter_model
-        self.builder_system_prompt = "Generate 1–2 new few-shot QA pairs based on structure and current prompt."
-        self.rewriter_system_prompt = "Integrate new examples into the prompt, keeping structure consistent."
+        self.builder_system_prompt = "Generate 1–2 new few-shot QA pairs based on current prompt."
+        self.rewriter_system_prompt = (
+            "You are a prompt editor. "
+            "You must strictly follow the given prompt structure. "
+            "Replace/Add/Remove examples into the prompt, keeping structure consistent."
+        )
 
     def do(self, current_prompt, template_description):
         super().do(current_prompt, template_description)
@@ -83,11 +90,11 @@ class FewShotExampleBuilder(OptimizeAction):
             "Add 1–2 new high-quality QA examples."
         )
         new_examples = self.builder_model.api_call(self.builder_system_prompt, builder_input)
-        new_examples += "\n" + original_text  # 当前是字符串拼接，未去重  # Combine new examples with existing ones
+        new_examples += "\n" + original_text 
 
         rewriting_input = (
             f"Current prompt:\n{current_prompt}\n\n"
-            f"New examples model created you can select:\n{new_examples}\n\n"
+            f"Some examples you can select:\n{new_examples}\n\n"
             f"Prompt Template Structure:\n{template_description}\n\n"
             f"The template structure must be strictly followed above all else.\n\n"
             f"You can replace existing examples or add new ones and make the content aligned with the structure.\n\n"
@@ -103,7 +110,11 @@ class InstructionSimplifierByAbstraction(OptimizeAction):
         self.evaluator_model = evaluator_model
         self.rewriter_model = rewriter_model
         self.evaluator_system_prompt = "Summarize task goal based on QA pairs."
-        self.rewriter_system_prompt = "Inject abstract task intent into prompt for clarity and conciseness."
+        self.rewriter_system_prompt = (
+            "You are a prompt editor. "
+            "You must strictly follow the given prompt structure. "
+            "Inject abstract task intent into prompt for clarity and conciseness."
+        )
 
     def do(self, current_prompt, template_description):
         super().do(current_prompt, template_description)
@@ -127,7 +138,9 @@ class LexicalSimplifier(OptimizeAction):
         super().__init__(task, name)
         self.rewriter_model = rewriter_model
         self.rewriter_system_prompt = (
-            "You are a prompt editor. Simplify the wording of the prompt to make it more readable, "
+            "You are a prompt editor. "
+            "You must strictly follow the given prompt structure. "
+            "Simplify the wording of the prompt to make it more readable, "
             "without changing its structure or meaning."
         )
 
@@ -148,8 +161,9 @@ class StyleHarmonizer(OptimizeAction):
         super().__init__(task, name)
         self.rewriter_model = rewriter_model
         self.rewriter_system_prompt = (
-            "You are a prompt stylist. Adjust the wording to ensure consistent tone and style across the prompt, "
-            "based on the structure."
+            "You are a prompt stylist. "
+            "You must strictly follow the given prompt structure. "
+            "Adjust the wording to ensure consistent tone and style across the prompt,based on the structure."
         )
 
     def do(self, current_prompt, template_description):
@@ -169,7 +183,9 @@ class CohesionImprover(OptimizeAction):
         super().__init__(task, name)
         self.rewriter_model = rewriter_model
         self.rewriter_system_prompt = (
-            "You're a prompt cohesion expert. Improve the transitions between sections so that the overall prompt flows naturally."
+            "You're a prompt cohesion expert. "
+            "You must strictly follow the given prompt structure. "
+            "Improve the transitions between sections so that the overall prompt flows naturally."
         )
 
     def do(self, current_prompt, template_description):
@@ -189,7 +205,9 @@ class AmbiguityReducer(OptimizeAction):
         super().__init__(task, name)
         self.rewriter_model = rewriter_model
         self.rewriter_system_prompt = (
-            "You are an ambiguity checker. Rewrite the prompt to eliminate vague, ambiguous, or underspecified parts."
+            "You are an ambiguity checker. "
+            "You must strictly follow the given prompt structure. "
+            "Rewrite the prompt to eliminate vague, ambiguous, or underspecified parts."
         )
 
     def do(self, current_prompt, template_description):
