@@ -8,7 +8,7 @@ class SimpleMathReasoningTask(TaskBase):
     def __init__(self, config):
         super().__init__(config)
         self.name = "simple_math_reasoning"
-        path = "dataset/GSM8K/simple_math.json"  # 你存放数据的路径
+        path = "dataset/GSM8K/multi_arith.json"  # 你存放数据的路径
 
         with open(path, "r", encoding="utf-8") as f:
             data: List[Dict] = json.load(f)
