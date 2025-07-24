@@ -42,7 +42,7 @@ class SearchController:
         return template.render(), best_prompt
     
     
-    def _mcts_workflow(self, template: PromptTemplate, best_prompt: str, current_rnn_iter: int = 0):
+    def _mcts_workflow(self, template: PromptTemplate, best_prompt: str, current_rnn_iter: int = 0, main_thread: bool = True):
         root_node = PromptNode(
                 action_set=self.actions,
                 action_seq=[],
@@ -64,8 +64,8 @@ class SearchController:
             rollout_strategy=get_rollout_strategy(self.evaluator, rollout_len, self.config),
             choose_strategy=get_choose_strategy(self.config)
         )
-
-        Visualizer.set_mcts(mcts, root_node)
+        if main_thread:
+            Visualizer.set_mcts(mcts, root_node)
 
         for iter_id in range(mcts_iters):
             mcts.do_iter(root_node, width=self.config.width_threshold)
@@ -90,78 +90,34 @@ class SearchController:
             samples = template.batch_sample_structs(self.config.struct_sample_count)
             top_k = template.select_topk_structures(samples, self.config.struct_sample_top_k)
             logger.info(f"📌 Top-{self.config.struct_sample_top_k} structures selected. Starting parallel MCTS...")
-            top1 = top_k[0]
-            others = top_k[1:]
-            main_result = self._mcts_workflow_for_batch(
-                [template.blocks, self.task, top1[1], best_prompt], True, epoch
-            )
-            other_results = []
+            top1, others = top_k[0], top_k[1:]
+            top1_init_prompt = template.update_params(top1[1], best_prompt)
+            other_init_prompts = [template.update_params(params, best_prompt) for _, params, _, _ in others]
+
+            top1_result_prompt = self._mcts_workflow(template, top1_init_prompt, epoch)
+            other_result_prompts = []
             if self.config.struct_sample_top_k > 1:
                 args_list = [
-                (template.blocks, self.task, flat_params, best_prompt, False, epoch)
-                    for (_, flat_params, _, _) in others
+                (template, init_prompt, epoch, False)
+                    for init_prompt in other_init_prompts
                 ]
                 with concurrent.futures.ThreadPoolExecutor(max_workers=self.config.struct_sample_top_k) as executor:
-                    other_results = list(executor.map(self._mcts_workflow_for_batch, args_list))
+                    other_result_prompts = list(executor.map(self._mcts_workflow, args_list))
             
-            all_results = [main_result] + other_results
-            for result in all_results:
-                for _, flat_params, log_prob_sum, entropy in top_k:
-                    if tuple(result["flat_params"]) == tuple(flat_params):
-                        result["log_prob_sum"] = log_prob_sum
-                        result["entropy"] = entropy
-                        break
-
-            best_result = max(all_results, key=lambda x: x["reward"])
-            best_prompt = best_result["prompt"]
-
-            template.last_sampled_params = best_result["flat_params"]
-            template.last_log_prob_sum = best_result["log_prob_sum"]
-            template.last_entropy = best_result["entropy"]
+            all_results = [top1_result_prompt] + other_result_prompts
+            best_reward = float("-inf")
+            # map keep index
+            for i, candidate_best_prompt in enumerate(all_results):
+                reward = template.get_reward(self.evaluator, candidate_best_prompt)
+                if reward > best_reward:
+                    best_reward = reward
+                    best_prompt = candidate_best_prompt
+                    template.last_sampled_params = top_k[i][1]
+                    template.last_log_prob_sum = top_k[i][2]
+                    template.last_entropy = top_k[i][3]
             template.update(self.evaluator, best_prompt)
             
         return template.render(), best_prompt
-
-    def _mcts_workflow_for_batch(self, args, main_thread=False, current_rnn_iter=0):
-        blocks, task, flat_params, prompt = args
-
-        template = PromptTemplate(config=self.config, blocks=blocks, task=task)
-        prompt = template.update_params(flat_params, prompt)
-
-        root_node = PromptNode(
-            action_set=define_full_actions(task),
-            action_seq=[],
-            structure_template=template,
-            prompt=prompt,
-            evaluator=self.evaluator,
-            depth=0,
-            max_depth=self.config.depth_threshold,
-        )
-
-        mcts_iters = self.schedule_mcts_iter(current_rnn_iter, self.config.rnn_iter_num, self.config.mcts_iter_num_min, self.config.mcts_iter_num_max)
-        rollout_len = self.schedule_rollout_length(current_rnn_iter, self.config.rnn_iter_num, self.config.rollout_length_min, self.config.rollout_length_max)
-        expand_count = self.schedule_expand_num(current_rnn_iter, self.config.rnn_iter_num, self.config.expand_num_min, self.config.expand_num_max)
-        print(f"MCTS Iterations: {mcts_iters}, Rollout Length: {rollout_len}, Expand Count: {expand_count}")
-
-        mcts = MCTS(
-            select_strategy=get_select_strategy(self.config),
-            expand_strategy=get_expand_strategy(expand_count),
-            rollout_strategy=get_rollout_strategy(self.evaluator, rollout_len, self.config),
-            choose_strategy=get_choose_strategy(self.config)
-        )
-        if main_thread:
-            Visualizer.set_mcts(mcts, root_node)
-
-        for _ in range(mcts_iters):
-            mcts.do_iter(root_node, width=self.config.width_threshold)
-        best_node = mcts.choose(root_node)
-        return {
-            "prompt": best_node.current_prompt,
-            "reward": template.get_reward(self.evaluator, best_node.current_prompt),
-            "flat_params": flat_params,
-            "log_prob_sum": 0.0, 
-            "entropy": 0.0
-        }
     
     def nonlinear_schedule(
         self,

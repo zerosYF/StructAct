@@ -30,7 +30,6 @@ class TemplateController:
         return self.search_space[slot_index]
 
     def train_step(self):
-        self.model.train()
         self.iter_count += 1
         flat_params, log_prob, entropy, logits_list = self.model(return_logits=True)
         self.last_logits = logits_list  

@@ -60,7 +60,6 @@ class PromptTemplate:
 
         while len(results) < sample_k and trials < max_trials:
             flat_params, log_prob_sum, entropy = self.controller.train_step()
-            self.last_sampled_params = flat_params
             key = tuple(flat_params)
             if key not in seen:
                 seen.add(key)
@@ -125,6 +124,7 @@ class PromptTemplate:
         - Compute slot-level attributions
         - Reinforce update
         """
+
         avg_score = self.get_reward(evaluator, current_prompt)
         # Perform slot-level structure attribution if enabled
         if self.task.config.rnn_structure_contribution:
