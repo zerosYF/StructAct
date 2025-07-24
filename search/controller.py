@@ -34,11 +34,10 @@ class SearchController:
         best_prompt = self.task.extract_origin_prompt()
 
         Visualizer.start(title=self.task.name)
-        
+        best_prompt = template.pre_sample(best_prompt)
         for epoch in range(self.config.rnn_iter_num):
-            best_prompt = template.pre_sample(best_prompt)
             self._mcts_workflow(template, best_prompt, epoch)
-            template.update(self.evaluator, best_prompt)
+        template.update(self.evaluator, best_prompt)
         return template.render(), best_prompt
     
     
@@ -69,7 +68,7 @@ class SearchController:
 
         for iter_id in range(mcts_iters):
             mcts.do_iter(root_node, width=self.config.width_threshold)
-            if iter_id % 5 == 0 or iter_id == self.config.mcts_iter_num - 1:
+            if iter_id % 5 == 0 or iter_id == mcts_iters - 1:
                 logger.info(f"  Total expanded nodes: {len(mcts.N)}")
 
         best_node: PromptNode = mcts.choose(root_node)
