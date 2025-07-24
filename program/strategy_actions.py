@@ -76,7 +76,7 @@ class FewShotExampleBuilder(OptimizeAction):
         self.rewriter_system_prompt = (
             "You are a prompt editor. "
             "You must strictly follow the given prompt structure. "
-            "Replace/Add/Remove examples into the prompt, keeping structure consistent."
+            "Replace some examples in the prompt, keeping structure consistent."
         )
 
     def do(self, current_prompt, template_description):
@@ -97,8 +97,8 @@ class FewShotExampleBuilder(OptimizeAction):
             f"Some examples you can select:\n{new_examples}\n\n"
             f"Prompt Template Structure:\n{template_description}\n\n"
             f"The template structure must be strictly followed above all else.\n\n"
-            f"You can replace existing examples or add new ones and make the content aligned with the structure.\n\n"
-            f"You should select the best examples and keep the structure consistent.\n\n"
+            f"You can replace existing examples make the content aligned with the structure.\n\n"
+            f"You should select the best top k examples for new prompt(k is aligned with structure).\n\n"
             f"Only give me the revised prompt, do not add any other text.\n\n"
         )
         return self.rewriter_model.api_call(self.rewriter_system_prompt, rewriting_input)
