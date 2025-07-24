@@ -53,6 +53,7 @@ from task.geometric_shapes import GeometricShapesTask
 from task.object_counting import ObjectCountingTask
 from task.penguins_table import PenguinsTableTask
 from task.temporal_sequences import TemporalSequencesTask
+from task.gsm8k import PrologMathTask
 
 TASK_LIST = [
     EpistemicTask,
@@ -61,6 +62,7 @@ TASK_LIST = [
     CausalJudgementTask,
     GeometricShapesTask,
     PenguinsTableTask,
+    PrologMathTask,
 ]
 
 def run_all():
