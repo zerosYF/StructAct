@@ -15,7 +15,7 @@ class PromptEvaluator:
         final_input = self.task.inject_final_input(current_prompt, q)
         output = self.model.api_call(self.task.system_prompt, final_input)
         logger.info(f"reward model answer:{output.strip().lower()}")
-        logger.info(f"reward gold answer:{a.strip().lower()}")
+        logger.info(f"reward gold answer:{a}")
         return self.task.get_reward(output, a)
     
     def batch_reward(self, current_prompt: str, samples: List[dict]) -> List[float]:

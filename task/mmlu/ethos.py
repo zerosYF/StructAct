@@ -56,7 +56,11 @@ class HateSpeechDetectionTask(TaskBase):
         )
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
-        return current_prompt + "\n\nText: " + input + "\nAnswer (in JSON):\n"
+        return (
+            current_prompt +
+            "\n\nText: " + input +
+            "\nAnswer with a raw JSON dictionary, without markdown formatting or code block:\n"
+        )
 
     def extract_origin_prompt(self) -> str:
         return "Classify text into multiple hate speech labels."
