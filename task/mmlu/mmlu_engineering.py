@@ -2,13 +2,13 @@ import json
 import random
 from typing import List, Dict
 from loguru import logger
-from .base_task import TaskBase  # 根据项目结构调整路径
+from task.base_task import TaskBase  
 
 class EngineeringMCQTask(TaskBase):
     def __init__(self, config):
         super().__init__(config)
         self.name = "engineering_mcq"
-        path = "dataset/mmlu/engineering.jsonl"  # 替换成你真实路径
+        path = "dataset/mmlu/engineering.jsonl" 
 
         all_examples = []
         with open(path, "r", encoding="utf-8") as f:
@@ -27,8 +27,8 @@ class EngineeringMCQTask(TaskBase):
         random.shuffle(all_examples)
 
         split = int(len(all_examples) * config.split_ratio)
-        train_val_data = all_examples[:split]
-        self.test_data = all_examples[split:]
+        train_val_data = all_examples[:100]
+        self.test_data = all_examples[100:200]
 
         split_1 = int(len(train_val_data) * config.split_ratio_train_val)
         full_train_data = train_val_data[:split_1]
