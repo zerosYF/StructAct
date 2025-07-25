@@ -45,7 +45,7 @@ class PromptNode(Node):
 
     def take_action(self, action: OptimizeAction, step_type:Step):
         # Then apply the strategy-level semantic transformation.
-        new_prompt = action.do(self.current_prompt, self.structure_template.describe())
+        new_prompt = action.do(self.current_prompt, self.structure_template.render())
         logger.info(f"📊 Current Prompt:\n{new_prompt}")
         return PromptNode(
             action_set=self.action_set,

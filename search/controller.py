@@ -30,7 +30,7 @@ class SearchController:
 
     def search(self):
         template = PromptTemplate(config=self.config, blocks=get_all_blocks(), task=self.task)
-        logger.info(f"🔍 Initial template constraints:\n{template.render()}")
+        logger.info(f"🔍 Initial template constraints:\n{template.describe()}")
         best_prompt = self.task.extract_origin_prompt()
 
         Visualizer.start(title=self.task.name)
@@ -39,7 +39,7 @@ class SearchController:
             best_prompt = template.pre_sample(best_prompt)
             best_prompt = self._mcts_workflow(template, best_prompt, epoch)
             template.update(self.evaluator, best_prompt)
-        return template.render(), best_prompt
+        return template.describe(), best_prompt
     
     
     def _mcts_workflow(self, template: PromptTemplate, best_prompt: str, current_rnn_iter: int = 0, main_thread: bool = True):
@@ -81,7 +81,7 @@ class SearchController:
     
     def batch_search(self):
         template = PromptTemplate(config=self.config, blocks=get_all_blocks(), task=self.task)
-        logger.info(f"🔍 Initial template constraints:\n{template.render()}")
+        logger.info(f"🔍 Initial template constraints:\n{template.describe()}")
         best_prompt = self.task.extract_origin_prompt()
 
         Visualizer.start(title=self.task.name)
@@ -117,7 +117,7 @@ class SearchController:
                     template.last_entropy = top_k[i][3]
             template.update(self.evaluator, best_prompt)
             
-        return template.render(), best_prompt
+        return template.describe(), best_prompt
     
     def nonlinear_schedule(
         self,

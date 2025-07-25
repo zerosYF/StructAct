@@ -148,10 +148,9 @@ class PromptTemplate:
         Use the StructureSyncAction to regenerate a semantically complete prompt
         based on the current structural description and training examples.
         """
-        template_description = self.describe()
         return self.sync_action.do(
             current_prompt=current_prompt,
-            template_description=template_description,
+            template_description=self.render(),
         )
 
     def _structure_attribution(self, params, evaluator:PromptEvaluator, val_samples, current_prompt):
