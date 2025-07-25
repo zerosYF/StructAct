@@ -1,4 +1,4 @@
-from task.penguins_table import PenguinsTableTask
+from task.bbh.penguins_table import PenguinsTableTask
 from search.controller import SearchController
 from search.config import SearchConfig
 from search.evaluator import PromptEvaluator

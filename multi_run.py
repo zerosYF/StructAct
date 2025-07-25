@@ -6,14 +6,17 @@ import multiprocessing
 from logger import logger
 
 from task.base_task import TaskBase
-from task.causal_judgement import CausalJudgementTask
-from task.epistemic import EpistemicTask
-from task.geometric_shapes import GeometricShapesTask
-from task.object_counting import ObjectCountingTask
-from task.penguins_table import PenguinsTableTask
-from task.temporal_sequences import TemporalSequencesTask
-from task.gsm8k import GSM8KTask
-from task.multi_arith import SimpleMathReasoningTask
+from task.bbh.causal_judgement import CausalJudgementTask
+from task.bbh.epistemic import EpistemicTask
+from task.bbh.geometric_shapes import GeometricShapesTask
+from task.bbh.object_counting import ObjectCountingTask
+from task.bbh.penguins_table import PenguinsTableTask
+from task.bbh.temporal_sequences import TemporalSequencesTask
+from task.math.gsm8k import GSM8KTask
+from task.math.multi_arith import SimpleMathReasoningTask
+from task.mmlu.ethos import HateSpeechDetectionTask
+from task.mmlu.mmlu_business import BusinessMCQTask
+from task.mmlu.mmlu_engineering import EngineeringMCQTask
 
 from search.controller import SearchController
 from search.config import SearchConfig
@@ -30,6 +33,9 @@ TASK_REGISTRY = {
     "TemporalSequencesTask": TemporalSequencesTask,
     "GSM8KTask": GSM8KTask,
     "SimpleMathReasoningTask": SimpleMathReasoningTask,
+    "HateSpeechDetectionTask": HateSpeechDetectionTask,
+    "BusinessMCQTask": BusinessMCQTask,
+    "EngineeringMCQTask":EngineeringMCQTask,
 }
 
 
