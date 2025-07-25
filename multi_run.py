@@ -19,7 +19,7 @@ def run_task(task_cls):
 
         logger.info(f"🚀 Running task: {task.name}")
         start_time = time.time()
-        best_template, best_sequence, best_prompt = controller.search()
+        best_template, best_prompt = controller.search()
 
         acc_mcts = evaluator.evaluate(task.get_test(), best_prompt)
         acc_origin = evaluator.evaluate(task.get_test(), task.extract_origin_prompt())
@@ -34,8 +34,6 @@ def run_task(task_cls):
         with open(os.path.join(result_dir, "result.txt"), "w", encoding="utf-8") as f:
             f.write(f"🔍 Task: {task.name}\n")
             f.write(f"✅ Best Prompt Template:\n{best_template}\n\n")
-            f.write("✅ Best Action Sequence:\n")
-            f.write("\n".join([action.name for action in best_sequence]) + "\n\n")
             f.write(f"📊 MCTS Test Accuracy: {acc_mcts.get('accuracy')}\n")
             f.write(f"📊 Original Test Accuracy: {acc_origin.get('accuracy')}\n")
             f.write(f"\n⏱️ Time Elapsed: {int(minutes)} min {int(seconds)} sec ({duration:.2f} seconds)\n")
