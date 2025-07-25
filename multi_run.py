@@ -21,7 +21,6 @@ from search.evaluator import PromptEvaluator
 
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
-# ✅ 显式注册所有可用任务
 TASK_REGISTRY = {
     "CausalJudgementTask": CausalJudgementTask,
     "EpistemicTask": EpistemicTask,
