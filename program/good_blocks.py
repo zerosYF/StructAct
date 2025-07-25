@@ -165,8 +165,8 @@ class CautionBlock(PromptBlock):
 
     def set_hyperparams(self, hyperparams: List[int]):
         self.hyperparams = hyperparams
-        self.style = self.style_options[hyperparams[0]]
-        self.count = self.count_options[hyperparams[1]]
+        self.count = self.count_options[hyperparams[0]]
+        self.style = self.style_options[hyperparams[1]]
 
     def describe(self):
         return {
