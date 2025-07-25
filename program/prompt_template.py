@@ -39,17 +39,20 @@ class PromptTemplate:
 
     def render(self) -> str:
         """
-        Generate a structured natural language description of the full template.
+        Generate a structured natural language prompt template with explicit markers.
         """
-        header = (
-            "This is a structured prompt template composed of the following functional blocks.\n"
-            "Text within quotation marks (“ ”) indicates critical elements that must be preserved.\n"
-            "Each block plays a distinct role in shaping the model’s behavior.\n"
-            "You must strictly adhere to the structure and constraints defined by these blocks, "
-            "while ensuring the overall prompt remains coherent and fluent in natural language.\n"
+        instruction_header = (
+            "This is a structured prompt template composed of multiple functional blocks.\n"
+            "Each block is explicitly marked by tags like <BLOCK_NAME> and parameterized with fields such as <KEY=VALUE>.\n"
+            "These tags define essential constraints and behavioral guidelines for prompt generation.\n"
+            "The model must preserve all tags and key-value markers exactly as shown, "
+            "while rendering fluent and natural language surrounding them.\n"
+            "Your goal is to optimize the final prompt based on this structure, ensuring it remains coherent, effective, and faithful to the constraints.\n"
         )
-        block_descriptions = "\n".join([f"- {block.render()}" for block in self.blocks])
-        return header + block_descriptions
+
+        block_contents = "\n".join([block.render() for block in self.blocks])
+
+        return f"{instruction_header}\n<BEGIN_TEMPLATE>\n{block_contents}\n<END_TEMPLATE>"
     
     def batch_sample_structs(self, sample_k:int, oversample_factor: int = 2) -> list:
         seen = set()

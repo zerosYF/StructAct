@@ -29,8 +29,8 @@ class TaskObjectiveBlock(PromptBlock):
     def render(self):
         return (
             "<TASK_OBJECTIVE>\n"
-            f"The objective of the prompt should be stated in a “{self.tone}” tone, "
-            f"with a “{self.structure}” about the task structure or expectations.\n"
+            f"The objective should be stated in a <TONE={self.tone}> style, "
+            f"with a <STRUCTURE_HINT={self.structure}> about the task format or expectation.\n"
         )
 
 class RoleConstraintBlock(PromptBlock):
@@ -70,15 +70,15 @@ class RoleConstraintBlock(PromptBlock):
         }
 
     def render(self):
-        role_line = f"Adopt the role of a “{self.role}” with a “{self.tone}” tone."
+        role_line = f"Assume the role <ROLE={self.role}> and adopt a <TONE={self.tone}> communication style."
         detail_line = (
-            "Only the identity is specified."
+            "Only the identity is provided."
             if "only" in self.detail.lower()
-            else "Include full context about the role’s responsibilities."
+            else "Full context about the role’s responsibility is included."
         )
         return (
             "<ROLE_CONSTRAINT>\n"
-            f"{role_line} {detail_line}\n"
+            f"{role_line} <DETAIL={self.detail}>. {detail_line}\n"
         )
 
 class FewShotExampleBlock(PromptBlock):
@@ -109,13 +109,11 @@ class FewShotExampleBlock(PromptBlock):
 
     def render(self):
         if self.num == 0:
-            return "<FEW_SHOT_EXAMPLES>\nNo examples will be shown.\n"
-        else:
-            return (
-                "<FEW_SHOT_EXAMPLES>\n"
-                f"Include “{self.num}” example(s), organized by “{self.order}”. "
-                "Each example should follow a question-answer pair format.\n"
-            )
+            return "<FEW_SHOT_EXAMPLES>\nNo few-shot examples are provided.\n"
+        return (
+            "<FEW_SHOT_EXAMPLES>\n"
+            f"Provide <NUM_EXAMPLES={self.num}> question-answer example(s), organized by <ORDERING={self.order}>.\n"
+        )
 
 class ConstraintBlock(PromptBlock):
     def __init__(self):
@@ -145,12 +143,11 @@ class ConstraintBlock(PromptBlock):
 
     def render(self):
         if self.num == 0:
-            return "<CONSTRAINTS>\nNo explicit constraints are imposed.\n"
-        else:
-            return (
-                "<CONSTRAINTS>\n"
-                f"Add “{self.num}” constraint(s), formatted as a “{self.format}”.\n"
-            )
+            return "<CONSTRAINTS>\nNo additional constraints are applied.\n"
+        return (
+            "<CONSTRAINTS>\n"
+            f"Impose <NUM_CONSTRAINTS={self.num}> instruction constraint(s), formatted as <FORMAT={self.format}>.\n"
+        )
 
 class CautionBlock(PromptBlock):
     def __init__(self):
@@ -181,13 +178,12 @@ class CautionBlock(PromptBlock):
 
     def render(self):
         if self.count == 0:
-            return "<CAUTIONS>\nNo cautionary guidance is required.\n"
-        else:
-            return (
-                "<CAUTIONS>\n"
-                f"Present “{self.count}” caution(s) using a “{self.style}” style. "
-                "Caution content will be sampled or generated automatically based on task context.\n"
-            )
+            return "<CAUTIONS>\nNo cautionary statements are needed.\n"
+        return (
+            "<CAUTIONS>\n"
+            f"Include <NUM_CAUTIONS={self.count}> caution(s) styled as <STYLE={self.style}>. "
+            "Caution content is generated dynamically based on context.\n"
+        )
 
 class SummaryClosureBlock(PromptBlock):
     def __init__(self):
@@ -213,12 +209,11 @@ class SummaryClosureBlock(PromptBlock):
 
     def render(self):
         if self.summary_type == "None":
-            return "<SUMMARY_CLOSURE>\nNo summary or closing statement is needed.\n"
-        else:
-            return (
-                "<SUMMARY_CLOSURE>\n"
-                f"Wrap up the prompt with a “{self.summary_type}”.\n"
-            )
+            return "<SUMMARY_CLOSURE>\nNo closing summary is required.\n"
+        return (
+            "<SUMMARY_CLOSURE>\n"
+            f"Conclude the prompt with <SUMMARY_TYPE={self.summary_type}>.\n"
+        )
 
 class ReasoningStrategyBlock(PromptBlock):
     def __init__(self):
@@ -248,11 +243,15 @@ class ReasoningStrategyBlock(PromptBlock):
 
     def render(self):
         if self.strategy == "None":
-            return "<REASONING_STRATEGY>\nNo explicit reasoning method should be specified.\n"
+            return (
+                "<REASONING_STRATEGY>\n"
+                "Do not include any explicit reasoning instruction in the prompt.\n"
+            )
         else:
             return (
                 "<REASONING_STRATEGY>\n"
-                f"Use a “{self.strategy}” approach with “{self.verbosity}” elaboration to guide the reasoning process.\n"
+                f"Include a reasoning instruction that encourages a “{self.strategy}” approach "
+                f"with “{self.verbosity}” elaboration.\n"
             )
 
 def get_all_blocks():
