@@ -3,7 +3,7 @@ from typing import List
 class TaskObjectiveBlock(PromptBlock):
     def __init__(self):
         self.tone_options = ["Concise", "Formal", "Encouraging"]
-        self.structure_options = ["None", "Weak hint", "Moderate hint", "Clear structure hint"]
+        self.structure_options = ["None", "Weak hint", "Strong hint"]
         self.hyperparams = [0, 0]
 
         self.tone = self.tone_options[self.hyperparams[0]]
@@ -33,9 +33,15 @@ class TaskObjectiveBlock(PromptBlock):
 
 class RoleConstraintBlock(PromptBlock):
     def __init__(self):
-        self.role_options = ["Assistant", "Domain Expert", "Teacher", "Critical Analyst"]
-        self.tone_options = ["Neutral", "Supportive", "Formal", "Critical"]
-        self.detail_options = ["Identity only", "Identity + brief responsibility", "Identity + full context"]
+        self.role_options = self.role_options = [
+            "Assistant",         
+            "Math Tutor",        
+            "Logical Analyst",  
+            "Data Interpreter",  
+            "Visual Coder"      
+        ]
+        self.tone_options = ["Neutral", "Formal"]
+        self.detail_options = ["Identity only", "Identity + full context"]
         self.hyperparams = [0, 0, 0]
 
         self.role = self.role_options[self.hyperparams[0]]
@@ -69,7 +75,7 @@ class RoleConstraintBlock(PromptBlock):
 class FewShotExampleBlock(PromptBlock):
     def __init__(self):
         self.num_options = [0, 1, 3, 5]
-        self.order_options = ["Random", "Easy to hard", "Semantic similarity", "High variance"]
+        self.order_options = ["Random", "Semantic similarity"]
         self.hyperparams = [0, 0]
 
         self.num = self.num_options[self.hyperparams[0]]
@@ -130,8 +136,8 @@ class ConstraintBlock(PromptBlock):
 
 class CautionBlock(PromptBlock):
     def __init__(self):
-        self.count_options = [0, 1, 5, 7]
-        self.style_options = ["Gentle reminder", "Friendly caution", "Clear warning", "Strict directive"]
+        self.count_options = [0, 5, 10]
+        self.style_options = ["Gentle reminder", "Strict directive"]
         self.hyperparams = [0, 0]
 
         self.count = self.count_options[self.hyperparams[0]]
@@ -162,7 +168,7 @@ class CautionBlock(PromptBlock):
 
 class SummaryClosureBlock(PromptBlock):
     def __init__(self):
-        self.options = ["None", "Brief summary", "Summary + action hint", "Full summary + next step"]
+        self.options = ["None", "Brief summary"]
         self.hyperparams = [0]
 
         self.summary_type = self.options[self.hyperparams[0]]
@@ -189,8 +195,8 @@ class SummaryClosureBlock(PromptBlock):
 
 class ReasoningStrategyBlock(PromptBlock):
     def __init__(self):
-        self.strategy_options = ["None", "Step-by-step", "Chain of Thought", "Reflection"]
-        self.verbosity_options = ["Concise", "Moderate", "Detailed"]
+        self.strategy_options = ["None", "Chain of Thought"]
+        self.verbosity_options = ["Concise", "Detailed"]
         self.hyperparams = [0, 0]
 
         self.strategy = self.strategy_options[self.hyperparams[0]]
