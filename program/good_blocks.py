@@ -19,16 +19,18 @@ class TaskObjectiveBlock(PromptBlock):
         self.tone = self.tone_options[hyperparams[0]]
         self.structure = self.structure_options[hyperparams[1]]
 
-    def render(self):
+    def describe(self):
         return {
             "type": "task_objective",
             "tone": self.tone,
             "structure_hint": self.structure
         }
 
-    def describe(self):
+    def render(self):
         return (
-            f"Block: TaskObjective - Tone: “{self.tone}”, Structure: “{self.structure}”."
+            "<TASK_OBJECTIVE>\n"
+            f"The objective of the prompt should be stated in a “{self.tone}” tone, "
+            f"with a “{self.structure}” about the task structure or expectations.\n"
         )
 
 class RoleConstraintBlock(PromptBlock):
@@ -59,7 +61,7 @@ class RoleConstraintBlock(PromptBlock):
         self.tone = self.tone_options[hyperparams[1]]
         self.detail = self.detail_options[hyperparams[2]]
 
-    def render(self):
+    def describe(self):
         return {
             "type": "role_constraint",
             "role": self.role,
@@ -67,9 +69,16 @@ class RoleConstraintBlock(PromptBlock):
             "description_detail": self.detail
         }
 
-    def describe(self):
+    def render(self):
+        role_line = f"Adopt the role of a “{self.role}” with a “{self.tone}” tone."
+        detail_line = (
+            "Only the identity is specified."
+            if "only" in self.detail.lower()
+            else "Include full context about the role’s responsibilities."
+        )
         return (
-            f"Block: RoleConstraint - Role: “{self.role}”, Tone: “{self.tone}”, Detail: “{self.detail}”."
+            "<ROLE_CONSTRAINT>\n"
+            f"{role_line} {detail_line}\n"
         )
 
 class FewShotExampleBlock(PromptBlock):
@@ -91,17 +100,22 @@ class FewShotExampleBlock(PromptBlock):
         self.num = self.num_options[hyperparams[0]]
         self.order = self.order_options[hyperparams[1]]
 
-    def render(self):
+    def describe(self):
         return {
             "type": "few_shot_examples",
             "num_examples": self.num,
             "ordering": self.order
         }
 
-    def describe(self):
-        return (
-            f"Block: FewShotExamples - “{self.num}” example(s), Order: “{self.order}”."
-        )
+    def render(self):
+        if self.num == 0:
+            return "<FEW_SHOT_EXAMPLES>\nNo examples will be shown.\n"
+        else:
+            return (
+                "<FEW_SHOT_EXAMPLES>\n"
+                f"Include “{self.num}” example(s), organized by “{self.order}”. "
+                "Each example should follow a question-answer pair format.\n"
+            )
 
 class ConstraintBlock(PromptBlock):
     def __init__(self):
@@ -122,17 +136,21 @@ class ConstraintBlock(PromptBlock):
         self.num = self.num_options[hyperparams[0]]
         self.format = self.format_options[hyperparams[1]]
 
-    def render(self):
+    def describe(self):
         return {
             "type": "constraint",
             "num_constraints": self.num,
             "format": self.format
         }
 
-    def describe(self):
-        return (
-            f"Block: ConstraintBlock - “{self.num}” constraint(s), Format: “{self.format}”."
-        )
+    def render(self):
+        if self.num == 0:
+            return "<CONSTRAINTS>\nNo explicit constraints are imposed.\n"
+        else:
+            return (
+                "<CONSTRAINTS>\n"
+                f"Add “{self.num}” constraint(s), formatted as a “{self.format}”.\n"
+            )
 
 class CautionBlock(PromptBlock):
     def __init__(self):
@@ -153,7 +171,7 @@ class CautionBlock(PromptBlock):
         self.style = self.style_options[hyperparams[0]]
         self.count = self.count_options[hyperparams[1]]
 
-    def render(self):
+    def describe(self):
         return {
             "type": "caution",
             "count": self.count,
@@ -161,10 +179,15 @@ class CautionBlock(PromptBlock):
             "content_generation": "model_sampled"
         }
 
-    def describe(self):
-        return (
-            f"Block: CautionBlock - “{self.count}” warning(s), Style: “{self.style}”."
-        )
+    def render(self):
+        if self.count == 0:
+            return "<CAUTIONS>\nNo cautionary guidance is required.\n"
+        else:
+            return (
+                "<CAUTIONS>\n"
+                f"Present “{self.count}” caution(s) using a “{self.style}” style. "
+                "Caution content will be sampled or generated automatically based on task context.\n"
+            )
 
 class SummaryClosureBlock(PromptBlock):
     def __init__(self):
@@ -182,16 +205,20 @@ class SummaryClosureBlock(PromptBlock):
         self.hyperparams = hyperparams
         self.summary_type = self.options[hyperparams[0]]
 
-    def render(self):
+    def describe(self):
         return {
             "type": "summary_closure",
             "summary_type": self.summary_type
         }
 
-    def describe(self):
-        return (
-            f"Block: SummaryClosure - Type: “{self.summary_type}”."
-        )
+    def render(self):
+        if self.summary_type == "None":
+            return "<SUMMARY_CLOSURE>\nNo summary or closing statement is needed.\n"
+        else:
+            return (
+                "<SUMMARY_CLOSURE>\n"
+                f"Wrap up the prompt with a “{self.summary_type}”.\n"
+            )
 
 class ReasoningStrategyBlock(PromptBlock):
     def __init__(self):
@@ -212,17 +239,21 @@ class ReasoningStrategyBlock(PromptBlock):
         self.strategy = self.strategy_options[hyperparams[0]]
         self.verbosity = self.verbosity_options[hyperparams[1]]
 
-    def render(self):
+    def describe(self):
         return {
             "type": "reasoning_strategy",
             "strategy": self.strategy,
             "verbosity": self.verbosity
         }
 
-    def describe(self):
-        return (
-            f"Block: ReasoningStrategy - Strategy: “{self.strategy}”, Verbosity: “{self.verbosity}”."
-        )
+    def render(self):
+        if self.strategy == "None":
+            return "<REASONING_STRATEGY>\nNo explicit reasoning method should be specified.\n"
+        else:
+            return (
+                "<REASONING_STRATEGY>\n"
+                f"Use a “{self.strategy}” approach with “{self.verbosity}” elaboration to guide the reasoning process.\n"
+            )
 
 def get_all_blocks():
     return [

@@ -31,13 +31,13 @@ class PromptTemplate:
             search_space.extend(block.get_search_space())
         return search_space
 
-    def render(self) -> str:
+    def describe(self) -> str:
         """
         Render each block as a JSON-like string and join them.
         """
-        return "\n".join([f"{block.render()}" for block in self.blocks])
+        return "\n".join([f"{block.describe()}" for block in self.blocks])
 
-    def describe(self) -> str:
+    def render(self) -> str:
         """
         Generate a structured natural language description of the full template.
         """
@@ -48,7 +48,7 @@ class PromptTemplate:
             "You must strictly adhere to the structure and constraints defined by these blocks, "
             "while ensuring the overall prompt remains coherent and fluent in natural language.\n"
         )
-        block_descriptions = "\n".join([f"- {block.describe()}" for block in self.blocks])
+        block_descriptions = "\n".join([f"- {block.render()}" for block in self.blocks])
         return header + block_descriptions
     
     def batch_sample_structs(self, sample_k:int, oversample_factor: int = 2) -> list:
