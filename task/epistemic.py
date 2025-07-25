@@ -16,6 +16,7 @@ class EpistemicTask(TaskBase):
         
         self.origin_prompt = data.get("description", "")
         self.name = data.get("name", "unknown_task")
+        self.task_prefix = data.get("task_prefix", "")
         self.system_prompt = "you are a helpful assistant. Answer the question based on the provided context."
 
         all_examples = []
@@ -52,7 +53,7 @@ class EpistemicTask(TaskBase):
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
         """Injects the input question into the current prompt for evaluation."""
-        return current_prompt +"\nOnly output one in options as anwser\n" + f"\n\nQuestion: {input}\n Anwser:\n"
+        return current_prompt  + f"\n{self.task_prefix}" + "\nOnly output one in options as anwser\n" + f"\n\nQuestion: {input}\n Anwser:\n"
 
     def extract_origin_prompt(self) -> str:
         """Returns the original task prompt description."""
