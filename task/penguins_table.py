@@ -15,6 +15,7 @@ class PenguinsTableTask(TaskBase):
         
         self.origin_prompt = data.get("description", "")
         self.name = data.get("name", "unknown_task")
+        self.task_prefix = data.get("task_prefix", "")
 
         all_examples = []
         for ex in data["examples"]:
@@ -50,7 +51,13 @@ class PenguinsTableTask(TaskBase):
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
         """Injects the input question into the current prompt for evaluation."""
-        return current_prompt +"\nOnly output one in options as anwser\n" + f"\n\nQuestion: {input}\n Anwser:\n"
+        return (
+            current_prompt
+            + "\n"
+            + self.task_prefix
+            + "\nOnly output one in options as answer.\n"
+            + f"\n\nQuestion: {input}\nAnswer:\n"
+        )
 
     def extract_origin_prompt(self) -> str:
         """Returns the original task prompt description."""
