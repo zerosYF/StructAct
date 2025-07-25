@@ -16,7 +16,7 @@ class TaskBase(ABC):
         return random.sample(self.train_data_mcts, self.config.batch_size)
     
     def sample_train_rnn(self) -> List[Dict]:
-        return random.sample(self.train_data_rnn, self.config.rnn_batch_size)
+        return self.train_data_rnn 
     
     def get_val(self) -> List[Dict]:
         return self.val_data
