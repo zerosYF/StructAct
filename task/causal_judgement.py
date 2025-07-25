@@ -38,8 +38,8 @@ class CausalJudgementTask(TaskBase):
         random.shuffle(all_examples)
 
         split = int(len(all_examples) * config.split_ratio)
-        train_val_data = all_examples[:split]
-        self.test_data = all_examples[split:]
+        train_val_data = all_examples[:90]
+        self.test_data = all_examples[90:]
 
         split_1 = int(len(train_val_data) * config.split_ratio_train_val)
         full_train_data = train_val_data[:split_1]
