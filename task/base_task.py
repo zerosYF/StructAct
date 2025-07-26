@@ -23,7 +23,7 @@ class TaskBase(ABC):
     
     # get reward to update mcts q
     def get_eval(self) -> List[Dict]:
-        return self.eval_data
+        return self.eval_data_mcts
     
     def get_test(self) -> List[Dict]:
         return self.test_data
