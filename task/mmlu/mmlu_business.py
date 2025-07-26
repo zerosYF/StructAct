@@ -29,11 +29,11 @@ class BusinessMCQTask(TaskBase):
         split = int(len(all_examples) * config.split_ratio)
         full_train_data = all_examples[:100]
         self.train_data_all = full_train_data
-        self.test_data = all_examples[100:200]
+        self.test_data = all_examples[100:300]
 
         split_1 = int(len(full_train_data) * config.split_ratio_)
-        self.train_data_mcts = full_train_data[:split_1]
-        self.eval_data_mcts = full_train_data[split_1:]
+        self.train_data_mcts = full_train_data[:50]
+        self.eval_data_mcts = full_train_data[50:]
 
         self.system_prompt = (
             "You are a helpful business assistant. Choose the most appropriate option for the question below. "
