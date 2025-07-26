@@ -36,16 +36,13 @@ class PenguinsTableTask(TaskBase):
         random.shuffle(all_examples)
 
         split = int(len(all_examples) * config.split_ratio)
-        train_val_data = all_examples[:70]
+        full_train_data = all_examples[:70]
+        self.train_data_all = full_train_data
         self.test_data = all_examples[70:]
 
-        split_1 = int(len(train_val_data) * config.split_ratio_train_val)
-        full_train_data = train_val_data[:split_1]
-        self.val_data = train_val_data[split_1:]
-
-        split_2 = int(len(full_train_data) * config.split_ratio_train)
-        self.train_data_mcts = full_train_data[:split_2]
-        self.train_data_rnn = full_train_data[split_2:]
+        split_1 = int(len(full_train_data) * config.split_ratio_)
+        self.train_data_mcts = full_train_data[:split_1]
+        self.eval_data_mcts = full_train_data[split_1:]
 
         self.system_prompt = "you are a helpful assistant. Answer the question based on the provided context."
 

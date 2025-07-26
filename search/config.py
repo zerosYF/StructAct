@@ -9,8 +9,8 @@ class SearchConfig:
     def __init__(self):
         # Dataset split settings
         self.split_ratio: float = 0.7      # (Training + Validation) / Total data
-        self.split_ratio_train_val: float = 0.8     # Training / (Training + Validation)
-        self.split_ratio_train: float = 0.5  # Train_mcts/ (Train_mcts + Train_rnn)
+        #baseline PromptAgent:different task has themselves' ratio
+        self.split_ratio_: float = 0.8     # Training / (Training + Validation)
         self.shuffle_seed: int = 42        # Random seed for data shuffling
 
         # MCTS search control
@@ -33,7 +33,7 @@ class SearchConfig:
         # RNN Controller settings
         self.struct_sample_count: int = 10       # Number of structure samples per iteration
         self.struct_sample_top_k: int = 1          # Number of top structures to keep
-        self.rnn_iter_num: int = 3         # Number of training iterations for RNN
+        self.rnn_iter_num: int = 100         # Number of training iterations for RNN
         self.rnn_hidden_dim: int = 128         # Hidden dimension of RNN
         self.rnn_lr: float = 1e-3              # Learning rate for RNN
         self.rnn_structure_contribution = False

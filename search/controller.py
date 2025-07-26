@@ -6,7 +6,6 @@ from search.prompt_node import PromptNode
 from search.config import SearchConfig
 from typing import List, Set
 from visualizer import Visualizer
-from program.base_block import PromptBlock
 from program.prompt_template import PromptTemplate
 from program.mini_blocks import get_all_blocks
 from mcts.select import get_select_strategy

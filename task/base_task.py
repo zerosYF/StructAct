@@ -6,20 +6,24 @@ class TaskBase(ABC):
     def __init__(self, config:SearchConfig):
         self.name = "BaseTask"
         self.config = config
+        # train_data_all = train_data_mcts + eval_data_mcts
+        self.train_data_all = None
         self.train_data_mcts = None
-        self.train_data_rnn = None
-        self.val_data = None
+        self.eval_data_mcts = None
         self.test_data = None
         self.system_prompt = None
 
+    # train mcts actions sample mini_batch
     def sample_train(self) -> List[Dict]:
         return random.sample(self.train_data_mcts, self.config.batch_size)
     
-    def sample_train_rnn(self) -> List[Dict]:
-        return self.train_data_rnn 
+    # train rnn structure
+    def get_train(self) -> List[Dict]:
+        return self.train_data_all 
     
-    def get_val(self) -> List[Dict]:
-        return self.val_data
+    # get reward to update mcts q
+    def get_eval(self) -> List[Dict]:
+        return self.eval_data
     
     def get_test(self) -> List[Dict]:
         return self.test_data

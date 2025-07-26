@@ -61,7 +61,7 @@ class PromptNode(Node):
         return self.depth == self.max_depth
 
     def reward(self):
-        val_samples = self.evaluator.task.get_val()
+        val_samples = self.evaluator.task.get_eval()
         total_score = sum(self.evaluator.batch_reward(self.current_prompt, val_samples))
         score = total_score / len(val_samples)
         logger.info(f"🎯 [RolloutFinished] Prompt evaluation score = {score:.4f}, Action sequence = {[a.name for a in self.action_seq]}")

@@ -112,7 +112,7 @@ class PromptTemplate:
         return current_prompt
     
     def get_reward(self, evaluator:PromptEvaluator,  current_prompt:str) -> float:
-        val_samples = self.task.sample_train_rnn()  # Sample a subset of the training set
+        val_samples = self.task.get_train()  # Sample a subset of the training set
         total_score = sum(evaluator.batch_reward(current_prompt, val_samples))
         avg_score = total_score / len(val_samples)
         if self.last_sampled_params is not None:
@@ -139,7 +139,7 @@ class PromptTemplate:
             slot_rewards = self._structure_attribution(
                 params=self.last_sampled_params,
                 evaluator=evaluator,
-                val_samples=self.task.sample_train_rnn(),
+                val_samples=self.task.get_train(),
                 current_prompt=current_prompt
             )
         else:

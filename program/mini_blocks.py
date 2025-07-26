@@ -5,7 +5,7 @@ class TaskInstructionBlock(PromptBlock):
     def __init__(self):
         self.style_options = [
             "Concise objective only",
-            "Encouraging formal objective with Chain-of-Thought",
+            "Guiding the model to achieve objectives through Chain-of-Thought (CoT).",
             "Encouraging tone with detailed reasoning"
         ]
         self.hyperparams = [0]
