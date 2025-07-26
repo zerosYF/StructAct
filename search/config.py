@@ -33,7 +33,7 @@ class SearchConfig:
         # RNN Controller settings
         self.struct_sample_count: int = 10       # Number of structure samples per iteration
         self.struct_sample_top_k: int = 1          # Number of top structures to keep
-        self.rnn_iter_num: int = 10          # Number of training iterations for RNN
+        self.rnn_iter_num: int = 3         # Number of training iterations for RNN
         self.rnn_hidden_dim: int = 128         # Hidden dimension of RNN
         self.rnn_lr: float = 1e-3              # Learning rate for RNN
         self.rnn_structure_contribution = False
@@ -56,8 +56,8 @@ class SearchConfig:
         self.ollama_model_name: str = "llama3.1:8b"          # Name of the Ollama model
         self.ollama_base_url: str = "http://localhost:11434"  # Base URL for local Ollama server
 
-        self.eval_model_name: str = "gpt3.5-turbo"
+        self.eval_model_name: str = "gpt-3.5-turbo"
         self.eval_api_key: str = ""
 
-        self.optim_model_name:str = "gpt4"
+        self.optim_model_name:str = "gpt-4"
         self.optim_api_key: str = ""

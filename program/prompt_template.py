@@ -43,18 +43,19 @@ class PromptTemplate:
         """
         instruction_header = (
             "This is a structured prompt template composed of multiple functional blocks.\n"
-            "Each block is explicitly marked by tags such as <BLOCK_NAME> and parameterized with fields like <KEY=VALUE>.\n"
-            "In addition to these, the template may contain control tags like <BEGIN_TEMPLATE> and <END_TEMPLATE>,\n"
-            "which are used only for delimiting the template and should be preserved but ignored during optimization.\n"
-            "Your task is to optimize the natural language contents between and around the structure tags, while:\n"
-            "- Keeping all <BLOCK_NAME> and <KEY=VALUE> tags exactly as-is;\n"
-            "- Not modifying or removing control tags such as <BEGIN_TEMPLATE> or <END_TEMPLATE>;\n"
-            "- Ensuring the resulting prompt is coherent, fluent, effective, and faithful to the block constraints.\n"
+            "Each block is indicated by tags like <BLOCK_NAME> and parameterized with fields such as <KEY=VALUE>.\n"
+            "The template may also contain control tags like <BEGIN_TEMPLATE> and <END_TEMPLATE>, which denote boundaries of the full prompt structure.\n"
+            "\n"
+            "Your task is to optimize the natural language content between and around these structure and control tags, with the following requirements:\n"
+            "- Use the tags (e.g., <BLOCK_NAME>, <KEY=VALUE>, <BEGIN_TEMPLATE>) **only as structural guidance during optimization**, but do not include them in the final output;\n"
+            "- Do not alter the structure, order, or semantics implied by the original tags;\n"
+            "- The final output should be a **fully naturalized prompt**, with **all tags and placeholders removed**;\n"
+            "- Ensure the resulting prompt is coherent, fluent, faithful to each block’s intent, and effective for the intended task."
         )
 
         block_contents = "\n".join([block.render() for block in self.blocks])
 
-        return f"{instruction_header}\n<BEGIN_TEMPLATE>\n{block_contents}\n<END_TEMPLATE>"
+        return f"{instruction_header}\n<TEMPLATE>\n{block_contents}\n</TEMPLATE>"
     
     def batch_sample_structs(self, sample_k:int, oversample_factor: int = 2) -> list:
         seen = set()

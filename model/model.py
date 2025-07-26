@@ -1,7 +1,7 @@
 from openai import OpenAI
 import ollama
 from search.config import SearchConfig
-from openai_model import eval_model, optim_model
+from model.openai_model import eval_model, optim_model
 
 class Model:
     def __init__(self, config: SearchConfig):
