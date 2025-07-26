@@ -1,15 +1,15 @@
-from model.model import Model, getModel
+from model.model import Model, getOptimModel
 from task.base_task import TaskBase
 from program.base_action import OptimizeAction
 import concurrent.futures
 
 # Preload models
-tester_model = getModel()
-analyzer_model = getModel()
-rewriter_model = getModel()
-checker_model = getModel()
-builder_model = getModel()
-evaluator_model = getModel()
+tester_model = getOptimModel()
+analyzer_model = getOptimModel()
+rewriter_model = getOptimModel()
+checker_model = getOptimModel()
+builder_model = getOptimModel()
+evaluator_model = getOptimModel()
 
 class TestReflectRewriteAction(OptimizeAction):
     """Evaluate model output → reflect on failure → revise prompt"""

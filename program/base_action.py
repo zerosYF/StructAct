@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from model.model import Model, getModel
+from model.model import Model, getOptimModel
 from task.base_task import TaskBase
 from logger import logger
 
@@ -29,7 +29,7 @@ class OptimizeAction(ABC):
 class StructureSyncAction(OptimizeAction):
     def __init__(self, task, name="StructureSyncAction"):
         super().__init__(task, name)
-        self.rewriter_model: Model = getModel()
+        self.rewriter_model: Model = getOptimModel()
 
     def do(self, current_prompt, template_description):
         super().do(current_prompt, template_description)

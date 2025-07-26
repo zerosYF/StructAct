@@ -43,11 +43,13 @@ class PromptTemplate:
         """
         instruction_header = (
             "This is a structured prompt template composed of multiple functional blocks.\n"
-            "Each block is explicitly marked by tags like <BLOCK_NAME> and parameterized with fields such as <KEY=VALUE>.\n"
-            "These tags define essential constraints and behavioral guidelines for prompt generation.\n"
-            "The model must preserve all tags and key-value markers exactly as shown, "
-            "while rendering fluent and natural language surrounding them.\n"
-            "Your goal is to optimize the final prompt based on this structure, ensuring it remains coherent, effective, and faithful to the constraints.\n"
+            "Each block is explicitly marked by tags such as <BLOCK_NAME> and parameterized with fields like <KEY=VALUE>.\n"
+            "In addition to these, the template may contain control tags like <BEGIN_TEMPLATE> and <END_TEMPLATE>,\n"
+            "which are used only for delimiting the template and should be preserved but ignored during optimization.\n"
+            "Your task is to optimize the natural language contents between and around the structure tags, while:\n"
+            "- Keeping all <BLOCK_NAME> and <KEY=VALUE> tags exactly as-is;\n"
+            "- Not modifying or removing control tags such as <BEGIN_TEMPLATE> or <END_TEMPLATE>;\n"
+            "- Ensuring the resulting prompt is coherent, fluent, effective, and faithful to the block constraints.\n"
         )
 
         block_contents = "\n".join([block.render() for block in self.blocks])

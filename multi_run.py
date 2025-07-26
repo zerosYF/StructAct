@@ -65,6 +65,7 @@ def run_task(task_name: str):
         with open(os.path.join(result_dir, "result.txt"), "w", encoding="utf-8") as f:
             f.write(f"🔍 Task: {task.name}\n")
             f.write(f"✅ Best Prompt Template:\n{best_template}\n\n")
+            f.write(f"✅ Best Prompt:\n{best_prompt}\n\n")
             f.write(f"📊 MCTS Test Accuracy: {acc_mcts.get('accuracy')}\n")
             f.write(f"📊 Original Test Accuracy: {acc_origin.get('accuracy')}\n")
             f.write(f"\n⏱️ Time Elapsed: {int(minutes)} min {int(seconds)} sec ({duration:.2f} seconds)\n")

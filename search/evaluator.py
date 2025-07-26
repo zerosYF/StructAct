@@ -1,12 +1,12 @@
 from task.base_task import TaskBase
-from model.model import Model, getModel
+from model.model import Model, getEvalModel
 from typing import List
 from concurrent.futures import ThreadPoolExecutor
 from logger import logger
 
 class PromptEvaluator:
     def __init__(self, task:TaskBase, thread_num:int):
-        self.model:Model = getModel()
+        self.model:Model = getEvalModel()
         self.task = task
         self.thread_num = thread_num
     

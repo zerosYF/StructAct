@@ -1,6 +1,7 @@
 from openai import OpenAI
 import ollama
 from search.config import SearchConfig
+from openai_model import eval_model, optim_model
 
 class Model:
     def __init__(self, config: SearchConfig):
@@ -42,4 +43,14 @@ def getModel():
         return model
     else:
         return ollama_model
+
+def getEvalModel():
+    if config.model_idx == 0:
+        return model
+    return eval_model
+
+def getOptimModel():
+    if config.model_idx == 0:
+        return model
+    return optim_model
 
