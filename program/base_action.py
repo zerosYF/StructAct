@@ -49,7 +49,7 @@ class StructureSyncAction(OptimizeAction):
 
         rewrite_prompt = (
             f"Current Prompt:\n{current_prompt}\n\n"
-            f"Structural Template Description:\n{template_description}\n\n"
+            f"Template Structure:\n{template_description}\n\n"
             f"Reference Sample QA Pairs:\n{example_texts}\n\n"
             f"Please revise the current prompt based on the given structure, using the information in the examples, "
             f"to make the content aligned with the structure.\n"
