@@ -52,7 +52,7 @@ class PenguinsTableTask(TaskBase):
             current_prompt
             + "\n"
             + self.task_prefix
-            + "\nOnly output one in options as answer.\n"
+            + "\nOnly output a answer from options with nothing else.\n"
             + f"\n\nQuestion: {input}\nAnswer:\n"
         )
 

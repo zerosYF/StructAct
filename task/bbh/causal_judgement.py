@@ -49,7 +49,7 @@ class CausalJudgementTask(TaskBase):
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
         """Injects the input question into the current prompt for evaluation."""
-        return current_prompt +"\nOnly output one in options as anwser\n" + f"\n\nQuestion: {input}\n Anwser:\n"
+        return current_prompt +"\nOnly output a answer from options with nothing else.\n" + f"\n\nQuestion: {input}\n Anwser:\n"
 
     def extract_origin_prompt(self) -> str:
         """Returns the original task prompt description."""
