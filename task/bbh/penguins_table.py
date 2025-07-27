@@ -3,6 +3,7 @@ from typing import Dict, List
 from task.base_task import TaskBase
 from search.config import SearchConfig
 import json
+import re
 from logger import logger
 
 class PenguinsTableTask(TaskBase):
@@ -52,8 +53,8 @@ class PenguinsTableTask(TaskBase):
             current_prompt
             + "\n"
             + self.task_prefix
-            + "\nOnly output a answer from options with nothing else.\n"
-            + f"\n\nQuestion: {input}\nAnswer:\n"
+            + f"\n\nQuestion: {input}\n"
+            + self.answer_format_prompt
         )
 
     def extract_origin_prompt(self) -> str:
@@ -70,6 +71,9 @@ class PenguinsTableTask(TaskBase):
     
     def _normalize_answer(self, text: str) -> str:
         """Normalize by lowercasing and trimming whitespace."""
+        match = re.search(r"<answer>([\s\S]*?)</answer>", text, re.IGNORECASE)
+        if match:
+            text = match.group(1).strip()
         return text.strip().lower()
     
     def get_reward(self, output: str, target: str) -> float:

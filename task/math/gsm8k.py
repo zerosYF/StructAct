@@ -3,6 +3,7 @@ import random
 from typing import List, Dict
 from task.base_task import TaskBase
 from loguru import logger
+import re
 
 class GSM8KTask(TaskBase):
     def __init__(self, config):
@@ -39,7 +40,7 @@ class GSM8KTask(TaskBase):
         self.system_prompt = "You are a helpful assistant. Solve the math problem and output only the final answer as a number."
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
-        return current_prompt + "\nOnly output the final numeric answer, no explanation.\n" + f"\n\nQuestion: {input}\nAnswer:\n"
+        return current_prompt + f"\n\nQuestion: {input}\n" + self.answer_format_prompt
 
     def extract_origin_prompt(self) -> str:
         return "Solve grade-school level math problems using numeric reasoning."
@@ -51,6 +52,9 @@ class GSM8KTask(TaskBase):
         return "\n".join([f"Q: {s['question']}\nA: {s['answer']}" for s in samples])
     
     def _normalize_answer(self, text):
+        match = re.search(r"<answer>([\s\S]*?)</answer>", text, re.IGNORECASE)
+        if match:
+            text = match.group(1).strip()
         return text.strip()
 
     def get_reward(self, output: str, target: str) -> float:

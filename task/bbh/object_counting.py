@@ -71,7 +71,7 @@ class ObjectCountingTask(TaskBase):
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
         """Injects the input question into the current prompt for evaluation."""
-        return current_prompt +"\nOnly output anwser without nothing else\n" + f"\n\nQuestion: {input} \nAnswer:\n"
+        return current_prompt + f"\n\nQuestion: {input}\n" + self.answer_format_prompt
 
     def extract_origin_prompt(self) -> str:
         """Returns the original task prompt description."""
@@ -87,6 +87,9 @@ class ObjectCountingTask(TaskBase):
     
     def _normalize_answer(self, text: str) -> str:
         """Normalize answer by lowercasing, stripping, converting number words to digits."""
+        match = re.search(r"<answer>([\s\S]*?)</answer>", text, re.IGNORECASE)
+        if match:
+            text = match.group(1).strip()
         text = text.strip().lower()
         # Remove non-digit/non-word characters except for hyphens (for numbers like 'twenty-one')
         text = re.sub(r"[^\w\s\-]", "", text)

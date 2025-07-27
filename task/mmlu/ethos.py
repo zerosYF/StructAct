@@ -3,6 +3,7 @@ import random
 from typing import List, Dict
 from loguru import logger
 from task.base_task import TaskBase
+import re
 
 class HateSpeechDetectionTask(TaskBase):
     def __init__(self, config):
@@ -56,7 +57,8 @@ class HateSpeechDetectionTask(TaskBase):
         return (
             current_prompt +
             "\n\nText: " + input +
-            "\nAnswer with a raw JSON dictionary, without markdown formatting or code block:\n"
+            "\nAnswer with a raw JSON dictionary, without markdown formatting or code block.\n"+
+            self.answer_format_prompt
         )
 
     def extract_origin_prompt(self) -> str:
@@ -72,6 +74,9 @@ class HateSpeechDetectionTask(TaskBase):
         ])
 
     def _normalize_answer(self, output: str) -> Dict:
+        match = re.search(r"<answer>([\s\S]*?)</answer>", text, re.IGNORECASE)
+        if match:
+            text = match.group(1).strip()
         try:
             return json.loads(output)
         except Exception:

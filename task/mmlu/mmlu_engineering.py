@@ -3,6 +3,7 @@ import random
 from typing import List, Dict
 from loguru import logger
 from task.base_task import TaskBase  
+import re
 
 class EngineeringMCQTask(TaskBase):
     def __init__(self, config):
@@ -41,7 +42,7 @@ class EngineeringMCQTask(TaskBase):
         )
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
-        return current_prompt + "\n\n" + input + "\nAnswer:\n"
+        return current_prompt + f"\n\nQuestion: {input}\n" + self.answer_format_prompt
 
     def extract_origin_prompt(self) -> str:
         return "Answer electrical and electronics engineering multiple-choice questions."
@@ -56,6 +57,9 @@ class EngineeringMCQTask(TaskBase):
         return f"Question: {question}\n" + "\n".join([f"{chr(65 + i)}. {opt}" for i, opt in enumerate(options) if opt != "N/A"])
 
     def _normalize_answer(self, text: str) -> str:
+        match = re.search(r"<answer>([\s\S]*?)</answer>", text, re.IGNORECASE)
+        if match:
+            text = match.group(1).strip()
         return text.strip().lower()
 
     def get_reward(self, output: str, target: str) -> float:

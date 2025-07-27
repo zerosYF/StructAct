@@ -3,6 +3,7 @@ from typing import Dict, List
 from task.base_task import TaskBase
 from search.config import SearchConfig
 import json
+import re
 from logger import logger
 
 class TemporalSequencesTask(TaskBase):
@@ -47,7 +48,7 @@ class TemporalSequencesTask(TaskBase):
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
         """Injects the input question into the current prompt for evaluation."""
-        return current_prompt +"\nOnly output a answer from options with nothing else.\n" + f"\n\nQuestion: {input}\n Anwser:\n"
+        return current_prompt + f"\n\nQuestion: {input}\n" + self.answer_format_prompt
 
     def extract_origin_prompt(self) -> str:
         """Returns the original task prompt description."""
@@ -62,7 +63,9 @@ class TemporalSequencesTask(TaskBase):
         return "\n".join([f"Q: {s['question']}\nA: {s['answer']}" for s in samples])
     
     def _normalize_answer(self, text: str) -> str:
-        """统一归一化答案：小写并去除多余空白"""
+        match = re.search(r"<answer>([\s\S]*?)</answer>", text, re.IGNORECASE)
+        if match:
+            text = match.group(1).strip()
         return text.strip().lower()
     
     def get_reward(self, output: str, target: str) -> float:

@@ -3,6 +3,7 @@ import random
 from typing import List, Dict
 from task.base_task import TaskBase
 from loguru import logger
+import re
 
 class SimpleMathReasoningTask(TaskBase):
     def __init__(self, config):
@@ -41,7 +42,7 @@ class SimpleMathReasoningTask(TaskBase):
         )
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
-        return current_prompt + "\nOnly output the final numeric answer, without explanation.\n" + f"\n\nQuestion: {input}\nAnswer:\n"
+        return current_prompt + f"\n\nQuestion: {input}\n" + self.answer_format_prompt
 
     def extract_origin_prompt(self) -> str:
         return "Solve simple arithmetic word problems with numeric answers."
@@ -53,6 +54,9 @@ class SimpleMathReasoningTask(TaskBase):
         return "\n".join([f"Q: {s['question']}\nA: {s['answer']}" for s in samples])
     
     def _normalize_answer(self, text):
+        match = re.search(r"<answer>([\s\S]*?)</answer>", text, re.IGNORECASE)
+        if match:
+            text = match.group(1).strip()
         return text.strip()
 
     def get_reward(self, output: str, target: str) -> float:

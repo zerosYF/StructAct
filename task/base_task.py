@@ -12,6 +12,7 @@ class TaskBase(ABC):
         self.eval_data_mcts = None
         self.test_data = None
         self.system_prompt = None
+        self.answer_format_prompt = "At the end show the answer option bracketed between <answer> and </answer>."
 
     # train mcts actions sample mini_batch
     def sample_train(self) -> List[Dict]:
