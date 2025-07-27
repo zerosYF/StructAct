@@ -36,7 +36,10 @@ class RoleBlock(PromptBlock):
             "Math Tutor (Formal)",
             "Logical Analyst (Contextualized)",
             "Data Interpreter (Neutral)",
-            "Visual Coder (Formal)"
+            "Visual Coder (Formal)",
+            "Engineer (Problem-Solver)",  
+            "Business Expert (Strategic)",  
+            "Ethical Leader (Responsible)"  
         ]
         self.hyperparams = [0]
         self.role_template = self.role_templates[self.hyperparams[0]]
@@ -61,36 +64,56 @@ class RoleBlock(PromptBlock):
 
 class FewShotExampleBlock(PromptBlock):
     def __init__(self):
-        self.num_options = [0, 3, 7]
+        self.num_options = [0, 3, 5]  # Options for the number of examples
         self.order_options = ["Random", "Semantic similarity"]
-        self.hyperparams = [0, 0]
+        self.format_options = ["Input-Output", "Input-Analysis-Output"]  # New format option
+        self.hyperparams = [0, 0, 0]  # Includes format choice
         self.num = self.num_options[self.hyperparams[0]]
         self.order = self.order_options[self.hyperparams[1]]
+        self.format = self.format_options[self.hyperparams[2]]
 
     def name(self): return "FewShotExamples"
 
-    def get_search_space(self): return [len(self.num_options), len(self.order_options)]
+    def get_search_space(self): 
+        return [len(self.num_options), len(self.order_options), len(self.format_options)]  # Expanded search space
 
     def set_hyperparams(self, hyperparams: List[int]):
         self.hyperparams = hyperparams
         self.num = self.num_options[hyperparams[0]]
         self.order = self.order_options[hyperparams[1]]
+        self.format = self.format_options[hyperparams[2]]
 
     def describe(self):
-        return {"type": "few_shot_examples", "num_examples": self.num, "ordering": self.order}
+        return {
+            "type": "few_shot_examples", 
+            "num_examples": self.num, 
+            "ordering": self.order, 
+            "format": self.format
+        }
 
     def render(self):
         if self.num == 0:
             return "<BLOCK:FEW_SHOT_EXAMPLES>\nNo few-shot examples are provided.\n</BLOCK:FEW_SHOT_EXAMPLES>\n"
-        return (
-            "<BLOCK:FEW_SHOT_EXAMPLES>\n"
-            f"Provide <NUM_EXAMPLES={self.num}> example(s), organized by <ORDERING={self.order}>.\n"
-            "</BLOCK:FEW_SHOT_EXAMPLES>\n"
-        )
+        
+        if self.format == "Input-Output":
+            return (
+                "<BLOCK:FEW_SHOT_EXAMPLES>\n"
+                f"Provide <NUM_EXAMPLES={self.num}> example(s), organized by <ORDERING={self.order}>.\n"
+                "Each example should consist of an input and an output.\n"
+                "</BLOCK:FEW_SHOT_EXAMPLES>\n"
+            )
+        
+        if self.format == "Input-Analysis-Output":
+            return (
+                "<BLOCK:FEW_SHOT_EXAMPLES>\n"
+                f"Provide <NUM_EXAMPLES={self.num}> example(s), organized by <ORDERING={self.order}>.\n"
+                "Each example should consist of an input, an analysis of the input, and the corresponding output.\n"
+                "</BLOCK:FEW_SHOT_EXAMPLES>\n"
+            )
 
 class ConstraintBlock(PromptBlock):
     def __init__(self):
-        self.num_options = [0, 3, 7]
+        self.num_options = [0, 3, 10]
         self.format_options = ["Paragraph", "Bullet list"]
         self.hyperparams = [0, 0]
         self.num = self.num_options[self.hyperparams[0]]
@@ -119,7 +142,7 @@ class ConstraintBlock(PromptBlock):
 
 class CautionBlock(PromptBlock):
     def __init__(self):
-        self.count_options = [0, 5, 7]
+        self.count_options = [0, 5, 10]
         self.style_options = ["Gentle reminder", "Strict directive"]
         self.hyperparams = [0, 0]
         self.count = self.count_options[self.hyperparams[0]]
