@@ -1,8 +1,10 @@
 from program.base_block import PromptBlock
 from typing import List
+from search.config import SearchConfig
 
 class TaskInstructionBlock(PromptBlock):
-    def __init__(self):
+    def __init__(self, config:SearchConfig):
+        super().__init__(config)
         self.style_options = [
             "Concise objective only",
             "Guiding the model to achieve objectives internally through Chain-of-Thought (CoT).",
@@ -30,7 +32,8 @@ class TaskInstructionBlock(PromptBlock):
         )
 
 class RoleBlock(PromptBlock):
-    def __init__(self):
+    def __init__(self, config:SearchConfig):
+        super().__init__(config)
         self.role_templates = [
             "Assistant (Neutral)",
             "Math Tutor (Formal)",
@@ -63,8 +66,10 @@ class RoleBlock(PromptBlock):
         )
 
 class FewShotExampleBlock(PromptBlock):
-    def __init__(self):
+    def __init__(self, config:SearchConfig):
+        super().__init__(config)
         self.num_options = [0, 3, 5]  # Options for the number of examples
+        assert max(self.num_options) < config.batch_size
         self.order_options = ["Random", "Semantic similarity"]
         self.format_options = ["Input-Output", "Input-Analysis-Output"]  # New format option
         self.hyperparams = [0, 0, 0]  # Includes format choice
@@ -112,7 +117,8 @@ class FewShotExampleBlock(PromptBlock):
             )
 
 class ConstraintBlock(PromptBlock):
-    def __init__(self):
+    def __init__(self, config:SearchConfig):
+        super().__init__(config)
         self.num_options = [0, 3, 10]
         self.format_options = ["Paragraph", "Bullet list"]
         self.hyperparams = [0, 0]
@@ -141,7 +147,8 @@ class ConstraintBlock(PromptBlock):
         )
 
 class CautionBlock(PromptBlock):
-    def __init__(self):
+    def __init__(self, config:SearchConfig):
+        super().__init__(config)
         self.count_options = [0, 5, 10]
         self.style_options = ["Gentle reminder", "Strict directive"]
         self.hyperparams = [0, 0]
@@ -170,11 +177,11 @@ class CautionBlock(PromptBlock):
             "</BLOCK:CAUTIONS>\n"
         )
 
-def get_all_blocks():
+def get_all_blocks(config:SearchConfig):
     return [
-        TaskInstructionBlock(),
-        RoleBlock(),
-        FewShotExampleBlock(),
-        ConstraintBlock(),
-        CautionBlock(),
+        TaskInstructionBlock(config),
+        RoleBlock(config),
+        FewShotExampleBlock(config),
+        ConstraintBlock(config),
+        CautionBlock(config),
     ]

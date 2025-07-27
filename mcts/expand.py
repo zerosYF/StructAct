@@ -9,16 +9,16 @@ from logger import logger
 
 class ExpandStrategy(ABC):
     @abstractmethod
-    def expand(self, node: Node, mcts, max_expand: int = None) -> List[Node]:
+    def expand(self, node: Node, mcts, expand_width) -> List[Node]:
         """Expand the given node in the MCTS tree, returning a list of child nodes."""
         pass
 
 class DefaultExpandStrategy(ExpandStrategy):
-    def __init__(self, max_expand: int = 1):
+    def __init__(self, config:SearchConfig):
         self.lock = threading.Lock()
-        self.max_expand = max_expand
+        self.config = config
 
-    def expand(self, node: Node, mcts) -> List[Node]:
+    def expand(self, node: Node, mcts, expand_width) -> List[Node]:
         if node not in mcts.children:
             mcts.children[node] = []
             mcts.untried_actions[node] = node.get_untried_actions()
@@ -27,7 +27,7 @@ class DefaultExpandStrategy(ExpandStrategy):
         if not actions:
             return []
 
-        k = len(actions) if self.max_expand is None else min(self.max_expand, len(actions))
+        k = len(actions) if expand_width is None else min(expand_width, len(actions))
 
         # 🚀 Use softmax weighted random selection based on usage_count to pick k actions
         selected_actions = self._weighted_random_choice(actions, k)
@@ -77,5 +77,5 @@ class DefaultExpandStrategy(ExpandStrategy):
         selected_indices = np.random.choice(len(actions), size=k, replace=False, p=probs)
         return [actions[i] for i in selected_indices]
 
-def get_expand_strategy(max_expand: int = None) -> ExpandStrategy:
-    return DefaultExpandStrategy(max_expand)
+def get_expand_strategy(config:SearchConfig) -> ExpandStrategy:
+    return DefaultExpandStrategy(config)

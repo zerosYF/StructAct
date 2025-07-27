@@ -43,11 +43,11 @@ class MCTS:
     def _uct_select(self, node: Node) -> Node:
         return self.select_strategy.select(node, self)
 
-    def _expand(self, node: Node) -> list[Node]:
-        return self.expand_strategy.expand(node, self)
+    def _expand(self, node: Node, width:int) -> list[Node]:
+        return self.expand_strategy.expand(node, self, width)
 
-    def _rollout(self, node: Node):
-        return self.rollout_strategy.rollout(node)
+    def _rollout(self, node: Node, length:int):
+        return self.rollout_strategy.rollout(node, length)
 
     def _backpropagate(self, path:list[Node], reward):
         with self.lock:
@@ -55,14 +55,14 @@ class MCTS:
                 self.N[node] += 1
                 self.Q[node] = node.q_value(self.Q[node], reward)
 
-    def do_iter(self, node: Node, width: int = 1):
+    def do_iter(self, node: Node, expand_width:int, rollout_length:int, select_width: int = 1):
         logger.info("--------------Start Iteration----------------")
         logger.info("Step 1: Performing Select")
-        path = self._select(node, max_width=width)
+        path = self._select(node, max_width=select_width)
         leaf = path[-1]
         logger.info(f"Selected leaf node type: {leaf.type}")
         logger.info("Step 2: Performing Expand")
-        children = self._expand(leaf)
+        children = self._expand(leaf, expand_width)
         if not children:
             rollout_targets = [leaf]
         else:
@@ -73,7 +73,7 @@ class MCTS:
 
         def rollout_and_backprop(child_node):
             rollout_path = path.copy() + [child_node]
-            reward = self._rollout(child_node)
+            reward = self._rollout(child_node, rollout_length)
             self._backpropagate(rollout_path, reward)
             logger.info(f"Child node {child_node} rollout score: {reward:.2f}")
             return (rollout_path, reward)

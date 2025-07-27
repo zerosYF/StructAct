@@ -9,20 +9,19 @@ from logger import logger
 
 class RolloutStrategy(ABC):
     @abstractmethod
-    def rollout(self, node) -> float:
+    def rollout(self, node, rollout_length:int) -> float:
         """Perform a rollout starting from the given node and return the final reward"""
         pass
 
 class ClassicPathRollout(RolloutStrategy):
-    def __init__(self, evaluator: PromptEvaluator, rollout_depth: int = 5):
-        self.rollout_depth = rollout_depth
+    def __init__(self, evaluator: PromptEvaluator):
         self.evaluator = evaluator
 
-    def rollout(self, node: Node) -> float:
+    def rollout(self, node: Node, rollout_length:int) -> float:
         current: Node = node.clone_node()
         depth = 0
 
-        while depth < self.rollout_depth:
+        while depth < rollout_length:
             actions = current.get_possible_actions()
             if not actions:
                 break
@@ -39,22 +38,20 @@ class MultiPathRollout(RolloutStrategy):
     def __init__(
         self,
         evaluator: PromptEvaluator,
-        rollout_depth: int = 5,
         num_paths: int = 5,
         early_stop_rounds: int = 3,
         early_stop_delta: float = 0.001,
     ):
-        self.rollout_depth = rollout_depth
         self.num_paths = num_paths
         self.evaluator = evaluator
         self.early_stop_rounds = early_stop_rounds
         self.early_stop_delta = early_stop_delta
 
-    def _rollout_path(self, node: Node, path_idx: int) -> float:
+    def _rollout_path(self, node: Node, path_idx: int, rollout_length:int) -> float:
         current: Node = node.clone_node()
         depth = 0
 
-        while depth < self.rollout_depth:
+        while depth < rollout_length:
             actions = current.get_possible_actions()
             if not actions:
                 break
@@ -67,13 +64,13 @@ class MultiPathRollout(RolloutStrategy):
         logger.info(f"[Rollout-{path_idx}] Final reward: {final_reward:.4f}")
         return final_reward
 
-    def rollout(self, node: Node) -> float:
+    def rollout(self, node: Node, rollout_length:int) -> float:
         final_rewards = []
         avg_rewards_history = []
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=self.num_paths) as executor:
             future_to_path = {
-                executor.submit(self._rollout_path, node, path_idx): path_idx
+                executor.submit(self._rollout_path, node, path_idx, rollout_length): path_idx
                 for path_idx in range(self.num_paths)
             }
 
@@ -102,12 +99,11 @@ class MultiPathRollout(RolloutStrategy):
         logger.info(f"✅ Multi-path rollout final average reward: {final_avg_reward:.4f}")
         return final_avg_reward
 
-def get_rollout_strategy(evaluator: PromptEvaluator, rollout_length:int, config: SearchConfig):
+def get_rollout_strategy(evaluator: PromptEvaluator, config: SearchConfig):
     if config.rollout_idx == 0:
-        return ClassicPathRollout(evaluator, rollout_length)
+        return ClassicPathRollout(evaluator)
     elif config.rollout_idx == 1:
-        return MultiPathRollout(evaluator, 
-                                rollout_length, 
+        return MultiPathRollout(evaluator,  
                                 config.rollout_width, 
                                 config.rollout_early_stop_rounds, 
                                 config.rollout_early_stop_delta)

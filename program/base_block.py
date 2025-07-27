@@ -1,7 +1,12 @@
 from abc import ABC, abstractmethod
 from typing import List
+from search.config import SearchConfig
 
 class PromptBlock(ABC):
+    def __init__(self, config:SearchConfig):
+        super().__init__()
+        self.config = config
+
     @abstractmethod
     def name(self) -> str:
         pass
