@@ -22,8 +22,10 @@ class PromptEvaluator:
         return self.task.get_reward(output, a)
     
     def batch_reward(self, current_prompt: str, samples: List[dict]) -> List[float]:
+        total = len(samples)
         with ThreadPoolExecutor(max_workers=self.thread_num) as executor:
-            return list(executor.map(self.reward, current_prompt, samples))
+            results = list(executor.map(self.reward, current_prompt, samples))
+        return sum(results) / total
 
     def evaluate(self, test_data: list[dict], final_prompt: str) -> dict:
         total = len(test_data)

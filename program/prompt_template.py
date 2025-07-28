@@ -112,9 +112,8 @@ class PromptTemplate:
         return current_prompt
     
     def get_reward(self, evaluator:PromptEvaluator,  current_prompt:str) -> float:
-        val_samples = self.task.get_train()  # Sample a subset of the training set
-        total_score = sum(evaluator.batch_reward(current_prompt, val_samples))
-        avg_score = total_score / len(val_samples)
+        val_samples = self.task.get_train()  
+        avg_score = evaluator.batch_reward(current_prompt, val_samples)
         if self.last_sampled_params is not None:
             self.struct_reward_cache[tuple(self.last_sampled_params)] = avg_score
 
@@ -173,7 +172,7 @@ class PromptTemplate:
             perturbed[i] = (perturbed[i] + 1) % slot_dim
 
             new_prompt = self.update_params(perturbed, current_prompt)
-            reward = sum(evaluator.batch_reward(new_prompt, val_samples)) / len(val_samples)
+            reward = evaluator.batch_reward(new_prompt, val_samples)
             slot_rewards.append(reward)
 
         return slot_rewards
