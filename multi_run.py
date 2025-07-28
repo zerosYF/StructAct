@@ -52,10 +52,12 @@ def run_task(task_name: str):
 
         best_template, best_prompt = controller.search()
 
-        acc_origin_zs = evaluator.evaluate(task.get_test(), task.process_origin_prompt(fs=False, cot=False))
-        acc_origin_fs = evaluator.evaluate(task.get_test(), task.process_origin_prompt(fs=True, cot=False)) 
-        acc_cot_zs = evaluator.evaluate(task.get_test(), task.process_origin_prompt(fs=False, cot=True))
-        acc_cot_fs = evaluator.evaluate(task.get_test(), task.process_origin_prompt(fs=True, cot=True))
+        acc_origin_zs = evaluator.evaluate(task.get_test(), task.process_origin_prompt(fs=False, cot=False, fs_cot=False))
+        acc_origin_fs = evaluator.evaluate(task.get_test(), task.process_origin_prompt(fs=True, cot=False, fs_cot=False)) 
+        acc_origin_fs_ = evaluator.evaluate(task.get_test(), task.process_origin_prompt(fs=True, cot=False, fs_cot=True))
+        acc_cot_zs = evaluator.evaluate(task.get_test(), task.process_origin_prompt(fs=False, cot=True, fs_cot=False))
+        acc_cot_fs = evaluator.evaluate(task.get_test(), task.process_origin_prompt(fs=True, cot=True, fs_cot=False))
+        acc_cot_fs_ = evaluator.evaluate(task.get_test(), task.process_origin_prompt(fs=True, cot=True, fs_cot=True))
         acc_sa = evaluator.evaluate(task.get_test(), best_prompt)
 
         end_time = time.time()
@@ -71,8 +73,10 @@ def run_task(task_name: str):
             f.write(f"✅ Best Prompt:\n{best_prompt}\n\n")
             f.write(f"📊 Original ZeroShot Test Accuracy: {acc_origin_zs.get('accuracy')}\n")
             f.write(f"📊 Original FewShot Test Accuracy: {acc_origin_fs.get('accuracy')}\n")
+            f.write(f"📊 Original Cot_FewShot Test Accuracy: {acc_origin_fs_.get('accuracy')}\n")
             f.write(f"📊 Cot ZeroShot Test Accuracy: {acc_cot_zs.get('accuracy')}\n")
             f.write(f"📊 Cot FewShot Test Accuracy: {acc_cot_fs.get('accuracy')}\n")
+            f.write(f"📊 Cot Cot_FewShot Test Accuracy: {acc_cot_fs_.get('accuracy')}\n")
             f.write(f"📊 SA Test Accuracy: {acc_sa.get('accuracy')}\n")
             f.write(f"\n⏱️ Time Elapsed: {int(minutes)} min {int(seconds)} sec ({duration:.2f} seconds)\n")
 

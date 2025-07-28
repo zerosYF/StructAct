@@ -70,6 +70,10 @@ class CausalJudgementTask(TaskBase):
         norm_out = self._normalize_answer(output)
         norm_gold = self._normalize_answer(target)
         logger.info(
+                f"[Model Output]\n"
+                f" Model Answer: {output}\n"
+            )
+        logger.info(
                 f"[Reward Evaluation]\n"
                 f"  Model Answer: {norm_out}\n"
                 f"  Gold Answer : {norm_gold}"

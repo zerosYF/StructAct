@@ -42,14 +42,12 @@ class PromptTemplate:
         Generate a structured natural language prompt template with explicit markers.
         """
         instruction_header = (
-            "This is a structured prompt template composed of multiple functional blocks.\n"
             "Each block is indicated by tags like <BLOCK_NAME> and parameterized with fields such as <KEY=VALUE>.\n"
-            "The template may also contain control tags like <BEGIN_TEMPLATE> and <END_TEMPLATE>, which denote boundaries of the full prompt structure.\n"
-            "\n"
+            "The template may also contain control tags like <TEMPLATE> and </TEMPLATE>, which denote boundaries of the full prompt structure.\n"
             "Your task is to optimize the natural language content between and around these structure and control tags, with the following requirements:\n"
-            "- Use the tags (e.g., <BLOCK_NAME>, <KEY=VALUE>, <BEGIN_TEMPLATE>) **only as structural guidance during optimization**, but do not include them in the final output;\n"
+            "- Use the tags (e.g., <BLOCK_NAME>, <KEY=VALUE>, <TEMPLATE>) **only as structural guidance during optimization**, but do not include them in the final output;\n"
             "- Do not alter the structure, order, or semantics implied by the original tags;\n"
-            "- The final output should be a **fully naturalized prompt**, with **all tags and placeholders removed**;\n"
+            "- The final output should be a **fully naturalized prompt**, with **constraint text about block, all tags and placeholders removed**;\n"
             "- Ensure the resulting prompt is coherent, fluent, faithful to each block’s intent, and effective for the intended task."
         )
 
