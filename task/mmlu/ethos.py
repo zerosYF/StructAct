@@ -36,21 +36,16 @@ class HateSpeechDetectionTask(TaskBase):
         random.seed(config.shuffle_seed)
         random.shuffle(all_examples)
 
-        split = int(len(all_examples) * config.split_ratio)
-        full_train_data = all_examples[:100]
-        self.test_data = all_examples[100:300]
+        self.train_size = 100
+        self.test_size = 200
+        self.train_data_mcts = 40
+        self.val_mcts_size = 29
+        self.rl_rnn_size = 31
+        self._split_data(all_examples)
 
-        split_1 = int(len(full_train_data) * config.split_ratio_)
-        self.train_data_mcts = full_train_data[:50]
-        full_reward_acc = full_train_data[50:]
-
-        split_2 = int(len(full_reward_acc) * config.split_ratio__)
-        self.eval_data_mcts = full_reward_acc[:split_2]
-        self.train_data_rnn = full_reward_acc[split_2:]
-
+        self.origin_prompt = "Classify text into multiple hate speech labels."
         self.system_prompt = (
-            "You are a hate speech detection system. For a given text, "
-            "identify whether each of the following labels applies: "
+            "Identify whether each of the following labels applies: "
             "violence, directed_vs_generalized, gender, race, national_origin, "
             "disability, religion, sexual_orientation. "
             "Output a JSON object with all 8 fields as binary (0 or 1)."
@@ -63,9 +58,6 @@ class HateSpeechDetectionTask(TaskBase):
             "\n\nText: " + input +
             self.answer_format_prompt
         )
-
-    def extract_origin_prompt(self) -> str:
-        return "Classify text into multiple hate speech labels."
 
     def extract_tuple(self, sample: Dict) -> tuple:
         return sample["question"], sample["answer"]

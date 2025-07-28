@@ -30,7 +30,7 @@ class SearchController:
     def search(self):
         template = PromptTemplate(config=self.config, blocks=get_all_blocks(self.config), task=self.task)
         logger.info(f"🔍 Initial template constraints:\n{template.describe()}")
-        best_prompt = self.task.extract_origin_prompt()
+        best_prompt = self.task.origin_prompt
 
         Visualizer.start(title=self.task.name)
         
@@ -85,7 +85,7 @@ class SearchController:
     def batch_search(self):
         template = PromptTemplate(config=self.config, blocks=get_all_blocks(self.config), task=self.task)
         logger.info(f"🔍 Initial template constraints:\n{template.describe()}")
-        best_prompt = self.task.extract_origin_prompt()
+        best_prompt = self.task.origin_prompt
 
         Visualizer.start(title=self.task.name)
         

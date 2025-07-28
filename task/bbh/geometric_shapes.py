@@ -16,7 +16,7 @@ class GeometricShapesTask(TaskBase):
         
         self.origin_prompt = data.get("description", "")
         self.name = data.get("name", "unknown_task")
-        self.system_prompt = "you are a helpful assistant. Answer the question based on the provided context."
+        self.system_prompt = "Answer the question based on the provided context."
 
         all_examples = []
         for ex in data["examples"]:
@@ -38,26 +38,16 @@ class GeometricShapesTask(TaskBase):
         random.seed(config.shuffle_seed)
         random.shuffle(all_examples)
 
-        split = int(len(all_examples) * config.split_ratio)
-        full_train_data = all_examples[:150]
-        self.test_data = all_examples[150:]
-
-        split_1 = int(len(full_train_data) * config.split_ratio_)
-        self.train_data_mcts = full_train_data[:split_1]
-        full_reward_acc = full_train_data[split_1:]
-
-        split_2 = int(len(full_reward_acc) * config.split_ratio__)
-        self.eval_data_mcts = full_reward_acc[:split_2]
-        self.train_data_rnn = full_reward_acc[split_2:]
-
+        self.train_size = 150
+        self.test_size = 200
+        self.train_data_mcts = 80
+        self.val_mcts_size = 35
+        self.rl_rnn_size = 35
+        self._split_data(all_examples)
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
         """Injects the input question into the current prompt for evaluation."""
         return current_prompt + f"\n\nQuestion: {input}\n" + self.answer_format_prompt
-
-    def extract_origin_prompt(self) -> str:
-        """Returns the original task prompt description."""
-        return self.origin_prompt
 
     def extract_tuple(self, sample) -> tuple:
         """Extracts question and answer tuple from a sample."""

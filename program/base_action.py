@@ -35,7 +35,7 @@ class StructureSyncAction(OptimizeAction):
         super().do(current_prompt, template_description)
 
         # Sample examples for filling content (e.g., few-shot, constraints, etc.)
-        samples = self.task.sample_train()
+        samples = self.task.sample_train_mcts(self.task.config.batch_size)
 
         # Construct few-shot example fragment (extract real QA pairs)
         example_texts = self.task.samples2text(samples)

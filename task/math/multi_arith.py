@@ -28,27 +28,20 @@ class SimpleMathReasoningTask(TaskBase):
         random.seed(config.shuffle_seed)
         random.shuffle(all_examples)
 
-        split = int(len(all_examples) * config.split_ratio)
-        full_train_data = all_examples[:split]
-        self.test_data = all_examples[split:]
-
-        split_1 = int(len(full_train_data) * config.split_ratio_)
-        self.train_data_mcts = full_train_data[:split_1]
-        full_reward_acc = full_train_data[split_1:]
-
-        split_2 = int(len(full_reward_acc) * config.split_ratio__)
-        self.eval_data_mcts = full_reward_acc[:split_2]
-        self.train_data_rnn = full_reward_acc[split_2:]
+        self.train_size = 500
+        self.test_size = 500
+        self.train_data_mcts = 300
+        self.val_mcts_size = 100
+        self.rl_rnn_size = 100
+        self._split_data(all_examples)
         
+        self.origin_prompt = "Solve simple arithmetic word problems with numeric answers."
         self.system_prompt = (
-            "You are a helpful assistant. Please solve the math word problem carefully and return only the final numeric answer."
+            "Please solve the math word problem carefully and return only the final numeric answer."
         )
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
         return current_prompt + f"\n\nQuestion: {input}\n" + self.answer_format_prompt
-
-    def extract_origin_prompt(self) -> str:
-        return "Solve simple arithmetic word problems with numeric answers."
 
     def extract_tuple(self, sample) -> tuple:
         return sample["question"], sample["answer"]

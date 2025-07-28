@@ -28,25 +28,18 @@ class GSM8KTask(TaskBase):
         random.seed(config.shuffle_seed)
         random.shuffle(all_examples)
 
-        split = int(len(all_examples) * config.split_ratio)
-        full_train_data = all_examples[:split]
-        self.test_data = all_examples[split:]
+        self.train_size = 500
+        self.test_size = 500
+        self.train_data_mcts = 300
+        self.val_mcts_size = 100
+        self.rl_rnn_size = 100
+        self._split_data(all_examples)
 
-        split_1 = int(len(full_train_data) * config.split_ratio_)
-        self.train_data_mcts = full_train_data[:split_1]
-        full_reward_acc = full_train_data[split_1:]
-
-        split_2 = int(len(full_reward_acc) * config.split_ratio__)
-        self.eval_data_mcts = full_reward_acc[:split_2]
-        self.train_data_rnn = full_reward_acc[split_2:]
-
-        self.system_prompt = "You are a helpful assistant. Solve the math problem and output only the final answer as a number."
+        self.origin_prompt = "Solve grade-school level math problems using numeric reasoning."
+        self.system_prompt = "Solve the math problem and output only the final answer as a number."
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
         return current_prompt + f"\n\nQuestion: {input}\n" + self.answer_format_prompt
-
-    def extract_origin_prompt(self) -> str:
-        return "Solve grade-school level math problems using numeric reasoning."
 
     def extract_tuple(self, sample) -> tuple:
         return sample["question"], sample["answer"]

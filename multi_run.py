@@ -52,8 +52,11 @@ def run_task(task_name: str):
 
         best_template, best_prompt = controller.search()
 
-        acc_mcts = evaluator.evaluate(task.get_test(), best_prompt)
-        acc_origin = evaluator.evaluate(task.get_test(), task.extract_origin_prompt())
+        acc_origin_zs = evaluator.evaluate(task.get_test(), task.process_origin_prompt(fs=False, cot=False))
+        acc_origin_fs = evaluator.evaluate(task.get_test(), task.process_origin_prompt(fs=True, cot=False)) 
+        acc_cot_zs = evaluator.evaluate(task.get_test(), task.process_origin_prompt(fs=False, cot=True))
+        acc_cot_fs = evaluator.evaluate(task.get_test(), task.process_origin_prompt(fs=True, cot=True))
+        acc_sa = evaluator.evaluate(task.get_test(), best_prompt)
 
         end_time = time.time()
         duration = end_time - start_time
@@ -66,8 +69,11 @@ def run_task(task_name: str):
             f.write(f"🔍 Task: {task.name}\n")
             f.write(f"✅ Best Prompt Template:\n{best_template}\n\n")
             f.write(f"✅ Best Prompt:\n{best_prompt}\n\n")
-            f.write(f"📊 MCTS Test Accuracy: {acc_mcts.get('accuracy')}\n")
-            f.write(f"📊 Original Test Accuracy: {acc_origin.get('accuracy')}\n")
+            f.write(f"📊 Original ZeroShot Test Accuracy: {acc_origin_zs.get('accuracy')}\n")
+            f.write(f"📊 Original FewShot Test Accuracy: {acc_origin_fs.get('accuracy')}\n")
+            f.write(f"📊 Cot ZeroShot Test Accuracy: {acc_cot_zs.get('accuracy')}\n")
+            f.write(f"📊 Cot FewShot Test Accuracy: {acc_cot_fs.get('accuracy')}\n")
+            f.write(f"📊 SA Test Accuracy: {acc_sa.get('accuracy')}\n")
             f.write(f"\n⏱️ Time Elapsed: {int(minutes)} min {int(seconds)} sec ({duration:.2f} seconds)\n")
 
         logger.info(f"✅ Finished task: {task.name} in {int(minutes)} min {int(seconds)} sec")

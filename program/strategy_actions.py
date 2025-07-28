@@ -39,7 +39,7 @@ class TestReflectRewriteAction(OptimizeAction):
 
     def do(self, current_prompt, template_description):
         super().do(current_prompt, template_description)
-        samples = self.task.sample_train()
+        samples = self.task.sample_train_mcts(self.task.config.batch_size)
         inputs = [self.task.extract_tuple(s)[0] for s in samples]
         golds = [self.task.extract_tuple(s)[1] for s in samples]
         final_inputs = [self.task.inject_final_input(current_prompt, inp) for inp in inputs]
@@ -81,7 +81,7 @@ class FewShotExampleBuilder(OptimizeAction):
 
     def do(self, current_prompt, template_description):
         super().do(current_prompt, template_description)
-        original_examples = self.task.sample_train()
+        original_examples = self.task.sample_train_mcts(self.task.config.batch_size)
         original_text = self.task.samples2text(original_examples)
 
         builder_input = (
@@ -118,7 +118,7 @@ class InstructionSimplifierByAbstraction(OptimizeAction):
 
     def do(self, current_prompt, template_description):
         super().do(current_prompt, template_description)
-        samples = self.task.sample_train()
+        samples = self.task.sample_train_mcts(self.task.config.batch_size)
         qa_text = self.task.samples2text(samples)
         summary_input = f"QA pairs:\n{qa_text}"
         abstract_goal = self.evaluator_model.api_call(self.evaluator_system_prompt, summary_input)

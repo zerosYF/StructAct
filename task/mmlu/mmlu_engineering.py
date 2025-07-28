@@ -27,29 +27,22 @@ class EngineeringMCQTask(TaskBase):
         random.seed(config.shuffle_seed)
         random.shuffle(all_examples)
 
-        split = int(len(all_examples) * config.split_ratio)
-        full_train_data = all_examples[:100]
-        self.test_data = all_examples[100:300]
+        self.train_size = 100
+        self.test_size = 200
+        self.train_data_mcts = 40
+        self.val_mcts_size = 29
+        self.rl_rnn_size = 31
+        self._split_data(all_examples)
 
-        split_1 = int(len(full_train_data) * config.split_ratio_)
-        self.train_data_mcts = full_train_data[:50]
-        full_reward_acc = full_train_data[50:]
-
-        split_2 = int(len(full_reward_acc) * config.split_ratio__)
-        self.eval_data_mcts = full_reward_acc[:split_2]
-        self.train_data_rnn = full_reward_acc[split_2:]
-
+        self.origin_prompt = "Answer electrical and electronics engineering multiple-choice questions."
         self.system_prompt = (
-            "You are a helpful engineering assistant. Choose the most accurate answer to the technical question below. "
+            "Choose the most accurate answer to the technical question below. "
             "Only output the option letter (e.g., A, B, C), not the content."
         )
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
         return current_prompt + f"\n\nQuestion: {input}\nAnswer:"
-
-    def extract_origin_prompt(self) -> str:
-        return "Answer electrical and electronics engineering multiple-choice questions."
-
+    
     def extract_tuple(self, sample) -> tuple:
         return sample["question"], sample["answer"]
 

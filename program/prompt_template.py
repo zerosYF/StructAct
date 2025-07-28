@@ -16,7 +16,7 @@ class PromptTemplate:
             lr=config.rnn_lr
         )
         self.task = task
-        self.sync_action = StructureSyncAction(task, self.task.extract_origin_prompt())
+        self.sync_action = StructureSyncAction(task, self.task.origin_prompt)
         self.struct_reward_cache = {}
         self.last_sampled_params = None
         self.last_log_prob_sum = 0.0
@@ -112,7 +112,7 @@ class PromptTemplate:
         return current_prompt
     
     def get_reward(self, evaluator:PromptEvaluator,  current_prompt:str) -> float:
-        val_samples = self.task.get_train()  
+        val_samples = self.task.get_train_rnn()  
         avg_score = evaluator.batch_reward(current_prompt, val_samples)
         if self.last_sampled_params is not None:
             self.struct_reward_cache[tuple(self.last_sampled_params)] = avg_score
@@ -138,7 +138,7 @@ class PromptTemplate:
             slot_rewards = self._structure_attribution(
                 params=self.last_sampled_params,
                 evaluator=evaluator,
-                val_samples=self.task.get_train(),
+                val_samples=self.task.get_train_rnn(),
                 current_prompt=current_prompt
             )
         else:

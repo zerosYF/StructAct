@@ -35,27 +35,18 @@ class TemporalSequencesTask(TaskBase):
         random.seed(config.shuffle_seed)
         random.shuffle(all_examples)
 
-        split = int(len(all_examples) * config.split_ratio)
-        full_train_data = all_examples[:300]
-        self.test_data = all_examples[300:]
-
-        split_1 = int(len(full_train_data) * config.split_ratio_)
-        self.train_data_mcts = full_train_data[:split_1]
-        full_reward_acc = full_train_data[split_1:]
-
-        split_2 = int(len(full_reward_acc) * config.split_ratio__)
-        self.eval_data_mcts = full_reward_acc[:split_2]
-        self.train_data_rnn = full_reward_acc[split_2:]
+        self.train_size = 300
+        self.test_size = 500
+        self.train_data_mcts = 180
+        self.val_mcts_size = 59
+        self.rl_rnn_size = 61
+        self._split_data(all_examples)
         
-        self.system_prompt = "you are a helpful assistant. Answer the question based on the provided context."
+        self.system_prompt = "Answer the question based on the provided context."
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
         """Injects the input question into the current prompt for evaluation."""
         return current_prompt + f"\n\nQuestion: {input}\n" + self.answer_format_prompt
-
-    def extract_origin_prompt(self) -> str:
-        """Returns the original task prompt description."""
-        return self.origin_prompt
 
     def extract_tuple(self, sample) -> tuple:
         """Extracts question and answer tuple from a sample."""
@@ -72,7 +63,6 @@ class TemporalSequencesTask(TaskBase):
         return text.strip().lower()
     
     def get_reward(self, output: str, target: str) -> float:
-        """对模型输出和目标答案进行归一化后对比，正确给1.0，否则0"""
         norm_out = self._normalize_answer(output)
         norm_tgt = self._normalize_answer(target)
         logger.info(
