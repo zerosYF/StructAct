@@ -114,7 +114,7 @@ class FewShotExampleBlock(PromptBlock):
                 "Number, order and format of few-shot examples included in prompt context.\n"
                 "Examples help guide model responses.\n"
                 "</BlockDescription>\n"
-                "No few-shot examples are provided.\n"
+                "No few-shot examples can be provided.\n"
                 "</BLOCK:FEW_SHOT_EXAMPLES>\n"
             )
         
