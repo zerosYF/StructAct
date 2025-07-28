@@ -39,12 +39,15 @@ class CausalJudgementTask(TaskBase):
 
         split = int(len(all_examples) * config.split_ratio)
         full_train_data = all_examples[:90]
-        self.train_data_all = full_train_data
         self.test_data = all_examples[90:]
 
         split_1 = int(len(full_train_data) * config.split_ratio_)
         self.train_data_mcts = full_train_data[:split_1]
-        self.eval_data_mcts = full_train_data[split_1:]
+        full_reward_acc = full_train_data[split_1:]
+
+        split_2 = int(len(full_reward_acc) * config.split_ratio__)
+        self.eval_data_mcts = full_reward_acc[:split_2]
+        self.train_data_rnn = full_reward_acc[split_2:]
 
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:

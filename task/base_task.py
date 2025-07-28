@@ -7,7 +7,7 @@ class TaskBase(ABC):
         self.name = "BaseTask"
         self.config = config
         # train_data_all = train_data_mcts + eval_data_mcts
-        self.train_data_all = None
+        self.train_data_rnn = None
         self.train_data_mcts = None
         self.eval_data_mcts = None
         self.test_data = None
@@ -20,7 +20,7 @@ class TaskBase(ABC):
     
     # train rnn structure
     def get_train(self) -> List[Dict]:
-        return self.train_data_all 
+        return self.train_data_rnn 
     
     # get reward to update mcts q
     def get_eval(self) -> List[Dict]:

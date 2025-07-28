@@ -29,12 +29,15 @@ class EngineeringMCQTask(TaskBase):
 
         split = int(len(all_examples) * config.split_ratio)
         full_train_data = all_examples[:100]
-        self.train_data_all = full_train_data
         self.test_data = all_examples[100:300]
 
         split_1 = int(len(full_train_data) * config.split_ratio_)
         self.train_data_mcts = full_train_data[:50]
-        self.eval_data_mcts = full_train_data[50:]
+        full_reward_acc = full_train_data[50:]
+
+        split_2 = int(len(full_reward_acc) * config.split_ratio__)
+        self.eval_data_mcts = full_reward_acc[:split_2]
+        self.train_data_rnn = full_reward_acc[split_2:]
 
         self.system_prompt = (
             "You are a helpful engineering assistant. Choose the most accurate answer to the technical question below. "

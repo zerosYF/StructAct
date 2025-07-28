@@ -41,16 +41,16 @@ class TemplateController:
                   entropy: torch.Tensor,
                   slot_rewards: Optional[List[float]] = None):
         self.model.train()
-        # ---- 主策略梯度更新 ----
+        # ---- policy ----
         advantage = (reward - self.baseline) * 10
         self.baseline = self.baseline_alpha * self.baseline + (1 - self.baseline_alpha) * reward
         entropy_weight = max(self.min_entropy_weight, self.max_entropy_weight * (0.95 ** self.iter_count))
         loss = -advantage * log_prob_sum - entropy_weight * entropy
 
-        # ---- slot-level 结构归因辅助 loss ----
+        # ---- slot-level loss ----
         self._slot_level_atrribution(slot_rewards)
 
-        # ---- 参数更新 ----
+        # ---- param update ----
         self.optimizer.zero_grad()
         loss.backward()
         torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1.0)
