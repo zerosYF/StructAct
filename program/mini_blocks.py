@@ -28,9 +28,7 @@ class TaskInstructionBlock(PromptBlock):
     def render(self):
         return (
             "<BLOCK:TASK_INSTRUCTION>\n"
-            "<BlockDescription>\n"
-            "Specifies how the task objective is presented to the model.\n"
-            "</BlockDescription>\n"
+            "This block specifies how the task objective is presented to the model.\n"
             f"Present the task objective in a <STYLE={self.style}> manner.\n"
             "</BLOCK:TASK_INSTRUCTION>\n"
         )
@@ -65,10 +63,8 @@ class RoleBlock(PromptBlock):
     def render(self):
         return (
             "<BLOCK:ROLE>\n"
-            "<BlockDescription>\n"
-            "Defines the role or persona the model should assume.\n"
+            "This block defines the role or persona the model should assume.\n"
             "Roles influence style and expertise in responses.\n"
-            "</BlockDescription>\n"
             f"Assume the role as <ROLE_TEMPLATE={self.role_template}>.\n"
             "</BLOCK:ROLE>\n"
         )
@@ -108,21 +104,16 @@ class FewShotExampleBlock(PromptBlock):
         if self.num == 0:
             return (
                 "<BLOCK:FEW_SHOT_EXAMPLES>\n"
-                "<BlockDescription>\n"
-                "Number, order and format of few-shot examples included in prompt context.\n"
-                "Examples help guide model responses.\n"
-                "</BlockDescription>\n"
                 "No few-shot examples can be provided.\n"
+                "Zero-shot is applied.\n"
                 "</BLOCK:FEW_SHOT_EXAMPLES>\n"
             )
         
         if self.format == "Input-Output":
             return (
                 "<BLOCK:FEW_SHOT_EXAMPLES>\n"
-                "<BlockDescription>\n"
-                "Include examples with input and output pairs.\n"
+                "This block includes examples with input and output pairs.\n"
                 "Ordering affects how examples are selected.\n"
-                "</BlockDescription>\n"
                 f"Provide <NUM_EXAMPLES={self.num}> example(s), organized by <ORDERING={self.order}>.\n"
                 "Each example should consist of an input and an output.\n"
                 "</BLOCK:FEW_SHOT_EXAMPLES>\n"
@@ -131,10 +122,8 @@ class FewShotExampleBlock(PromptBlock):
         if self.format == "Input-Analysis-Output":
             return (
                 "<BLOCK:FEW_SHOT_EXAMPLES>\n"
-                "<BlockDescription>\n"
-                "Include examples with input, detailed analysis, and output.\n"
+                "This block includes examples with input, detailed analysis, and output.\n"
                 "Ordering affects how examples are selected.\n"
-                "</BlockDescription>\n"
                 f"Provide <NUM_EXAMPLES={self.num}> example(s), organized by <ORDERING={self.order}>.\n"
                 "Each example should consist of an input, an analysis of the input, and the corresponding output.\n"
                 "</BLOCK:FEW_SHOT_EXAMPLES>\n"
@@ -165,17 +154,12 @@ class ConstraintBlock(PromptBlock):
         if self.num == 0:
             return (
                 "<BLOCK:CONSTRAINTS>\n"
-                "<BlockDescription>\n"
-                "Defines explicit constraints or rules model must obey.\n"
-                "</BlockDescription>\n"
-                "No additional constraints are applied.\n"
+                "No additional constraints can be applied.\n"
                 "</BLOCK:CONSTRAINTS>\n"
             )
         return (
             "<BLOCK:CONSTRAINTS>\n"
-            "<BlockDescription>\n"
-            "Defines explicit constraints or rules model must obey.\n"
-            "</BlockDescription>\n"
+            "This block defines explicit constraints or rules model must obey.\n"
             f"Impose <NUM_CONSTRAINTS={self.num}> constraint(s), formatted as <FORMAT={self.format}>.\n"
             "</BLOCK:CONSTRAINTS>\n"
         )
@@ -205,17 +189,12 @@ class CautionBlock(PromptBlock):
         if self.count == 0:
             return (
                 "<BLOCK:CAUTIONS>\n"
-                "<BlockDescription>\n"
-                "Provides cautionary or warning statements to the model.\n"
-                "</BlockDescription>\n"
                 "No cautionary statements are needed.\n"
                 "</BLOCK:CAUTIONS>\n"
             )
         return (
             "<BLOCK:CAUTIONS>\n"
-            "<BlockDescription>\n"
-            "Provides cautionary or warning statements to the model.\n"
-            "</BlockDescription>\n"
+            "This block provides cautionary or warning statements to the model.\n"
             f"Include <NUM_CAUTIONS={self.count}> caution(s) styled as <STYLE={self.style}>. "
             "Content is dynamically generated.\n"
             "</BLOCK:CAUTIONS>\n"
@@ -247,9 +226,7 @@ class AnswerStyleBlock(PromptBlock):
     def render(self):
         return (
             "<BLOCK:ANSWER_STYLE>\n"
-            "<BlockDescription>\n"
             "Specifies the format and structure of the model's answer output.\n"
-            "</BlockDescription>\n"
             f"Format your answer in the following style: <STYLE={self.style}>.\n"
             "</BLOCK:ANSWER_STYLE>\n"
         )
