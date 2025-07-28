@@ -32,13 +32,6 @@ class SearchController:
         logger.info(f"🔍 Initial template constraints:\n{template.describe()}")
         best_prompt = self.task.extract_origin_prompt()
 
-        self.mcts = MCTS(
-            select_strategy=get_select_strategy(self.config),
-            expand_strategy=get_expand_strategy(self.config),
-            rollout_strategy=get_rollout_strategy(self.evaluator, self.config),
-            choose_strategy=get_choose_strategy(self.config)
-        )
-
         Visualizer.start(title=self.task.name)
         
         for epoch in range(self.config.rnn_iter_num):
@@ -64,18 +57,25 @@ class SearchController:
         expand_count = self.schedule_expand_num(current_rnn_iter, self.config.rnn_iter_num, self.config.expand_num_min, self.config.expand_num_max)
         print(f"MCTS Iterations: {mcts_iters}, Rollout Length: {rollout_len}, Expand Count: {expand_count}")
 
+        mcts = MCTS(
+            select_strategy=get_select_strategy(self.config),
+            expand_strategy=get_expand_strategy(self.config),
+            rollout_strategy=get_rollout_strategy(self.evaluator, self.config),
+            choose_strategy=get_choose_strategy(self.config)
+        )
+
         if main_thread:
-            Visualizer.set_mcts(self.mcts, root_node)
+            Visualizer.set_mcts(mcts, root_node)
 
         for iter_id in range(mcts_iters):
-            self.mcts.do_iter(root_node, 
+            mcts.do_iter(root_node, 
                               expand_width=expand_count, 
                               rollout_length=rollout_len, 
                               select_width=self.config.width_threshold)
             if iter_id % 5 == 0 or iter_id == mcts_iters - 1:
-                logger.info(f"  Total expanded nodes: {len(self.mcts.N)}")
+                logger.info(f"  Total expanded nodes: {len(mcts.N)}")
 
-        best_node: PromptNode = self.mcts.choose(root_node)
+        best_node: PromptNode = mcts.choose(root_node)
         logger.info("🏁 Search completed. Selected best action sequence:")
         for i, action in enumerate(best_node.action_seq):
             logger.info(f"  Step {i+1}: {action.name}")
