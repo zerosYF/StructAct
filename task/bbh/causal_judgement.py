@@ -79,4 +79,9 @@ class CausalJudgementTask(TaskBase):
         """Calculates the reward based on model output and target answer."""
         norm_out = self._normalize_answer(output)
         norm_gold = self._normalize_answer(target)
+        logger.info(
+                f"[Reward Evaluation]\n"
+                f"  Model Answer: {norm_out}\n"
+                f"  Gold Answer : {norm_gold}"
+            )
         return 1.0 if norm_out == norm_gold else 0.0

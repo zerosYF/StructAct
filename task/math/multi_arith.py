@@ -65,4 +65,9 @@ class SimpleMathReasoningTask(TaskBase):
     def get_reward(self, output: str, target: str) -> float:
         output = self._normalize_answer(output)
         target = self._normalize_answer(target)
+        logger.info(
+                f"[Reward Evaluation]\n"
+                f"  Model Answer: {output}\n"
+                f"  Gold Answer : {target}"
+            )
         return 1.0 if output == target else 0.0

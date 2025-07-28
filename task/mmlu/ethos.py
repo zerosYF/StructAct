@@ -54,13 +54,13 @@ class HateSpeechDetectionTask(TaskBase):
             "violence, directed_vs_generalized, gender, race, national_origin, "
             "disability, religion, sexual_orientation. "
             "Output a JSON object with all 8 fields as binary (0 or 1)."
+            "Without Markdown format."
         )
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
         return (
             current_prompt +
             "\n\nText: " + input +
-            "\nAnswer with a raw JSON dictionary, without markdown formatting or code block.\n"+
             self.answer_format_prompt
         )
 
@@ -76,17 +76,22 @@ class HateSpeechDetectionTask(TaskBase):
             for s in samples
         ])
 
-    def _normalize_answer(self, output: str) -> Dict:
+    def _normalize_answer(self, text: str) -> Dict:
         match = re.search(r"<answer>([\s\S]*?)</answer>", text, re.IGNORECASE)
         if match:
             text = match.group(1).strip()
         try:
-            return json.loads(output)
+            return json.loads(text)
         except Exception:
             return {}
 
     def get_reward(self, output: str, target: Dict) -> float:
         pred = self._normalize_answer(output)
+        logger.info(
+                f"[Reward Evaluation]\n"
+                f"  Model Answer: {pred}\n"
+                f"  Gold Answer : {target}"
+            )
         if not isinstance(pred, dict):
             return 0.0
         return 1.0 if pred == target else 0.0

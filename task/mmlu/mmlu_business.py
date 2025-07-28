@@ -16,10 +16,10 @@ class BusinessMCQTask(TaskBase):
             for line in f:
                 ex = json.loads(line.strip())
                 question = self.format_question(ex["question"], ex["options"])
-                answer = ex["options"][ex["answer_index"]].strip()
+                letter_answer = chr(65 + ex["answer_index"])  # A, B, C...
                 all_examples.append({
                     "question": question,
-                    "answer": answer,
+                    "answer": letter_answer,
                 })
 
         logger.info(f"✅ [{self.name} Dataset] Number of samples: {len(all_examples)}")
@@ -39,17 +39,16 @@ class BusinessMCQTask(TaskBase):
         self.eval_data_mcts = full_reward_acc[:split_2]
         self.train_data_rnn = full_reward_acc[split_2:]
 
-
         self.system_prompt = (
-            "You are a helpful business assistant. Choose the most appropriate option for the question below. "
-            "Only output the content of the correct option, not the letter."
+            "You are a helpful business assistant. Choose the most appropriate option (A, B, C, D) for the question below. "
+            "Only output the letter of the correct answer (e.g., 'A')."
         )
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
-        return current_prompt + f"\n\nQuestion: {input}\n" + self.answer_format_prompt
+        return current_prompt + f"\n\nQuestion: {input}\nAnswer:"
 
     def extract_origin_prompt(self) -> str:
-        return "Answer business and management multiple-choice questions by selecting the correct option content."
+        return "Answer business and management multiple-choice questions by selecting the correct option letter."
 
     def extract_tuple(self, sample) -> tuple:
         return sample["question"], sample["answer"]
@@ -63,8 +62,22 @@ class BusinessMCQTask(TaskBase):
     def _normalize_answer(self, text: str) -> str:
         match = re.search(r"<answer>([\s\S]*?)</answer>", text, re.IGNORECASE)
         if match:
-            text = match.group(1).strip()
-        return text.strip().lower()
+            text = match.group(1)
+
+        text = text.strip()
+
+        match = re.search(r"\b([A-D])\b", text.upper())
+        if match:
+            return match.group(1).upper()
+
+        return text[:1].upper()
 
     def get_reward(self, output: str, target: str) -> float:
-        return 1.0 if self._normalize_answer(output) == self._normalize_answer(target) else 0.0
+        norm_out = self._normalize_answer(output)
+        norm_gold = self._normalize_answer(target)
+        logger.info(
+                f"[Reward Evaluation]\n"
+                f"  Model Answer: {norm_out}\n"
+                f"  Gold Answer : {norm_gold}"
+            )
+        return 1.0 if norm_out == norm_gold else 0.0

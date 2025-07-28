@@ -9,14 +9,14 @@ class EngineeringMCQTask(TaskBase):
     def __init__(self, config):
         super().__init__(config)
         self.name = "engineering_mcq"
-        path = "dataset/mmlu/engineering.jsonl" 
+        path = "dataset/mmlu/engineering.jsonl"
 
         all_examples = []
         with open(path, "r", encoding="utf-8") as f:
             for line in f:
                 ex = json.loads(line.strip())
                 question = self.format_question(ex["question"], ex["options"])
-                answer = ex["options"][ex["answer_index"]].strip()
+                answer = chr(65 + ex["answer_index"])
                 all_examples.append({
                     "question": question,
                     "answer": answer,
@@ -41,11 +41,11 @@ class EngineeringMCQTask(TaskBase):
 
         self.system_prompt = (
             "You are a helpful engineering assistant. Choose the most accurate answer to the technical question below. "
-            "Only output the final answer content, not the option letter."
+            "Only output the option letter (e.g., A, B, C), not the content."
         )
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
-        return current_prompt + f"\n\nQuestion: {input}\n" + self.answer_format_prompt
+        return current_prompt + f"\n\nQuestion: {input}\nAnswer:"
 
     def extract_origin_prompt(self) -> str:
         return "Answer electrical and electronics engineering multiple-choice questions."
@@ -57,13 +57,25 @@ class EngineeringMCQTask(TaskBase):
         return "\n".join([f"{s['question']}\nAnswer: {s['answer']}" for s in samples])
 
     def format_question(self, question: str, options: List[str]) -> str:
-        return f"Question: {question}\n" + "\n".join([f"{chr(65 + i)}. {opt}" for i, opt in enumerate(options) if opt != "N/A"])
+        return f"Question: {question}\n" + "\n".join([
+            f"{chr(65 + i)}. {opt}" for i, opt in enumerate(options) if opt != "N/A"
+        ])
 
     def _normalize_answer(self, text: str) -> str:
         match = re.search(r"<answer>([\s\S]*?)</answer>", text, re.IGNORECASE)
         if match:
-            text = match.group(1).strip()
-        return text.strip().lower()
+            text = match.group(1)
+
+        text = re.sub(r"^(Answer\s*[:：]?\s*)?", "", text.strip(), flags=re.IGNORECASE)
+        text = re.sub(r"[\.\s]+$", "", text.strip())  
+        return text.strip().upper()
 
     def get_reward(self, output: str, target: str) -> float:
-        return 1.0 if self._normalize_answer(output) == self._normalize_answer(target) else 0.0
+        norm_out = self._normalize_answer(output)
+        norm_gold = self._normalize_answer(target)
+        logger.info(
+                f"[Reward Evaluation]\n"
+                f"  Model Answer: {norm_out}\n"
+                f"  Gold Answer : {norm_gold}"
+            )
+        return 1.0 if norm_out == norm_gold else 0.0
