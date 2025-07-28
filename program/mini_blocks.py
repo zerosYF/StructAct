@@ -6,18 +6,17 @@ class TaskInstructionBlock(PromptBlock):
     def __init__(self, config: SearchConfig):
         super().__init__(config)
         self.style_options = [
-            "Focus on precise and unambiguous task objectives.",
-            "Encourage exploring multiple hypotheses.",
-            "Promote decomposition of complex tasks into sub-tasks.",
-            "Emphasize thoroughness and completeness of answers.",
-            "Highlight critical thinking and evaluation."
+            "Concise",   
+            "Detailed"   
         ]
         self.hyperparams = [0]
         self.style = self.style_options[self.hyperparams[0]]
 
-    def name(self): return "TaskInstruction"
+    def name(self): 
+        return "TaskInstruction"
 
-    def get_search_space(self): return [len(self.style_options)]
+    def get_search_space(self): 
+        return [len(self.style_options)]
 
     def set_hyperparams(self, hyperparams: list[int]):
         self.hyperparams = hyperparams
@@ -30,10 +29,9 @@ class TaskInstructionBlock(PromptBlock):
         return (
             "<BLOCK:TASK_INSTRUCTION>\n"
             "<BlockDescription>\n"
-            "Guides the overall task objective.\n"
-            "Selects one style of task instruction to direct model behavior.\n"
+            "Specifies how the task objective is presented to the model.\n"
             "</BlockDescription>\n"
-            f"Task guidance: <STYLE={self.style}>\n"
+            f"Present the task objective in a <STYLE={self.style}> manner.\n"
             "</BLOCK:TASK_INSTRUCTION>\n"
         )
 
@@ -145,7 +143,7 @@ class FewShotExampleBlock(PromptBlock):
 class ConstraintBlock(PromptBlock):
     def __init__(self, config:SearchConfig):
         super().__init__(config)
-        self.num_options = [0, 3, 10]
+        self.num_options = [0, 3, 7]
         self.format_options = ["Paragraph", "Bullet list"]
         self.hyperparams = [0, 0]
         self.num = self.num_options[self.hyperparams[0]]
@@ -185,7 +183,7 @@ class ConstraintBlock(PromptBlock):
 class CautionBlock(PromptBlock):
     def __init__(self, config:SearchConfig):
         super().__init__(config)
-        self.count_options = [0, 5, 10]
+        self.count_options = [0, 5, 7]
         self.style_options = ["Gentle reminder", "Strict directive"]
         self.hyperparams = [0, 0]
         self.count = self.count_options[self.hyperparams[0]]
@@ -227,11 +225,10 @@ class AnswerStyleBlock(PromptBlock):
     def __init__(self, config: SearchConfig):
         super().__init__(config)
         self.style_options = [
-            "Final answer only",  # 强制不输出过程
-            "Chain-of-Thought reasoning with final answer",  # 推理 + 答案
-            "Step-by-step reasoning in bullet points",  # 明确结构推理
-            "Explain-then-answer",  # 分析再输出
-            "Analysis only, no final answer"  # 仅分析不输出答案（用于模型评估或判别）
+            "Final answer only",  
+            "Chain-of-Thought reasoning with final answer",  
+            "Step-by-step reasoning in bullet points",  
+            "Explain-then-answer",  
         ]
         self.hyperparams = [0]
         self.style = self.style_options[self.hyperparams[0]]
