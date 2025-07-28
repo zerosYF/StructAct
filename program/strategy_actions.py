@@ -18,12 +18,27 @@ class TestReflectRewriteAction(OptimizeAction):
         self.tester_model = tester_model
         self.analyzer_model = analyzer_model
         self.rewriter_model = rewriter_model
-        self.tester_system_prompt = "You're a QA assistant. Given prompt and input, generate accurate answers."
-        self.analyzer_system_prompt = "Analysis the model outputs against expected answers. Provide detailed feedback."
+        self.tester_system_prompt = (
+            "You're a QA assistant. Given prompt and input, generate accurate answers."
+        )
+        self.analyzer_system_prompt = (
+            "You are a reasoning evaluator. Given a list of input-output-gold triplets, "
+            "analyze the model's correctness and reflect on reasons for success or failure.\n\n"
+            "For **each example**, output the following format:\n"
+            "1. [Example i]\n"
+            "2. Input Summary: <Brief summary of the input>\n"
+            "3. Output Evaluation: <Correct / Incorrect>\n"
+            "4. Reasoning: <Why is the output correct or not>\n"
+            "5. Suggestion: <What could be changed in the prompt to help>\n\n"
+            "After going through all examples, output a final section:\n"
+            "**Overall Reflection:**\n"
+            "- Common errors:\n"
+            "- Strengths:\n"
+            "- Prompt improvement suggestions (be specific):\n"
+        )
         self.rewriter_system_prompt = (
             "You are a prompt editor. "
             "You must strictly follow the given prompt structure. "
-            "You're a prompt engineer. Refine the prompt based on model outputs and structure."
         )
     
     def _batch_api_call(self, inputs:list):
@@ -45,8 +60,11 @@ class TestReflectRewriteAction(OptimizeAction):
         final_inputs = [self.task.inject_final_input(current_prompt, inp) for inp in inputs]
         outputs = self._batch_api_call(final_inputs)
 
-        evaluation = "\n".join([
-            f"[Example {i+1}]\nInput: {inp}\nOutput: {out}\nExpected: {gold}"
+        evaluation = "\n\n".join([
+            f"[Example {i+1}]\n"
+            f"Input: {inp}\n"
+            f"Model Output: {out}\n"
+            f"Expected Output: {gold}"
             for i, (inp, out, gold) in enumerate(zip(inputs, outputs, golds))
         ])
         evaluation = (
@@ -57,12 +75,26 @@ class TestReflectRewriteAction(OptimizeAction):
         analysis = self.analyzer_model.api_call(self.analyzer_system_prompt, evaluation)
 
         prompt = (
-            f"Current prompt:\n{current_prompt}\n\n"
-            f"Analysis:\n{analysis}\n\n"
-            f"Prompt Template Structure:\n{template_description}\n\n"
-            f"The template structure must be strictly followed above all else.\n\n"
-            f"Please revise the prompt accordingly.\n\n"
-            f"Only give me the revised prompt, do not add any other text.\n\n"
+            "<CurrentPrompt>\n"
+            f"{current_prompt}\n"
+            "</CurrentPrompt>\n\n"
+            
+            "<ExampleAnalysis>\n"
+            f"{analysis}\n"
+            "</ExampleAnalysis>\n\n"
+            
+            "<PromptStructure>\n"
+            f"{template_description}\n"
+            "</PromptStructure>\n\n"
+            
+            "<Instruction>\n"
+            """
+            - You must revise the <CurrentPrompt> to improve task performance.
+            - Your revision must strictly follow the <PromptStructure>.
+            - Use the findings in <ExampleAnalysis> to guide your revision.
+            - Only output the revised prompt **without any explanation**.
+            - Do not change the structure layout or add new sections."""
+            "</Instruction>\n\n"
         )
         return self.rewriter_model.api_call(self.rewriter_system_prompt, prompt)
 
@@ -85,21 +117,50 @@ class FewShotExampleBuilder(OptimizeAction):
         original_text = self.task.samples2text(original_examples)
 
         builder_input = (
-            f"Current prompt:\n{current_prompt}\n\n"
-            f"Existing examples:\n{original_text}\n\n"
-            "Add 1–2 new high-quality QA examples."
+            "<Prompt>\n"
+            f"{current_prompt}\n"
+            "</Prompt>\n\n"
+            
+            "<ExistingExamples>\n"
+            f"{original_text}\n"
+            "</ExistingExamples>\n\n"
+            
+            "<Instruction>\n"
+            """
+            Generate 1–2 **new high-quality few-shot QA pairs** that align with the current prompt style.
+            Examples should be helpful for the model to perform better on this task.
+            Do not repeat existing examples."""
+            "</Instruction>\n"
         )
         new_examples = self.builder_model.api_call(self.builder_system_prompt, builder_input)
         new_examples += "\n" + original_text 
 
         rewriting_input = (
-            f"Current prompt:\n{current_prompt}\n\n"
-            f"Some examples you can select:\n{new_examples}\n\n"
-            f"Prompt Template Structure:\n{template_description}\n\n"
-            f"The template structure must be strictly followed above all else.\n\n"
-            f"You can replace existing examples make the content aligned with the structure.\n\n"
-            f"You should select the best top k examples for new prompt(k is aligned with structure).\n\n"
-            f"Only give me the revised prompt, do not add any other text.\n\n"
+            "<CurrentPrompt>\n"
+            f"{current_prompt}\n"
+            "</CurrentPrompt>\n\n"
+
+            "<CandidateExamples>\n"
+            f"{new_examples}\n"
+            "</CandidateExamples>\n\n"
+
+            "<PromptStructure>\n"
+            f"{template_description}\n"
+            "</PromptStructure>\n\n"
+
+            "<Instruction>\n"
+            """
+            - Revise the `<CurrentPrompt>` by updating its few-shot examples.
+            - From `<CandidateExamples>`, select the **best k examples** (where k is determined by the structure).
+            - You must output exactly K examples in the final prompt.
+            - K is determined by the PromptStructure block.
+            - Do not output fewer or more examples than expected.
+            - You **can replace** some or all original examples.
+            - The revised prompt **must strictly follow** the structure in `<PromptStructure>`.
+            - Keep all other prompt components (e.g., role, instructions) unchanged.
+            - Do **not** add explanations, analysis, or any other text.
+            - Only output the **final revised prompt**."""
+            "</Instruction>\n"
         )
         return self.rewriter_model.api_call(self.rewriter_system_prompt, rewriting_input)
 
@@ -109,27 +170,60 @@ class InstructionSimplifierByAbstraction(OptimizeAction):
         super().__init__(task, name)
         self.evaluator_model = evaluator_model
         self.rewriter_model = rewriter_model
-        self.evaluator_system_prompt = "Summarize task goal based on QA pairs."
+
+        self.evaluator_system_prompt = (
+            "You are an instruction summarizer.\n"
+            "Given a few-shot QA dataset, abstract the overall task goal or instruction in 1–2 concise sentences.\n"
+            "Focus on generalizing the underlying reasoning task, not surface content.\n"
+            "Avoid referencing specific examples.\n"
+        )
+
         self.rewriter_system_prompt = (
-            "You are a prompt editor. "
-            "You must strictly follow the given prompt structure. "
-            "Inject abstract task intent into prompt for clarity and conciseness."
+            "You are a prompt editor.\n"
+            "Your task is to inject a more abstract, generalized task instruction into the prompt.\n"
+            "You must **strictly follow the provided PromptStructure** — do not change its layout, section order, or any other content except the instruction block.\n"
+            "Replace or refine the task instruction block with the new abstracted goal.\n"
+            "Only output the **final revised prompt**, and nothing else.\n"
         )
 
     def do(self, current_prompt, template_description):
         super().do(current_prompt, template_description)
+
         samples = self.task.sample_train_mcts(self.task.config.batch_size)
         qa_text = self.task.samples2text(samples)
-        summary_input = f"QA pairs:\n{qa_text}"
+        summary_input = (
+            "<FewShotExamples>\n"
+            f"{qa_text}\n"
+            "</FewShotExamples>\n\n"
+            "<Instruction>\n"
+            "Summarize the abstract task goal underlying these QA examples.\n"
+            "Your output must be a short, generalized instruction.\n"
+            "</Instruction>"
+        )
         abstract_goal = self.evaluator_model.api_call(self.evaluator_system_prompt, summary_input)
 
         rewriting_input = (
-            f"Current Prompt:\n{current_prompt}\n\n"
-            f"Abstracted task goal:\n{abstract_goal}\n\n"
-            f"Prompt Template Structure:\n{template_description}\n\n"
-            f"The template structure must be strictly followed above all else.\n\n"
-            f"Only give me the revised prompt, do not add any other text.\n\n"
+            "<CurrentPrompt>\n"
+            f"{current_prompt}\n"
+            "</CurrentPrompt>\n\n"
+
+            "<AbstractTaskGoal>\n"
+            f"{abstract_goal}\n"
+            "</AbstractTaskGoal>\n\n"
+
+            "<PromptStructure>\n"
+            f"{template_description}\n"
+            "</PromptStructure>\n\n"
+
+            "<Instruction>\n"
+            """
+            - Refine the current task instruction in <CurrentPrompt> with the abstract task goal from <AbstractTaskGoal>.\n
+            - Follow the layout and section names defined in <PromptStructure> strictly.\n
+            - Do not change the number of few-shot examples, roles, or any other part.\n
+            - Output only the final revised prompt, without any extra explanation.\n"""
+            "</Instruction>"
         )
+
         return self.rewriter_model.api_call(self.rewriter_system_prompt, rewriting_input)
 
 class LexicalSimplifier(OptimizeAction):
@@ -138,43 +232,37 @@ class LexicalSimplifier(OptimizeAction):
         super().__init__(task, name)
         self.rewriter_model = rewriter_model
         self.rewriter_system_prompt = (
-            "You are a prompt editor. "
-            "You must strictly follow the given prompt structure. "
-            "Simplify the wording of the prompt to make it more readable, "
-            "without changing its structure or meaning."
+            "You are a prompt editor.\n"
+            "Your goal is to simplify wording for clarity and fluency.\n"
+            "However, you must strictly preserve the original **structure**, section order, and semantics.\n"
+            "Do not remove, reorder, or merge sections.\n"
+            "Only revise the language for simplicity and readability."
         )
 
     def do(self, current_prompt, template_description):
         super().do(current_prompt, template_description)
-        prompt = (
-            f"Current Prompt:\n{current_prompt}\n\n"
-            f"Prompt Template Structure:\n{template_description}\n\n"
-            f"The template structure must be strictly followed above all else.\n\n"
-            f"Revise the prompt by simplifying complex phrases, eliminating redundancy, and improving clarity.\n\n"
-            f"Only give me the revised prompt, do not add any other text.\n\n"
-        )
-        return self.rewriter_model.api_call(self.rewriter_system_prompt, prompt)
 
-class StyleHarmonizer(OptimizeAction):
-    """Align the style and tone of all blocks in the prompt."""
-    def __init__(self, task, name="StyleHarmonizer"):
-        super().__init__(task, name)
-        self.rewriter_model = rewriter_model
-        self.rewriter_system_prompt = (
-            "You are a prompt stylist. "
-            "You must strictly follow the given prompt structure. "
-            "Adjust the wording to ensure consistent tone and style across the prompt,based on the structure."
+        prompt = (
+            "<CurrentPrompt>\n"
+            f"{current_prompt}\n"
+            "</CurrentPrompt>\n\n"
+
+            "<PromptStructure>\n"
+            f"{template_description}\n"
+            "</PromptStructure>\n\n"
+
+            "<Instruction>\n"
+            """
+            - Simplify complex wording in <CurrentPrompt>.\n
+            - Avoid jargon, repetition, or overly long phrases.\n
+            - You must not change the prompt's structure or its logical flow.\n
+            - Use <PromptStructure> to ensure all sections are retained and respected.\n
+            - Do not change the number or order of few-shot examples.\n
+            - Do not alter formatting or section headers.\n
+            - Output only the revised prompt — do not include explanation or metadata.\n"""
+            "</Instruction>"
         )
 
-    def do(self, current_prompt, template_description):
-        super().do(current_prompt, template_description)
-        prompt = (
-            f"Current Prompt:\n{current_prompt}\n\n"
-            f"Prompt Template Structure:\n{template_description}\n\n"
-            f"The template structure must be strictly followed above all else.\n\n"
-            f"Please make sure all parts follow the same tone and are stylistically consistent (e.g., formal or instructional).\n\n"
-            f"Only give me the revised prompt, do not add any other text.\n\n"
-        )
         return self.rewriter_model.api_call(self.rewriter_system_prompt, prompt)
 
 class CohesionImprover(OptimizeAction):
@@ -183,43 +271,38 @@ class CohesionImprover(OptimizeAction):
         super().__init__(task, name)
         self.rewriter_model = rewriter_model
         self.rewriter_system_prompt = (
-            "You're a prompt cohesion expert. "
-            "You must strictly follow the given prompt structure. "
-            "Improve the transitions between sections so that the overall prompt flows naturally."
+            "You are a prompt cohesion editor.\n"
+            "Your goal is to improve the coherence and fluency between different prompt sections.\n"
+            "Do NOT change the structure, content order, or formatting.\n"
+            "Only adjust transitions, connective phrasing, or redundant gaps to make the prompt flow naturally.\n"
+            "Preserve the identity and boundary of each section."
         )
 
     def do(self, current_prompt, template_description):
         super().do(current_prompt, template_description)
+
         prompt = (
-            f"Current Prompt:\n{current_prompt}\n\n"
-            f"Prompt Template Structure:\n{template_description}\n\n"
-            f"The template structure must be strictly followed above all else.\n\n"
-            f"Please revise the transitions and phrasing between blocks to improve fluency and coherence.\n\n"
-            f"Only give me the revised prompt, do not add any other text.\n\n"
+            "<CurrentPrompt>\n"
+            f"{current_prompt}\n"
+            "</CurrentPrompt>\n\n"
+
+            "<PromptStructure>\n"
+            f"{template_description}\n"
+            "</PromptStructure>\n\n"
+
+            "<Instruction>\n"
+            """
+            - Improve only the linguistic cohesion and transitions between blocks in <CurrentPrompt>.\n
+            - Do not change the section order, content meaning, or formatting.\n
+            - Use <PromptStructure> to ensure the block layout is preserved.\n
+            - Keep all blocks distinct and intact.\n
+            - Add brief connective cues only where necessary (e.g., intro phrases, bridges).\n
+            - Output ONLY the revised prompt — do not add explanations, comments, or any extra content.\n"""
+            "</Instruction>"
         )
+
         return self.rewriter_model.api_call(self.rewriter_system_prompt, prompt)
 
-class AmbiguityReducer(OptimizeAction):
-    """Identify and remove ambiguous phrases in the prompt to reduce misunderstanding."""
-    def __init__(self, task, name="AmbiguityReducer"):
-        super().__init__(task, name)
-        self.rewriter_model = rewriter_model
-        self.rewriter_system_prompt = (
-            "You are an ambiguity checker. "
-            "You must strictly follow the given prompt structure. "
-            "Rewrite the prompt to eliminate vague, ambiguous, or underspecified parts."
-        )
-
-    def do(self, current_prompt, template_description):
-        super().do(current_prompt, template_description)
-        prompt = (
-            f"Current Prompt:\n{current_prompt}\n\n"
-            f"Prompt Template Structure:\n{template_description}\n\n"
-            f"The template structure must be strictly followed above all else.\n\n"
-            f"Please revise any parts that might be unclear or ambiguous, ensuring the prompt is fully precise.\n\n"
-            f"Only give me the revised prompt, do not add any other text.\n\n"
-        )
-        return self.rewriter_model.api_call(self.rewriter_system_prompt, prompt)
     
 def define_full_actions(task: TaskBase):
     return [
@@ -227,7 +310,5 @@ def define_full_actions(task: TaskBase):
         FewShotExampleBuilder(task),
         InstructionSimplifierByAbstraction(task),
         LexicalSimplifier(task),
-        StyleHarmonizer(task),
         CohesionImprover(task),
-        AmbiguityReducer(task),
     ]
