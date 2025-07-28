@@ -38,7 +38,7 @@ class PenguinsTableTask(TaskBase):
 
         self.train_size = 70
         self.test_size = 79
-        self.train_data_mcts = 42
+        self.train_mcts_size = 42
         self.val_mcts_size = 14
         self.rl_rnn_size = 14
         self._split_data(all_examples)

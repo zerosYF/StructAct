@@ -39,7 +39,7 @@ class CausalJudgementTask(TaskBase):
 
         self.train_size = 90
         self.test_size = 100
-        self.train_data_mcts = 60
+        self.train_mcts_size = 60
         self.val_mcts_size = 15
         self.rl_rnn_size = 15
         self._split_data(all_examples)

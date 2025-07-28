@@ -73,7 +73,7 @@ class FewShotExampleBlock(PromptBlock):
     def __init__(self, config:SearchConfig):
         super().__init__(config)
         self.num_options = [0, 3, 5]  # Options for the number of examples
-        assert max(self.num_options) < config.batch_size
+        assert max(self.num_options) <= config.batch_size
         self.order_options = ["Random", "Semantic similarity"]
         self.format_options = ["Input-Output", "Input-Analysis-Output"]  # New format option
         self.hyperparams = [0, 0, 0]  # Includes format choice

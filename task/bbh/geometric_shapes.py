@@ -40,7 +40,7 @@ class GeometricShapesTask(TaskBase):
 
         self.train_size = 150
         self.test_size = 200
-        self.train_data_mcts = 80
+        self.train_mcts_size = 80
         self.val_mcts_size = 35
         self.rl_rnn_size = 35
         self._split_data(all_examples)
