@@ -23,8 +23,9 @@ class TemplateController:
 
         logger.info(f"📈 [RNNController] Initialized - params counts: {len(search_space)}")
 
-        self.attribution_interval = 10  # 每10步调用一次归因
-        self.rewards = []  # 用于记录平均奖励
+        self.attribution_interval = 50  
+        self.rewards = [] 
+        self.rewards_length = 5
     
     def get_slot_dim(self, slot_index: int) -> int:
         return self.search_space[slot_index]
@@ -57,6 +58,8 @@ class TemplateController:
         self.optimizer.step()
 
         self.rewards.append(reward)
+        if len(self.rewards) > self.rewards_length:
+            self.rewards = self.rewards[-self.rewards_length:]
         reward_mean = sum(self.rewards) / len(self.rewards)
         logger.info(f"📈 [RNNController] REINFORCE 完成 - avg_reward={reward_mean:.4f}, loss={loss.item():.4f}, entropy={entropy.item():.4f}")
         Visualizer.log_train(reward_mean, entropy.item())

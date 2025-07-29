@@ -69,6 +69,44 @@ class RoleBlock(PromptBlock):
             "</BLOCK:ROLE>\n"
         )
 
+class ExpertKnowledgeBlock(PromptBlock):
+    def __init__(self, config: SearchConfig):
+        super().__init__(config)
+        self.use_knowledge = False  
+        self.hyperparams = [0]     
+
+    def name(self):
+        return "ExpertKnowledge"
+
+    def get_search_space(self):
+        return [2]
+
+    def set_hyperparams(self, hyperparams: List[int]):
+        self.hyperparams = hyperparams
+        self.use_knowledge = bool(hyperparams[0])
+
+    def describe(self):
+        return {
+            "type": "expert_knowledge",
+            "enabled": self.use_knowledge
+        }
+
+    def render(self):
+        if not self.use_knowledge:
+            return (
+                "<BLOCK:EXPERT_KNOWLEDGE>\n"
+                "No expert knowledge can be provided.\n"
+                "</BLOCK:EXPERT_KNOWLEDGE>\n"
+            )
+
+        return (
+            "<BLOCK:EXPERT_KNOWLEDGE>\n"
+            "The model should incorporate relevant domain-specific expert knowledge to enhance reasoning and accuracy.\n"
+            "You are encouraged to derive appropriate theories, principles, or domain heuristics based on the task objective and provided examples.\n"
+            "This may include laws, standard practices, or expert-level insights relevant to the input task.\n"
+            "</BLOCK:EXPERT_KNOWLEDGE>\n"
+        )
+
 class FewShotExampleBlock(PromptBlock):
     def __init__(self, config:SearchConfig):
         super().__init__(config)
@@ -235,6 +273,7 @@ def get_all_blocks(config:SearchConfig):
     return [
         TaskInstructionBlock(config),
         RoleBlock(config),
+        ExpertKnowledgeBlock(config),
         FewShotExampleBlock(config),
         ConstraintBlock(config),
         CautionBlock(config),
