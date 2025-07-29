@@ -59,6 +59,7 @@ def run_task(task_name: str):
         acc_cot_fs = evaluator.evaluate(task.get_test(), task.process_origin_prompt(fs=True, cot=True, fs_cot=False))
         acc_cot_fs_ = evaluator.evaluate(task.get_test(), task.process_origin_prompt(fs=True, cot=True, fs_cot=True))
         acc_sa = evaluator.evaluate(task.get_test(), best_prompt)
+        
 
         end_time = time.time()
         duration = end_time - start_time

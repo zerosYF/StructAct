@@ -30,9 +30,9 @@ class TemplateController:
     def get_slot_dim(self, slot_index: int) -> int:
         return self.search_space[slot_index]
 
-    def train_step(self):
+    def train_step(self, return_logits=False):
         self.iter_count += 1
-        flat_params, log_prob, entropy, logits_list = self.model(return_logits=True)
+        flat_params, log_prob, entropy, logits_list = self.model(return_logits)
         self.last_logits = logits_list  
         return flat_params, log_prob, entropy
 
@@ -61,19 +61,19 @@ class TemplateController:
         if len(self.rewards) > self.rewards_length:
             self.rewards = self.rewards[-self.rewards_length:]
         reward_mean = sum(self.rewards) / len(self.rewards)
-        logger.info(f"📈 [RNNController] REINFORCE 完成 - avg_reward={reward_mean:.4f}, loss={loss.item():.4f}, entropy={entropy.item():.4f}")
+        logger.info(f"📈 [RNNController] REINFORCE finished - avg_reward={reward_mean:.4f}, loss={loss.item():.4f}, entropy={entropy.item():.4f}")
         Visualizer.log_train(reward_mean, entropy.item())
     
     def _slot_level_atrribution(self, slot_rewards=None):
         if slot_rewards is not None and self.iter_count % self.attribution_interval == 0 and self.last_logits is not None:
-            slot_rewards_tensor = torch.tensor(slot_rewards, dtype=torch.float32)
-
+            losses = []
+            for logits, reward in zip(self.last_logits, slot_rewards):
             # Normalize slot rewards into a probability distribution
-            target_probs = torch.softmax(slot_rewards_tensor, dim=0).detach()  # [num_slots]
-
-            pred_log_probs = torch.stack([F.log_softmax(logits, dim=-1) for logits in self.last_logits])  # [slot_num, slot_dim]
-            target_probs = torch.softmax(torch.tensor(slot_rewards, device=pred_log_probs.device), dim=0).unsqueeze(1).expand_as(pred_log_probs)
-            aux_loss = F.kl_div(pred_log_probs, target_probs, reduction='batchmean')
-
+                log_prob = F.log_softmax(logits, dim=-1)
+                target_prob = torch.softmax(torch.tensor([reward], dtype=torch.float32), dim=1)
+                target_prob = target_prob.unsqueeze(1).expand_as(log_prob)
+                loss = F.kl_div(log_prob, target_prob, reduction='mean')
+                losses.append(loss)
+            aux_loss = torch.mean(torch.stack(losses))
             loss += self.aux_loss_coef * aux_loss
-            logger.info(f"🧩 [RNNController] 加入结构归因辅助 loss = {aux_loss.item():.4f}")
+            logger.info(f"🧩 [RNNController] slot level loss = {aux_loss.item():.4f}")

@@ -63,7 +63,7 @@ class PromptTemplate:
         trials = 0
 
         while len(results) < sample_k and trials < max_trials:
-            flat_params, log_prob_sum, entropy = self.controller.train_step()
+            flat_params, log_prob_sum, entropy = self.controller.train_step(self.task.config.rnn_structure_contribution)
             key = tuple(flat_params)
             if key not in seen:
                 seen.add(key)
@@ -89,7 +89,7 @@ class PromptTemplate:
         return scored[:min(k, len(scored))]
     
     def pre_sample(self, current_prompt: str):
-        flat_params, log_prob_sum, entropy = self.controller.train_step()
+        flat_params, log_prob_sum, entropy = self.controller.train_step(self.task.config.rnn_structure_contribution)
 
         self.last_sampled_params = flat_params
         updated_prompt = self.update_params(flat_params, current_prompt)

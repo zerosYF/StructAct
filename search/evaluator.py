@@ -16,7 +16,7 @@ class PromptEvaluator:
         output = self.model.api_call(self.task.system_prompt, final_input)
         return self.task.get_reward(output, a)
     
-    def batch_reward(self, current_prompt: str, samples: List[dict]) -> List[float]:
+    def batch_reward(self, current_prompt: str, samples: List[dict]) -> float:
         total = len(samples)
         with ThreadPoolExecutor(max_workers=self.thread_num) as executor:
             results = list(executor.map(self.reward, current_prompt, samples))

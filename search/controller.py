@@ -33,11 +33,18 @@ class SearchController:
         best_prompt = self.task.origin_prompt
 
         Visualizer.start(title=self.task.name)
+        entropy_threshold = 0.3
+        entropy_count_max = 5
+        entropy_count = 0
         
         for epoch in range(self.config.rnn_iter_num):
             best_prompt = template.pre_sample(best_prompt)
             best_prompt = self._mcts_workflow(template, best_prompt, epoch)
             template.update(self.evaluator, best_prompt)
+            if template.last_entropy < entropy_threshold:
+                entropy_count += 1
+                if entropy_count == entropy_count_max:
+                    break
         return template.describe(), best_prompt
     
     
