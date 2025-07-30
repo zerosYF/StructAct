@@ -187,7 +187,7 @@ class FewShotExampleBlock(PromptBlock):
         if self.format == "Input-Output":
             return (
                 "<BLOCK:FEW_SHOT_EXAMPLES>\n"
-                f"This block includes **{self.num}** example(s) with input and output pairs.\n"
+                f"This block structly provides **{self.num}** example(s) with input and output pairs.\n"
                 f"Example(s) are organized by **{self.order}**.\n"
                 "Each example should consist of an input and an output.\n"
                 "</BLOCK:FEW_SHOT_EXAMPLES>\n"
@@ -196,7 +196,7 @@ class FewShotExampleBlock(PromptBlock):
         if self.format == "Input-Analysis-Output":
             return (
                 "<BLOCK:FEW_SHOT_EXAMPLES>\n"
-                f"This block includes **{self.num}** example(s) with input, detailed step-by-step analysis, and output.\n"
+                f"This block structly provides **{self.num}** example(s) with input, detailed step-by-step analysis, and output.\n"
                 f"Example(s) are organized by **{self.order}**.\n"
                 "Each example should consist of an input, an analysis of how to derive the output from the input, and the corresponding output.\n"
                 "</BLOCK:FEW_SHOT_EXAMPLES>\n"
