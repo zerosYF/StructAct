@@ -31,7 +31,15 @@ class SearchConfig:
         self.rnn_iter_num: int = 600        # Number of training iterations for RNN
         self.rnn_hidden_dim: int = 128         # Hidden dimension of RNN
         self.rnn_lr: float = 1e-4              # Learning rate for RNN
+        self.rnn_rl_baseline:float = 0.8
+        self.rnn_rl_baseline_alpha = 0.5
+        self.rnn_rl_min_entropy_weight = 0.001
+        self.rnn_rl_max_entropy_weight = 0.5
+        self.rnn_rl_entropy_decay_rate = 0.95
+
         self.rnn_structure_contribution = True
+        self.rnn_attribution_interval = 20
+        self.rnn_aux_loss_coef=1.5
 
         # Multi-threaded reward evaluation
         self.reward_thread_num: int = 40       # Number of threads for reward evaluation

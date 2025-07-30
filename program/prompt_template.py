@@ -13,7 +13,14 @@ class PromptTemplate:
         self.controller = TemplateController(
             search_space=self._get_search_space(),
             hidden_dim=config.rnn_hidden_dim,
-            lr=config.rnn_lr
+            lr=config.rnn_lr,
+            baseline=config.rnn_rl_baseline,
+            baseline_alpha=config.rnn_rl_baseline_alpha,
+            min_entropy_weight=config.rnn_rl_min_entropy_weight,
+            max_entropy_weight=config.rnn_rl_max_entropy_weight,
+            entropy_decay_rate=config.rnn_rl_entropy_decay_rate,
+            attribution_interval=config.rnn_attribution_interval,
+            aux_loss_coef=config.rnn_aux_loss_coef
         )
         self.task = task
         self.sync_action = StructureSyncAction(task, self.task.origin_prompt)

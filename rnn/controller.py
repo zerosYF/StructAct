@@ -7,23 +7,34 @@ from logger import logger
 from visualizer import Visualizer 
 
 class TemplateController:
-    def __init__(self, search_space: List[int], hidden_dim: int = 128, lr=1e-3, aux_loss_coef=0.1):
+    def __init__(self, search_space: List[int], 
+                 hidden_dim: int = 128, 
+                 lr:float=1e-3, 
+                 baseline:float=0.8, 
+                 baseline_alpha:float=0.5,
+                 min_entropy_weight:float=0.001, 
+                 max_entropy_weight:float=0.5, 
+                 entropy_decay_rate:float=0.95,
+                 attribution_interval:int=10,
+                 aux_loss_coef:float=1.5
+                 ):
         self.model: RNN = RNN(search_space, hidden_dim)
         self.optimizer = Adam(self.model.parameters(), lr=lr)
         self.search_space = search_space
 
-        self.baseline = 0.6
-        self.baseline_alpha = 0.99
+        self.baseline = baseline
+        self.baseline_alpha = baseline_alpha
         self.aux_loss_coef = aux_loss_coef
-        self.min_entropy_weight = 0.001
-        self.max_entropy_weight = 0.01
+        self.min_entropy_weight = min_entropy_weight
+        self.max_entropy_weight = max_entropy_weight
+        self.entropy_decay_rate = entropy_decay_rate
+        self.attribution_interval = attribution_interval
         self.iter_count = 0
 
         self.last_logits: list = None
 
         logger.info(f"📈 [RNNController] Initialized - params counts: {len(search_space)}")
-
-        self.attribution_interval = 10  
+ 
         self.rewards = [] 
     
     def get_slot_dim(self, slot_index: int) -> int:
@@ -44,7 +55,7 @@ class TemplateController:
         # ---- policy ----
         advantage = (reward - self.baseline) * 10
         self.baseline = self.baseline_alpha * self.baseline + (1 - self.baseline_alpha) * reward
-        entropy_weight = max(self.min_entropy_weight, self.max_entropy_weight * (0.95 ** self.iter_count))
+        entropy_weight = max(self.min_entropy_weight, self.max_entropy_weight * (0.98 ** self.iter_count))
         loss = -advantage * log_prob_sum - entropy_weight * entropy
 
         # ---- slot-level loss ----
