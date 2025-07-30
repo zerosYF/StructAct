@@ -56,18 +56,17 @@ class PromptTemplate:
         """
         instruction_header = (
             "This is current prompt template description:\n"
-            "Each block is indicated by tags like <BLOCK_NAME> and parameterized with fields such as <KEY=VALUE>.\n"
+            "Each block is indicated by tags like <BLOCK_NAME>.\n"
             "The template also contain control tags like <TEMPLATE> and </TEMPLATE>, which denote boundaries of the full prompt structure.\n"
-            "You can optimize the natural language content by using other context information.\n"
-            "You can optimize the natural language content between and around these structure and control tags, with the following requirements:\n"
-            "- Use the tags (e.g., <BLOCK_NAME>, <KEY=VALUE>, <TEMPLATE>) **only as structural guidance during optimization**, but do not include them in output prompt;\n"
+            "You can optimize the natural language content between and around these block and control tags, with the following requirements:\n"
+            "- Use the tags (e.g., <BLOCK_NAME>, <TEMPLATE>) **only as structural guidance during optimization**, but do not include them in output prompt;\n"
             "- Do not alter the structure, order, or semantics implied by the original tags;\n"
             "- The final output should be a **fully naturalized prompt**, with **constraint text about block, all tags and placeholders removed**;\n"
             "- Ensure the resulting prompt is coherent, fluent, faithful to each block’s intent, and effective for the intended task."
+            "- Make full use of information beyond the template description."
+            "This is current template:"
         )
-
         block_contents = "\n".join([block.render() for block in self.blocks])
-
         return f"{instruction_header}\n<TEMPLATE>\n{block_contents}\n</TEMPLATE>"
     
     def batch_sample_structs(self, sample_k:int, oversample_factor: int = 2) -> list:

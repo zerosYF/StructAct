@@ -29,7 +29,7 @@ class TaskInstructionBlock(PromptBlock):
         return (
             "<BLOCK:TASK_INSTRUCTION>\n"
             "This block specifies how the task objective is presented to the model.\n"
-            f"You can present the task objective in a <STYLE={self.style}> manner here.\n"
+            f"You can present the task objective in a **{self.style}** manner here.\n"
             "</BLOCK:TASK_INSTRUCTION>\n"
         )
 
@@ -65,7 +65,7 @@ class RoleBlock(PromptBlock):
             "<BLOCK:ROLE>\n"
             "This block defines the role or persona the model should assume.\n"
             "Roles influence style and expertise in responses.\n"
-            f"Let model assume the role as <ROLE_TEMPLATE={self.role_template}>.\n"
+            f"Let model assume the role as a **{self.role_template}**.\n"
             "</BLOCK:ROLE>\n"
         )
 
@@ -187,9 +187,8 @@ class FewShotExampleBlock(PromptBlock):
         if self.format == "Input-Output":
             return (
                 "<BLOCK:FEW_SHOT_EXAMPLES>\n"
-                f"This block includes <NUM_EXAMPLES={self.num}> example(s) with input and output pairs.\n"
-                "Ordering affects how examples are selected.\n"
-                f"Example(s) are organized by <ORDERING={self.order}>.\n"
+                f"This block includes **{self.num}** example(s) with input and output pairs.\n"
+                f"Example(s) are organized by **{self.order}**.\n"
                 "Each example should consist of an input and an output.\n"
                 "</BLOCK:FEW_SHOT_EXAMPLES>\n"
             )
@@ -197,9 +196,8 @@ class FewShotExampleBlock(PromptBlock):
         if self.format == "Input-Analysis-Output":
             return (
                 "<BLOCK:FEW_SHOT_EXAMPLES>\n"
-                f"This block includes <NUM_EXAMPLES={self.num}> example(s) with input, detailed step-by-step analysis, and output.\n"
-                "Ordering affects how examples are selected.\n"
-                f"Example(s) are organized by <ORDERING={self.order}>.\n"
+                f"This block includes **{self.num}** example(s) with input, detailed step-by-step analysis, and output.\n"
+                f"Example(s) are organized by **{self.order}**.\n"
                 "Each example should consist of an input, an analysis of how to derive the output from the input, and the corresponding output.\n"
                 "</BLOCK:FEW_SHOT_EXAMPLES>\n"
             )
@@ -242,7 +240,7 @@ class ConstraintBlock(PromptBlock):
             "<BLOCK:CONSTRAINTS>\n"
             "This block defines explicit constraints or rules the model must obey.\n"
             "You can use ​appropriate information I provided to fill this block.\n"
-            f"Impose constraints formatted as <FORMAT={self.format}>.\n"
+            f"Impose constraints formatted as **{self.format}**.\n"
             "</BLOCK:CONSTRAINTS>\n"
         )
 
@@ -283,7 +281,7 @@ class CautionBlock(PromptBlock):
         return (
             "<BLOCK:CAUTIONS>\n"
             "This block provides cautionary or warning statements to the model.\n"
-            f"Include caution(s) styled as <STYLE={self.style}>.\n"
+            f"Include caution(s) styled as **{self.style}**.\n"
             "Content should be filled by analyzing information I provided.\n"
             "</BLOCK:CAUTIONS>\n"
         )
@@ -315,7 +313,7 @@ class AnswerStyleBlock(PromptBlock):
         return (
             "<BLOCK:ANSWER_STYLE>\n"
             "Specifies the format and structure of the model's answer output.\n"
-            f"Derive model to answer in the following style: <STYLE={self.style}>.\n"
+            f"Derive model to answer in the following style: **{self.style}**.\n"
             "</BLOCK:ANSWER_STYLE>\n"
         )
 
