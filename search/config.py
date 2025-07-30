@@ -15,7 +15,7 @@ class SearchConfig:
         self.depth_threshold: int = 5          # Maximum search depth
         self.width_threshold: int = 3          # Number of children per expanded node
         # Node expansion and rollout config
-        self.batch_size: int = 5              # Batch size for training
+        self.batch_size: int = 10              # Batch size for training
         self.expand_num_min: int = 0               # Number of nodes to expand per iteration (for parallelism)
         self.expand_num_max: int = 3               # Maximum number of nodes to expand
         assert self.expand_num_max <= self.width_threshold
@@ -28,7 +28,7 @@ class SearchConfig:
         # RNN Controller settings
         self.struct_sample_count: int = 10       # Number of structure samples per iteration
         self.struct_sample_top_k: int = 1          # Number of top structures to keep
-        self.rnn_iter_num: int = 600        # Number of training iterations for RNN
+        self.rnn_iter_num: int = 500        # Number of training iterations for RNN
         self.rnn_hidden_dim: int = 128         # Hidden dimension of RNN
         self.rnn_lr: float = 1e-4              # Learning rate for RNN
         self.rnn_rl_reward_scale = 100
