@@ -10,6 +10,7 @@ class TemplateController:
     def __init__(self, search_space: List[int], 
                  hidden_dim: int = 128, 
                  lr:float=1e-3, 
+                 reward_scale:int=10,
                  baseline:float=0.8, 
                  baseline_alpha:float=0.5,
                  min_entropy_weight:float=0.001, 
@@ -22,6 +23,7 @@ class TemplateController:
         self.optimizer = Adam(self.model.parameters(), lr=lr)
         self.search_space = search_space
 
+        self.reward_scale = reward_scale
         self.baseline = baseline
         self.baseline_alpha = baseline_alpha
         self.aux_loss_coef = aux_loss_coef
@@ -53,9 +55,9 @@ class TemplateController:
                   slot_rewards: Optional[List[float]] = None):
         self.model.train()
         # ---- policy ----
-        advantage = (reward - self.baseline) * 10
+        advantage = (reward - self.baseline) * self.reward_scale
         self.baseline = self.baseline_alpha * self.baseline + (1 - self.baseline_alpha) * reward
-        entropy_weight = max(self.min_entropy_weight, self.max_entropy_weight * (0.98 ** self.iter_count))
+        entropy_weight = max(self.min_entropy_weight, self.max_entropy_weight * (self.entropy_decay_rate ** self.iter_count))
         loss = -advantage * log_prob_sum - entropy_weight * entropy
 
         # ---- slot-level loss ----

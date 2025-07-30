@@ -14,6 +14,7 @@ class PromptTemplate:
             search_space=self._get_search_space(),
             hidden_dim=config.rnn_hidden_dim,
             lr=config.rnn_lr,
+            reward_scale=config.rnn_rl_reward_scale,
             baseline=config.rnn_rl_baseline,
             baseline_alpha=config.rnn_rl_baseline_alpha,
             min_entropy_weight=config.rnn_rl_min_entropy_weight,
