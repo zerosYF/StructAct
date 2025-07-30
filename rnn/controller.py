@@ -42,9 +42,9 @@ class TemplateController:
     def get_slot_dim(self, slot_index: int) -> int:
         return self.search_space[slot_index]
 
-    def train_step(self, return_logits=False):
+    def train_step(self):
         self.iter_count += 1
-        flat_params, log_prob, entropy, logits_list = self.model(return_logits)
+        flat_params, log_prob, entropy, logits_list = self.model()
         self.last_logits = logits_list  
         return flat_params, log_prob, entropy
 
@@ -75,17 +75,13 @@ class TemplateController:
         Visualizer.log_train(reward_mean, entropy.item())
     
     def _slot_level_atrribution(self, slot_rewards=None):
-        if (slot_rewards is not None 
-            and self.iter_count != 0 
-            and self.iter_count % self.attribution_interval == 0 
-            and self.last_logits is not None
-            ):
+        if slot_rewards is not None and self.last_logits is not None:
             losses = []
             for logits, reward in zip(self.last_logits, slot_rewards):
             # Normalize slot rewards into a probability distribution
                 log_prob = F.log_softmax(logits, dim=-1)
                 target_prob = torch.softmax(torch.tensor([reward], dtype=torch.float32), dim=0)
-                target_prob = target_prob.unsqueeze(1).expand_as(log_prob)
+                target_prob = target_prob.unsqueeze(0).expand_as(log_prob)
                 loss = F.kl_div(log_prob, target_prob, reduction='mean')
                 losses.append(loss)
             aux_loss = torch.mean(torch.stack(losses))

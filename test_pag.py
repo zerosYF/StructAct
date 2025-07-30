@@ -3,38 +3,23 @@ from search.evaluator import PromptEvaluator
 from search.config import SearchConfig
 from task.bbh.epistemic import EpistemicTask
 pag_prompt = """
-Determine if a hypothesis logically follows from a given premise.
+Determine whether one sentence entails the next. Provide a detailed explanation of your reasoning, breaking down the premise and hypothesis into their components and analyzing the logical relationships between them. Specifically, consider the direction of belief and knowledge, the context, and the specific actions, beliefs, and observations mentioned in each statement. Ensure that you clearly distinguish between nested beliefs and direct beliefs, and verify that the premise logically necessitates the hypothesis for entailment to hold.
 
-Act as a Logical Analyst, focusing on the context and details provided in the premise and hypothesis.
+### Key Points to Consider:
+1. **Nested Beliefs:** If A suspects that B knows C, then A likely suspects C.
+2. **Logical Necessity:** The premise must logically necessitate the hypothesis for entailment to hold.
+3. **Context:** Consider the broader implications of the statements.
+4. **Step-by-Step Reasoning:** Break down the reasoning process into clear steps.
 
-**Examples:**
-
-1. **Input:**
-   - Premise: Charles believes that two teams of men are playing basketball on a court in an empty stadium.
-   - Hypothesis: Ava believes that the men are playing basketball with no audience.
-   - **Analysis:** The premise states Charles's belief, while the hypothesis refers to Ava's belief. There is no information about Ava's beliefs in the premise.
-   - **Output:** non-entailment
-
-2. **Input:**
-   - Premise: Richard learns that Isabella thinks that a man looks mysterious in a blue shirt and a red truck for a company called Wilbert.
-   - Hypothesis: Isabella thinks that a man looks mysterious in a blue shirt and a red truck for a company called Wilbert.
-   - **Analysis:** The premise directly states Isabella's thoughts, which are identical to the hypothesis.
-   - **Output:** entailment
-
-3. **Input:**
-   - Premise: Olivia knows that people are checking out a car with all its doors open in a parking lot in the city.
-   - Hypothesis: Olivia knows that a car door has not been shut.
-   - **Analysis:** If all the doors are open, it logically follows that at least one door has not been shut.
-   - **Output:** entailment
-
-No additional constraints are applied.
-
-**Cautions:**
-1. Keep your reasoning clear and consistent.
-2. Do not introduce new information in the hypothesis that isn’t in the premise.
-3. Analyze step by step to avoid logical errors.
-4. Ensure the hypothesis is a direct and necessary result of the premise.
-5. Pay close attention to the logical implications of nested beliefs and assumptions.
+### Additional Guidance:
+- **Nested Beliefs Example:** If James suspects that Amelia sees that three women sit together near woven walls, then James likely suspects that three women sit together near woven walls.        
+- **Direct Beliefs Example:** If James suspects that three women sit together near woven walls, this is a direct belief about the situation.
+- **Logical Implications:** If someone suspects another person's observation, they are likely to suspect the observed fact.
+- **Clarifying Nested Beliefs:** When A believes that B believes C, it does not necessarily mean that B believes C. A's belief about B's belief is separate from B's actual belief.
+- **Contextual Clues:** Look for contextual clues that might indicate a logical connection between the premise and hypothesis.
+- **Direct vs. Indirect Beliefs:** Clearly distinguish between direct beliefs (A believes C) and indirect beliefs (A believes that B believes C).
+- **Avoiding Circular Reasoning:** Ensure that the reasoning does not rely on circular logic, where the conclusion is assumed in the premise.
+- **Considering All Possible Interpretations:** Explore all possible interpretations of the premise and hypothesis to ensure a thorough analysis.
 """
 # with open(os.path.join("promptagent_eps.txt"), "r", encoding="utf-8") as f:
 #     pag_prompt = f.read()

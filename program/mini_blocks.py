@@ -107,6 +107,50 @@ class ExpertKnowledgeBlock(PromptBlock):
             "</BLOCK:EXPERT_KNOWLEDGE>\n"
         )
 
+class GuidanceBlock(PromptBlock):
+    def __init__(self, config: SearchConfig):
+        super().__init__(config)
+        self.use_guidance = False  
+        self.hyperparams = [0]    
+
+    def name(self):
+        return "Guidance"
+
+    def get_search_space(self):
+        return [2] 
+
+    def set_hyperparams(self, hyperparams: List[int]):
+        self.hyperparams = hyperparams
+        self.use_guidance = bool(hyperparams[0])
+
+    def describe(self):
+        return {
+            "type": "guidance",
+            "enabled": self.use_guidance
+        }
+
+    def render(self):
+        if not self.use_guidance:
+            return (
+                "<BLOCK:GUIDANCE>\n"
+                "No reasoning guidance is provided.\n"
+                "</BLOCK:GUIDANCE>\n"
+            )
+
+        return (
+            "<BLOCK:GUIDANCE>\n"
+            "You are tasked with performing a reasoning task. Follow these general steps to conduct a thorough analysis:\n"
+            "1. **Identify Key Elements**: Break down the task into its core components. What are the key elements, facts, or statements involved?\n"
+            "2. **Understand Relationships**: Analyze how these elements relate to one another. Are there any direct or indirect relationships, such as causality, belief, or implication?\n"
+            "3. **Contextual Considerations**: Consider the broader context of the task. How do surrounding details, external factors, or prior knowledge influence the analysis?\n"
+            "4. **Logical Connections**: Ensure that there are logical connections between the different components. Does one element lead to another? Are the connections necessary or implied by the task itself?\n"
+            "5. **Step-by-step Breakdown**: Decompose the reasoning process into clear, logical steps. Show how each component contributes to the final conclusion or understanding.\n"
+            "6. **Avoid Logical Fallacies**: Ensure the reasoning process does not rely on assumptions or circular reasoning. Each step should build logically from the previous one.\n"
+            "7. **Reflect and Validate**: After completing the reasoning, reflect on the process to ensure that all steps align with the logic of the task. Validate the result against the initial problem statement or hypothesis.\n"
+            "</BLOCK:GUIDANCE>\n"
+        )
+
+
 class FewShotExampleBlock(PromptBlock):
     def __init__(self, config:SearchConfig):
         super().__init__(config)
@@ -142,7 +186,7 @@ class FewShotExampleBlock(PromptBlock):
         if self.num == 0:
             return (
                 "<BLOCK:FEW_SHOT_EXAMPLES>\n"
-                "No few-shot examples can be provided.\n"
+                "No few-shot examples should be provided.\n"
                 "Zero-shot is applied.\n"
                 "</BLOCK:FEW_SHOT_EXAMPLES>\n"
             )
@@ -274,6 +318,7 @@ def get_all_blocks(config:SearchConfig):
         TaskInstructionBlock(config),
         RoleBlock(config),
         ExpertKnowledgeBlock(config),
+        GuidanceBlock(config),
         FewShotExampleBlock(config),
         ConstraintBlock(config),
         CautionBlock(config),

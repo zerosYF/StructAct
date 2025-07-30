@@ -50,10 +50,11 @@ class PromptTemplate:
         Generate a structured natural language prompt template with explicit markers.
         """
         instruction_header = (
+            "This is current prompt template description:\n"
             "Each block is indicated by tags like <BLOCK_NAME> and parameterized with fields such as <KEY=VALUE>.\n"
-            "The template may also contain control tags like <TEMPLATE> and </TEMPLATE>, which denote boundaries of the full prompt structure.\n"
+            "The template also contain control tags like <TEMPLATE> and </TEMPLATE>, which denote boundaries of the full prompt structure.\n"
             "Your task is to optimize the natural language content between and around these structure and control tags, with the following requirements:\n"
-            "- Use the tags (e.g., <BLOCK_NAME>, <KEY=VALUE>, <TEMPLATE>) **only as structural guidance during optimization**, but do not include them in the final output;\n"
+            "- Use the tags (e.g., <BLOCK_NAME>, <KEY=VALUE>, <TEMPLATE>) **only as structural guidance during optimization**, but do not include them in output prompt;\n"
             "- Do not alter the structure, order, or semantics implied by the original tags;\n"
             "- The final output should be a **fully naturalized prompt**, with **constraint text about block, all tags and placeholders removed**;\n"
             "- Ensure the resulting prompt is coherent, fluent, faithful to each block’s intent, and effective for the intended task."
@@ -71,7 +72,7 @@ class PromptTemplate:
         trials = 0
 
         while len(results) < sample_k and trials < max_trials:
-            flat_params, log_prob_sum, entropy = self.controller.train_step(self.task.config.rnn_structure_contribution)
+            flat_params, log_prob_sum, entropy = self.controller.train_step()
             key = tuple(flat_params)
             if key not in seen:
                 seen.add(key)
@@ -97,7 +98,7 @@ class PromptTemplate:
         return scored[:min(k, len(scored))]
     
     def pre_sample(self, current_prompt: str):
-        flat_params, log_prob_sum, entropy = self.controller.train_step(self.task.config.rnn_structure_contribution)
+        flat_params, log_prob_sum, entropy = self.controller.train_step()
 
         self.last_sampled_params = flat_params
         updated_prompt = self.update_params(flat_params, current_prompt)
@@ -138,7 +139,9 @@ class PromptTemplate:
 
         avg_score = self.get_reward(evaluator, current_prompt)
         # Perform slot-level structure attribution if enabled
-        if self.task.config.rnn_structure_contribution:
+        if (self.task.config.rnn_structure_contribution
+            and self.controller.iter_count != 0
+            and self.controller.iter_count % self.controller.attribution_interval == 0):
             logger.info("🔍 [PromptTemplate] Performing slot-level structure attribution...")
             # Get per-slot rewards by perturbing each slot
             slot_rewards = self._structure_attribution(

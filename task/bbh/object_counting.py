@@ -69,7 +69,7 @@ class ObjectCountingTask(TaskBase):
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
         """Injects the input question into the current prompt for evaluation."""
-        return current_prompt + f"\n\nQuestion: {input}\n" + self.answer_format_prompt
+        return current_prompt + f"\n\n{input}\n" + self.answer_format_prompt
 
     def extract_tuple(self, sample) -> tuple:
         """Extracts question and answer tuple from a sample."""
@@ -77,7 +77,7 @@ class ObjectCountingTask(TaskBase):
 
     def samples2text(self, samples: List[dict]) -> str:
         """Converts a list of samples to a text block of Q&A pairs."""
-        return "\n".join([f"Q: {s['question']}\nA: {s['answer']}" for s in samples])
+        return "\n".join([f"Input: {s['question']}\nOutput: {s['answer']}" for s in samples])
     
     def _normalize_answer(self, text: str) -> str:
         """Normalize answer by lowercasing, stripping, converting number words to digits."""
@@ -86,7 +86,7 @@ class ObjectCountingTask(TaskBase):
             text = match.group(1).strip()
         text = text.strip().lower()
         # Remove non-digit/non-word characters except for hyphens (for numbers like 'twenty-one')
-        text = re.sub(r"[^\w\s\-]", "", text)
+        text = re.sub(r"[^\x20-\x7E]", "", text)
         # Convert number words to digits if possible
         if text in number_to_word_dict:
             text = str(number_to_word_dict[text])

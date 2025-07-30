@@ -48,7 +48,7 @@ class EpistemicTask(TaskBase):
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
         """Injects the input question into the current prompt for evaluation."""
-        return current_prompt  + f"\n{self.task_prefix}" + f"\n\nQuestion: {input}\n" + self.answer_format_prompt
+        return current_prompt  + f"\n{self.task_prefix}" + f"\n\n{input}\n" + self.answer_format_prompt
 
     def extract_tuple(self, sample) -> tuple:
         """Extracts question and answer tuple from a sample."""
@@ -56,7 +56,7 @@ class EpistemicTask(TaskBase):
 
     def samples2text(self, samples: List[dict]) -> str:
         """Converts a list of samples to a text block of Q&A pairs."""
-        return "\n".join([f"Q: {s['question']}\nA: {s['answer']}" for s in samples])
+        return "\n".join([f"Input: {s['question']}\nOutput: {s['answer']}" for s in samples])
     
     def _normalize_answer(self, text: str) -> str:
         """Normalize text by lowercasing, stripping, and removing punctuation."""
@@ -64,11 +64,14 @@ class EpistemicTask(TaskBase):
         if match:
             text = match.group(1).strip()
         text = text.strip().lower()
-        text = re.sub(r"[^\w\s]", "", text)
+        text = re.sub(r"[^\x20-\x7E]", "", text)
         return text
     
     def get_reward(self, output: str, target: str) -> float:
         """Compares normalized output and target answer for reward calculation."""
+        # logger.info(
+        #         f"  Model Output: {output}\n"
+        #     )
         norm_out = self._normalize_answer(output)
         norm_gold = self._normalize_answer(target)
         logger.info(
@@ -76,7 +79,7 @@ class EpistemicTask(TaskBase):
                 f"  Model Answer: {norm_out}\n"
                 f"  Gold Answer : {norm_gold}"
             )
-        return 1.0 if norm_out == norm_gold else 0.0
+        return 1.0 if norm_out == target else 0.0
 
     
     

@@ -41,13 +41,13 @@ class SimpleMathReasoningTask(TaskBase):
         )
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
-        return current_prompt + f"\n\nQuestion: {input}\n" + self.answer_format_prompt
+        return current_prompt + f"\n\n {input}\n" + self.answer_format_prompt
 
     def extract_tuple(self, sample) -> tuple:
         return sample["question"], sample["answer"]
 
     def samples2text(self, samples: List[dict]) -> str:
-        return "\n".join([f"Q: {s['question']}\nA: {s['answer']}" for s in samples])
+        return "\n".join([f"Input: {s['question']}\nOutput: {s['answer']}" for s in samples])
     
     def _normalize_answer(self, text):
         match = re.search(r"<answer>([\s\S]*?)</answer>", text, re.IGNORECASE)

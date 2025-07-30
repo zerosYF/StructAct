@@ -13,7 +13,7 @@ class PromptEvaluator:
     def reward(self, current_prompt:str, sample:dict) -> float:
         q, a = self.task.extract_tuple(sample)
         final_input = self.task.inject_final_input(current_prompt, q)
-        output = self.model.api_call(self.task.system_prompt, final_input)
+        output = self.model.api_call(final_input)
         return self.task.get_reward(output, a)
     
     def batch_reward(self, current_prompt: str, samples: List[dict]) -> float:
@@ -28,7 +28,7 @@ class PromptEvaluator:
         def _evaluate_one(item):
             question, gold = self.task.extract_tuple(item)
             final_input = self.task.inject_final_input(final_prompt, question)
-            output = self.model.api_call(self.task.system_prompt, final_input)
+            output = self.model.api_call(final_input)
             correct = int(self.task.get_reward(output, gold) > 0)
             return {
                 "prompt": final_prompt,

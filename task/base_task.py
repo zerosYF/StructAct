@@ -63,7 +63,7 @@ class TaskBase(ABC):
                     "Answer: <final answer> \n\n"
                     "Do not add any extra commentary or formatting. Keep the input question unchanged."
                 )
-                fewshot_text = getOptimModel().api_call(system_prompt, fewshot_text)
+                fewshot_text = getOptimModel().api_call(fewshot_text)
 
             prompt_parts.append("Here are some examples:\n" + fewshot_text)
 

@@ -2,7 +2,7 @@ from openai import OpenAI
 import ollama
 from search.config import SearchConfig
 from model.openai_model import eval_model, optim_model
-
+from logger import logger
 class Model:
     def __init__(self, config: SearchConfig):
         self.client = OpenAI(
@@ -11,12 +11,14 @@ class Model:
         )
         self.model_name = config.model_name
 
-    def api_call(self, system_prompt: str, prompt: str):
+    def api_call(self, input: str):
+        # logger.info(
+        #         f"  Model Input: {prompt}\n"
+        #     )
         response = self.client.chat.completions.create(
             model=self.model_name,
             messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": prompt}
+                {"role": "user", "content": input}
             ]
         )
         return response.choices[0].message.content
@@ -25,12 +27,11 @@ class OllamaModel:
     def __init__(self, config: SearchConfig):
         self.model_name = config.ollama_model_name
 
-    def api_call(self, system_prompt: str, prompt: str):
+    def api_call(self, input: str):
         response = ollama.chat(
             model=self.model_name,
             messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": prompt}
+                {"role": "user", "content": input}
             ]
         )
         return response['message']['content']
@@ -38,11 +39,6 @@ class OllamaModel:
 config = SearchConfig()
 model = Model(config)
 ollama_model = OllamaModel(config)
-def getModel():
-    if config.model_idx == 0:
-        return model
-    else:
-        return ollama_model
 
 def getEvalModel():
     if config.model_idx == 0:

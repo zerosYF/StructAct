@@ -27,7 +27,7 @@ class RNN(nn.Module):
         # Learnable start token for the first input
         self.start_token = nn.Parameter(torch.zeros(1, hidden_dim))
 
-    def forward(self, return_logits: bool = False):
+    def forward(self):
         # Initialize LSTM hidden and cell states
         h = torch.zeros(1, self.hidden_dim, device=self.start_token.device)
         c = torch.zeros_like(h)
@@ -59,13 +59,9 @@ class RNN(nn.Module):
             decisions.append(choice.item())
             log_probs.append(log_prob)
             entropies.append(entropy)
-            if return_logits:
-                logits_list.append(logits.squeeze(0))  # shape: [slot_dim]
+            logits_list.append(logits.squeeze(0))  # shape: [slot_dim]
 
         log_prob_sum = torch.stack(log_probs).sum()
         entropy_mean = torch.stack(entropies).mean()
 
-        if return_logits:
-            return decisions, log_prob_sum, entropy_mean, logits_list
-        else:
-            return decisions, log_prob_sum, entropy_mean
+        return decisions, log_prob_sum, entropy_mean, logits_list

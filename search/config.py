@@ -39,7 +39,7 @@ class SearchConfig:
         self.rnn_rl_entropy_decay_rate = 0.95
 
         self.rnn_structure_contribution = True
-        self.rnn_attribution_interval = 20
+        self.rnn_attribution_interval = 10
         self.rnn_aux_loss_coef=1.5
 
         # Multi-threaded reward evaluation
