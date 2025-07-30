@@ -28,6 +28,7 @@ class TaskInstructionBlock(PromptBlock):
     def render(self):
         return (
             "<BLOCK:TASK_INSTRUCTION>\n"
+            "###Requirement:"
             "This block specifies how the task objective is presented to the model.\n"
             f"You can present the task objective in a **{self.style}** manner here.\n"
             "</BLOCK:TASK_INSTRUCTION>\n"
@@ -63,6 +64,7 @@ class RoleBlock(PromptBlock):
     def render(self):
         return (
             "<BLOCK:ROLE>\n"
+            "###Requirement:"
             "This block defines the role or persona the model should assume.\n"
             "Roles influence style and expertise in responses.\n"
             f"Let model assume the role as a **{self.role_template}**.\n"
@@ -95,12 +97,14 @@ class ExpertKnowledgeBlock(PromptBlock):
         if not self.use_knowledge:
             return (
                 "<BLOCK:EXPERT_KNOWLEDGE>\n"
+                "###Requirement:"
                 "No expert knowledge should be provided here.\n"
                 "</BLOCK:EXPERT_KNOWLEDGE>\n"
             )
 
         return (
             "<BLOCK:EXPERT_KNOWLEDGE>\n"
+            "###Requirement:"
             "You should incorporate relevant domain-specific expert knowledge to enhance reasoning and accuracy.\n"
             "You are encouraged to derive appropriate theories, principles, or domain heuristics based on the task objective and provided information.\n"
             "This may include laws, standard practices, or expert-level insights relevant to the input task.\n"
@@ -133,12 +137,14 @@ class GuidanceBlock(PromptBlock):
         if not self.use_guidance:
             return (
                 "<BLOCK:GUIDANCE>\n"
+                "###Requirement:"
                 "No reasoning guidance should be provided.\n"
                 "</BLOCK:GUIDANCE>\n"
             )
 
         return (
             "<BLOCK:GUIDANCE>\n"
+            "###Requirement:"
             "Some guidance information about this task you can insert here."
             "You should use ​appropriate information context provided to fill this block, guide model perform the task more accurately."
             "</BLOCK:GUIDANCE>\n"
@@ -179,6 +185,7 @@ class FewShotExampleBlock(PromptBlock):
         if self.num == 0:
             return (
                 "<BLOCK:FEW_SHOT_EXAMPLES>\n"
+                "###Requirement:"
                 "**No example** should be provided here.\n"
                 "Zero-shot is applied.\n"
                 "</BLOCK:FEW_SHOT_EXAMPLES>\n"
@@ -187,7 +194,8 @@ class FewShotExampleBlock(PromptBlock):
         if self.format == "Input-Output":
             return (
                 "<BLOCK:FEW_SHOT_EXAMPLES>\n"
-                f"This block structly provides **{self.num}** example(s) with input and output pairs.\n"
+                "###Requirement:"
+                f"This block should provide **{self.num}** example(s) with input and output pairs.\n"
                 f"Example(s) are organized by **{self.order}**.\n"
                 "Each example should consist of an input and an output.\n"
                 "</BLOCK:FEW_SHOT_EXAMPLES>\n"
@@ -196,7 +204,8 @@ class FewShotExampleBlock(PromptBlock):
         if self.format == "Input-Analysis-Output":
             return (
                 "<BLOCK:FEW_SHOT_EXAMPLES>\n"
-                f"This block structly provides **{self.num}** example(s) with input, detailed step-by-step analysis, and output.\n"
+                "###Requirement:"
+                f"This block should provide **{self.num}** example(s) with input, detailed step-by-step analysis, and output.\n"
                 f"Example(s) are organized by **{self.order}**.\n"
                 "Each example should consist of an input, an analysis of how to derive the output from the input, and the corresponding output.\n"
                 "</BLOCK:FEW_SHOT_EXAMPLES>\n"
@@ -233,11 +242,13 @@ class ConstraintBlock(PromptBlock):
         if not self.enable:
             return (
                 "<BLOCK:CONSTRAINTS>\n"
+                "###Requirement:"
                 "No additional constraints are enabled.\n"
                 "</BLOCK:CONSTRAINTS>\n"
             )
         return (
             "<BLOCK:CONSTRAINTS>\n"
+            "###Requirement:"
             "This block defines explicit constraints or rules the model must obey.\n"
             "You can use ​appropriate information I provided to fill this block.\n"
             f"Impose constraints formatted as **{self.format}**.\n"
@@ -275,11 +286,13 @@ class CautionBlock(PromptBlock):
         if not self.enable:
             return (
                 "<BLOCK:CAUTIONS>\n"
+                "###Requirement:"
                 "No cautionary statements should be provided.\n"
                 "</BLOCK:CAUTIONS>\n"
             )
         return (
             "<BLOCK:CAUTIONS>\n"
+            "###Requirement:"
             "This block provides cautionary or warning statements to the model.\n"
             f"Include caution(s) styled as **{self.style}**.\n"
             "Content should be filled by analyzing information I provided.\n"
@@ -312,6 +325,7 @@ class AnswerStyleBlock(PromptBlock):
     def render(self):
         return (
             "<BLOCK:ANSWER_STYLE>\n"
+            "###Requirement:"
             "Specifies the format and structure of the model's answer output.\n"
             f"Derive model to answer in the following style: **{self.style}**.\n"
             "</BLOCK:ANSWER_STYLE>\n"
