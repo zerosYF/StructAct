@@ -29,7 +29,7 @@ class TaskInstructionBlock(PromptBlock):
         return (
             "<BLOCK:TASK_INSTRUCTION>\n"
             "This block specifies how the task objective is presented to the model.\n"
-            f"Present the task objective in a <STYLE={self.style}> manner.\n"
+            f"You can present the task objective in a <STYLE={self.style}> manner here.\n"
             "</BLOCK:TASK_INSTRUCTION>\n"
         )
 
@@ -65,7 +65,7 @@ class RoleBlock(PromptBlock):
             "<BLOCK:ROLE>\n"
             "This block defines the role or persona the model should assume.\n"
             "Roles influence style and expertise in responses.\n"
-            f"Assume the role as <ROLE_TEMPLATE={self.role_template}>.\n"
+            f"Let model assume the role as <ROLE_TEMPLATE={self.role_template}>.\n"
             "</BLOCK:ROLE>\n"
         )
 
@@ -95,14 +95,14 @@ class ExpertKnowledgeBlock(PromptBlock):
         if not self.use_knowledge:
             return (
                 "<BLOCK:EXPERT_KNOWLEDGE>\n"
-                "No expert knowledge can be provided.\n"
+                "No expert knowledge should be provided here.\n"
                 "</BLOCK:EXPERT_KNOWLEDGE>\n"
             )
 
         return (
             "<BLOCK:EXPERT_KNOWLEDGE>\n"
-            "The model should incorporate relevant domain-specific expert knowledge to enhance reasoning and accuracy.\n"
-            "You are encouraged to derive appropriate theories, principles, or domain heuristics based on the task objective and provided examples.\n"
+            "You should incorporate relevant domain-specific expert knowledge to enhance reasoning and accuracy.\n"
+            "You are encouraged to derive appropriate theories, principles, or domain heuristics based on the task objective and provided information.\n"
             "This may include laws, standard practices, or expert-level insights relevant to the input task.\n"
             "</BLOCK:EXPERT_KNOWLEDGE>\n"
         )
@@ -139,7 +139,8 @@ class GuidanceBlock(PromptBlock):
 
         return (
             "<BLOCK:GUIDANCE>\n"
-            "Some guidance about this task you can insert here."
+            "Some guidance information about this task you can insert here."
+            "You should use ​appropriate information context provided to fill this block, guide model perform the task more accurately."
             "</BLOCK:GUIDANCE>\n"
         )
 
@@ -199,7 +200,7 @@ class FewShotExampleBlock(PromptBlock):
                 "This block includes examples with input, detailed analysis, and output.\n"
                 "Ordering affects how examples are selected.\n"
                 f"Provide <NUM_EXAMPLES={self.num}> example(s), organized by <ORDERING={self.order}>.\n"
-                "Each example should consist of an input, an analysis of the input, and the corresponding output.\n"
+                "Each example should consist of an input, an analysis of how to derive the output from the input, and the corresponding output.\n"
                 "</BLOCK:FEW_SHOT_EXAMPLES>\n"
             )
 
@@ -240,6 +241,7 @@ class ConstraintBlock(PromptBlock):
         return (
             "<BLOCK:CONSTRAINTS>\n"
             "This block defines explicit constraints or rules the model must obey.\n"
+            "You can use ​appropriate information I provided to fill this block.\n"
             f"Impose constraints formatted as <FORMAT={self.format}>.\n"
             "</BLOCK:CONSTRAINTS>\n"
         )
@@ -275,14 +277,14 @@ class CautionBlock(PromptBlock):
         if not self.enable:
             return (
                 "<BLOCK:CAUTIONS>\n"
-                "No cautionary statements are needed.\n"
+                "No cautionary statements should be provided.\n"
                 "</BLOCK:CAUTIONS>\n"
             )
         return (
             "<BLOCK:CAUTIONS>\n"
             "This block provides cautionary or warning statements to the model.\n"
             f"Include caution(s) styled as <STYLE={self.style}>.\n"
-            "Content is dynamically generated.\n"
+            "Content should be filled by analyzing information I provided.\n"
             "</BLOCK:CAUTIONS>\n"
         )
 
@@ -313,7 +315,7 @@ class AnswerStyleBlock(PromptBlock):
         return (
             "<BLOCK:ANSWER_STYLE>\n"
             "Specifies the format and structure of the model's answer output.\n"
-            f"Format your answer in the following style: <STYLE={self.style}>.\n"
+            f"Derive model to answer in the following style: <STYLE={self.style}>.\n"
             "</BLOCK:ANSWER_STYLE>\n"
         )
 
