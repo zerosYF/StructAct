@@ -40,15 +40,15 @@ class TestReflectRewriteAction(OptimizeAction):
             f"[Example {i+1}]\n"
             f"Model's Input: {inp}\n"
             f"Model's Output: {out}\n"
-            f"Model's Final Anwser: {self.task._normalize_answer(out)}"
-            f"Expected Gold Anwser: {self.task._normalize_answer(gold)}"
+            f"Model's Final Anwser: {self.task._normalize_answer(out)}\n"
+            f"Expected Gold Anwser: {self.task._normalize_answer(gold)}\n"
             for i, (inp, out, gold) in enumerate(zip(inputs, outputs, golds)) if self.task.get_reward(out, gold) == 0
         ])
         evaluation = (
             "I'm writing prompts for a language model designed for a task.\n"
-            f"My current prompt:\n {current_prompt}"
-            f"This prompt gets the following examples wrong:\n {wrong_answers}"
-            "For every example, you should carefully analyze why model response wrong answer, why my prompt leads to wrong answer."
+            f"My current prompt:\n {current_prompt}\n"
+            f"This prompt gets the following examples wrong:\n {wrong_answers}\n"
+            "For every example, you should carefully analyze why model response wrong answer, why my prompt leads to wrong answer.\n"
             "List me all suggest improvements to the prompt to ensure better generalization.\n"
         )
         analysis = self.analyzer_model.api_call(evaluation)
@@ -59,12 +59,12 @@ class TestReflectRewriteAction(OptimizeAction):
             f"But this prompt gets the following examples wrong:\n {wrong_answers}\n\n"
             f"Some suggestions for avoid wrong answers:\n {analysis}\n\n"
             f"My prompt template description:\n{template_description}\n\n"
-            f"Based on the above information, please rewrite new prompts:\n"
+            f"Based on the above information, please help me rewrite new prompts:\n\n"
             """
-            - Your revision must strictly follow my prompt template description.
-            - The new prompts should solve the current prompt's problems.
-            - Only output the revised prompt **without any explanation**.
-            - Do not change the prompt structure layout or add new blocks, your new information should be in ​appropriate​ block.
+            - Your revision must strictly follow my prompt template description.\n
+            - The new prompts should solve the current prompt's problems\n.
+            - Only output the revised prompt **without any explanation**\n.
+            - Do not change the prompt structure layout or add new blocks, your new information should be in ​appropriate​ block.\n
             """
         )
         rewritten_prompt = self.rewriter_model.api_call(rewriting_input)
@@ -96,10 +96,11 @@ class FewShotExampleLearning(OptimizeAction):
             f"My current prompt:\n{current_prompt}\n"
             f"There are some suggestions to improve current prompt:\n{analysis}\n"
             f"My current prompt template description:\n{template_description}\n"
+            f"Based on the above information, please help me rewrite new prompts:\n\n"
             """
-            - The revised prompt **must strictly follow** the template description.
-            - Do not change the prompt structure layout or add new blocks, your new information should be in ​appropriate​ block.
-            - Only output the **final revised prompt**.
+            - The revised prompt **must strictly follow** the template description.\n
+            - Do not change the prompt structure layout or add new blocks, your new information should be in ​appropriate​ block.\n
+            - Only output the **final revised prompt**.\n
             """
         )
         rewritten_prompt = self.rewriter_model.api_call(rewriting_input)
@@ -118,6 +119,7 @@ class CohesionImprover(OptimizeAction):
             "I'm writing prompts for a language model designed for a task.\n"
             f"My current prompt:\n{current_prompt}\n"
             f"My prompt template desciption:\n{template_description}\n"
+            f"Based on the above information, please help me rewrite new prompts:\n\n"
             """
             - Improve only the linguistic cohesion and transitions between blocks in my prompt.\n
             - Do not change the blocks order, content meaning, or formatting.\n

@@ -60,12 +60,12 @@ class StructureSyncAction(OptimizeAction):
             "I'm writing a prompt for a language model designed for a task.\n\n"
             f"My current prompt:\n{current_prompt}\n\n"
             f"My template  description:\n{template_description}\n\n"
-            "Your revision must strictly follow my prompt template description."
+            "Your revision must strictly follow my prompt template description.\n\n"
             f"There are some examples QA pairs you can use to get information:\n{example_texts}\n\n"
             f"Please help me revise my current prompt based on the given template description.\n\n"
             f"You must \n\n"
             f"Do not alter the template settings.\n\n"
-            f"Just output revise prompt without other text."
+            f"Just output revise prompt without other text.\n"
         )
 
         rewritten_prompt = self.rewriter_model.api_call(rewrite_prompt)
