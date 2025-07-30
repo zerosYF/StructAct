@@ -80,8 +80,8 @@ class TemplateController:
             for logits, reward in zip(self.last_logits, slot_rewards):
             # Normalize slot rewards into a probability distribution
                 log_prob = F.log_softmax(logits, dim=-1)
-                target_prob = torch.softmax(torch.tensor([reward], dtype=torch.float32), dim=0)
-                target_prob = target_prob.unsqueeze(0).expand_as(log_prob)
+                target_prob = torch.softmax(torch.tensor([reward], dtype=torch.float32), dim=-1)
+                target_prob = target_prob.unsqueeze(0).expand(log_prob.size(0), -1)
                 loss = F.kl_div(log_prob, target_prob, reduction='mean')
                 losses.append(loss)
             aux_loss = torch.mean(torch.stack(losses))
