@@ -26,8 +26,6 @@ class SearchConfig:
         self.rollout_early_stop_delta: float = 0.01
 
         # RNN Controller settings
-        self.struct_sample_count: int = 10       # Number of structure samples per iteration
-        self.struct_sample_top_k: int = 1          # Number of top structures to keep
         self.rnn_iter_num: int = 500        # Number of training iterations for RNN
         self.rnn_hidden_dim: int = 128         # Hidden dimension of RNN
         self.rnn_lr: float = 1e-4              # Learning rate for RNN

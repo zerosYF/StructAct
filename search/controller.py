@@ -30,15 +30,18 @@ class SearchController:
     def search(self):
         template = PromptTemplate(config=self.config, blocks=get_all_blocks(self.config), task=self.task)
         logger.info(f"🔍 Initial template constraints:\n{template.describe()}")
-        best_prompt = self.task.origin_prompt
+        init_prompt = self.task.origin_prompt
 
         Visualizer.start(title=self.task.name)
         
         for epoch in range(self.config.rnn_iter_num):
-            best_prompt, history_reward = template.pre_sample(best_prompt)
-            best_prompt = self._mcts_workflow(template, best_prompt, epoch)
-            template.update(self.evaluator, best_prompt, history_reward)
-        return template.describe(), best_prompt
+            sync_prompt, history_reward = template.pre_sample(init_prompt)
+            optimized_prompt = self._mcts_workflow(template, sync_prompt, epoch)
+            if optimized_prompt != sync_prompt:
+                template.update(self.evaluator, optimized_prompt)
+            else:
+                template.update(self.evaluator, sync_prompt, history_reward)
+        return template.describe(), optimized_prompt
     
     
     def _mcts_workflow(self, template: PromptTemplate, best_prompt: str, current_rnn_iter: int = 0, main_thread: bool = True):
@@ -81,46 +84,6 @@ class SearchController:
             logger.info(f"  Step {i+1}: {action.name}")
         best_prompt = best_node.current_prompt
         return best_prompt
-    
-    def batch_search(self):
-        template = PromptTemplate(config=self.config, blocks=get_all_blocks(self.config), task=self.task)
-        logger.info(f"🔍 Initial template constraints:\n{template.describe()}")
-        best_prompt = self.task.origin_prompt
-
-        Visualizer.start(title=self.task.name)
-        
-        for epoch in range(self.config.rnn_iter_num):
-            samples = template.batch_sample_structs(self.config.struct_sample_count)
-            top_k = template.select_topk_structures(samples, self.config.struct_sample_top_k)
-            logger.info(f"📌 Top-{self.config.struct_sample_top_k} structures selected. Starting parallel MCTS...")
-            top1, others = top_k[0], top_k[1:]
-            top1_init_prompt = template.update_params(top1[1], best_prompt)
-            other_init_prompts = [template.update_params(params, best_prompt) for _, params, _, _ in others]
-
-            top1_result_prompt = self._mcts_workflow(template, top1_init_prompt, epoch)
-            other_result_prompts = []
-            if self.config.struct_sample_top_k > 1:
-                args_list = [
-                (template, init_prompt, epoch, False)
-                    for init_prompt in other_init_prompts
-                ]
-                with concurrent.futures.ThreadPoolExecutor(max_workers=self.config.struct_sample_top_k) as executor:
-                    other_result_prompts = list(executor.map(self._mcts_workflow, args_list))
-            
-            all_results = [top1_result_prompt] + other_result_prompts
-            best_reward = -1e9
-            # map keep index
-            for i, candidate_best_prompt in enumerate(all_results):
-                reward = template.get_reward(self.evaluator, candidate_best_prompt)
-                if reward > best_reward:
-                    best_reward = reward
-                    best_prompt = candidate_best_prompt
-                    template.last_sampled_params = top_k[i][1]
-                    template.last_log_prob_sum = top_k[i][2]
-                    template.last_entropy = top_k[i][3]
-            template.update(self.evaluator, best_prompt, best_reward)
-            
-        return template.describe(), best_prompt
     
     def nonlinear_schedule(
         self,
