@@ -133,23 +133,15 @@ class GuidanceBlock(PromptBlock):
         if not self.use_guidance:
             return (
                 "<BLOCK:GUIDANCE>\n"
-                "No reasoning guidance is provided.\n"
+                "No reasoning guidance should be provided.\n"
                 "</BLOCK:GUIDANCE>\n"
             )
 
         return (
             "<BLOCK:GUIDANCE>\n"
-            "You are tasked with performing a reasoning task. Follow these general steps to conduct a thorough analysis:\n"
-            "1. **Identify Key Elements**: Break down the task into its core components. What are the key elements, facts, or statements involved?\n"
-            "2. **Understand Relationships**: Analyze how these elements relate to one another. Are there any direct or indirect relationships, such as causality, belief, or implication?\n"
-            "3. **Contextual Considerations**: Consider the broader context of the task. How do surrounding details, external factors, or prior knowledge influence the analysis?\n"
-            "4. **Logical Connections**: Ensure that there are logical connections between the different components. Does one element lead to another? Are the connections necessary or implied by the task itself?\n"
-            "5. **Step-by-step Breakdown**: Decompose the reasoning process into clear, logical steps. Show how each component contributes to the final conclusion or understanding.\n"
-            "6. **Avoid Logical Fallacies**: Ensure the reasoning process does not rely on assumptions or circular reasoning. Each step should build logically from the previous one.\n"
-            "7. **Reflect and Validate**: After completing the reasoning, reflect on the process to ensure that all steps align with the logic of the task. Validate the result against the initial problem statement or hypothesis.\n"
+            "Some guidance about this task you can insert here."
             "</BLOCK:GUIDANCE>\n"
         )
-
 
 class FewShotExampleBlock(PromptBlock):
     def __init__(self, config:SearchConfig):
@@ -212,63 +204,75 @@ class FewShotExampleBlock(PromptBlock):
             )
 
 class ConstraintBlock(PromptBlock):
-    def __init__(self, config:SearchConfig):
+    def __init__(self, config: SearchConfig):
         super().__init__(config)
-        self.num_options = [0, 3, 7]
+        self.enable_options = [False, True]  
         self.format_options = ["Paragraph", "Bullet list"]
-        self.hyperparams = [0, 0]
-        self.num = self.num_options[self.hyperparams[0]]
-        self.format = self.format_options[self.hyperparams[1]]
+        self.hyperparams = [0, 0]  # [enable, format]
+        self.enable = self.enable_options[self.hyperparams[0]]  
+        self.format = self.format_options[self.hyperparams[1]]  
 
-    def name(self): return "ConstraintBlock"
+    def name(self): 
+        return "ConstraintBlock"
 
-    def get_search_space(self): return [len(self.num_options), len(self.format_options)]
+    def get_search_space(self): 
+        return [len(self.enable_options), len(self.format_options)]
 
     def set_hyperparams(self, hyperparams: List[int]):
         self.hyperparams = hyperparams
-        self.num = self.num_options[hyperparams[0]]
+        self.enable = self.enable_options[hyperparams[0]]
         self.format = self.format_options[hyperparams[1]]
 
     def describe(self):
-        return {"type": "constraint", "num_constraints": self.num, "format": self.format}
+        return {
+            "type": "constraint", 
+            "enabled": self.enable, 
+            "format": self.format
+        }
 
     def render(self):
-        if self.num == 0:
+        if not self.enable:
             return (
                 "<BLOCK:CONSTRAINTS>\n"
-                "No additional constraints can be applied.\n"
+                "No additional constraints are enabled.\n"
                 "</BLOCK:CONSTRAINTS>\n"
             )
         return (
             "<BLOCK:CONSTRAINTS>\n"
-            "This block defines explicit constraints or rules model must obey.\n"
-            f"Impose <NUM_CONSTRAINTS={self.num}> constraint(s), formatted as <FORMAT={self.format}>.\n"
+            "This block defines explicit constraints or rules the model must obey.\n"
+            f"Impose constraints formatted as <FORMAT={self.format}>.\n"
             "</BLOCK:CONSTRAINTS>\n"
         )
 
 class CautionBlock(PromptBlock):
-    def __init__(self, config:SearchConfig):
+    def __init__(self, config: SearchConfig):
         super().__init__(config)
-        self.count_options = [0, 5, 7]
+        self.enable_options = [False, True]  
         self.style_options = ["Gentle reminder", "Strict directive"]
-        self.hyperparams = [0, 0]
-        self.count = self.count_options[self.hyperparams[0]]
-        self.style = self.style_options[self.hyperparams[1]]
+        self.hyperparams = [0, 0]  # [enable, style]
+        self.enable = self.enable_options[self.hyperparams[0]]  
+        self.style = self.style_options[self.hyperparams[1]]  
 
-    def name(self): return "CautionBlock"
+    def name(self): 
+        return "CautionBlock"
 
-    def get_search_space(self): return [len(self.count_options), len(self.style_options)]
+    def get_search_space(self): 
+        return [len(self.enable_options), len(self.style_options)]
 
     def set_hyperparams(self, hyperparams: List[int]):
         self.hyperparams = hyperparams
-        self.count = self.count_options[hyperparams[0]]
+        self.enable = self.enable_options[hyperparams[0]]
         self.style = self.style_options[hyperparams[1]]
 
     def describe(self):
-        return {"type": "caution", "count": self.count, "style": self.style}
+        return {
+            "type": "caution", 
+            "enabled": self.enable, 
+            "style": self.style
+        }
 
     def render(self):
-        if self.count == 0:
+        if not self.enable:
             return (
                 "<BLOCK:CAUTIONS>\n"
                 "No cautionary statements are needed.\n"
@@ -277,7 +281,7 @@ class CautionBlock(PromptBlock):
         return (
             "<BLOCK:CAUTIONS>\n"
             "This block provides cautionary or warning statements to the model.\n"
-            f"Include <NUM_CAUTIONS={self.count}> caution(s) styled as <STYLE={self.style}>. "
+            f"Include caution(s) styled as <STYLE={self.style}>.\n"
             "Content is dynamically generated.\n"
             "</BLOCK:CAUTIONS>\n"
         )
