@@ -23,7 +23,7 @@ class TemplateController:
 
         logger.info(f"📈 [RNNController] Initialized - params counts: {len(search_space)}")
 
-        self.attribution_interval = 50  
+        self.attribution_interval = 10  
         self.rewards = [] 
     
     def get_slot_dim(self, slot_index: int) -> int:
@@ -67,7 +67,7 @@ class TemplateController:
             for logits, reward in zip(self.last_logits, slot_rewards):
             # Normalize slot rewards into a probability distribution
                 log_prob = F.log_softmax(logits, dim=-1)
-                target_prob = torch.softmax(torch.tensor([reward], dtype=torch.float32), dim=1)
+                target_prob = torch.softmax(torch.tensor([reward], dtype=torch.float32), dim=0)
                 target_prob = target_prob.unsqueeze(1).expand_as(log_prob)
                 loss = F.kl_div(log_prob, target_prob, reduction='mean')
                 losses.append(loss)
