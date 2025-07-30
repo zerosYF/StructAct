@@ -35,9 +35,9 @@ class SearchController:
         Visualizer.start(title=self.task.name)
         
         for epoch in range(self.config.rnn_iter_num):
-            best_prompt = template.pre_sample(best_prompt)
+            best_prompt, history_reward = template.pre_sample(best_prompt)
             best_prompt = self._mcts_workflow(template, best_prompt, epoch)
-            template.update(self.evaluator, best_prompt)
+            template.update(self.evaluator, best_prompt, history_reward)
         return template.describe(), best_prompt
     
     
@@ -108,7 +108,7 @@ class SearchController:
                     other_result_prompts = list(executor.map(self._mcts_workflow, args_list))
             
             all_results = [top1_result_prompt] + other_result_prompts
-            best_reward = float("-inf")
+            best_reward = -1e9
             # map keep index
             for i, candidate_best_prompt in enumerate(all_results):
                 reward = template.get_reward(self.evaluator, candidate_best_prompt)
@@ -118,7 +118,7 @@ class SearchController:
                     template.last_sampled_params = top_k[i][1]
                     template.last_log_prob_sum = top_k[i][2]
                     template.last_entropy = top_k[i][3]
-            template.update(self.evaluator, best_prompt)
+            template.update(self.evaluator, best_prompt, best_reward)
             
         return template.describe(), best_prompt
     

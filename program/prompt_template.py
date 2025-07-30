@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Tuple, Any
 from logger import logger
 from rnn.controller import TemplateController
 from search.evaluator import PromptEvaluator
@@ -6,6 +6,11 @@ from search.config import SearchConfig
 from program.base_block import PromptBlock
 from program.base_action import StructureSyncAction
 from task.base_task import TaskBase
+
+class History:
+    def __init__(self, prompt:str, reward:float):
+        self.prompt:str = prompt
+        self.reward:float = reward
 
 class PromptTemplate:
     def __init__(self, config: SearchConfig, blocks: List[PromptBlock], task: TaskBase = None):
@@ -25,7 +30,7 @@ class PromptTemplate:
         )
         self.task = task
         self.sync_action = StructureSyncAction(task, self.task.origin_prompt)
-        self.struct_reward_cache = {}
+        self.struct_reward_cache:dict[tuple, History] = {}
         self.last_sampled_params = None
         self.last_log_prob_sum = 0.0
         self.last_entropy = 0.0
@@ -85,15 +90,16 @@ class PromptTemplate:
 
         return results
     
-    def get_struct_reward(self, params: List[float]) -> float:
+    def get_struct_history(self, params: List[float]) -> History:
         if tuple(params) in self.struct_reward_cache:
             return self.struct_reward_cache[tuple(params)]
-        return -1e9  
+        return None  
     
     def select_topk_structures(self, samples: List[Tuple[List[int], float, float]], k: int):
         scored = []
         for flat_params, log_prob_sum, entropy in samples:
-            score = self.get_struct_reward(flat_params)
+            history = self.get_struct_history(flat_params)
+            score = -1e9 if history is None else history.reward
             scored.append((score, flat_params, log_prob_sum, entropy))
         scored.sort(reverse=True, key=lambda x: x[0])
         return scored[:min(k, len(scored))]
@@ -102,10 +108,10 @@ class PromptTemplate:
         flat_params, log_prob_sum, entropy = self.controller.train_step()
 
         self.last_sampled_params = flat_params
-        updated_prompt = self.update_params(flat_params, current_prompt)
+        updated_prompt, history_reward = self.update_params(flat_params, current_prompt)
         self.last_log_prob_sum = log_prob_sum
         self.last_entropy = entropy
-        return updated_prompt
+        return updated_prompt, history_reward
     
     def update_params(self, flat_params: List[float], current_prompt: str) -> str:
         """
@@ -116,19 +122,24 @@ class PromptTemplate:
             num = block.get_num_slots()
             block.set_hyperparams(flat_params[idx:idx + num])
             idx += num
-        current_prompt = self._sync_semantics(current_prompt)
-        return current_prompt
+        history = self.get_struct_history(self.last_sampled_params)
+        if history is None:
+            current_prompt = self._sync_semantics(current_prompt)
+            return current_prompt, -1e9
+        else:
+            current_prompt = history.prompt
+            return current_prompt, history.reward
     
     def get_reward(self, evaluator:PromptEvaluator,  current_prompt:str) -> float:
         val_samples = self.task.get_train_rnn()  
         avg_score = evaluator.batch_reward(current_prompt, val_samples)
         if self.last_sampled_params is not None:
-            self.struct_reward_cache[tuple(self.last_sampled_params)] = avg_score
+            self.struct_reward_cache[tuple(self.last_sampled_params)] = History(current_prompt, avg_score)
 
         logger.info(f"🎯 [PromptTemplate] New prompt score with current structure = {avg_score:.4f}")
         return avg_score
 
-    def update(self, evaluator: PromptEvaluator, current_prompt: str):
+    def update(self, evaluator: PromptEvaluator, current_prompt: str, history_reward:float=-1e9):
         """
         Run one RNN optimization step:
         - Sample new structure parameters
@@ -137,8 +148,10 @@ class PromptTemplate:
         - Compute slot-level attributions
         - Reinforce update
         """
-
-        avg_score = self.get_reward(evaluator, current_prompt)
+        if history_reward == -1e9:
+            avg_score = self.get_reward(evaluator, current_prompt)
+        else:
+            avg_score = history_reward
         # Perform slot-level structure attribution if enabled
         if (self.task.config.rnn_structure_contribution
             and self.controller.iter_count != 0
@@ -181,8 +194,9 @@ class PromptTemplate:
             slot_dim = self.controller.get_slot_dim(i)
             perturbed[i] = (perturbed[i] + 1) % slot_dim
 
-            new_prompt = self.update_params(perturbed, current_prompt)
-            reward = evaluator.batch_reward(new_prompt, val_samples)
+            new_prompt, reward = self.update_params(perturbed, current_prompt)
+            if reward == -1e9:
+                reward = evaluator.batch_reward(new_prompt, val_samples)
             slot_rewards.append(reward)
 
         return slot_rewards
