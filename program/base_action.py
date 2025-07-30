@@ -59,11 +59,11 @@ class StructureSyncAction(OptimizeAction):
         rewrite_prompt = (
             "I'm writing a prompt for a language model designed for a task.\n\n"
             f"My current prompt:\n{current_prompt}\n\n"
-            f"My template structure description:\n{template_description}\n\n"
+            f"My template  description:\n{template_description}\n\n"
             f"Some examples QA pairs you can use:\n{example_texts}\n\n"
-            f"Please revise my current prompt based on the given structure descriptoin.\n\n"
-            f"You can use the information in the examples to make the content aligned with the structure description.\n\n"
-            f"Do not alter the structural settings.\n\n"
+            f"Please help me revise my current prompt based on the given template description.\n\n"
+            f"You can use the information in the examples to make the content aligned with the template description.\n\n"
+            f"Do not alter the template settings.\n\n"
             f"Just output revise prompt without other text."
         )
 
