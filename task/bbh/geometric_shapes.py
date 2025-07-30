@@ -68,6 +68,10 @@ class GeometricShapesTask(TaskBase):
     
     def get_reward(self, output: str, target: str) -> float:
         """Compares normalized output and target answer for reward calculation."""
+        logger.info(
+                f"[Model Output]\n"
+                f" Output: {output}"
+            )
         norm_out = self._normalize_answer(output)
         norm_gold = self._normalize_answer(target)
         logger.info(

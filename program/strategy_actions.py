@@ -61,7 +61,7 @@ class TestReflectRewriteAction(OptimizeAction):
             f"My prompt template description:\n{template_description}\n\n"
             f"Based on the above information, please rewrite new prompts:\n"
             """
-            - Your revision must strictly follow the my prompt template description.
+            - Your revision must strictly follow my prompt template description.
             - The new prompts should solve the current prompt's problems.
             - Only output the revised prompt **without any explanation**.
             - Do not change the prompt structure layout or add new blocks, your new information should be in ​appropriate​ block.
