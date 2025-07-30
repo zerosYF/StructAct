@@ -75,7 +75,11 @@ class TemplateController:
         Visualizer.log_train(reward_mean, entropy.item())
     
     def _slot_level_atrribution(self, slot_rewards=None):
-        if slot_rewards is not None and self.iter_count % self.attribution_interval == 0 and self.last_logits is not None:
+        if (slot_rewards is not None 
+            and self.iter_count != 0 
+            and self.iter_count % self.attribution_interval == 0 
+            and self.last_logits is not None
+            ):
             losses = []
             for logits, reward in zip(self.last_logits, slot_rewards):
             # Normalize slot rewards into a probability distribution
