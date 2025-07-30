@@ -38,7 +38,7 @@ class SearchConfig:
         self.rnn_rl_max_entropy_weight = 0.5
         self.rnn_rl_entropy_decay_rate = 0.95
 
-        self.rnn_structure_contribution = True
+        self.rnn_structure_contribution = False
         self.rnn_attribution_interval = 10
         self.rnn_aux_loss_coef=1.5
 

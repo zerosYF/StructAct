@@ -15,7 +15,7 @@ class OptimizeAction(ABC):
         self.logger = logging.getLogger(self.name or "OptimizeAction")
         self.logger.setLevel(logging.INFO)
         
-        file_handler = logging.FileHandler(self.log_file, mode='a', encoding='utf-8')
+        file_handler = logging.FileHandler(self.log_file, mode='w', encoding='utf-8')
         file_handler.setLevel(logging.INFO)
         
         formatter = logging.Formatter('%(asctime)s - %(message)s')
@@ -64,7 +64,7 @@ class StructureSyncAction(OptimizeAction):
             f"Please revise my current prompt based on the given structure descriptoin.\n\n"
             f"You can use the information in the examples to make the content aligned with the structure description.\n\n"
             f"Do not alter the structural settings.\n\n"
-            f"Just output revise prompt with other text."
+            f"Just output revise prompt without other text."
         )
 
         rewritten_prompt = self.rewriter_model.api_call(rewrite_prompt)

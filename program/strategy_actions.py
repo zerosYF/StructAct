@@ -64,7 +64,7 @@ class TestReflectRewriteAction(OptimizeAction):
             - Your revision must strictly follow the my prompt template description.
             - The new prompts should solve the current prompt's problems.
             - Only output the revised prompt **without any explanation**.
-            - Do not change the prompt structure layout or add new sections.
+            - Do not change the prompt structure layout or add new blocks, your new information should be in ​appropriate​ block.
             """
         )
         rewritten_prompt = self.rewriter_model.api_call(rewriting_input)
@@ -98,6 +98,7 @@ class FewShotExampleLearning(OptimizeAction):
             f"My current prompt template description:\n{template_description}\n"
             """
             - The revised prompt **must strictly follow** the template description.
+            - Do not change the prompt structure layout or add new blocks, your new information should be in ​appropriate​ block.
             - Only output the **final revised prompt**.
             """
         )
