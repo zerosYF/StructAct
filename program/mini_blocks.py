@@ -179,7 +179,7 @@ class FewShotExampleBlock(PromptBlock):
         if self.num == 0:
             return (
                 "<BLOCK:FEW_SHOT_EXAMPLES>\n"
-                "No few-shot examples should be provided.\n"
+                "**No example** should be provided here.\n"
                 "Zero-shot is applied.\n"
                 "</BLOCK:FEW_SHOT_EXAMPLES>\n"
             )
