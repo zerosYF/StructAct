@@ -170,10 +170,45 @@ class MaxFinalQnOnLongestPathStrategy(ChooseStrategy):
 
         return best_node or root
 
+class MaxPathBestNodeStrategy(ChooseStrategy):
+    def choose(self, root: Node, mcts):
+        best_path = None
+        best_path_score = float("-inf")
+
+        # DFS stack: (current_node, current_path, accumulated_rewards)
+        stack = [(root, [root], [mcts.Q.get(root, 0) / max(mcts.N.get(root, 1), 1)])]
+
+        while stack:
+            node, path, rewards = stack.pop()
+
+            # 如果是叶子节点，计算路径平均奖励
+            if node.is_terminal() or node not in mcts.children:
+                avg_reward = sum(rewards) / len(rewards)
+                if avg_reward > best_path_score:
+                    best_path_score = avg_reward
+                    best_path = (path, rewards)
+            else:
+                for child in mcts.children[node]:
+                    q = mcts.Q.get(child, 0)
+                    n = mcts.N.get(child, 1)
+                    reward = q / n
+                    stack.append((child, path + [child], rewards + [reward]))
+
+        if best_path:
+            path, rewards = best_path
+            # 找路径上奖励最高的结点
+            max_idx = max(range(len(rewards)), key=lambda i: rewards[i])
+            return path[max_idx]
+        else:
+            mcts.logger.warning("⚠️ MaxPathBestNodeStrategy did not find a valid action sequence")
+            return []
+
 def get_choose_strategy(config: SearchConfig):
     if config.choose_idx == 0:
         return MaxQNStrategy()
     elif config.choose_idx == 1:
         return MaxPathAvgQnStrategy()
+    elif config.choose_idx == 2:
+        return MaxPathBestNodeStrategy()
     else:
         return MaxFinalQnOnLongestPathStrategy()
