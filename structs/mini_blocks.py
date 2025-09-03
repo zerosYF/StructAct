@@ -1,4 +1,4 @@
-from program.base_block import PromptBlock
+from structs.base_block import PromptBlock
 from typing import List
 from search.config import SearchConfig
 
@@ -331,6 +331,33 @@ class AnswerStyleBlock(PromptBlock):
             "</BLOCK:ANSWER_STYLE>\n"
         )
 
+class FreeBlock(PromptBlock):
+    def __init__(self, config: SearchConfig):
+        super().__init__(config)
+        self.content = "You can freely edit this block."
+
+    def name(self): return "FreeBlock"
+
+    def get_search_space(self): return [1]  # No optimization, single option
+
+    def set_hyperparams(self, hyperparams: List[int]):
+        pass  # No hyperparameters to set
+
+    def describe(self):
+        return {
+            "type": "free_block",
+            "content": self.content,
+        }
+
+    def render(self):
+        return (
+            "<BLOCK:FREE_BLOCK>\n"
+            "###Requirement:\n"
+            "This block is reserved for free-form content beyond the existing blocks.\n"
+            "You can add any information that do not fit into the predefined blocks.\n"
+            "</BLOCK:FREE_BLOCK>\n"
+        )
+
 def get_all_blocks(config:SearchConfig):
     return [
         TaskInstructionBlock(config),
@@ -341,4 +368,5 @@ def get_all_blocks(config:SearchConfig):
         ConstraintBlock(config),
         CautionBlock(config),
         AnswerStyleBlock(config),
+        FreeBlock(config),
     ]

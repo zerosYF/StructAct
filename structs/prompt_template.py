@@ -3,9 +3,10 @@ from logger import logger
 from rnn.controller import TemplateController
 from search.evaluator import PromptEvaluator
 from search.config import SearchConfig
-from program.base_block import PromptBlock
+from structs.base_block import PromptBlock
 from program.base_action import StructureSyncAction
 from task.base_task import TaskBase
+import time
 
 class History:
     def __init__(self, prompt:str, reward:float):
@@ -20,20 +21,12 @@ class PromptTemplate:
             hidden_dim=config.rnn_hidden_dim,
             lr=config.rnn_lr,
             reward_scale=config.rnn_rl_reward_scale,
-            baseline=config.rnn_rl_baseline,
-            baseline_alpha=config.rnn_rl_baseline_alpha,
-            min_entropy_weight=config.rnn_rl_min_entropy_weight,
-            max_entropy_weight=config.rnn_rl_max_entropy_weight,
-            entropy_decay_rate=config.rnn_rl_entropy_decay_rate,
-            attribution_interval=config.rnn_attribution_interval,
-            aux_loss_coef=config.rnn_aux_loss_coef
         )
         self.task = task
         self.sync_action = StructureSyncAction(task, self.task.origin_prompt)
         self.struct_reward_cache:dict[tuple, History] = {}
         self.last_sampled_params = None
-        self.last_log_prob_sum = 0.0
-        self.last_entropy = 0.0
+        self.evaluator = None  # Will be set when update is called
 
     def _get_search_space(self) -> List[int]:
         """
@@ -54,7 +47,7 @@ class PromptTemplate:
         """
         Generate a structured natural language prompt template with explicit markers.
         """
-        instruction_header = (
+        template_header = """
             "This is current prompt template description:\n"
             "Each block is indicated by tags like <BLOCK_NAME>.\n"
             "The template also contain control tags like <TEMPLATE> and </TEMPLATE>, which denote boundaries of the full prompt structure.\n"
@@ -65,54 +58,40 @@ class PromptTemplate:
             "4. Ensure the resulting prompt is coherent, fluent, faithful to each block’s intent, and effective for the intended task.\n"
             "5. Make full use of information beyond the template description.\n"
             "This is current template:"
-        )
+        """
         block_contents = "\n".join([block.render() for block in self.blocks])
-        return f"{instruction_header}\n<TEMPLATE>\n{block_contents}\n</TEMPLATE>"
-    
-    def batch_sample_structs(self, sample_k:int, oversample_factor: int = 2) -> list:
-        seen = set()
-        results = []
-
-        max_trials = sample_k * oversample_factor
-        trials = 0
-
-        while len(results) < sample_k and trials < max_trials:
-            flat_params, log_prob_sum, entropy = self.controller.train_step()
-            key = tuple(flat_params)
-            if key not in seen:
-                seen.add(key)
-                results.append((flat_params, log_prob_sum, entropy))
-            trials += 1
-
-        if len(results) < sample_k:
-            logger.warning(f"[PromptTemplate] Only {len(results)} unique structures found out of {sample_k} requested.")
-
-        return results
+        return f"{template_header}\n<TEMPLATE>\n{block_contents}\n</TEMPLATE>"
     
     def get_struct_history(self, params: List[float]) -> History:
         if tuple(params) in self.struct_reward_cache:
             return self.struct_reward_cache[tuple(params)]
         return None  
     
-    def select_topk_structures(self, samples: List[Tuple[List[int], float, float]], k: int):
-        scored = []
-        for flat_params, log_prob_sum, entropy in samples:
-            history = self.get_struct_history(flat_params)
-            score = -1e9 if history is None else history.reward
-            scored.append((score, flat_params, log_prob_sum, entropy))
-        scored.sort(reverse=True, key=lambda x: x[0])
-        return scored[:min(k, len(scored))]
-    
     def pre_sample(self, current_prompt: str):
-        flat_params, log_prob_sum, entropy = self.controller.train_step()
+        start_time = time.time()
+        flat_params = self.controller.train_step()
+        end_time = time.time()
+        logger.info(f"⏱️ [PromptTemplate] RNN sample(infer) time: {end_time - start_time:.2f} seconds")
 
         self.last_sampled_params = flat_params
         updated_prompt, history_reward = self.update_params(flat_params, current_prompt)
-        self.last_log_prob_sum = log_prob_sum
-        self.last_entropy = entropy
+        
+        # If no cached reward, calculate it now
+        if history_reward is None:
+            if self.evaluator is not None:
+                val_samples = self.task.get_train_rnn()
+                history_reward = self.evaluator.batch_reward(updated_prompt, val_samples)
+                # Cache the result
+                self.struct_reward_cache[tuple(self.last_sampled_params)] = History(updated_prompt, history_reward)
+                logger.info(f"🎯 [PromptTemplate] Calculated reward for new structure = {history_reward:.4f}")
+            else:
+                # Return 0 as initial reward if evaluator not set yet
+                history_reward = 0.0
+                logger.info(f"⚠️ [PromptTemplate] Evaluator not set, using default reward = {history_reward:.4f}")
+            
         return updated_prompt, history_reward
     
-    def update_params(self, flat_params: List[float], current_prompt: str) -> str:
+    def update_params(self, flat_params: List[float], current_prompt: str) -> Tuple[str, float]:
         """
         Update the hyperparameters of each block based on the flat parameter vector.
         """
@@ -123,14 +102,18 @@ class PromptTemplate:
             idx += num
         history = self.get_struct_history(self.last_sampled_params)
         if history is None:
+            start_time = time.time()
             current_prompt = self._sync_semantics(current_prompt)
-            return current_prompt, -1e9
+            end_time = time.time()
+            logger.info(f"⏱️ [PromptTemplate] LLM calling time: {end_time - start_time:.2f} seconds")
+            # Return None or a special value to indicate reward needs to be calculated
+            return current_prompt, None
         else:
             current_prompt = history.prompt
             return current_prompt, history.reward
     
     def get_reward(self, evaluator:PromptEvaluator,  current_prompt:str) -> float:
-        val_samples = self.task.get_train_rnn()  
+        val_samples = self.task.get_train_rnn()
         avg_score = evaluator.batch_reward(current_prompt, val_samples)
         if self.last_sampled_params is not None:
             self.struct_reward_cache[tuple(self.last_sampled_params)] = History(current_prompt, avg_score)
@@ -138,7 +121,7 @@ class PromptTemplate:
         logger.info(f"🎯 [PromptTemplate] New prompt score with current structure = {avg_score:.4f}")
         return avg_score
 
-    def update(self, evaluator: PromptEvaluator, current_prompt: str, history_reward:float=-1e9):
+    def update(self, evaluator: PromptEvaluator, current_prompt: str, history_reward:float=None, skip_reinforce:bool=False):
         """
         Run one RNN optimization step:
         - Sample new structure parameters
@@ -147,28 +130,30 @@ class PromptTemplate:
         - Compute slot-level attributions
         - Reinforce update
         """
-        if history_reward == -1e9:
+        # Store evaluator for future use
+        if self.evaluator is None:
+            self.evaluator = evaluator
+            
+        # Skip reinforce if batch update was already done
+        if skip_reinforce:
+            return
+            
+        # current_prompt是一个列表
+        # avg_score是多个（3个）prompt的平均分
+        if history_reward is None or history_reward == -1e9:
+            start_time = time.time()
             avg_score = self.get_reward(evaluator, current_prompt)
+            end_time = time.time()
+            logger.info(f"⏱️ [PromptTemplate] Reward evaluation time: {end_time - start_time:.2f} seconds")
         else:
             avg_score = history_reward
-        # Perform slot-level structure attribution if enabled
-        if (self.task.config.rnn_structure_contribution
-            and self.controller.iter_count != 0
-            and self.controller.iter_count % self.controller.attribution_interval == 0):
-            logger.info("🔍 [PromptTemplate] Performing slot-level structure attribution...")
-            # Get per-slot rewards by perturbing each slot
-            slot_rewards = self._structure_attribution(
-                params=self.last_sampled_params,
-                evaluator=evaluator,
-                val_samples=self.task.get_train_rnn(),
-                current_prompt=current_prompt
-            )
-        else:
-            slot_rewards = None
 
         # Ensure forward pass is done here to calculate log_prob_sum and entropy
         # Perform reinforcement learning update (the actual reinforcement step)
-        self.controller.reinforce(self.last_log_prob_sum, avg_score, self.last_entropy, slot_rewards)
+        start_time = time.time()
+        self.controller.reinforce(avg_score)
+        end_time = time.time()
+        logger.info(f"⏱️ [PromptTemplate] RNN reinforce time: {end_time - start_time:.2f} seconds")
 
     def _sync_semantics(self, current_prompt: str) -> str:
         """
@@ -179,23 +164,3 @@ class PromptTemplate:
             current_prompt=current_prompt,
             template_description=self.render(),
         )
-
-    def _structure_attribution(self, params, evaluator:PromptEvaluator, val_samples, current_prompt):
-        """
-        Perturb each slot in the parameter vector and measure its effect on reward.
-        This gives per-slot attribution scores.
-        """
-        slot_rewards = []
-        for i in range(len(params)):
-            perturbed = params.copy()
-
-            # Simple trick: add 1 mod slot size to perturb this slot
-            slot_dim = self.controller.get_slot_dim(i)
-            perturbed[i] = (perturbed[i] + 1) % slot_dim
-
-            new_prompt, reward = self.update_params(perturbed, current_prompt)
-            if reward == -1e9:
-                reward = evaluator.batch_reward(new_prompt, val_samples)
-            slot_rewards.append(reward)
-
-        return slot_rewards

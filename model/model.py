@@ -19,7 +19,8 @@ class Model:
             model=self.model_name,
             messages=[
                 {"role": "user", "content": input}
-            ]
+            ],
+            seed=42,
         )
         return response.choices[0].message.content
 

@@ -1,7 +1,7 @@
 from program.base_action import OptimizeAction
 from search.evaluator import PromptEvaluator
 from mcts.node import Node, Step
-from program.prompt_template import PromptTemplate
+from structs.prompt_template import PromptTemplate
 from typing import List, Set
 from logger import logger
 
@@ -9,7 +9,6 @@ class PromptNode(Node):
     def __init__(self, 
                  action_set: Set[OptimizeAction],
                  action_seq: List[OptimizeAction], 
-                 structure_template: PromptTemplate,
                  prompt: str, 
                  evaluator: PromptEvaluator, 
                  depth: int, 
@@ -17,7 +16,6 @@ class PromptNode(Node):
         
         self.type = prompt
         self.action_set: Set[OptimizeAction] = action_set
-        self.structure_template: PromptTemplate = structure_template
         self.evaluator: PromptEvaluator = evaluator
         self.current_prompt: str = prompt
         logger.info(f"📜 Get new node at depth {depth} using action {action_seq[-1].name if len(action_seq) > 0 else None}")
@@ -45,12 +43,11 @@ class PromptNode(Node):
 
     def take_action(self, action: OptimizeAction, step_type:Step):
         # Then apply the strategy-level semantic transformation.
-        new_prompt = action.do(self.current_prompt, self.structure_template.render())
+        new_prompt = action.do(self.current_prompt)
         logger.info(f"📊 Current Prompt:\n{new_prompt}")
         return PromptNode(
             action_set=self.action_set,
             action_seq=self.action_seq + [action],
-            structure_template=self.structure_template,
             prompt=new_prompt,
             evaluator=self.evaluator,
             depth=self.depth + 1,
@@ -70,7 +67,6 @@ class PromptNode(Node):
         return PromptNode(
             action_set=self.action_set,  # shared reference
             action_seq=list(self.action_seq),
-            structure_template=self.structure_template,
             prompt=self.current_prompt,
             evaluator=self.evaluator,
             depth=self.depth,

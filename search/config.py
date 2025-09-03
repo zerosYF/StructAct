@@ -26,22 +26,13 @@ class SearchConfig:
         self.rollout_early_stop_delta: float = 0.01
 
         # RNN Controller settings
-        self.rnn_iter_num: int = 500        # Number of training iterations for RNN
+        self.rnn_iter_num: int = 400        # Number of training iterations for RNN
         self.rnn_hidden_dim: int = 128         # Hidden dimension of RNN
-        self.rnn_lr: float = 1e-4              # Learning rate for RNN
-        self.rnn_rl_reward_scale = 100
-        self.rnn_rl_baseline:float = 0.91
-        self.rnn_rl_baseline_alpha = 0.5
-        self.rnn_rl_min_entropy_weight = 0.001
-        self.rnn_rl_max_entropy_weight = 0.5
-        self.rnn_rl_entropy_decay_rate = 0.95
-
-        self.rnn_structure_contribution = False
-        self.rnn_attribution_interval = 10
-        self.rnn_aux_loss_coef=1.5
+        self.rnn_lr: float = 3e-4              # Learning rate for RNN (increased from 1e-4)
+        self.rnn_rl_reward_scale = 10          # Reward scale (reduced from 100 to avoid large value loss)
 
         # Multi-threaded reward evaluation
-        self.reward_thread_num: int = 40       # Number of threads for reward evaluation
+        self.reward_thread_num: int = 8       # Number of threads for reward evaluation
 
         # Debugging indicators (for tracing internal states)
         self.rollout_idx: int = 1              # Current rollout path index
@@ -50,9 +41,9 @@ class SearchConfig:
         self.model_idx: int = 0                # Current API model index
 
         # Model configuration
-        self.model_name: str = "zhiyan3"
-        self.api_key: str = "zhiyan123"
-        self.base_url: str = "http://192.168.200.222:12025/v1"
+        self.model_name: str = "qwen3-30b-a3b-instruct-2507" # zhiyan3
+        self.api_key: str =  "62507c5f747745ada8bbd35e570788d2" # "12a83368c59545e6af1c0a17810cd675" # "zhiyan123"
+        self.base_url: str = "https://dashscope.aliyuncs.com/compatible-mode/v1" # "https://api.deepseek.com/v1" # "http://192.168.200.222:12025/v1"
 
         # Ollama model configuration
         self.ollama_model_name: str = "llama3.1:8b"          # Name of the Ollama model
