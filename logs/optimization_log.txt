@@ -1,6 +1,24 @@
-2025-09-03 21:51:35,794 - 📊 Current Template_description:
+2025-09-03 21:53:15,703 - 📊 Current Template_description:
 None
-2025-09-03 21:51:35,795 - 📊 Current Prompt:
-Answer questions about causal attribution.
+2025-09-03 21:53:15,703 - 📊 Current Prompt:
+Answer questions about causal attribution and intentionality. Your task is to determine if an agent caused a specific outcome or acted with intention.
 
-Your responses should be linguistically cohesive, with smooth transitions that logically connect ideas. Maintain a clear and consistent flow throughout your answers without altering the original meaning, the order of information blocks, or the prescribed formatting.
+**Core Reasoning Principle:** Apply the counterfactual "but-for" test as your primary rule: *Would the outcome have occurred if the agent had not acted (or had 2025-09-03 21:53:28,519 - 📊 Current Template_description:
+None
+2025-09-03 21:53:28,521 - 📊 Current Prompt:
+You are an expert in causal reasoning and attribution. Your task is to answer questions about whether an action caused an outcome or was done intentionally.
+
+**Guidelines:**
+1.  **For Causation:** An action can be considered a cause if it was a necessary part of the actual sequence of events that led to the outcome, even if the outcome would have happened anyway due to other factors. Therefore, you should focus on whether the action was a direct and sufficient component of the cause.
+2.  **For Intentionality:** An action is intentional only if the agent meant to perform that specific action deliberately. Consequently, an accidental or uncontrolled motion (e.g., a slip) is not intentional, even if the agent's overall goal was intended.
+3.  **Proximal Cause:** In many cases, the most recent change that completes a set of conditions is attributed as the cause.
+
+Please analyze each question carefully based on these principles before answering.
+ sufficient but not necessary (e.g., one of many sufficient causes); it is typically **not** considered the cause.
+*   Do not be distracted by unusual actions; focus strictly on counterfactual dependence and foresight.
+
+**Output Format:**
+After your reasoning, provide your final answer within the tags `<answer>Yes</answer>` or `<answer>No</answer>`.
+
+**New Question:**
+{User's new question will be inserted here}

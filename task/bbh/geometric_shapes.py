@@ -40,9 +40,8 @@ class GeometricShapesTask(TaskBase):
 
         self.train_size = 150
         self.test_size = 200
-        self.train_mcts_size = 80
-        self.val_mcts_size = 35
-        self.rl_rnn_size = 35
+        self.train_mcts_size = 120
+        self.val_mcts_size = 30
         self._split_data(all_examples)
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:

@@ -30,9 +30,8 @@ class SimpleMathReasoningTask(TaskBase):
 
         self.train_size = 500
         self.test_size = 500
-        self.train_mcts_size = 300
+        self.train_mcts_size = 400
         self.val_mcts_size = 100
-        self.rl_rnn_size = 100
         self._split_data(all_examples)
         
         self.origin_prompt = "Solve simple arithmetic word problems with numeric answers."

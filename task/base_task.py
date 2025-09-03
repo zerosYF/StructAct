@@ -12,9 +12,7 @@ class TaskBase(ABC):
         self.test_size:int = 0
         self.train_mcts_size:int = 0
         self.val_mcts_size:int = 0
-        self.rl_rnn_size:int = 0
         
-        self.train_data_rnn = None
         self.train_data_mcts = None
         self.eval_data_mcts = None
         self.test_data = None
@@ -23,14 +21,13 @@ class TaskBase(ABC):
         self.answer_format_prompt:str = "At the end show the answer option bracketed between <answer> and </answer>."
     
     def _split_data(self, all_examples:list):
-        assert self.train_size == self.train_mcts_size + self.val_mcts_size + self.rl_rnn_size
+        assert self.train_size == self.train_mcts_size + self.val_mcts_size
 
         full_train_data = all_examples[:self.train_size]
         self.test_data = all_examples[self.train_size:self.train_size + self.test_size]
 
         self.train_data_mcts = full_train_data[:self.train_mcts_size]
         self.eval_data_mcts = full_train_data[self.train_mcts_size:self.train_mcts_size + self.val_mcts_size]
-        self.train_data_rnn = full_train_data[self.train_mcts_size + self.val_mcts_size:]
     # train mcts actions sample mini_batch
     def sample_train_mcts(self, batch_size:int) -> List[Dict]:
         assert batch_size < self.train_mcts_size
@@ -38,7 +35,7 @@ class TaskBase(ABC):
     
     # train rnn structure
     def get_train_rnn(self) -> List[Dict]:
-        return self.train_data_rnn 
+        return self.eval_data_mcts 
     
     # get reward to update mcts q
     def get_eval(self) -> List[Dict]:

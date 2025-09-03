@@ -37,9 +37,8 @@ class TemporalSequencesTask(TaskBase):
 
         self.train_size = 300
         self.test_size = 500
-        self.train_mcts_size = 180
-        self.val_mcts_size = 59
-        self.rl_rnn_size = 61
+        self.train_mcts_size = 240
+        self.val_mcts_size = 60
         self._split_data(all_examples)
         
         self.system_prompt = "Answer the question based on the provided context."

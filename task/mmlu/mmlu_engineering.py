@@ -29,9 +29,8 @@ class EngineeringMCQTask(TaskBase):
 
         self.train_size = 100
         self.test_size = 200
-        self.train_mcts_size = 40
-        self.val_mcts_size = 29
-        self.rl_rnn_size = 31
+        self.train_mcts_size = 80
+        self.val_mcts_size = 20
         self._split_data(all_examples)
 
         self.origin_prompt = "Answer electrical and electronics engineering multiple-choice questions."

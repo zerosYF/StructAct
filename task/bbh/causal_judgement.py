@@ -39,9 +39,8 @@ class CausalJudgementTask(TaskBase):
 
         self.train_size = 90
         self.test_size = 100
-        self.train_mcts_size = 60
-        self.val_mcts_size = 15
-        self.rl_rnn_size = 15
+        self.train_mcts_size = 70
+        self.val_mcts_size = 20
         self._split_data(all_examples)
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:

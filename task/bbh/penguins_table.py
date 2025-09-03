@@ -38,9 +38,8 @@ class PenguinsTableTask(TaskBase):
 
         self.train_size = 70
         self.test_size = 79
-        self.train_mcts_size = 42
-        self.val_mcts_size = 14
-        self.rl_rnn_size = 14
+        self.train_mcts_size = 55
+        self.val_mcts_size = 15
         self._split_data(all_examples)
 
         self.system_prompt = "Answer the question based on the provided context."
