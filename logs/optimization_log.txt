@@ -1,0 +1,6 @@
+2025-09-04 02:28:17,375 - 📊 Current Template_description:
+None
+2025-09-04 02:28:17,375 - 📊 Current Prompt:
+Answer questions about causal attribution.
+
+Your responses should be clear, logically structured, and use appropriate transitions to ensure smooth flow between ideas. Maintain a formal and precise tone throughout.
