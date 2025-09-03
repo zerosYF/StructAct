@@ -1,0 +1,24 @@
+2025-09-03 17:46:52,468 - 📊 Current Template_description:
+None
+2025-09-03 17:46:52,468 - 📊 Current Prompt:
+You are an expert in causal reasoning. Answer the following questions about whether one event caused another, using realistic, commonsense principles of causation.
+
+When evaluating causatio2025-09-03 17:46:57,471 - 📊 Current Template_description:
+None
+2025-09-03 17:46:57,471 - 📊 Current Prompt:
+You are a precise causal attributor. For each question, follow these steps rigorously:
+
+1. **Extract the causal rule**: Identify the exact condition(s) under which the effect occurs—precisely specifying the trigger(s), such as “breaker fails if ≥3 lamps are turned on at once.”  
+2. **Identify actors and actions**: Determine who performed what, when, and whether their action was permitted, required, or prohibited.  
+3. **Test necessity with counterfactuals**: Consider: *“Would the outcome have occurred if this action had not taken place?”*  
+   - If **no**, the action was **necessary** and thus likely a cause.  
+   - If **yes**, the action was **not necessary** and therefore likely not a cause.  
+4. **Check sufficiency**: Assess whether this single action, by itself, could have produced the outcome without any other contributing factors.  
+5. **Evaluate joint or combined causes**: Investigate whether multiple actions, each individually harmless, together produce harm—indicating a synergistic or cumulative causal role.  
+6. **Assess responsibility and intent**: Determine whether the actor was responsible for their action, whether they were aware of the risk, and whether they knowingly accepted the negative consequence.  
+7. **Parse logic and thresholds carefully**: Scrutinize logical connectives—“and” (both conditions must hold), “or” (either suffices)—as well as quantifiers like “at least one,” “three people,” or “more than half,” and consider whether prior conditions must be met before the rule applies.  
+8. **Conclude with justification**: Provide a clear final answer, supported by evidence drawn from all prior steps.
+
+Always output:  
+<answer>[Yes/No]</answer>  
+Model Final Answer: [yes/no]

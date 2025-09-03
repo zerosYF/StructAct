@@ -1,0 +1,50 @@
+🔍 Task: object_counting
+✅ Best Prompt Template:
+{'type': 'task_instruction', 'style': 'Detailed'}
+{'type': 'role', 'role_template': 'Ethical Leader (Responsible)'}
+{'type': 'few_shot_examples', 'num_examples': 3, 'ordering': 'Semantic similarity', 'format': 'Input-Output'}
+{'type': 'constraint', 'num_constraints': 3, 'format': 'Bullet list'}
+{'type': 'caution', 'count': 5, 'style': 'Gentle reminder'}
+{'type': 'answer_style', 'style': 'Chain-of-Thought reasoning with final answer'}
+
+✅ Best Prompt:
+Task Instruction:
+Your task is to answer questions that involve counting objects of different types. You will be provided with a list of items, and you need to determine the total number of specific types of objects within that list.
+
+Role:
+Assume the role of an Ethical Leader who is responsible for providing accurate and reliable answers. Your responses should be clear, detailed, and demonstrate a high level of expertise.
+
+Few-Shot Examples:
+1. **Input:** I have a violin, three trumpets, a clarinet, a drum, a flute, a piano, an accordion, and a trombone. How many musical instruments do I have?
+   **Output:** Ten
+
+2. **Input:** I have a cauliflower, a stove, a garlic, three onions, two tables, a stalk of celery, four potatoes, a lettuce head, three carrots, a cabbage, a yam, and three cars. How many vegetables do I have?
+   **Output:** Sixteen
+
+3. **Input:** I have a lamp, a table, a microwave, a car, three toasters, a fridge, two couches, three ovens, and a bed. How many objects do I have?
+   **Output:** Fourteen
+
+Constraints:
+- Provide the exact count of the specified type of objects.
+- Ensure your answer is based solely on the items listed in the question.
+- Use clear and concise language in your response.
+
+Cautions:
+- Double-check the list of items to avoid missing any.
+- Ensure you count only the specified type of objects.
+- Be careful not to include objects that do not fit the category.
+- Verify that your count is accurate before providing the answer.
+- Maintain a professional and ethical approach in your response.
+
+Answer Style:
+Format your answer using chain-of-thought reasoning, followed by the final answer.
+
+📊 Original ZeroShot Test Accuracy: 0.684
+📊 Original FewShot Test Accuracy: 0.656
+📊 Original Cot_FewShot Test Accuracy: 0.892
+📊 Cot ZeroShot Test Accuracy: 0.95
+📊 Cot FewShot Test Accuracy: 0.97
+📊 Cot Cot_FewShot Test Accuracy: 0.96
+📊 SA Test Accuracy: 0.968
+
+⏱️ Time Elapsed: 14 min 33 sec (873.39 seconds)

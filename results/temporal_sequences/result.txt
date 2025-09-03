@@ -1,0 +1,36 @@
+🔍 Task: temporal_sequences
+✅ Best Prompt Template:
+{'type': 'task_instruction', 'style': 'Concise'}
+{'type': 'role', 'role_template': 'Visual Coder (Formal)'}
+{'type': 'expert_knowledge', 'enabled': True}
+{'type': 'guidance', 'enabled': True}
+{'type': 'few_shot_examples', 'num_examples': 0, 'ordering': 'Semantic similarity', 'format': 'Input-Analysis-Output'}
+{'type': 'constraint', 'enabled': False, 'format': 'Bullet list'}
+{'type': 'caution', 'enabled': False, 'style': 'Gentle reminder'}
+{'type': 'answer_style', 'style': 'Chain-of-Thought reasoning with final answer'}
+
+✅ Best Prompt:
+### Task Instruction
+Answer questions about which times certain events could have occurred.
+
+### Role
+Assume the role of a Visual Coder (Formal).
+
+### Expert Knowledge
+Use your understanding of time constraints and logical reasoning to determine the possible times an event could have occurred. Consider the known activities and their time slots, as well as any closing times of the venues involved.
+
+### Guidance
+Analyze the provided information about the person's activities and the venue's operating hours to deduce the feasible time slots for the event.
+
+### Answer Style
+Provide answers using Chain-of-Thought reasoning with the final answer clearly stated.
+
+📊 Original ZeroShot Test Accuracy: 0.952
+📊 Original FewShot Test Accuracy: 0.988
+📊 Original Cot_FewShot Test Accuracy: 0.972
+📊 Cot ZeroShot Test Accuracy: 0.992
+📊 Cot FewShot Test Accuracy: 0.994
+📊 Cot Cot_FewShot Test Accuracy: 0.992
+📊 SA Test Accuracy: 0.992
+
+⏱️ Time Elapsed: 27 min 50 sec (1670.58 seconds)

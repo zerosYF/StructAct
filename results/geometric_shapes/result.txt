@@ -1,0 +1,46 @@
+🔍 Task: geometric_shapes
+✅ Best Prompt Template:
+{'type': 'task_instruction', 'style': 'Concise'}
+{'type': 'role', 'role_template': 'Logical Analyst (Contextualized)'}
+{'type': 'few_shot_examples', 'num_examples': 3, 'ordering': 'Random', 'format': 'Input-Output'}
+{'type': 'constraint', 'num_constraints': 7, 'format': 'Bullet list'}
+{'type': 'caution', 'count': 7, 'style': 'Gentle reminder'}
+{'type': 'answer_style', 'style': 'Explain-then-answer'}
+
+✅ Best Prompt:
+Identify the geometric shape represented by the provided SVG path.
+
+As a logical analyst, you will analyze the SVG path data to determine the correct geometric shape.
+
+Here are some examples to guide you:
+- This SVG path element `<path d="M 73.00,72.00 L 9.00,72.00 L 9.00,37.00 L 73.00,37.00 L 73.00,72.00"/>` draws a rectangle.
+- This SVG path element `<path d="M 54.80,39.10 L 47.35,52.12 M 47.35,52.12 L 45.84,37.85 L 36.25,25.96 L 49.96,33.50 L 56.84,29.55 L 70.14,30.00 M 70.14,30.00 L 54.80,39.10"/>` draws a heptagon.
+- This SVG path element `<path d="M 20.00,24.00 L 39.00,57.00 L 82.00,55.00 L 20.00,24.00"/>` draws a triangle.
+
+Follow these constraints:
+- Provide the exact shape name based on the options given.
+- Ensure your answer is accurate and matches the shape described by the SVG path.
+- Avoid guessing; only provide answers based on the provided data.
+- Do not include any additional information beyond the shape name.
+- Stick to the provided options and do not invent new ones.
+- If the SVG path does not clearly represent any of the provided shapes, state that it is unclear.
+- Double-check your answer before submitting it.
+
+Remember:
+- Accuracy is crucial; take your time to analyze the SVG path carefully.
+- Focus only on the shape and ignore any other elements.
+- Ensure your response is concise and to the point.
+- Verify that the shape you identify matches the provided SVG path.
+- If you are unsure, recheck the path and the options.
+- Maintain a logical and analytical approach throughout the process.
+- Format your answer by first explaining your reasoning, then providing the shape name.
+
+📊 Original ZeroShot Test Accuracy: 0.325
+📊 Original FewShot Test Accuracy: 0.47
+📊 Original Cot_FewShot Test Accuracy: 0.4
+📊 Cot ZeroShot Test Accuracy: 0.55
+📊 Cot FewShot Test Accuracy: 0.58
+📊 Cot Cot_FewShot Test Accuracy: 0.63
+📊 SA Test Accuracy: 0.57
+
+⏱️ Time Elapsed: 12 min 6 sec (726.70 seconds)

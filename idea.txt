@@ -1,0 +1,79 @@
+dataset BBH  GSM8K  mmlu
+baselines APE OPRO APO LPO PHASEEVO PromptAgent
+
+
+PromptAgent BBH 评估 GPT-3.5-turbo  优化 GPT-4
+
+                     HumanZS    HumanFS   HumanFS_    CotZS     CotFS      CotFS_             PromptAgent      StructAct         
+Casual_Judgement       0.65      0.62       0.67       0.76      0.68       0.73                 0.74           
+Epistemic              0.706     0.816      0.858      0.902     0.828      0.912                0.922               
+Geometric_Shapes       0.325     0.47       0.40       0.55      0.58       0.63                 0.895
+Object_Counting        0.684     0.656      0.892      0.95      0.97       0.96                 0.954            0.968  
+Penguins_Table         0.645     0.645      0.797      0.987     0.974      0.974（max=1,cnt>1）  0.962
+Temporal_Sequences     0.952     0.984      0.998      0.994     0.996      0.992                0.974
+                            
+
+GAAPO mmlu ethos  评估 gpt-4o-mini 优化 deepseek-r1 
+无代码
+                        initial       StructAct                         GAAPO    
+                         zhiyan                     gpt-4o-mini                                  50 50 200
+mmlu_Pro_Engineering      0.40                        0.39               0.48 23%
+mmlu_Pro_Business         0.42                        0.72               0.74 2%
+ethos_multi_label         0.16                        0.28               0.46 60%
+
+
+ethos_multi_label
+📊 Original ZeroShot Test Accuracy: 0.165
+📊 Original FewShot Test Accuracy: 0.38
+📊 Original Cot_FewShot Test Accuracy: 0.25
+📊 Cot ZeroShot Test Accuracy: 0.175
+📊 Cot FewShot Test Accuracy: 0.395
+📊 Cot Cot_FewShot Test Accuracy: 0.145
+📊 SA Test Accuracy: 0.275
+
+📊 Original ZeroShot Test Accuracy: 0.15
+📊 Original FewShot Test Accuracy: 0.405
+📊 Original Cot_FewShot Test Accuracy: 0.355
+📊 Cot ZeroShot Test Accuracy: 0.155
+📊 Cot FewShot Test Accuracy: 0.405
+📊 Cot Cot_FewShot Test Accuracy: 0.155
+📊 SA Test Accuracy: 0.165
+
+mmlu_Pro_Engineering
+📊 Original ZeroShot Test Accuracy: 0.395                     
+📊 Original FewShot Test Accuracy: 0.525
+📊 Original Cot_FewShot Test Accuracy: 0.51
+📊 Cot ZeroShot Test Accuracy: 0.585
+📊 Cot FewShot Test Accuracy: 0.62
+📊 Cot Cot_FewShot Test Accuracy: 0.56
+📊 SA Test Accuracy: 0.445
+
+📊 Original ZeroShot Test Accuracy: 0.42
+📊 Original FewShot Test Accuracy: 0.52
+📊 Original Cot_FewShot Test Accuracy: 0.5
+📊 Cot ZeroShot Test Accuracy: 0.59
+📊 Cot FewShot Test Accuracy: 0.59
+📊 Cot Cot_FewShot Test Accuracy: 0.59
+📊 SA Test Accuracy: 0.48
+
+mmlu_Pro_Business
+📊 Original ZeroShot Test Accuracy: 0.405
+📊 Original FewShot Test Accuracy: 0.47
+📊 Original Cot_FewShot Test Accuracy: 0.445
+📊 Cot ZeroShot Test Accuracy: 0.735
+📊 Cot FewShot Test Accuracy: 0.755
+📊 Cot Cot_FewShot Test Accuracy: 0.735
+📊 SA Test Accuracy: 0.24
+
+📊 Original ZeroShot Test Accuracy: 0.42
+📊 Original FewShot Test Accuracy: 0.48
+📊 Original Cot_FewShot Test Accuracy: 0.395
+📊 Cot ZeroShot Test Accuracy: 0.74
+📊 Cot FewShot Test Accuracy: 0.79
+📊 Cot Cot_FewShot Test Accuracy: 0.73
+📊 SA Test Accuracy: 0.41
+
+
+
+
+
