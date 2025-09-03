@@ -1,13 +1,12 @@
-from model.model import Model, getOptimModel
+from model.model import Model, getOptimModel, getEvalModel
 from task.base_task import TaskBase
 from program.base_action import OptimizeAction
 import concurrent.futures
 
 # Preload models
-tester_model = getOptimModel()
+tester_model = getEvalModel()
 analyzer_model = getOptimModel()
 rewriter_model = getOptimModel()
-reasoning_model = getOptimModel()
 
 class FailureDrivenAction(OptimizeAction):
     """Action from PromptAgent"""
@@ -77,7 +76,7 @@ class SuccessDrivenAction(OptimizeAction):
     def __init__(self, task, name="SuccessDrivenAction", max_resample=3):
         super().__init__(task, name)
         self.tester_model = tester_model          
-        self.reasoning_model = reasoning_model    
+        self.reasoning_model = analyzer_model    
         self.rewriter_model = rewriter_model      
         self.max_resample = max_resample
 

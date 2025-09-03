@@ -1,15 +1,13 @@
 from openai import OpenAI
-import ollama
 from search.config import SearchConfig
-from model.openai_model import eval_model, optim_model
 from logger import logger
 class Model:
-    def __init__(self, config: SearchConfig):
+    def __init__(self, model_name:str, api_key:str, base_url:str=None):
         self.client = OpenAI(
-            base_url=config.base_url,
-            api_key=f"sk-{config.api_key}"
+            base_url=base_url,
+            api_key=f"sk-{api_key}"
         )
-        self.model_name = config.model_name
+        self.model_name = model_name
 
     def api_call(self, input: str):
         # logger.info(
@@ -24,30 +22,13 @@ class Model:
         )
         return response.choices[0].message.content
 
-class OllamaModel:
-    def __init__(self, config: SearchConfig):
-        self.model_name = config.ollama_model_name
-
-    def api_call(self, input: str):
-        response = ollama.chat(
-            model=self.model_name,
-            messages=[
-                {"role": "user", "content": input}
-            ]
-        )
-        return response['message']['content']
-
 config = SearchConfig()
-model = Model(config)
-ollama_model = OllamaModel(config)
+eval_model = Model(config.eval_model_name, config.eval_api_key, config.eval_model_url)
+optim_model = Model(config.optim_model_name, config.optim_api_key, config.optim_model_url)
 
 def getEvalModel():
-    if config.model_idx == 0:
-        return model
     return eval_model
 
 def getOptimModel():
-    if config.model_idx == 0:
-        return model
     return optim_model
 

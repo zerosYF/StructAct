@@ -38,19 +38,16 @@ class SearchConfig:
         self.rollout_idx: int = 1              # Current rollout path index
         self.choose_idx: int = 2               # Current chosen action index
         self.uct_idx: int = 0                  # Current UCT path index
-        self.model_idx: int = 0                # Current API model index
 
         # Model configuration
-        self.model_name: str = "qwen3-30b-a3b-instruct-2507" # zhiyan3
-        self.api_key: str =  "62507c5f747745ada8bbd35e570788d2" # "12a83368c59545e6af1c0a17810cd675" # "zhiyan123"
-        self.base_url: str = "https://dashscope.aliyuncs.com/compatible-mode/v1" # "https://api.deepseek.com/v1" # "http://192.168.200.222:12025/v1"
+        # self.model_name: str = "zhiyan3"
+        # self.api_key: str =  "zhiyan123" 
+        # self.base_url: str =  "http://192.168.200.222:12025/v1"
 
-        # Ollama model configuration
-        self.ollama_model_name: str = "llama3.1:8b"          # Name of the Ollama model
-        self.ollama_base_url: str = "http://localhost:11434"  # Base URL for local Ollama server
+        self.eval_model_name: str = "qwen3-30b-a3b-instruct-2507"
+        self.eval_api_key: str = "62507c5f747745ada8bbd35e570788d2"
+        self.eval_model_url: str = "https://dashscope.aliyuncs.com/compatible-mode/v1"
 
-        self.eval_model_name: str = "gpt-3.5-turbo"
-        self.eval_api_key: str = ""
-
-        self.optim_model_name:str = "gpt-4"
-        self.optim_api_key: str = ""
+        self.optim_model_name:str = "deepseek-chat"
+        self.optim_api_key: str = "12a83368c59545e6af1c0a17810cd675"
+        self.optim_model_url:str = "https://api.deepseek.com/v1"
