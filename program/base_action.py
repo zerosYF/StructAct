@@ -26,7 +26,7 @@ class OptimizeAction(ABC):
 
     @abstractmethod
     def do(self, 
-           current_prompt: str, 
+           current_prompt: str, trajectory_prompts: list[str] = None,  
            template_description: str = None) -> str:
         """
         Args:
@@ -48,7 +48,7 @@ class StructureSyncAction(OptimizeAction):
         super().__init__(task, name)
         self.rewriter_model: Model = getEvalModel()
 
-    def do(self, current_prompt, template_description):
+    def do(self, current_prompt, trajectory_prompts, template_description):
 
         # Sample examples for filling content (e.g., few-shot, constraints, etc.)
         samples = self.task.sample_train_mcts(self.task.config.batch_size)
@@ -62,6 +62,7 @@ class StructureSyncAction(OptimizeAction):
             ###
             My current prompt:\n{current_prompt}\n
             My template  description:\n{template_description}\n
+            There are a list of former prompts including the current prompt, and each prompt is modified from its former prompts:\n{trajectory_prompts}\n
             Your revision must strictly follow my prompt template description.\n
             There are some examples QA pairs you can use to get information:\n{example_texts}\n
             Please help me revise my current prompt based on the given template description.\n
@@ -74,7 +75,7 @@ class StructureSyncAction(OptimizeAction):
         rewritten_prompt = self.rewriter_model.api_call(rewrite_prompt)
         end_time = time.time()
         logger.info(f"⏱️ [StructureSyncAction] LLM api calling/infer time: {end_time - start_time:.2f} seconds")
-        super().do(rewritten_prompt, template_description)
+        super().do(rewritten_prompt, trajectory_prompts, template_description)
         return rewritten_prompt
 
     

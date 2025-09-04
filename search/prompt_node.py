@@ -9,6 +9,7 @@ class PromptNode(Node):
     def __init__(self, 
                  action_set: Set[OptimizeAction],
                  action_seq: List[OptimizeAction], 
+                 trajectory_prompts: List[str],
                  prompt: str, 
                  evaluator: PromptEvaluator, 
                  depth: int, 
@@ -17,6 +18,7 @@ class PromptNode(Node):
         self.type = prompt
         self.action_set: Set[OptimizeAction] = action_set
         self.evaluator: PromptEvaluator = evaluator
+        self.trajectory_prompts: List[str] = trajectory_prompts
         self.current_prompt: str = prompt
         logger.info(f"📜 Get new node at depth {depth} using action {action_seq[-1].name if len(action_seq) > 0 else None}")
         
@@ -43,11 +45,12 @@ class PromptNode(Node):
 
     def take_action(self, action: OptimizeAction, step_type:Step):
         # Then apply the strategy-level semantic transformation.
-        new_prompt = action.do(self.current_prompt)
+        new_prompt = action.do(current_prompt=self.current_prompt, trajectory_prompts=self.trajectory_prompts)
         logger.info(f"📊 Current Prompt:\n{new_prompt}")
         return PromptNode(
             action_set=self.action_set,
             action_seq=self.action_seq + [action],
+            trajectory_prompts=self.trajectory_prompts + [self.current_prompt],
             prompt=new_prompt,
             evaluator=self.evaluator,
             depth=self.depth + 1,
@@ -67,6 +70,7 @@ class PromptNode(Node):
         return PromptNode(
             action_set=self.action_set,  # shared reference
             action_seq=list(self.action_seq),
+            trajectory_prompts=list(self.trajectory_prompts),
             prompt=self.current_prompt,
             evaluator=self.evaluator,
             depth=self.depth,
@@ -74,4 +78,4 @@ class PromptNode(Node):
         )
     
     def q_value(self, last_q, rollout_reward):
-        return last_q + (rollout_reward ** 2)
+        return last_q + rollout_reward

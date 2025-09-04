@@ -29,7 +29,7 @@ class FailureDrivenAction(OptimizeAction):
             results = list(executor.map(call, inputs))
         return results
 
-    def do(self, current_prompt):
+    def do(self, current_prompt, trajectory_prompts):
         wrong_answers = ""
         attempts = 0
 
@@ -55,21 +55,26 @@ class FailureDrivenAction(OptimizeAction):
         
         evaluation = (
             "I'm writing prompts for a language model designed for a task.\n"
-            f"My current prompt:\n {current_prompt}\n"
-            f"This prompt gets the following examples wrong:\n {wrong_answers}\n"
-            "For every example, you should carefully analyze why model response wrong answer, why my prompt leads to wrong answer.\n"
+            f"My current prompt:\n {current_prompt}\n\n"
+            f"This prompt gets the following examples wrong:\n {wrong_answers}\n\n"
+            "For each wrong example, you should carefully analyze why model response wrong answer, why my prompt leads to wrong answer.\n"
+            "Provide comprehensive analysis of the common failure modes, pitfalls, or ambiguities in the prompt that may have contributed to these errors.\n"
             "List me all suggest improvements to the prompt to ensure better generalization.\n"
         )
         analysis = self.analyzer_model.api_call(evaluation)
 
         rewriting_input = (
             "I'm writing prompts for a language model designed for a task.\n"
-            f"My current prompt:\n {current_prompt}\n"
-            f"Some suggestions for avoid wrong answers:\n {analysis}\n"
+            f"My current prompt:\n {current_prompt}\n\n"
+            f"This prompt gets the following examples wrong:\n {wrong_answers}\n\n"
+            f"Some analysis and suggestions for avoid wrong answers:\n {analysis}\n\n"
+            f"There are a list of former prompts including the current prompt, and each prompt is modified from its former prompts:\n{trajectory_prompts}\n"
+            "The new prompt should solve the current prompt's problems."
+            "The new prompt should consider the list of prompts and evolve based on the current prompt."
             "Please rewrite the prompt accordingly. Only output the new prompt."
         )
         rewritten_prompt = self.rewriter_model.api_call(rewriting_input)
-        super().do(rewritten_prompt)
+        super().do(rewritten_prompt, trajectory_prompts)
         return rewritten_prompt
 
 class SuccessDrivenAction(OptimizeAction):
@@ -90,7 +95,7 @@ class SuccessDrivenAction(OptimizeAction):
             results = list(executor.map(call, inputs))
         return results
 
-    def do(self, current_prompt: str) -> str:
+    def do(self, current_prompt: str, trajectory_prompts) -> str:
         correct_examples_text = ""
         attempts = 0
 
@@ -123,8 +128,7 @@ class SuccessDrivenAction(OptimizeAction):
         evaluation = (
             "I'm optimizing a prompt for a language model on a specific task.\n"
             f"My current prompt:\n{current_prompt}\n\n"
-            "Here are some successful examples where the model's prediction matches the correct answer:\n"
-            f"{correct_examples_text}\n\n"
+            f"Here are some successful examples where the model's prediction matches the correct answer:\n{correct_examples_text}\n\n"
             "For each example, analyze why the model succeeded. "
             "Summarize the key reasoning strategies, invariants, decision rules, or intermediate steps "
             "that should be reinforced in the prompt to generalize better."
@@ -134,14 +138,15 @@ class SuccessDrivenAction(OptimizeAction):
         rewriting_input = (
             "I'm optimizing a prompt for a language model.\n"
             f"My current prompt:\n{current_prompt}\n\n"
-            "The following strengths and reasoning strategies were identified from successful examples:\n"
-            f"{analysis}\n\n"
+            f"The following strengths and reasoning strategies were identified from successful examples:\n{analysis}\n\n"
+            f"There are a list of former prompts including the current prompt, and each prompt is modified from its former prompts:\n{trajectory_prompts}\n\n"
+            "The new prompt should consider the list of prompts and evolve based on the current prompt."
             "Please rewrite the prompt to incorporate and emphasize these strengths while keeping it concise and clear.\n"
             "Only output the new prompt."
         )
         rewritten_prompt = self.rewriter_model.api_call(rewriting_input)
 
-        super().do(rewritten_prompt)
+        super().do(rewritten_prompt, trajectory_prompts)
         return rewritten_prompt
 
 class CohesionImprover(OptimizeAction):
@@ -150,16 +155,17 @@ class CohesionImprover(OptimizeAction):
         super().__init__(task, name)
         self.rewriter_model = rewriter_model
 
-    def do(self, current_prompt):
+    def do(self, current_prompt, trajectory_prompts):
 
         rewriting_input = (
             f"Current prompt:\n{current_prompt}\n\n"
+            f"There are a list of former prompts including the current prompt, and each prompt is modified from its former prompts:\n{trajectory_prompts}\n"
             "Please improve the linguistic cohesion and transitions. "
-            "Do not change the meaning, block order, or formatting. "
+            "The new prompts should consider the list of prompts and evolve based on the current prompt."
             "Only output the revised prompt."
         )
         rewritten_prompt = self.rewriter_model.api_call(rewriting_input)
-        super().do(rewritten_prompt)
+        super().do(rewritten_prompt, trajectory_prompts)
         return rewritten_prompt
 
     
