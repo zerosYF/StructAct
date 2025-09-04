@@ -3,21 +3,14 @@
 
 
 ✅ Best Prompt:
-Analyze the following scenario to determine causal attribution. Your goal is to decide if the outcome happened specifically because of the agent's mentioned action or inaction.
+Answer questions about causal attribution
 
-**Reasoning Framework:**
-- The agent's action/inaction is a cause if it was necessary to enable the outcome. To test this, consider if the outcome would have been prevented had the agent done the opposite.
-- The existence of other sufficient causes does not negate the causal role of the agent's specific decision. Focus on the action mentioned in the question.
-- The agent's knowledge and intent matter. If they were aware of a state and chose to preserve it, this choice can be causal.
-
-After your reasoning, provide your final answer as "Yes" or "No".
-
-📊 Original ZeroShot Test Accuracy: 0.63
-📊 Original FewShot Test Accuracy: 0.75
-📊 Original Cot_FewShot Test Accuracy: 0.67
+📊 Original ZeroShot Test Accuracy: 0.65
+📊 Original FewShot Test Accuracy: 0.64
+📊 Original Cot_FewShot Test Accuracy: 0.65
 📊 Cot ZeroShot Test Accuracy: 0.62
-📊 Cot FewShot Test Accuracy: 0.61
+📊 Cot FewShot Test Accuracy: 0.71
 📊 Cot Cot_FewShot Test Accuracy: 0.62
-📊 SA Test Accuracy: 0.63
+📊 SA Test Accuracy: 0.68
 
-⏱️ Time Elapsed: 26 min 31 sec (1591.29 seconds)
+⏱️ Time Elapsed: 30 min 22 sec (1822.45 seconds)
