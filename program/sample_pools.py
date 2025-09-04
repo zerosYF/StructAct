@@ -35,7 +35,7 @@ class DynamicSamplePool:
     def add_or_update(self, sample: PoolSample, is_correct):
         # 更新统计
         sample.update(is_correct)
-
+        logger.info(f"Sample updated: visits={sample.visits}, corrects={sample.corrects}, reward={sample.reward:.3f}")    
         # 移除旧池
         self.hard = [s for s in self.hard if s != sample]
         self.mix = [s for s in self.mix if s != sample]
@@ -54,6 +54,8 @@ class DynamicSamplePool:
         self.order.append(sample)
         while len(self.order) > self.max_size:
             self._evict_oldest()
+        
+        logger.info(f"Pool sizes: hard={len(self.hard)}, mix={len(self.mix)}, success={len(self.success)}")
 
     def sample(self, pool="mixed", k=5):
         if pool == "hard":
@@ -64,10 +66,12 @@ class DynamicSamplePool:
             values = self.hard + self.mix + self.success
         else:
             raise ValueError(f"Unknown pool: {pool}")
+        logger.info(f"Sampling {k} from pool '{pool}' with {len(values)} available samples.")
         return random.sample(values, min(k, len(values)))
 
     def initialize(self, dataset, evaluator, current_prompt: str, eval_repeat: int = 5):
         """dataset: list of raw sample dicts"""
+        logger.info(f"Initializing sample pool with {len(dataset)} samples...")
         for raw in dataset:
             # 把同一个样本复制 N 次
             repeated = [raw] * eval_repeat
@@ -93,3 +97,5 @@ class DynamicSamplePool:
             self.order.append(s)
             if len(self.order) > self.max_size:
                 self._evict_oldest()
+
+        logger.info(f"Sample pool initialized: hard={len(self.hard)}, mix={len(self.mix)}, success={len(self.success)}")
