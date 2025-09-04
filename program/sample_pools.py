@@ -15,7 +15,7 @@ class PoolSample:
         self.reward = self.corrects / self.visits
 
 class DynamicSamplePool:
-    def __init__(self, max_size=1000, low=0.5, high=0.9):
+    def __init__(self, max_size=1000, low=0.3, high=0.9):
         self.max_size = max_size
         self.low_threshold = low
         self.high_threshold = high
@@ -69,30 +69,27 @@ class DynamicSamplePool:
     def initialize(self, dataset, evaluator, current_prompt: str, eval_repeat: int = 5):
         """dataset: list of raw sample dicts"""
         for raw in dataset:
+            # 把同一个样本复制 N 次
+            repeated = [raw] * eval_repeat
+
+            # 一次并行计算
+            rewards = evaluator.batch_reward(current_prompt, repeated)
+
+            # 统计
             s = PoolSample(raw)
+            s.visits = eval_repeat
+            s.corrects = int(rewards * eval_repeat)
+            s.reward = rewards
 
-            for raw in dataset:
-                # 把同一个样本复制 N 次
-                repeated = [raw] * eval_repeat
+            # 分类
+            if s.reward < self.low_threshold:
+                self.hard.append(s)
+            elif s.reward >= self.high_threshold:
+                self.success.append(s)
+            else:
+                self.mix.append(s)
 
-                # 一次并行计算
-                rewards = evaluator.batch_reward(current_prompt, repeated)
-
-                # 统计
-                s = PoolSample(raw)
-                s.visits = eval_repeat
-                s.corrects = int(rewards * eval_repeat)
-                s.reward = rewards
-
-                # 分类
-                if s.reward < self.low_threshold:
-                    self.hard.append(s)
-                elif s.reward >= self.high_threshold:
-                    self.success.append(s)
-                else:
-                    self.mix.append(s)
-
-                # 顺序队列
-                self.order.append(s)
-                if len(self.order) > self.max_size:
-                    self._evict_oldest()
+            # 顺序队列
+            self.order.append(s)
+            if len(self.order) > self.max_size:
+                self._evict_oldest()
