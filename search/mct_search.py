@@ -27,7 +27,7 @@ class MCTSearchController(SearchController):
 
         Visualizer.start(title=self.task.name)
         optimized_prompt = self._mcts_workflow(init_prompt)
-        return optimized_prompt
+        return "", optimized_prompt
     
     def _mcts_workflow(self, best_prompt: str):
         root_node = PromptNode(
