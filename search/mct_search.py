@@ -48,8 +48,8 @@ class MCTSearchController(SearchController):
 
         mcts_iters = self.config.mcts_iter_num_max
         rollout_len = self.config.rollout_length_max
-        expand_count = self.config.expand_num_max
-        print(f"MCTS Iterations: {mcts_iters}, Rollout Length: {rollout_len}, Expand Count: {expand_count}")
+        expand_width = self.config.width_threshold
+        print(f"MCTS Iterations: {mcts_iters}, Rollout Length: {rollout_len}, Expand Width: {expand_width}")
 
         mcts = MCTS(
             select_strategy=get_select_strategy(self.config),
@@ -62,9 +62,8 @@ class MCTSearchController(SearchController):
 
         for iter_id in range(mcts_iters):
             mcts.do_iter(root_node, 
-                              expand_width=expand_count, 
-                              rollout_length=rollout_len, 
-                              select_width=self.config.width_threshold)
+                              expand_width=expand_width, 
+                              rollout_length=rollout_len)
             if iter_id % 5 == 0 or iter_id == mcts_iters - 1:
                 logger.info(f"  Total expanded nodes: {len(mcts.N)}")
 
@@ -79,7 +78,6 @@ class MCTSearchController(SearchController):
             "config": {
                 "mcts_iters": mcts_iters,
                 "rollout_length": rollout_len,
-                "expand_count": expand_count,
                 "depth_threshold": self.config.depth_threshold,
                 "width_threshold": self.config.width_threshold,
             },
@@ -136,7 +134,7 @@ class MCTSearchController(SearchController):
             "action_sequence": [a.name for a in node.action_seq],
             "prompt": node.current_prompt,
             "Q": q_val,
-            "N": n_val,
+            "N": n_val, 
             "reward": node.reward_value,
             "children": []
         }

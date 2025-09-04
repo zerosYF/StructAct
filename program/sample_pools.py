@@ -63,7 +63,7 @@ class DynamicSamplePool:
         elif pool == "success":
             values = self.success
         elif pool == "mixed":
-            values = self.hard + self.mix + self.success
+            values = self.mix
         else:
             raise ValueError(f"Unknown pool: {pool}")
         logger.info(f"Sampling {k} from pool '{pool}' with {len(values)} available samples.")

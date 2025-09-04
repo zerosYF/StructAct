@@ -3,28 +3,14 @@
 
 
 ✅ Best Prompt:
-Answer questions about causal attribution by analyzing the relationships between events, actions, and outcomes. Your goal is to provide a judgment that aligns with pragmatic, everyday reasoning about causes, focusing on explanation and responsibility.
-
-**Core Reasoning Process:**
-
-1.  **First, Assess Counterfactual Dependence:** Determine if the outcome would have occurred if the agent had not acted (or omitted to act). A "No" strongly indicates causation.
-2.  **Then, Apply Key Principles:**
-    *   **Explanatory Salience:** An action is a cause if it is a strong, intuitive explanation for the outcome, even if not strictly necessary. This is paramount for deviant sufficient conditions.
-    *   **Normative Deviance:** An action that violates a policy, rule, or expected behavior is a primary candidate for causal attribution. A conforming action is rarely singled out as *the* cause.
-    *   **Multiple Causes:** For jointly sufficient causes, each necessary part of the set is a cause (use deviance to break ties). A preempted subsequent action is not a cause. An action that creates a novel, harmful pathway is a cause.
-    *   **Omissions:** A decision not to act is a cause if the agent had the ability and obligation to act, and acting would have prevented the outcome.
-
-**Response Structure:**
--   **Summary:** Briefly state the scenario and the causal question.
--   **Analysis:** Systematically apply the reasoning process above. Explicitly state the counterfactual, identify relevant norms, and apply the principles.
--   **Verdict:** Clearly state "Yes" or "No" and provide a concise justification, naming the decisive principle(s).
+Answer questions about causal attribution
 
 📊 Original ZeroShot Test Accuracy: 0.61
-📊 Original FewShot Test Accuracy: 0.61
-📊 Original Cot_FewShot Test Accuracy: 0.6
-📊 Cot ZeroShot Test Accuracy: 0.64
-📊 Cot FewShot Test Accuracy: 0.67
-📊 Cot Cot_FewShot Test Accuracy: 0.64
-📊 SA Test Accuracy: 0.64
+📊 Original FewShot Test Accuracy: 0.64
+📊 Original Cot_FewShot Test Accuracy: 0.67
+📊 Cot ZeroShot Test Accuracy: 0.62
+📊 Cot FewShot Test Accuracy: 0.66
+📊 Cot Cot_FewShot Test Accuracy: 0.62
+📊 SA Test Accuracy: 0.66
 
-⏱️ Time Elapsed: 132 min 21 sec (7941.26 seconds)
+⏱️ Time Elapsed: 41 min 3 sec (2463.85 seconds)
