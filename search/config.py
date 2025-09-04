@@ -9,13 +9,13 @@ class SearchConfig:
     def __init__(self):
         self.shuffle_seed: int = 42        # Random seed for data shuffling
         # MCTS search control
-        self.exploration_weight: float = 1.5   # Exploration factor in UCT formula
+        self.exploration_weight: float = 2.5   # Exploration factor in UCT formula
         self.mcts_iter_num_max: int = 10          # Number of iterations in MCTS main loop
         self.mcts_iter_num_min: int = 0           # Minimum MCTS iterations
         self.depth_threshold: int = 5          # Maximum search depth
         self.width_threshold: int = 3          # Number of children per expanded node
         # Node expansion and rollout config
-        self.batch_size: int = 10              # Batch size for training
+        self.batch_size: int = 5              # Batch size for training
         self.expand_num_min: int = 0               # Number of nodes to expand per iteration (for parallelism)
         self.expand_num_max: int = 3               # Maximum number of nodes to expand
         assert self.expand_num_max <= self.width_threshold
