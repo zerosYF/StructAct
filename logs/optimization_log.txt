@@ -1,0 +1,4 @@
+2025-09-04 11:24:15,194 - 📊 Current Template_description:
+None
+2025-09-04 11:24:15,194 - 📊 Current Prompt:
+Answer the following questions about causal attribution. Your responses should demonstrate a clear understanding of the principles involved, including but not limited to distinguishing between necessary and sufficient causes, identifying correlation versus causation, and recognizing common cognitive biases that affect attributive reasoning. Support your analysis with logical coherence and, where applicable, relevant theoretical frameworks.
