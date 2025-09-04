@@ -33,6 +33,9 @@ class TaskBase(ABC):
         assert batch_size < self.train_mcts_size
         return random.sample(self.train_data_mcts, batch_size)
     
+    def get_train_mcts(self) -> List[Dict]:
+        return self.train_data_mcts
+    
     # train rnn structure
     def get_train_rnn(self) -> List[Dict]:
         return self.eval_data_mcts 

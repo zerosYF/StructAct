@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 from search.config import SearchConfig
 from search.evaluator import PromptEvaluator
 from mcts.node import Node, Step
-import concurrent.futures
 import numpy as np
 import random
 from logger import logger
@@ -14,96 +13,54 @@ class RolloutStrategy(ABC):
         pass
 
 class ClassicPathRollout(RolloutStrategy):
-    def __init__(self, evaluator: PromptEvaluator):
-        self.evaluator = evaluator
-
-    def rollout(self, node: Node, rollout_length:int) -> float:
-        current: Node = node.clone_node()
-        depth = 0
-
-        while depth < rollout_length:
-            actions = current.get_possible_actions()
-            if not actions:
-                break
-            action = random.choice(actions)
-            current = current.take_action(action, Step.Rollout)
-            depth += 1
-
-        final_reward = current.reward()
-        logger.info(f"🧠 Single-path rollout reward: {final_reward:.4f}")
-        return final_reward
-
-
-class MultiPathRollout(RolloutStrategy):
     def __init__(
         self,
         evaluator: PromptEvaluator,
-        num_paths: int = 5,
         early_stop_rounds: int = 3,
         early_stop_delta: float = 0.001,
     ):
-        self.num_paths = num_paths
         self.evaluator = evaluator
         self.early_stop_rounds = early_stop_rounds
         self.early_stop_delta = early_stop_delta
 
-    def _rollout_path(self, node: Node, path_idx: int, rollout_length:int) -> float:
+    def rollout(self, node: Node, rollout_length: int) -> float:
         current: Node = node.clone_node()
         depth = 0
 
-        while depth < rollout_length:
-            actions = current.get_possible_actions()
-            if not actions:
-                break
-            action = random.choice(actions)
-            current = current.take_action(action, Step.Rollout)
-            depth += 1
-            logger.info(f"[Rollout-{path_idx}] Step {depth}, Action: {getattr(action, 'name', 'Unknown')}")
-
-        final_reward = current.reward()
-        logger.info(f"[Rollout-{path_idx}] Final reward: {final_reward:.4f}")
-        return final_reward
-
-    def rollout(self, node: Node, rollout_length:int) -> float:
         final_rewards = []
         avg_rewards_history = []
 
-        with concurrent.futures.ThreadPoolExecutor(max_workers=self.num_paths) as executor:
-            future_to_path = {
-                executor.submit(self._rollout_path, node, path_idx, rollout_length): path_idx
-                for path_idx in range(self.num_paths)
-            }
+        while depth < rollout_length and not current.is_terminal():
+            actions = current.get_possible_actions()
+            if not actions:
+                break
 
-            for future in concurrent.futures.as_completed(future_to_path):
-                path_idx = future_to_path[future]
-                try:
-                    final_reward = future.result()
-                    final_rewards.append(final_reward)
+            action = random.choice(actions)
+            current = current.take_action(action, Step.Rollout)
+            depth += 1
 
-                    avg_reward_now = np.mean(final_rewards)
-                    avg_rewards_history.append(avg_reward_now)
+            logger.info(f"[Rollout] Step {depth}, Action: {getattr(action, 'name', 'Unknown')}")
 
-                    logger.info(f"[Rollout-{path_idx}] Current average reward: {avg_reward_now:.4f}")
+            # 计算 reward 并记录历史
+            reward_now = current.reward()
+            final_rewards.append(reward_now)
 
-                    # Early stopping condition
-                    if len(avg_rewards_history) >= self.early_stop_rounds:
-                        recent = avg_rewards_history[-self.early_stop_rounds:]
-                        if max(recent) - min(recent) < self.early_stop_delta:
-                            logger.info(f"🛑 Early stopping triggered at path {path_idx + 1}. Avg reward: {avg_reward_now:.4f}")
-                            break
+            avg_reward_now = np.mean(final_rewards)
+            avg_rewards_history.append(avg_reward_now)
+            logger.info(f"[Rollout] Current average reward: {avg_reward_now:.4f}")
 
-                except Exception as e:
-                    logger.error(f"Error in rollout path {path_idx}: {e}")
+            # 早停条件
+            if len(avg_rewards_history) >= self.early_stop_rounds:
+                recent = avg_rewards_history[-self.early_stop_rounds:]
+                if max(recent) - min(recent) < self.early_stop_delta:
+                    logger.info(f"🛑 Early stopping triggered at step {depth}. Avg reward: {avg_reward_now:.4f}")
+                    break
 
+        # 最终结果
         final_avg_reward = np.mean(final_rewards) if final_rewards else 0.0
-        logger.info(f"✅ Multi-path rollout final average reward: {final_avg_reward:.4f}")
+        logger.info(f"✅ Single-path rollout final average reward: {final_avg_reward:.4f}")
         return final_avg_reward
 
+
 def get_rollout_strategy(evaluator: PromptEvaluator, config: SearchConfig):
-    if config.rollout_idx == 0:
-        return ClassicPathRollout(evaluator)
-    elif config.rollout_idx == 1:
-        return MultiPathRollout(evaluator,  
-                                config.rollout_width, 
-                                config.rollout_early_stop_rounds, 
-                                config.rollout_early_stop_delta)
+    return ClassicPathRollout(evaluator, config.rollout_early_stop_rounds, config.rollout_early_stop_delta)

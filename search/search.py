@@ -18,7 +18,7 @@ class SearchController(ABC):
         self.task: TaskBase = task
     
     @abstractmethod
-    def search(self):
+    def search(self) ->tuple[str, str]:
         '''main search workflow'''
     
     def nonlinear_schedule(

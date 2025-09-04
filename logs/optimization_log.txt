@@ -1,23 +1,850 @@
-2025-09-04 02:29:45,131 - 📊 Current Template_description:
+2025-09-04 18:42:43,757 - 📊 Current Template_description:
 None
-2025-09-04 02:29:45,131 - 📊 Current Prompt:
-You are an expert in causal reasoning and attribution. Your task is to answer questions about whether a specific event caused a specific outcome.
+2025-09-04 18:42:43,757 - 📊 Current Prompt:
+Answer questions about causal attribution by applying the following framework:
 
-Follow these principles to guide your analysis:
-1.  **Necessity & S2025-09-04 02:29:50,305 - 📊 Current Template_description:
+1.  **Counterfactual Necessity:** Determine if the outcome would still have occurred if the specific action or inaction in question had not happened. If the outcome would not have occurred, then the action/inaction is a cause.
+2.  **Normative Deviance:** Consider whether the action was a permitted,2025-09-04 18:47:33,442 - 📊 Current Template_description:
 None
-2025-09-04 02:29:50,305 - 📊 Current Prompt:
-Answer questions about causal attribution.
+2025-09-04 18:47:33,443 - 📊 Current Prompt:
+You are an expert analyst specializing in causal reasoning, counterfactual logic, and the philosophy of action. Your primary task is to answer questions about causal attribution by meticulously analyzing the relationships between events, actions, and outcomes.
 
-Your responses must be clear and logically structured. Employ appropriate transitional phrases to ensure a seamless flow between ideas. Maintain a formal and precise tone consistently throughout the response.
-2025-09-04 02:29:55,418 - 📊 Current Template_description:
+Building upon the foundational goal of distinguishing between necessary causes, sufficient causes, and contributing factors, you will now apply a more structured, multi-lens framework to your analysis.
+
+**Follow this structured framework for your analysis:**
+
+1.  **Determine the Causal Question Type:** First, identify the specific nature of the query.
+    *   Is it primarily about **physical causation** (a mechanistic production of an outcome)?
+    *   Is it about **but-for causation** (whether the outcome depended on a specific event)?
+    *   Is it about **intentionality** (whether an agent meant to bring about an outcome)?
+    *   Is it about **causal responsibility** (which factor is most salient in a narrative)?
+
+2.  **Apply the Appropriate Analytical Lens:**
+    *   For **but-for causation**: Rigorously apply the counterfactual test: "If X had not occurred, would Y have happened in the exact same way?" If the answer is no, then X is a cause. This is often the default interpretation for "did X cause Y?".
+    *   For **intentionality**: Analyze the agent's **knowledge** and **voluntary action**. If the agent knew their action would bring about an outcome and proceeded voluntarily, the outcome is typically intentional, regardless of whether it was a desired goal or a known side effect.
+    *   For **causal sufficiency/necessity**: Objectively assess if an event was sufficient to cause the outcome alone, or necessary for it to occur. Acknowledge cases of overdetermination (multiple sufficient causes).
+    *   For **causal salience**: Identify the most **abnormal** or **deliberate** factor in the chain of events. An acti2025-09-04 18:51:53,777 - 📊 Current Template_description:
 None
-2025-09-04 02:29:55,418 - 📊 Current Prompt:
-Answer questions about causal attribution.
+2025-09-04 18:51:53,777 - 📊 Current Prompt:
+You are an expert analyst specializing in causal reasoning, counterfactual logic, and the philosophy of action. Your primary task is to answer questions about causal attribution by meticulously analyzing the relationships between events, actions, and outcomes.
 
-Your responses must be clear and logically structured. To ensure a seamless flow between ideas, employ appropriate transitional phrases. Furthermore, maintain a formal and precise tone consistently throughout the entire response.
-nario.
-*   **Reason step by step** in your response. Identify the outcome, its conditions, and analyze the events based on the principles above.
-*   Finally, output your final answer within the tags `<answer>Yes</answer>` or `<answer>No</answer>`.
+**Follow this structured framework for your analysis:**
 
-Now, answer the following question:
+1.  **Determine the Causal Question Type:** First, identify the specific nature of the query. This diagnosis dictates your primary analytical lens.
+    *   Is it about **physical causation** (a mechanistic production)?
+    *   Is it about **but-for causation** (counterfactual dependence)?
+    *   Is it about **intentionality** (an agent's mental state)?
+    *   Is it about **causal responsibility** (narrative salience)?
+
+2.  **Apply the Appropriate Analytical Lens:** Based on your determination, proceed with the following analyses.
+    *   For **but-for causation**: Rigorously apply the counterfactual test: "If X had not occurred, would Y have happened in the exact same way?"
+    *   For **intentionality**: Analyze the agent's **knowledge** (beliefs) and **desire** (goals). Distinguish between intended outcomes and foreseen side-effects.
+    *   For **causal sufficiency/necessity**: Objectively assess if an event was sufficient alone or necessary for the outcome. Acknowledge overdetermination.
+    *   For **causal salience**: Identify the most **abnormal** factor or **deliberate** decision that deviates from the default course of events.
+
+3.  **Synthesize and Justify:** Weigh the analyses to form a coherent conclusion. Your final answer must be justified based on the lens most relevant to the query. Clearly state your conclusion and explicitly name the dominant causal concept (e.g., "This is primarily a question of but-for causation," or "The outcome was an intentional side-effect."). Ground your reasoning in established philosophical principles.
+
+**Your responses must therefore:**
+- Begin by identifying the core type of causal question being asked.
+- Explicitly use counterfactual reasoning for but-for causation.
+- Infer and state the knowledge state and goals of agents for questions of intention.
+- Consider narrative context to identify abnormal or decisive factors.
+- Provide a final, principled conclusion that aligns with the most relevant causal concept for the query.
+2025-09-04 18:58:35,252 - 📊 Current Template_description:
+None
+2025-09-04 18:58:35,253 - 📊 Current Prompt:
+Answer questions about causal attribution by applying this structured framework. Base your analysis strictly on the story's facts. Do not introduce external assumptions.
+
+1.  **Counterfactual Necessity (The Primary Test):** Determine if the outcome would still have occurred if the specific action or inaction had not happened. If the outcome would not have occurred, the action is a necessary condition. If it would have occurred, output 'No'.
+
+2.  **Normative Deviance (The Tie-Breaker):** If the action is necessary, determine if it was a permitted, normal, expected behavior or a deviant, forbidden, unusual one according to the story's rules and context. A deviant action is identified as the cause. A normal action is not the cause if other necessary, deviant actions exist.
+
+3.  **Omissions as Causes (A Special Case):** An omission can only be a cause if there was a clear duty to act. If a duty existed, apply the counterfactual test: if performing the duty would have prevented the outcome, then the omission is a cause.
+
+**Synthesis:** Output 'Yes' only if the action was a necessary condition and was either deviant or the only necessary condition. For omissions, output 'Yes' only if a duty existed and the counterfactual test is passed. In all other cases, output 'No'.
+
+Your final output must be only 'Yes' or 'No'.
+2025-09-04 19:01:48,416 - 📊 Current Template_description:
+None
+2025-09-04 19:01:48,416 - 📊 Current Prompt:
+Answer questions about causal attribution or intention by applying this structured framework. Base your analysis strictly on the story's facts. Do not introduce external assumptions.
+
+**First, classify the question:**
+*   If the question is about **intention** (e.g., "intentionally," "on purpose"), your primary task is to determine the actor's goal. A direct statement of indifference or a lack of desire for the outcome is definitive evidence for 'No'. Proceed to the causal framework only if intention is ambiguous.
+*   If the question is about **causation** (e.g., "caused," "led to"), proceed with the full framework below.
+
+**Structured Framework for Causation:**
+
+1.  **Counterfactual Necessity (The Primary Test):** Determine if the outcome would still have occurred if the specific action or inaction had not happened. If the outcome would not have occurred, the action is a necessary condition. If it would have occurred, output 'No'.
+
+2.  **Normative Deviance (The Tie-Breaker):** If the action is necessary, determine if it was normal or deviant. **To assess deviance:**
+    *   **For Actions:** Was it forbidden, unusual, or a breach of standard practice **according to the story's explicit rules or established context?**
+    *   **For Omissions:** Was there a **clear duty to act** (e.g., a job responsibility, a relationship-based obligation, a known risk)? The existence of a duty makes an omission deviant.
+    *   A deviant action/omission is identified as the cause. A normal action is not the cause if other necessary, deviant actions exist.
+
+3.  **Omissions as Causes (A Special Case):** An omission can only be a cause if a duty to act existed. If a duty existed, apply the counterfactual test: if performing the duty would have prevented the outcome, then the omission is a cause.
+
+**Synthesis:**
+*   For **causation:** Output 'Yes' only if the action/omission was a necessary condition and was deviant. If multiple necessary conditions exist, 'Yes' applies only to the deviant one(s).
+*   For **intention:** Output 'Yes' only if the evidence shows the outcome was a goal of the actor. Output 'No' if the outcome was a foreseen but unintended side effect, or if the actor was indifferent.
+
+**Your final output must be only 'Yes' or 'No'.**
+2025-09-04 19:06:51,177 - 📊 Current Template_description:
+None
+2025-09-04 19:06:51,177 - 📊 Current Prompt:
+Answer questions about causal attribution by applying the following analytical framework. Your goal is to determine if the specific action was a **salient cause** in the context of the story, considering both its causal role and its normativity.
+
+1.  **Causal Role Analysis:**
+    *   **Counterfactual Necessity:** Determine if the outcome would still have occurred had the specific action or inaction in question not happened. Ask: "Without *this specific action*, would the outcome have been the same?"
+    *   **Actual Sufficiency:** Determine if the action was part of a set of actual events that was sufficient to bring about the outcome.
+
+2.  **Normative Analysis:** Evaluate whether the action constituted a normal, expected, and permitted behavior or a deviant, forbidden, or unusual one. Derive all normative standards (rules, expectations, intentions) strictly from the story's text. A deviant action is typically attributed greater causal strength.
+
+3.  **Synthesis for Final Judgment:** Combine the analyses to decide.
+    *   If the action was **necessary**, it is a cause. If it was also **deviant**, it is a highly salient cause (**Yes**). If it was **normal**, its salience is reduced.
+    *   If the action was **not necessary** but was part of an **actually sufficient set**, it is still *a* cause. If this action was **deviant**, answer **Yes**. If it was **normal**, it is a contributing cause.
+    *   **For Omissions:** An omission is only a cause if there was a **clear duty to act** and the action would have been **sufficient to prevent** the outcome.
+    *   **For Intentionality:** Judge "intentionally" by comparing the outcome to the agent’s own stated or implied goals and knowledge.
+
+**CRITICAL INVARIANTS:**
+*   **Focus:** Analyze only the specific action mentioned in the question.
+*   **Context is Key:** Base all analysis strictly on the story's facts, causal relationships, and normative standards. Do not import external assumptions.
+*   **Deviance Drives Salience:** A deviant action is a primary driver for a "Yes" answer.
+
+Output only your final judgment as 'Yes' or 'No'.
+2025-09-04 19:09:17,841 - 📊 Current Template_description:
+None
+2025-09-04 19:09:17,841 - 📊 Current Prompt:
+Answer questions about causal attribution by following this structured reasoning process:
+
+1.  **Identify the Outcome:** Clearly state the specific event or result in question.
+2.  **Trace the Sequence:** Map the chain of events and actions leading to the outcome.
+3.  **Analyze Causation:** Distinguish between:
+    *   **Necessary Cause:** An indispensable action/event without which the outcome would not have occurred.
+    *   **Sufficient Cause:** An action/event that alone is enough to produce the outcome.
+    *   **Contributing Factor:** A background condition that enabled the outcome but is not a direct cause.
+4.  **Evaluate Intention (if applicable):** Determine if the outcome was intentional by examining the agent's explicit desires and statements. An outcome is intentional only if it was desired, not merely foreseen.
+5.  **Consider Alternatives:** Test your reasoning by considering counterfactual scenarios and alternative explanations.
+6.  **Conclude:** Provide a definitive answer, rigorously supported by direct evidence (e.g., quotes) and logical analysis from the input. Avoid moral judgment and unsupported speculation.
+2025-09-04 19:12:19,976 - 📊 Current Template_description:
+None
+2025-09-04 19:12:19,978 - 📊 Current Prompt:
+Answer questions about causal attribution by analyzing the relationships between events, actions, and outcomes. Your goal is to provide a pragmatic, human-like judgment that identifies the most compelling explanation for why an outcome occurred.
+
+**Reasoning Steps to Follow:**
+
+1.  **Identify the Outcome and Potential Causes:** List the final outcome and all relevant events, actions, and omissions.
+2.  **Apply a "But-For" Baseline:** For each candidate, ask if the outcome would have occurred without it. Note this, but do not let it be the final word.
+3.  **Check for Normative Deviance:** Determine if any action violated a policy, rule, role, or common expectation. These deviant actions are primary candidates for being the cause.
+4.  **Judge Explanatory Salience:** Prioritize the factor that is the most intuitive and "difference-making" explanation, especially if it was abnormal, unexpected, or a point of failure.
+5.  **Evaluate Omissions:** An omission is a cause only if the agent had both the *ability* and the *responsibility* to act.
+6.  **Handle Overdetermination:** If multiple sufficient causes are present, an event is still a cause if it was active and contributed to the outcome.
+
+**Response Structure:**
+- Briefly summarize the scenario and the specific causal question.
+- Analyze the situation by applying the steps above.
+- Clearly state your final verdict ("Yes" or "No") and justify it concisely, explaining which step(s) led to your conclusion.
+2025-09-04 19:15:12,947 - 📊 Current Template_description:
+None
+2025-09-04 19:15:12,947 - 📊 Current Prompt:
+Answer questions about causal attribution by analyzing the relationships between events, actions, and outcomes. Your goal is to provide a pragmatic, human-like judgment that identifies the most compelling explanation for why an outcome occurred.
+
+**Core Principle:**
+Focus on identifying the **difference-maker**—the factor that was both critical to the outcome and salient in the context. A necessary cause is not always the most compelling explanation; prioritize the cause that was the active, unexpected, or decisive factor.
+
+**Reasoning Steps to Follow:**
+
+1.  **Identify the Outcome and Potential Causes:** List the final outcome and all relevant events, actions, and pre-existing conditions.
+2.  **Apply a "But-For" Test (Necessity):** For each candidate cause, ask: "Would the outcome have occurred *without* this specific event/action?" This establishes necessity but is not the final word.
+3.  **Check for Preemption and Overdetermination:**
+    *   **Preemption:** If a pre-existing condition was already sufficient to cause the outcome, any subsequent action is likely **not** a cause, even if it also appears sufficient. The outcome would have happened anyway.
+    *   **Overdetermination:** If multiple factors are independently sufficient and active, they can all be causes. However, for attribution, focus on the most salient one.
+4.  **Judge Explanatory Salience (The Difference-Maker):** This is the most important step. Prioritize the cause that is the most intuitive explanation. Key signals include:
+    *   **Abnormality:** Did it deviate from the norm or expectation?
+    *   **Uncertainty:** Was it the risky or probabilistic element?
+    *   **Agency:** Was it a deliberate action that overcame an obstacle?
+    *   **Point of Failure:** Was it the factor that could have most easily prevented the outcome?
+5.  **Evaluate Omissions:** An omission is a cause only if the agent had both the *ability* and the *responsibility* to act. Treat omissions as potential causes only if an action was expected and did not occur.
+6.  **Synthesize for a Verdict:** Combine the above. A cause must be at least a necessary part of a sufficient set of conditions. The final verdict should point to the most salient **difference-maker**.
+
+**Response Structure:**
+-   **Summary:** Briefly state the scenario and the causal question.
+-   **Analysis:** Walk through the reasoning steps above. Explicitly state the results of the "but-for" test and your salience judgment.
+-   **Verdict:** Clearly state your final answer ("Yes" or "No") and provide a concise justification. Explicitly name which step(s) (e.g., "due to preemption" or "because it was the salient difference-maker") led to your conclusion.
+
+**Key Invariants to Uphold:**
+-   If an action was **not necessary** (the outcome would have happened without it), the answer is almost always **No**.
+-   If an action was necessary, it is a candidate cause, but you must then check if it is the **most salient** explanation compared to other necessary factors.
+-   A pre-existing sufficient condition **preempts** the causal status of later actions that are also sufficient.
+2025-09-04 19:16:48,497 - 📊 Current Template_description:
+None
+2025-09-04 19:16:48,498 - 📊 Current Prompt:
+Answer questions about causal attribution by analyzing narratives involving agents and their actions. To do this, follow these steps precisely:
+
+1.  **Interpret the Scenario:** Resolve any narrative inconsistencies by prioritizing the initial, defining rules of the system. Identify what the agent knows, their goals, and the actual sequence of events. Establish baseline expectations and note any deviations.
+2.  **Apply Counterfactual Reasoning (Primary Test):** For any proposed cause—an agent's action or omission—rigorously test it by asking: **"If the agent had acted differently (or not acted, if considering omission), would the outcome have changed?"** This is the definitive test for causal relevance. If the outcome would have been the same, the agent did not cause it.
+3.  **Distinguish Causal Types:** Identify necessary causes, sufficient causes, and contributing factors. **A cause that is not necessary is not causal.** Causation by omission is valid *only* if the agent had a duty/ability to act and that failure was necessary for the outcome.
+4.  **Analyze Intentionality (if asked):** Evaluate whether the agent **desired the outcome** (it was a goal), knew their action would cause it (with certainty), and performed the action. **Knowledge alone is insufficient for intent; desire is crucial.** A known but undesired side effect is not intentional.
+5.  **Synthesize and Conclude:** Weigh all factors, but the counterfactual test is paramount for causation. For intentionality, desire is key. Justify your final answer using logical reasoning from the text. **Do not assume information not present in the narrative.**
+
+**Throughout your analysis, prioritize the agent's decision-making process, knowledge, and goals over the physical state of the world.**
+2025-09-04 19:18:10,712 - 📊 Current Template_description:
+None
+2025-09-04 19:18:10,712 - 📊 Current Prompt:
+Answer questions about causal attribution by analyzing the relationships between events, actions, and outcomes. Your goal is to provide a pragmatic, human-like judgment that identifies the most compelling explanation for why an outcome occurred.
+
+**Core Principle:**
+Focus on identifying the **difference-maker**—the factor that was both critical to the outcome and salient in the context. A necessary cause is not always the most compelling explanation; prioritize the cause that was the active, unexpected, or decisive factor.
+
+**Reasoning Steps to Follow:**
+
+1.  **Apply the "But-For" Test (Necessity as a Filter):** For each candidate cause, ask: "Would the outcome have occurred *without* this specific event/action?" If the answer is "yes" (it was not necessary), the verdict is almost always **No**. This is the primary gatekeeper.
+2.  **Check for Preemption:** A pre-existing sufficient condition **preempts** the causal status of any later action that is also sufficient. The outcome would have happened anyway; the later action is causally redundant.
+3.  **Judge Explanatory Salience (The Difference-Maker):** If multiple factors are necessary, identify the most salient cause. Key signals include:
+    *   **Abnormality/Norm Violation:** Did it deviate from a rule, policy, or common expectation? (The "default" or expected action is rarely salient).
+    *   **Agency:** Was it a deliberate, goal-directed action?
+    *   **Point of Failure:** Was it the factor that could have most easily been changed to prevent the outcome?
+4.  **Evaluate Omissions:** An omission is a cause only if the agent had both the *ability* and the *responsibility* to act. Treat omissions as potential causes only if an action was expected and did not occur.
+5.  **Distinguish Causation from Intentionality:** An effect is intentional only if it was a goal or a chosen means to a goal. A foreseen but unwanted side effect is not intentional.
+
+**Response Structure:**
+-   **Summary:** Briefly state the scenario and the causal question.
+-   **Analysis:** Walk through the reasoning steps above. Explicitly state the results of the "but-for" test and your salience judgment.
+-   **Verdict:** Clearly state your final answer ("Yes" or "No") and provide a concise justification. Explicitly name which step(s) (e.g., "due to preemption" or "because it was the salient difference-maker") led to your conclusion.
+
+**Key Invariants to Uphold:**
+-   **Necessity First:** If an action was **not necessary**, the answer is **No**.
+-   **Preemption Trumps Sufficiency:** A prior sufficient condition preempts later ones.
+-   **Rule-Followers are not Blamed:** In social scenarios, an action compliant with established rules is unlikely to be the salient cause of a failure caused by a rule-breaker.
+-   **Salience for Necessary Causes:** Among necessary causes, the most compelling explanation is the one that is abnormal, agentive, or a point of failure.
+2025-09-04 19:20:48,562 - 📊 Current Template_description:
+None
+2025-09-04 19:20:48,562 - 📊 Current Prompt:
+Answer questions about causal attribution by applying strict counterfactual reasoning. Follow these steps:
+
+1.  **Identify the outcome and candidate cause.**
+2.  **Determine the necessary conditions for the outcome** (e.g., "both A and B", "at least four", "only if X").
+3.  **Apply the counterfactual test:**
+    - For an action/event: Ask "Would the outcome have occurred *without* the candidate cause?"
+        - If **no** → necessary cause → Answer **Yes**
+        - If **yes** → not necessary → Answer **No**
+    - For an omission (failure to act): Ask "If the action *had* been taken, would the outcome have been prevented?"
+        - If **yes** → omission is necessary → Answer **Yes**
+        - If **no** → omission is not necessary → Answer **No**
+4.  **For intentional causation questions:** Even if causally necessary, answer "No" if the agent did not intend the outcome.
+5.  **Ignore all normative information** (policies, rules, duties, moral judgments). Focus solely on the physical/deterministic causal chain.
+6.  **Reason only on actual events described,** not hypothetical defaults or usual behaviors.
+7.  **For joint causes:** Each factor is necessary if its absence would prevent the outcome.
+
+Final output must be: <answer>Yes</answer> or <answer>No</answer>
+2025-09-04 19:26:25,244 - 📊 Current Template_description:
+None
+2025-09-04 19:26:25,244 - 📊 Current Prompt:
+Answer questions about causal attribution by applying strict counterfactual reasoning. Follow these steps:
+
+1.  **Identify the outcome and candidate cause.**
+2.  **Apply the counterfactual test:**
+    - For an **action/event:** Ask "Would the outcome have occurred *without* the candidate cause?"
+        - If **no**, the candidate is a necessary cause. → Answer **Yes**
+        - If **yes**, the candidate is not necessary. → Answer **No**
+    - For an **omission (failure to act):** Ask "If the action *had* been taken, would the outcome have been prevented?"
+        - If **yes**, the omission is a necessary cause. → Answer **Yes**
+        - If **no**, the omission is not necessary. → Answer **No**
+3.  **For intentional causation:** Even if a cause is necessary, answer "No" if the agent did not intend the outcome.
+4.  **Ignore all normative information** (e.g., duties, policies, morals). Focus solely on the deterministic physical causal chain.
+5.  **Test joint causes individually:** Each factor is necessary if its absence would have prevented the outcome.
+6.  **Reason only on the actual events described,** not on hypothetical defaults or usual behaviors.
+
+Final output must be: <answer>Yes</answer> or <answer>No</answer>
+2025-09-04 19:27:13,777 - 📊 Current Template_description:
+None
+2025-09-04 19:27:13,777 - 📊 Current Prompt:
+Answer questions about causal attribution by determining if the candidate was an actual cause of the outcome. An actual cause is a factor that made a difference in the specific way the outcome occurred. Proceed through the following steps rigorously:
+
+1.  **Identify the outcome and candidate cause:** Precisely state the event in question and the specific factor being evaluated.
+2.  **Establish the causal structure:** Determine the logical, physical, or normative rules governing the scenario (e.g., "the outcome occurs if A or B", "the outcome requires both C and D").
+3.  **Apply the actual cause test:** Construct a counterfactual world that is **identical to the actual world in every detail** until immediately before the candidate cause occurs. **Hold all other events fixed** unless they are a direct consequence of altering the candidate.
+    - In this world, alter only the candidate cause (e.g., prevent the action, perform the omitted action).
+    - Allow its direct consequences to unfold based on the causal structure.
+    - If the outcome does **not** occur, the candidate is an actual cause. Conclude with **Yes**.
+    - If the outcome **still** occurs, the candidate is not an actual cause. Conclude with **No**.
+4.  **Handle preemption:** If another sufficient cause already occurred before the candidate, the candidate is redundant and not a cause. The existence of a backup does not negate a candidate's causal role if it was the first and only cause that occurred.
+5.  **Consider omissions and normal conditions:** For an omission, the counterfactual is performing the action. It is a cause only if acting would have prevented the outcome. A normal, pre-existing condition is typically not a cause compared to an abnormal, intervening event.
+
+Your final output must be exclusively: <answer>Yes</answer> or <answer>No</answer>
+2025-09-04 19:31:05,543 - 📊 Current Template_description:
+None
+2025-09-04 19:31:05,543 - 📊 Current Prompt:
+Answer questions about causal attribution by following this structured reasoning process. Crucially, your analysis must:
+
+*   **Anchor to the specific rules and definitions** governing the scenario.
+*   **Rely on rigorous counterfactual testing** to isolate necessary causes.
+*   **Identify the specific action or change** that made the difference for the outcome.
+*   **Strictly separate causation from blame and intention.**
+*   **Support all conclusions with direct evidence** from the input.
+
+**Now, proceed step-by-step:**
+
+1.  **Identify the Outcome:** State the specific event or result in question.
+2.  **Trace the Sequence:** Map the chain of events and actions leading to the outcome.
+3.  **Analyze Causation:** Distinguish between:
+    *   **Necessary Cause:** An indispensable action/event without which the outcome would not have occurred.
+    *   **Sufficient Cause:** An action/event that alone is enough to produce the outcome.
+    *   **Contributing Factor:** A background condition that enabled the outcome but is not a direct cause.
+4.  **Evaluate Intention (if applicable):** Determine if the outcome was intentional by examining the agent's explicit desires and statements. An outcome is intentional only if it was desired, not merely foreseen.
+5.  **Consider Alternatives:** Test your reasoning with counterfactual scenarios and alternative explanations.
+6.  **Conclude:** Provide a definitive answer, rigorously supported by direct evidence (e.g., quotes) and logical analysis. Avoid moral judgment and unsupported speculation.
+2025-09-04 19:38:44,509 - 📊 Current Template_description:
+None
+2025-09-04 19:38:44,509 - 📊 Current Prompt:
+Answer questions about causal attribution by following this structured reasoning process. Crucially, your analysis must:
+
+*   **Anchor to the specific rules and definitions** governing the scenario.
+*   **Understand "because" broadly:** Interpret "Did X happen because of Y?" as "Was Y a cause of X in the actual sequence of events?" A cause can be sufficient, necessary, or both.
+*   **Rely on rigorous counterfactual testing** to identify causes.
+*   **Identify the specific action or change** that made the difference for the outcome.
+*   **Strictly separate causation from blame, intention, and normative judgments.**
+*   **Support all conclusions with direct evidence** from the input.
+*   **Perform quantitative reasoning** when numbers or sequences are involved.
+
+**Now, proceed step-by-step:**
+
+1.  **Identify the Outcome:** State the specific event or result in question.
+2.  **Trace the Sequence:** Map the chain of events and actions leading to the outcome. Compute exact totals for quantitative scenarios.
+3.  **Analyze Causation:** Distinguish between:
+    *   **Necessary Cause:** An indispensable action/event without which the outcome would not have occurred.
+    *   **Sufficient Cause:** An action/event that alone is enough to produce the outcome.
+    *   **Contributing Factor:** A background condition that enabled the outcome but is not a direct cause.
+    *   **Special Case: Overdetermination:** If multiple sufficient causes are present simultaneously (e.g., two switches that both turn on a light), **each sufficient cause that is actualized is a true cause of the outcome.** The outcome is not solely caused by just one of them.
+4.  **Evaluate Intention (if applicable):** Determine if the outcome was intentional by examining the agent's explicit desires and statements. An outcome is intentional only if it was desired, not merely foreseen.
+5.  **Consider Counterfactuals:** Test your reasoning with these two types of scenarios:
+    *   **Absence Test:** If the potential cause had been absent, would the outcome *still* have occurred? If no, the cause is *necessary*.
+    *   **Presence Test:** If the potential cause had been present *alone* (with other sufficient causes removed), would the outcome have occurred? If yes, the cause is *sufficient*.
+    **A "Yes" to the Presence Test means the action is a valid cause, even if the Absence Test also returns "Yes" (indicating overdetermination). A "No" to the Absence Test also means the action is a valid (necessary) cause.**
+6.  **Conclude:** Provide a definitive answer, rigorously supported by:
+    *   Direct evidence (e.g., quotes).
+    *   The results of both counterfactual tests.
+    *   A clear statement on whether the action was a **sufficient or necessary cause in the circumstances**. Avoid dismissing a sufficient cause merely because another sufficient cause was also present, or a necessary cause because it was not sufficient. Avoid moral judgment and unsupported speculation.
+2025-09-04 19:41:24,652 - 📊 Current Template_description:
+None
+2025-09-04 19:41:24,653 - 📊 Current Prompt:
+Answer questions about causal attribution by applying this structured framework. Base your analysis strictly on the story's facts. Do not introduce external assumptions.
+
+1.  **Counterfactual Necessity (The Primary Test):**
+    - Identify the specific outcome and action/inaction in question.
+    - Ask: Would the outcome still have occurred if this specific action had not been done (or if the omission had been acted)? Rely only on the story's facts.
+    - If the outcome would not have occurred, the action is a necessary condition. If it would have occurred, conclude 'No'.
+
+2.  **Normative Deviance (The Tie-Breaker):**
+    - If the action is necessary, determine if it was permitted, normal, and expected or deviant, forbidden, and unusual according to the story's explicit rules, commands, or contextual norms.
+    - A deviant action is the cause. A normal action is not the cause if other necessary, deviant actions exist.
+
+3.  **Omissions as Causes (A Special Case):**
+    - Only apply if the question is about an omission. Check for a clear, explicit duty to act (e.g., job duty, command, promise). If no duty exists, conclude 'No'.
+    - If a duty exists, apply the counterfactual test: if performing the duty would have prevented the outcome, then the omission is a cause.
+
+**Synthesis:**
+- Output 'Yes' only if the action was a necessary condition and was either deviant or the only necessary condition.
+- For omissions, output 'Yes' only if a duty existed and the counterfactual test is passed.
+- In all other cases, output 'No'.
+
+Your final output must be only 'Yes' or 'No'.
+2025-09-04 19:43:40,787 - 📊 Current Template_description:
+None
+2025-09-04 19:43:40,788 - 📊 Current Prompt:
+Answer questions about causal attribution by applying this structured framework. Base your analysis strictly on the story's facts. Do not introduce external assumptions.
+
+1.  **Counterfactual Necessity (The Primary Gatekeeper):** Determine if the outcome would still have occurred if the specific action or inaction had not happened. If the outcome would have occurred anyway, immediately output 'No'. Only proceed if the action/inaction is a necessary condition.
+
+2.  **Normative Deviance (The Tie-Breaker):** If the action is necessary, determine if it was a normal, expected behavior or a deviant, forbidden one according to the story's explicit rules or implicit context. A deviant necessary action is a cause. A normal necessary action is not a cause if any other necessary condition exists.
+
+3.  **Omissions as Causes (A Special Case):** For an omission, first determine if there was a clear duty to act based on the story. If no duty existed, it is not a cause. If a duty existed, apply the counterfactual test: performing the duty would have prevented the outcome.
+
+**Synthesis:** Output 'Yes' only if:
+- For an action: It was necessary and (deviant OR it is the only necessary condition).
+- For an omission: A duty existed and it was necessary (i.e., performing the duty would have prevented the outcome).
+
+In all other cases, output 'No'. Your final output must be only 'Yes' or 'No'.
+2025-09-04 19:46:12,914 - 📊 Current Template_description:
+None
+2025-09-04 19:46:12,914 - 📊 Current Prompt:
+Answer questions about causal attribution by applying this structured framework. Base your analysis strictly on the story's facts. Do not introduce external assumptions.
+
+1.  **Counterfactual Necessity (The Primary Gatekeeper):** Determine if the outcome would still have occurred if *only* the specific action or inaction in question had not happened, holding all other events exactly as described. If the outcome would have occurred anyway, immediately output 'No'. Only proceed if the action/inaction is a necessary condition.
+
+2.  **Normative Deviance (The Tie-Breaker):** If the action is necessary, determine if it was a normal, expected behavior or a deviant, forbidden one. Rely solely on the story's explicit rules or unambiguous implicit context (e.g., clear societal norms). A deviant necessary action is a cause. A normal necessary action is not a cause if any other necessary condition exists.
+
+3.  **Omissions as Causes (A Special Case):** For an omission, first determine if there was a clear duty to act based on the story. If no duty existed, it is not a cause. If a duty existed, apply the counterfactual test: would performing the duty have prevented the outcome?
+
+**Synthesis:** Output 'Yes' only if:
+- For an action: It was necessary and (deviant OR it is the only necessary condition).
+- For an omission: A duty existed and it was necessary (i.e., performing the duty would have prevented the outcome).
+
+In all other cases, output 'No'. Your final output must be only 'Yes' or 'No'.
+2025-09-04 19:47:41,101 - 📊 Current Template_description:
+None
+2025-09-04 19:47:41,102 - 📊 Current Prompt:
+Answer questions about causal attribution by applying this structured framework. Base your analysis strictly on the story's facts. Do not introduce external assumptions. If the question is about intention (e.g., "intentionally," "on purpose"), you must still first determine causal attribution before considering the agent's knowledge and goals.
+
+1.  **Counterfactual Dependence (The Primary Test):** Determine if the outcome would have occurred **in the exact same way and at the exact same time** if the specific action or inaction had not happened. If the outcome would have been different, delayed, or would not have occurred, then the action is a potential cause. If the outcome would have occurred identically and simultaneously due to another sufficient factor explicitly described in the story, then the action is not a cause.
+
+2.  **Causal Sufficiency (The Conjunction Check):** Is the outcome caused by a single event or a conjunction of events? If the action is one of multiple events that were jointly necessary for the outcome, it is a necessary condition but may not be the sole cause. Proceed to step 3.
+
+3.  **Normative Deviance (The Tie-Breaker):** To identify *the* cause among multiple potential causes, determine if the action was a permitted, normal, expected behavior or a deviant, forbidden, unusual one according to the story’s rules and context. A deviant action is identified as *the* cause. A normal action is not *the* cause if other necessary, deviant actions exist.
+
+4.  **Omissions as Causes (A Special Case):** An omission can only be a cause if there was a clear duty to act. If a duty existed, apply the counterfactual test: if performing the duty would have prevented the outcome in the way it occurred, then the omission is a cause.
+
+5.  **Intentionality Analysis (If Required):** Only if the question asks about intention: An action intentionally causes an outcome if (a) the action caused the outcome (from steps 1-4), and (b) the agent knew the outcome would occur, and (c) the outcome was a goal of their action or a known and accepted side effect of achieving their goal.
+
+**Synthesis:**
+-   **For causal questions:** Output 'Yes' only if the action was **the** cause based on counterfactual dependence and normative deviance. If it was merely one necessary part of a causal chain but not the decisive or deviant factor, output 'No'.
+-   **For omission questions:** Output 'Yes' only if a duty existed and the counterfactual test is passed.
+-   **For intentionality questions:** Output 'Yes' only if the action was a cause (from above) *and* the intentionality conditions (5b and 5c) are met.
+In all other cases, output 'No'.
+
+**Before finalizing, double-check the story's facts, especially conditions (like "and" vs. "or") and rules. Justify each step of your reasoning with explicit references to the story.**
+
+Your final output must be only 'Yes' or 'No'.
+2025-09-04 19:50:24,574 - 📊 Current Template_description:
+None
+2025-09-04 19:50:24,575 - 📊 Current Prompt:
+Answer questions about causal attribution by applying strict counterfactual reasoning. Follow these steps:
+
+1.  **Identify the outcome and candidate cause.**
+2.  **Determine the necessary conditions for the outcome.** Crucially, distinguish between `AND` (all conditions are necessary) and `OR` (at least one condition is sufficient) relationships.
+3.  **Apply the counterfactual test:**
+    - For an **action/event:** Ask "Would the outcome have occurred *without* the candidate cause?"
+        - If **no** → necessary cause → Proceed
+        - If **yes** → not necessary → Answer **No**
+    - For an **omission (failure to act):** Ask "If the agent *had* performed the omitted action, would the outcome have been *prevented*?"
+        - If **yes** → omission is necessary → Proceed
+        - If **no** → omission is not necessary → Answer **No**
+    - **WARNING:** Construct the counterfactual world by changing **ONLY** the candidate cause. Hold all other background facts and events constant.
+4.  **For intentional causation questions:** This is a filter. Even if the candidate cause is necessary from Step 3, if the agent did not intend the specific outcome, Answer **No**.
+5.  **Ignore all normative information (policies, rules, duties, moral judgments).** Focus solely on the physical/deterministic causal chain.
+6.  **Reason only on actual events described.** Do not imagine hypothetical defaults or what usually happens.
+7.  **Final Check:** For joint causes, confirm that the outcome would have been prevented by the absence of the candidate cause alone.
+
+Final output must be: <answer>Yes</answer> or <answer>No</answer>
+2025-09-04 19:58:22,879 - 📊 Current Template_description:
+None
+2025-09-04 19:58:22,879 - 📊 Current Prompt:
+Answer questions about causal attribution by applying strict counterfactual reasoning. Adhere to these rules:
+
+1.  **Isolate the Physical Causal Chain:** Ignore all normative, legal, or responsibility-based information. Treat the scenario as a system of physical events.
+2.  **Reframe Omissions First:** If the candidate cause is a failure to act, immediately reframe the test: "If the action *had* been taken, would it have prevented the outcome?"
+3.  **Apply the Standard Counterfactual Test for Actions:** For an action, ask: "If this action had *not* occurred, would the outcome still have happened?"
+4.  **Ground Reasoning in Actual Events:** Base your analysis exclusively on the events described. Do not consider what other agents could have done, hypothetical defaults, or usual behaviors.
+5.  **Determine Necessity:** 
+    - If the answer to the reframed omission test is **yes**, conclude **Yes**.
+    - If the answer to the standard action test is **no**, conclude **Yes**.
+    - Otherwise, conclude **No**.
+
+Your final output must be exclusively: <answer>Yes</answer> or <answer>No</answer>
+2025-09-04 20:02:48,786 - 📊 Current Template_description:
+None
+2025-09-04 20:02:48,786 - 📊 Current Prompt:
+Answer questions about causal attribution by applying strict counterfactual reasoning. Your goal is to determine if the candidate cause was a necessary condition for the specific occurrence of the outcome. To achieve this, proceed methodically through the following steps:
+
+1.  **Precisely Define the Outcome:** Identify the specific event in question, paying extreme attention to its *exact time, manner, and immediate cause* (e.g., "circuit breaker failing at time T due to exactly N simultaneous activations").
+2.  **Isolate the Candidate Cause:** Clearly state the specific factor being evaluated.
+3.  **Apply the Proximate Counterfactual Test:** Systematically ask, "Holding all other events in the actual world as constant as possible, would the **specific outcome** (as defined in Step 1) still have occurred at the exact moment and in the exact way it did, in the *absence* of the candidate cause?"
+    -   **Crucial:** Do not construct alternative worlds where earlier events change unless the candidate cause itself is an earlier event. Focus on the most direct, proximate causes.
+    -   **For disjunctive outcomes:** If the outcome was achieved by an earlier sufficient cause, a later candidate cannot be necessary.
+    -   **For threshold-based outcomes:** The candidate is necessary only if its absence reduces the count below the required threshold.
+    -   If the answer is definitively **no**, then the candidate is a necessary cause. Conclude with **Yes**.
+    -   If the answer is **yes** or **uncertain**, then the candidate is not a necessary cause. Conclude with **No**.
+4.  **Treat Omissions as Causes:** When the candidate cause is a failure to act, reframe the test: "If the action *had* been taken, holding all else constant, would it have prevented the **specific outcome**?"
+5.  **For Questions about Intent:** If the question is about a mental state, apply the counterfactual to the action: "Would the person have performed the **same physical action** leading to the outcome if they did *not* have that mental state?"
+6.  **Ignore all normative, legal, or responsibility-based information:** Base your reasoning solely on the deterministic causal chain described. Disregard concepts of blame, duty, or typicality.
+7.  **Reason only on the actual events described:** Ground your analysis exclusively in the provided scenario. Do not make assumptions about hypothetical defaults or what "usually" happens.
+
+Your final output must be exclusively: <answer>Yes</answer> or <answer>No</answer>
+2025-09-04 20:08:06,066 - 📊 Current Template_description:
+None
+2025-09-04 20:08:06,066 - 📊 Current Prompt:
+Answer questions about causal attribution by applying this framework:
+
+1.  **Define the Specific Outcome:** Precisely state the outcome being analyzed.
+2.  **Counterfactual Necessity (But-For Test):** Would the exact same outcome have occurred without the specific action/inaction? If no, it is a cause (output 'Yes'). If yes, proceed.
+3.  **Actual Sufficiency Test:** Was the action/inaction a necessary component of the set of conditions that were actually present and sufficient to bring about the outcome? If yes, it is a cause (output 'Yes'). If no, output 'No'.
+4.  **Omissions:** An omission is a cause only if there was a duty to act and acting would have prevented the outcome.
+5.  **Normative Deviance:** A deviant action may be seen as the primary cause, but this never overrides the verdict from Steps 2 or 3.
+
+The answer is 'Yes' only if the action/inaction passes Step 2 or Step 3. Output only 'Yes' or 'No'. For questions about intentionality (e.g., "on purpose"), determine causation first, then assess if the outcome was a goal or known side-effect.
+2025-09-04 20:11:17,360 - 📊 Current Template_description:
+None
+2025-09-04 20:11:17,360 - 📊 Current Prompt:
+Answer questions about causal attribution by applying the following framework:
+
+1.  **Determine the Question Type:** First, identify if the question is about *causation* (whether an action/inaction was a cause) or *intention* (whether an outcome was brought about intentionally).
+
+2.  **Causal Analysis (For Causation Questions):**
+    a. **But-For Test:** Would the outcome have occurred in the exact same way if the action had not happened (or if the omission had been acted upon)? If no, it is a cause.
+    b. **Overdetermination Test:** If the outcome would have occurred anyway, was the action/inaction nevertheless part of the actual set of sufficient conditions that brought it about? If yes, it is a cause.
+    c. **Omissions:** An omission is a cause only if there was a duty to act and the action would have prevented the outcome, or if it preserved a sufficient condition.
+
+3.  **Intentionality Analysis (For Intention Questions):**
+    After establishing causation, analyze the agent's mental state. The outcome is intentional *only* if it was the agent's purpose or goal, not merely a foreseen side effect. An action can be a cause without being intentional.
+
+4.  **Normative Context:** Consider if the action was deviant (forbidden) or normal (expected). This supports attribution but is not decisive; a normal action can still be a cause.
+
+Synthesize these steps. For causation questions, output 'Yes' if the action/inaction was counterfactually necessary or part of a sufficient causal set. For intention questions, output 'Yes' only if the causal and mental state conditions are met.
+<answer>Yes</answer> or <answer>No</answer>
+2025-09-04 20:11:32,529 - 📊 Current Template_description:
+None
+2025-09-04 20:11:32,530 - 📊 Current Prompt:
+Answer questions about causal attribution by rigorously applying this framework:
+
+1.  **Define the Specific Outcome:** Precisely state the outcome being analyzed.
+2.  **Counterfactual Necessity (But-For Test):** Ask: "Would the outcome have occurred in the exact same way and at the exact same time if the specific action had not been performed (or inaction had been performed)?"
+    -   **Crucial:** In this counterfactual, change *only* the action in question. Hold all other facts about the world (others' actions, device states, etc.) identically constant unless their change is a direct consequence of removing the action.
+    -   If the answer is **no**, it is a cause (output 'Yes'). If yes, proceed.
+3.  **Actual Sufficiency Test (INUS Test):** Was the action a necessary component of the set of conditions that were **actually present** and sufficient to bring about the outcome?
+    -   Identify the minimal set of actual conditions that were sufficient for the outcome. Was the action a required part of that specific set?
+    -   If **yes**, it is a cause (output 'Yes'). If no, output 'No'.
+4.  **Omissions:** An omission is a cause only if there was a duty to act and acting would have prevented the outcome.
+5.  **Normative Deviance:** A deviant action may be seen as the primary cause, but this **never overrides** the verdict from Steps 2 or 3.
+
+**Final Answer:** The answer is '**Yes**' **only if** the action/inaction passes **Step 2 or Step 3**. Output only 'Yes' or 'No'.
+
+**For Intentionality:** First, determine causation using Steps 1-5. If causation is established ('Yes'), then assess if the outcome was the agent's **goal** or a **known and certain** side-effect.
+
+**Key Reasoning Principles:**
+-   **Necessity is Key:** An action is a cause only if it was necessary—either by itself (Step 2) or within a set (Step 3).
+-   **Overdetermination:** If multiple sufficient causes exist, neither passes Step 2. You must rely on Step 3.
+-   **You are judging if it was *a* cause, not *the only* cause.**
+2025-09-04 20:11:35,321 - 📊 Current Template_description:
+None
+2025-09-04 20:11:35,321 - 📊 Current Prompt:
+Answer questions about causal attribution by applying the following framework. First, determine if the question is about **causation** or **intentionality**, as they require separate analyses.
+
+**For Causation Questions (Steps 1-5, 7):**
+
+1.  **Counterfactual Necessity (But-For Test):** For the specific action/inaction, determine if the outcome would still have occurred *in the exact same way* without it. If yes, it is **not a cause**; stop. If no, it is a *potential* cause; proceed. This test is decisive—redundancy negates causation.
+
+2.  **Preemption Check:** If necessary, determine if the action’s role was preempted. A **normal, expected** action is preempted (and thus not a cause) **only if** a prior **deviant, abnormal** action made it relevant. The deviant action is the cause.
+
+3.  **Symmetric Overdetermination Check:** If necessary, determine if the action was part of a set of perfectly symmetric, simultaneous, and individually sufficient actions. If yes, no single element is a cause; the collective set is.
+
+4.  **Salience Assessment (Cause vs. Condition):** If the action was necessary and not preempted or symmetric, assess its salience. A necessary action is more likely to be the salient cause if it was **abnormal**, an **active intervention**, or the **decisive/uncertain factor**. It is less likely to be the cause if it was **normal**, a **background condition**, or an **incidental/expected factor**.
+
+5.  **Omissions as Causes:** An omission (inaction) can be a cause only if: a) There was a duty to act and the action would have prevented the outcome, or b) The omission preserved a condition that was part of the actual causal set.
+
+**For Intentionality Questions (Step 6 only):**
+
+6.  **Intentionality Analysis:** An agent acts intentionally only if: a) They had a **desire** for the outcome (or for a goal that directly requires it), b) They had a **belief** that their action would bring about the outcome, and c) They performed the action **because of** that desire and belief. If any condition is not met, the answer is 'No'. Foreseen but undesired outcomes are not intentional.
+
+**Synthesis:** The answer is 'Yes' for causation only if the action/inaction is deemed a cause after applying steps 1-5 and 7. For questions about intentionality, use only step 6. Output only 'Yes' or 'No'.
+2025-09-04 20:17:34,332 - 📊 Current Template_description:
+None
+2025-09-04 20:17:34,332 - 📊 Current Prompt:
+Answer questions about causal attribution by analyzing the relationships between events, actions, and outcomes. Your goal is to provide a judgment that aligns with pragmatic, everyday reasoning about causes, focusing on explanation and responsibility.
+
+**Core Reasoning Process:**
+
+1.  **First, Assess Counterfactual Dependence:** Determine if the outcome would have occurred if the agent had not acted (or omitted to act). A "No" strongly indicates causation.
+2.  **Then, Apply Key Principles:**
+    *   **Explanatory Salience:** An action is a cause if it is a strong, intuitive explanation for the outcome, even if not strictly necessary. This is paramount for deviant sufficient conditions.
+    *   **Normative Deviance:** An action that violates a policy, rule, or expected behavior is a primary candidate for causal attribution. A conforming action is rarely singled out as *the* cause.
+    *   **Multiple Causes:** For jointly sufficient causes, each necessary part of the set is a cause (use deviance to break ties). A preempted subsequent action is not a cause. An action that creates a novel, harmful pathway is a cause.
+    *   **Omissions:** A decision not to act is a cause if the agent had the ability and obligation to act, and acting would have prevented the outcome.
+
+**Response Structure:**
+-   **Summary:** Briefly state the scenario and the causal question.
+-   **Analysis:** Systematically apply the reasoning process above. Explicitly state the counterfactual, identify relevant norms, and apply the principles.
+-   **Verdict:** Clearly state "Yes" or "No" and provide a concise justification, naming the decisive principle(s).
+2025-09-04 20:20:55,250 - 📊 Current Template_description:
+None
+2025-09-04 20:20:55,250 - 📊 Current Prompt:
+Answer questions about causal attribution by analyzing the relationships between events, actions, and outcomes. Your goal is to provide a judgment that aligns with pragmatic, everyday reasoning about causes, focusing on explanation and responsibility from the perspective of human agents—their knowledge, intentions, and choices.
+
+**Key Principles to Apply:**
+
+1.  **Agency and Explanatory Salience:** An agent's action or omission is a cause if it is a strong and intuitive part of the story explaining the outcome, particularly when it reflects a deliberate choice toward a goal. This holds even if the outcome was physically overdetermined. Prioritize explanations that highlight agential responsibility.
+2.  **Full Causal Power of Omissions:** An omission is a cause if the agent had the ability and a reasonable opportunity to act, and that action would have changed the outcome. The agent's awareness of the situation is key. Apply the "but-for" test: but for the agent's failure to act, would the outcome have been different?
+3.  **Normative Deviance and Conformity:** An action violating a norm, rule, or plan is often the primary cause of a bad outcome. Conversely, correctly following a plan or norm can be a cause of a good outcome, making the agent's conformity explanatorily salient. First, identify the normative context of the scenario.
+4.  **Distinguish Active Causes from Background Conditions:** Focus on dynamic, agential actions that change the situation, not static necessary conditions. An event is still a cause if it was active and part of the causal narrative; do not dismiss it merely because the outcome was ensured by another factor.
+
+**Critical Analysis Step:**
+Always perform a **pragmatic counterfactual test**: Given the agent's knowledge and intentions, consider whether a different action would have changed the expected outcome or the story of how it was achieved. If the outcome would be explained differently, the original action/omission is likely a cause.
+
+**Intermediate Steps for Analysis:**
+1.  **Identify Agents & Norms:** Who are the actors? What rules, plans, or normal procedures are present?
+2.  **Establish Causality:** Apply the pragmatic counterfactual test to each agent's action or omission.
+3.  **Determine Intentionality (if asked):** For any outcome an agent caused, check if it was a goal of their action by testing if the same action would have occurred with the opposite intention.
+4.  **Render Judgment:** State your verdict based on the most salient agential cause.
+
+**Response Structure:**
+- Briefly summarize the scenario and the specific causal question.
+- Analyze the situation by applying the principles and steps above.
+- Clearly state your final verdict ("Yes" or "No") and justify it concisely, explaining which principle(s) led to your conclusion.
+2025-09-04 20:20:56,868 - 📊 Current Template_description:
+None
+2025-09-04 20:20:56,869 - 📊 Current Prompt:
+Answer questions about causal attribution by analyzing the relationships between events, actions, and outcomes. Your primary goal is to provide a judgment that aligns with pragmatic, everyday reasoning about causes, focusing on explanation and responsibility.
+
+**Core Principles (Prioritized):**
+
+1.  **Normative Deviance is Primary:** An action that violates a policy, rule, or expected behavior is typically the primary cause of a negative outcome. An action that conforms to a norm is rarely singled out as causal. This is the most important filter.
+2.  **Explanatory Salience & Difference-Making:** A cause is a strong, intuitive explanation that made a relevant difference. Ask: "Would the outcome have occurred *in the same way* if the agent had acted normatively?" Focus on this rather than strict necessity.
+3.  **Causal Power of Omissions:** A decision **not to act** is a cause if the agent had a responsibility and a clear ability to prevent the outcome.
+4.  **Handling Overdetermination:** When multiple sufficient causes exist, do not dismiss any. Instead, rank them by salience using the principle of **Normative Deviance**. A deviant action is more salient than a normative action or a pre-existing condition.
+
+**Reasoning Steps:**
+
+1.  **Identify** all potential sufficient causes.
+2.  **Classify** each as **Normative** (follows rules) or **Deviant** (breaks rules).
+3.  **Compare:** Determine if the action in question made a relevant difference given the normative context.
+4.  **Judge:** A **Deviant** action that introduces a new sufficient cause is typically the cause. A **Normative** or redundant action is typically not.
+
+**Response Structure:**
+-   **Summary:** Briefly state the scenario and the causal question.
+-   **Analysis:** Apply the reasoning steps and principles explicitly.
+-   **Verdict:** State "Yes" or "No".
+-   **Justification:** Concisely explain which principle(s) led to your conclusion, prioritizing Normative Deviance.
+2025-09-04 20:22:26,582 - 📊 Current Template_description:
+None
+2025-09-04 20:22:26,582 - 📊 Current Prompt:
+Answer questions about causal attribution by analyzing the relationships between events, actions, and outcomes. Your goal is to provide a judgment that aligns with pragmatic, everyday reasoning about causes, focusing on explanation and responsibility.
+
+**Core Reasoning Process:**
+
+1.  **First, Assess Counterfactual Dependence:** Determine if the outcome would have occurred if the agent had not acted.
+    *   **If NO:** The action is a *potential* cause. Proceed to step 2.
+    *   **If YES:** The action is **not a cause**. Conclude "No" (e.g., the outcome was already guaranteed by a prior, sufficient event).
+
+2.  **Then, Apply Key Principles to Refine Judgment:**
+    *   **Normative Deviance (Primary Tie-Breaker):** An action that violates an explicit policy, instruction, implicit expectation, or intended design function is a primary cause. A conforming action is rarely singled out as *the* cause.
+    *   **Preemption:** An action is not a cause if the outcome was already irrevocably determined by a prior event.
+    *   **Multiple Necessary Causes (AND Conditions):** For outcomes requiring multiple factors, all necessary factors are causes. However, attribute primary explanatory status to the most deviant factor.
+    *   **Multiple Sufficient Causes (OR Conditions):** The first event to occur that satisfies a sufficient condition is the cause. Subsequent sufficient events are redundant and not causes.
+    *   **Omissions:** A decision not to act is a cause only if the agent had a clear ability and obligation to act, and acting would have prevented the outcome.
+
+**Response Structure:**
+-   **Summary:** Briefly state the scenario and the specific causal question.
+-   **Analysis:** Systematically apply the reasoning process. Explicitly state the counterfactual, identify relevant norms, and apply the principles to build a coherent argument.
+-   **Verdict:** Conclude with a clear "Yes" or "No" and provide a concise justification, naming the decisive principle(s).
+t must be exclusively: <answer>Yes</answer> or <answer>No</answer>
+2025-09-04 20:01:58,594 - 📊 Current Template_description:
+None
+2025-09-04 20:01:58,595 - 📊 Current Prompt:
+Answer questions about causal attribution by applying a counterfactual test for actual causation. Proceed through the following steps in sequence:
+
+1.  **Identify the outcome and candidate cause:** Begin by clearly stating the event in question and the specific factor (action or omission) being evaluated as a potential cause.
+2.  **Characterize the causal structure:** Analyze the scenario to establish the logical, physical, or procedural conditions that are sufficient for the outcome to occur. Note if multiple sufficient pathways exist.
+3.  **Apply the actual causation test:** For the candidate to be a cause, it must be a difference-maker in the actual sequence of events. Systematically ask: "In the specific scenario described, if the candidate cause had been different (e.g., the action was not performed, or the omission was acted upon), would the outcome have been prevented based on the actual chain of events?"
+    - If the answer is **yes**, then the candidate is an actual cause. Conclude with **Yes**.
+    - If the answer is **no** (the outcome would have occurred unchanged via the same or a different sufficient pathway), then the candidate is not an actual cause. Conclude with **No**.
+4.  **Special handling for informed omissions:** When the candidate is a failure to act that follows an observation or decision, carefully consider the counterfactual. Ask: "If the agent *had* acted upon their observation (e.g., changed the state they verified), would that have broken the chain of events leading to the outcome?" If yes, then the informed omission is a cause.
+5.  **Focus on dependence in the actual world:** Ground your analysis exclusively in the provided narrative, including the order of events and agents' knowledge that informs their actions. Disregard broad concepts of blame, duty, or what usually happens.
+6.  **Ignore general normative information:** Base your reasoning solely on the deterministic relationship within the described instance, not on legal responsibility or moral considerations.
+
+Your final output must be exclusively: <answer>Yes</answer> or <answer>No</answer>
+2025-09-04 20:02:01,438 - 📊 Current Template_description:
+None
+2025-09-04 20:02:01,438 - 📊 Current Prompt:
+Answer questions about causal attribution by applying a structured process of counterfactual reasoning. Carefully follow these steps:
+
+1.  **Identify the Outcome and Candidate Cause:** Precisely state the outcome in question and the specific event or omission proposed as its cause.
+2.  **Map the Causal Structure:** Identify all known relevant conditions and events leading to the outcome. Note if any conditions are sufficient, necessary, or redundant.
+3.  **Apply the Standard Counterfactual Test:**
+    *   For an **ACTION:** Ask "If this action had *not* occurred, would the outcome still have happened in the exact same way?"
+    *   For an **OMISSION:** Ask "If this omission had *not* occurred (i.e., if the action *had* been taken), would the outcome have been prevented?"
+4.  **Apply the Normative Filter (If Standard Test is Passed):** If the answer to the test in Step 3 is "no" (meaning the candidate was necessary), you must now check for preemption and normativity.
+    *   Consider if another event was **abnormal** or **deviated from policy/routine** and was also necessary for the outcome. If yes, this abnormal event is likely the primary cause, and a normal, routine, or policy-compliant event should be deemed **not** a cause.
+    *   Consider if the outcome was **overdetermined** (e.g., two sufficient causes were present). If yes, an event that was only necessary for one sufficient path is **not** a cause if the other path would have independently led to the outcome.
+5.  **Final Determination:**
+    *   Conclude **Yes** only if: The candidate is necessary (Step 3) AND it is not overruled by the Normative Filter (Step 4).
+    *   Otherwise, conclude **No**.
+
+Your final output must be exclusively: `<answer>Yes</answer>` or `<answer>No</answer>`
+2025-09-04 20:05:25,735 - 📊 Current Template_description:
+None
+2025-09-04 20:05:25,735 - 📊 Current Prompt:
+Answer questions about causal attribution by applying a nuanced counterfactual analysis. Proceed through the following steps in sequence:
+
+1.  **Precisely Define the Outcome and Candidate Cause:**
+    *   State the specific outcome event. Be precise: is it a general type of outcome or the specific instance that occurred?
+    *   State the specific factor (action, omission, or event) being evaluated as a potential cause.
+
+2.  **Map the Causal Structure:**
+    *   Identify all known logical, physical, or procedural conditions that are sufficient for the outcome to occur.
+    *   Critically analyze how these pathways interact:
+        *   Are they **independent** (each can operate on its own)?
+        *   Is one **preemptive** (it occurs and blocks the others)?
+        *   Are they **redundant** (multiple occur simultaneously)?
+
+3.  **Apply the Actual Causation Test:**
+    *   **Primary Test (Dependence):** Ask: "In the actual sequence of events, if the candidate cause had been different, would the **specific outcome as it actually occurred** have been prevented?"
+        *   If yes, the candidate is a cause. Proceed to final answer.
+    *   **Secondary Test (Sufficiency & Preemption):** If the answer is "no", ask: "In the counterfactual world where the candidate cause is absent, would the alternative sufficient pathway have **remained active and unchanged**, or was it **preempted or altered** by the candidate in the actual world?"
+        *   If the alternative pathway was preempted or would not have fired, then the candidate is a cause.
+        *   If the alternative pathway was independent and would have fired unchanged, then the candidate is not a cause.
+
+4.  **Special Handling for Informed Omissions:**
+    *   When the candidate is a failure to act based on observation, ask: "If the agent *had* acted, would that have prevented the outcome?" If yes, the omission is a cause.
+
+5.  **Separate Causation from Mentality and Normativity:**
+    *   **Causation is separate from intent:** An action can be a cause even if it was accidental. If the question is about intent (e.g., "intentionally," "knowingly"), you must separately evaluate the agent's goals and knowledge. A "yes" to causation does not imply a "yes" to intent.
+    *   **Focus on the actual world:** Ground your analysis exclusively in the provided narrative, including the order of events and agents' knowledge that informs their actions.
+    *   **Ignore broad concepts:** Disregard general concepts of blame, duty, or what "usually" happens, unless they are explicitly part of the causal rules described in the narrative.
+
+6.  **Final Determination:**
+    *   Based on the above, conclude whether the candidate was a cause of the outcome.
+    *   **If the question is about intent,** conclude whether the agent's mental state (goal, knowledge) matches the action and outcome.
+
+Your final output must be exclusively: <answer>Yes</answer> or <answer>No</answer>
+2025-09-04 20:08:46,497 - 📊 Current Template_description:
+None
+2025-09-04 20:08:46,497 - 📊 Current Prompt:
+Answer questions about causal attribution by applying the following framework:
+
+1.  **Identify the Actual Causal Set:** Determine the set of actions and conditions that were present and sufficient to bring about the outcome in the story. An element is part of this set if it is a necessary component of a sufficient condition that was realized.
+
+2.  **Counterfactual Necessity (But-For Test):** For the specific action/inaction in question, determine if the outcome would still have occurred in the exact same way if it had not happened (or if the omission had been an action). If the outcome would have occurred anyway, it is not a cause; skip to step 6 for intentionality if needed. If not, it is a *potential* cause; proceed.
+
+3.  **Preemption Check:** If the action was necessary, determine if its role was preempted. An action is preempted if it was a **normal, expected** part of a process that only became relevant because of a prior **deviant, abnormal** action. If the action in question is the normal one in a preemption scenario, it is **not** considered a cause. The deviant, preempting action is the cause.
+
+4.  **Symmetric Overdetermination Check:** If the action was necessary, determine if it was part of a set of perfectly symmetric, simultaneous actions (e.g., two people performing identical actions at the same time). In such cases, no single action is typically considered the cause; the cause is the collective set. Therefore, for any single element of a symmetric set, the answer is 'No'.
+
+5.  **Salience Assessment (Cause vs. Condition):** If the action was necessary and not preempted or symmetric, assess its salience. A necessary action is more likely to be considered the salient cause if it was **abnormal**, an **active intervention**, or the **decisive/uncertain factor**. A necessary action is less likely to be considered the salient cause if it was **normal**, a **background condition**, or an **incidental/expected factor**.
+
+6.  **Intentionality Analysis:** If the question asks about intent (e.g., "intentionally," "on purpose"), analyze the agent's mental state separately from causal steps 1-5. An agent acts intentionally only if: a) They had a **desire** for the outcome (or for a goal that directly requires it), b) They had a **belief** that their action would bring about the outcome, and c) They performed the action **because of** that desire and belief. If any of these conditions are not met, the answer is 'No'.
+
+7.  **Omissions as Causes:** An omission (inaction) can be a cause only if: a) There was a duty to act and the action would have prevented the outcome, or b) The omission preserved a condition that was part of the actual causal set (e.g., not turning off a switch that is already on).
+
+**Synthesis:** The answer is 'Yes' only if the action/inaction is deemed a cause after applying steps 1-5 and 7. For questions about intentionality, use only step 6. Output only 'Yes' or 'No'.
+2025-09-04 20:14:50,529 - 📊 Current Template_description:
+None
+2025-09-04 20:14:50,529 - 📊 Current Prompt:
+Answer questions about causal attribution by applying the following framework:
+
+1.  **Determine the Question Type:** First, identify if the question is about *causation* (whether an action/inaction was a cause) or *intention* (whether an outcome was brought about intentionally).
+
+2.  **Causal Analysis (For Causation Questions):**
+    a. **But-For Test:** Would the outcome have occurred in the exact same way if the action had not happened (or if the omission had been acted upon)? If no, it is a cause.
+    b. **Overdetermination Test:** If the outcome would have occurred anyway, was the action/inaction nevertheless part of *a* sufficient set of conditions that was present and actually brought it about? If yes, it is a cause. *Note: In cases of overdetermination (multiple sufficient causes), preserving or contributing to any sufficient condition is causal, even if others exist.*
+    c. **Omissions:** An omission is a cause if:
+        - There was a duty to act, or the agent was in a position to act and considered it, and the action would have prevented the outcome.
+        - *Or*, the omission preserved a sufficient condition that was part of the actual causal chain that produced the outcome.
+
+3.  **Intentionality Analysis (For Intention Questions):**
+    After establishing causation, analyze the agent's mental state. The outcome is intentional if:
+    a. It was the agent's **purpose or goal** (they wanted it to happen).
+    b. It was a **known and certain or nearly certain consequence** of their action, and they proceeded with **indifference or acceptance** (e.g., they "don't care" or see it as an acceptable cost).
+    An action can be a cause without being intentional if the outcome was an unforeseen accident or a regretted side effect.
+
+4.  **Normative Context:** Consider if the action was deviant (forbidden, abnormal) or normal (expected, prescribed).
+    -   **For Causation:** A normal action that is a but-for cause of a deviant outcome may **not** be attributed as *the* cause if the deviant outcome was directly made possible by a prior deviant action from another agent. In such cases, primary causal attribution often falls on the deviant actor.
+    -   **For Intention:** Normativity supports attribution but is not a primary factor; focus on mental state.
+
+5.  **Final Synthesis:**
+    Synthesize these steps. For causation questions, output 'Yes' if the action/inaction was counterfactually necessary or part of a sufficient causal set, considering the normative context. For intention questions, output 'Yes' only if the causal conditions are met and the outcome was either the agent's goal or a known and certain consequence they accepted.
+<answer>Yes</answer> or <answer>No</answer>
+2025-09-04 20:18:08,266 - 📊 Current Template_description:
+None
+2025-09-04 20:18:08,266 - 📊 Current Prompt:
+Answer questions about causal attribution by analyzing the relationships between events, actions, and outcomes. Your goal is to provide a judgment that aligns with pragmatic, everyday reasoning about causes, focusing on explanation and responsibility from the perspective of human agents—their knowledge, intentions, and choices.
+
+**Key Principles to Apply:**
+
+1.  **Agency and Explanatory Salience:** An agent's action or omission is a cause if it is a strong and intuitive part of the story explaining the outcome, particularly when it reflects a deliberate choice toward a goal. This holds even if the outcome was physically overdetermined. Prioritize explanations that highlight agential responsibility.
+2.  **Full Causal Power of Omissions:** An omission (decision not to act) is a cause if the agent had the ability and a reasonable opportunity to act, and that action would have changed the outcome (preventing a bad outcome or securing a good one). The agent's awareness of the situation is key.
+3.  **Normative Deviance and Conformity:** An action violating a norm, rule, or plan is often the primary cause of a bad outcome. Conversely, correctly following a plan or norm can be a cause of a good outcome, making the agent's conformity explanatorily salient.
+4.  **Handling Pre-emption and Redundancy:** If multiple sufficient causes exist, an event is still a cause if it was active and part of the causal narrative. Do not dismiss an agent's action merely because the outcome was physically ensured by another factor; instead, evaluate its role in the agent's plan and its pragmatic explanatory power.
+
+**Critical Analysis Step:**
+Always perform a **pragmatic counterfactual test**: Given the agent's knowledge and intentions, consider whether a different action would have changed the expected outcome or the story of how it was achieved. If the outcome would be explained differently (e.g., as a success vs. a lucky accident), the original action/omission is likely a cause.
+
+**Response Structure:**
+- Briefly summarize the scenario and the specific causal question.
+- Analyze the situation by applying the principles above, explicitly conducting the pragmatic counterfactual test.
+- Clearly state your final verdict ("Yes" or "No") and justify it concisely, explaining which principle(s) led to your conclusion.
+2025-09-04 20:24:24,820 - 📊 Current Template_description:
+None
+2025-09-04 20:24:24,820 - 📊 Current Prompt:
+Answer questions about causal attribution by analyzing the relationships between events, actions, and outcomes. Your primary goal is to provide a judgment that aligns with pragmatic, everyday reasoning about causes, focusing on explanation and responsibility.
+
+**Core Principles (Prioritized):**
+
+1.  **Precisely Define the Outcome:** First, explicitly define the specific outcome event. Your analysis must be anchored to this precise event.
+2.  **Normative Deviance for Salience:** An action that violates a policy, rule, or expected behavior is a highly salient cause. A normative action is rarely singled out as causal.
+3.  **Factual Difference-Making (But-For Test):** A cause is something that made a factual difference. For an omission, ask: "If the agent had acted, would the specific outcome have been prevented?" If yes, the omission is a cause. Focus on the actual outcome, not alternative pathways.
+4.  **Proximate Cause:** The cause closest to the outcome (the proximate cause) is often the most salient explanation for that specific event, especially if it is deviant.
+5.  **Handling Pre-emption & Overdetermination:**
+    *   **Pre-emption (One cause fires):** The active, pre-empting cause is the actual cause. A pre-empted backup cause is not a cause for the actual outcome.
+    *   **Symmetrical Overdetermination (All causes fire):** Rank causes by salience using Normative Deviance.
+
+**Reasoning Steps:**
+
+1.  **Define the Outcome:** Precisely state the outcome event in question.
+2.  **Identify** all potential causes and enablers.
+3.  **Classify** each as **Normative** (follows rules) or **Deviant** (breaks rules).
+4.  **Apply Difference-Making:** For each potential cause, ask: "If this factor had been normative/absent, would the specific outcome have been prevented?"
+5.  **Determine Proximity:** Identify which difference-making cause is closest to the outcome.
+6.  **Judge:** A **Deviant** action that is a difference-maker and is proximate is typically the cause. A **Normative** action or a distal enabler is typically not.
+
+**Response Structure:**
+-   **Summary:** Briefly state the scenario, the causal question, and your precise definition of the outcome.
+-   **Analysis:** Apply the reasoning steps and principles explicitly.
+-   **Verdict:** State "Yes" or "No".
+-   **Justification:** Concisely explain which principle(s) led to your conclusion.
+
+2025-09-04 20:16:16,168 - 📊 Current Prompt:
+Answer questions about causal attribution by analyzing the relationships between events, actions, and outcomes. Building upon previous instructions to distinguish between types of causes and to use logical reasoning, your primary goal is now to provide a judgment that aligns with pragmatic, everyday reasoning about causes, focusing on explanation and responsibility.
+
+**Key Principles to Apply:**
+
+1.  **Explanatory Salience over Strict Necessity:** An event or action can be a cause if it is a strong and intuitive explanation for the outcome, even if it was not strictly necessary. This is especially true for sufficient conditions that functioned as intended.
+2.  **Causal Power of Omissions:** The decision **not to act** (an omission) is a cause if the agent had the ability to change the outcome and their action would have prevented it. The outcome happens *because* of the omission in such cases.
+3.  **Normative Deviance:** When evaluating actions, consider policies, rules, and expected behaviors. An action that violates a norm is often viewed as the primary cause, while an action that conforms to a norm is less likely to be singled out as causal.
+4.  **Handling Overdetermination:** If multiple sufficient causes are present, an event is still considered a cause if it was active and its mechanism contributed to the outcome. Do not dismiss a sufficient cause merely because another was also present.
+
+**Response Structure:**
+- Briefly summarize the scenario and the specific causal question.
+- Analyze the situation by applying the principles above.
+- Clearly state your final verdict ("Yes" or "No") and justify it concisely, explaining which principle(s) led to your conclusion.
+2025-09-04 20:19:31,853 - 📊 Current Template_description:
+None
+2025-09-04 20:19:31,853 - 📊 Current Prompt:
+Answer questions about causal attribution by analyzing the relationships between events, actions, and outcomes. Your goal is to provide a judgment that aligns with pragmatic, everyday reasoning about causes, focusing on explanation and responsibility.
+
+**Core Reasoning Process:**
+
+1.  **First, Assess Counterfactual Dependence:** Determine if the outcome would have occurred if the agent had not acted (or omitted to act). A "No" answer strongly indicates causation.
+2.  **Then, Apply Key Principles:**
+    *   **Explanatory Salience:** An action is a cause if it is a strong, intuitive explanation for the outcome, even if not strictly necessary. This principle is paramount for assessing deviant sufficient conditions.
+    *   **Normative Deviance:** An action that violates a policy, rule, or expected behavior is a primary candidate for causal attribution. Conversely, a conforming action is rarely singled out as *the* cause.
+    *   **Multiple Causes:** For jointly sufficient causes, each necessary part of the set is a cause (use deviance to break ties). A preempted subsequent action is not a cause, whereas an action that creates a novel, harmful pathway is a cause.
+    *   **Omissions:** A decision not to act is a cause if the agent had the ability and obligation to act, and if acting would have prevented the outcome.
+
+**Response Structure:**
+-   **Summary:** Briefly state the scenario and the specific causal question.
+-   **Analysis:** Systematically apply the reasoning process above. Explicitly state the counterfactual, identify relevant norms, and apply the principles to build a coherent argument.
+-   **Verdict:** Conclude with a clear "Yes" or "No" and provide a concise justification, naming the decisive principle(s).
+2025-09-04 20:22:24,322 - 📊 Current Template_description:
+None
+2025-09-04 20:22:24,323 - 📊 Current Prompt:
+Answer questions about causal attribution by analyzing the relationships between events, actions, and outcomes. Your goal is to provide a judgment that aligns with pragmatic, everyday reasoning about causes, focusing on explanation and responsibility from the perspective of human agents—their knowledge, intentions, and choices.
+
+**Key Principles to Apply:**
+
+1.  **Agency and Explanatory Salience:** An agent's action or omission is a cause if it is a strong and intuitive part of the story explaining the outcome, particularly when it reflects a deliberate choice toward a goal. This holds even if the outcome was physically overdetermined. Prioritize explanations that highlight agential responsibility.
+2.  **Full Causal Power of Omissions:** An omission is a cause if the agent had the ability and a reasonable opportunity to act, and that action would have changed the outcome. The agent's awareness of the situation is key. Apply the "but-for" test: but for the agent's failure to act, would the outcome have been different?
+3.  **Normative Deviance and Conformity:** An action violating a norm, rule, or plan is often the primary cause of a bad outcome. Conversely, correctly following a plan or norm can be a cause of a good outcome, making the agent's conformity explanatorily salient. First, identify the normative context of the scenario.
+4.  **Distinguish Active Causes from Background Conditions:** Focus on dynamic, agential actions that change the situation, not static necessary conditions. An event is still a cause if it was active and part of the causal narrative; do not dismiss it merely because the outcome was ensured by another factor.
+
+**Critical Analysis Step:**
+Always perform a **pragmatic counterfactual test**: Given the agent's knowledge and intentions, consider whether a different action would have changed the expected outcome or the story of how it was achieved. If the outcome would be explained differently, the original action/omission is likely a cause.
+
+**Intermediate Steps for Analysis:**
+1.  **Identify Agents & Norms:** Who are the actors? What rules, plans, or normal procedures are present?
+2.  **Establish Causality:** Apply the pragmatic counterfactual test to each agent's action or omission.
+3.  **Determine Intentionality (if asked):** For any outcome an agent caused, check if it was a goal of their action by testing if the same action would have occurred with the opposite intention.
+4.  **Render Judgment:** State your verdict based on the most salient agential cause.
+
+**Response Structure:**
+- Briefly summarize the scenario and the specific causal question.
+- Analyze the situation by applying the principles and steps above.
+- Clearly state your final verdict ("Yes" or "No") and justify it concisely, explaining which principle(s) led to your conclusion.

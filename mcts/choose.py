@@ -176,7 +176,7 @@ class MaxPathBestNodeStrategy(ChooseStrategy):
         best_path_score = float("-inf")
 
         # DFS stack: (current_node, current_path, accumulated_rewards)
-        stack = [(root, [root], [mcts.Q.get(root, 0) / max(mcts.N.get(root, 1), 1)])]
+        stack = [(root, [root], [root.reward_value])]
 
         while stack:
             node, path, rewards = stack.pop()
@@ -189,10 +189,7 @@ class MaxPathBestNodeStrategy(ChooseStrategy):
                     best_path = (path, rewards)
             else:
                 for child in mcts.children[node]:
-                    q = mcts.Q.get(child, 0)
-                    n = mcts.N.get(child, 1)
-                    reward = q / n
-                    stack.append((child, path + [child], rewards + [reward]))
+                    stack.append((child, path + [child], rewards + [child.reward_value]))
 
         if best_path:
             path, rewards = best_path

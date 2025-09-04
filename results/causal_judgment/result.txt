@@ -1,28 +1,30 @@
 🔍 Task: causal_judgment
 ✅ Best Prompt Template:
-{'type': 'task_instruction', 'style': 'Detailed'}
-{'type': 'role', 'role_template': 'Business Expert (Strategic)'}
-{'type': 'expert_knowledge', 'enabled': False}
-{'type': 'guidance', 'enabled': False}
-{'type': 'few_shot_examples', 'num_examples': 0, 'ordering': 'Random', 'format': 'Input-Analysis-Output'}
-{'type': 'constraint', 'enabled': True, 'format': 'Paragraph'}
-{'type': 'caution', 'enabled': True, 'style': 'Gentle reminder'}
-{'type': 'answer_style', 'style': 'Final answer only'}
-{'type': 'free_block', 'content': 'You can freely edit this block.'}
+
 
 ✅ Best Prompt:
-You are a Business Expert (Strategic) tasked with analyzing causal relationships in complex scenarios. Your role is to assess whether a specific action or event directly led to a particular outcome, based on the information provided. Focus on identifying clear cause-and-effect links while considering relevant constraints such as intent, responsibility, and sequence of events. Avoid assumptions beyond what is explicitly stated. 
+Answer questions about causal attribution by analyzing the relationships between events, actions, and outcomes. Your goal is to provide a judgment that aligns with pragmatic, everyday reasoning about causes, focusing on explanation and responsibility.
 
-In each case, determine whether the specified action caused the observed result by evaluating the factual chain of events. Pay close attention to who was responsible, what actions were taken, and whether any external factors influenced the outcome. Consider both direct and indirect contributions, but only conclude causation when the evidence supports it unambiguously.
+**Core Reasoning Process:**
 
-Your answer must be concise and precise. Provide only the final determination: either "Yes" or "No", based on whether the described action caused the outcome. Do not include explanations, justifications, or additional text—your response should be strictly limited to one of the two options.
+1.  **First, Assess Counterfactual Dependence:** Determine if the outcome would have occurred if the agent had not acted (or omitted to act). A "No" strongly indicates causation.
+2.  **Then, Apply Key Principles:**
+    *   **Explanatory Salience:** An action is a cause if it is a strong, intuitive explanation for the outcome, even if not strictly necessary. This is paramount for deviant sufficient conditions.
+    *   **Normative Deviance:** An action that violates a policy, rule, or expected behavior is a primary candidate for causal attribution. A conforming action is rarely singled out as *the* cause.
+    *   **Multiple Causes:** For jointly sufficient causes, each necessary part of the set is a cause (use deviance to break ties). A preempted subsequent action is not a cause. An action that creates a novel, harmful pathway is a cause.
+    *   **Omissions:** A decision not to act is a cause if the agent had the ability and obligation to act, and acting would have prevented the outcome.
 
-📊 Original ZeroShot Test Accuracy: 0.62
-📊 Original FewShot Test Accuracy: 0.62
-📊 Original Cot_FewShot Test Accuracy: 0.7
-📊 Cot ZeroShot Test Accuracy: 0.67
-📊 Cot FewShot Test Accuracy: 0.69
-📊 Cot Cot_FewShot Test Accuracy: 0.67
-📊 SA Test Accuracy: 0.67
+**Response Structure:**
+-   **Summary:** Briefly state the scenario and the causal question.
+-   **Analysis:** Systematically apply the reasoning process above. Explicitly state the counterfactual, identify relevant norms, and apply the principles.
+-   **Verdict:** Clearly state "Yes" or "No" and provide a concise justification, naming the decisive principle(s).
 
-⏱️ Time Elapsed: 221 min 3 sec (13263.01 seconds)
+📊 Original ZeroShot Test Accuracy: 0.61
+📊 Original FewShot Test Accuracy: 0.61
+📊 Original Cot_FewShot Test Accuracy: 0.6
+📊 Cot ZeroShot Test Accuracy: 0.64
+📊 Cot FewShot Test Accuracy: 0.67
+📊 Cot Cot_FewShot Test Accuracy: 0.64
+📊 SA Test Accuracy: 0.64
+
+⏱️ Time Elapsed: 132 min 21 sec (7941.26 seconds)

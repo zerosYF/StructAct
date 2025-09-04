@@ -9,19 +9,18 @@ class SearchConfig:
     def __init__(self):
         self.shuffle_seed: int = 42        # Random seed for data shuffling
         # MCTS search control
-        self.exploration_weight: float = 1.5   # Exploration factor in UCT formula
+        self.exploration_weight: float = 2.5   # Exploration factor in UCT formula
         self.mcts_iter_num_max: int = 10          # Number of iterations in MCTS main loop
         self.mcts_iter_num_min: int = 0           # Minimum MCTS iterations
         self.depth_threshold: int = 5          # Maximum search depth
         self.width_threshold: int = 3          # Number of children per expanded node
         # Node expansion and rollout config
-        self.batch_size: int = 10              # Batch size for training
+        self.batch_size: int = 5              # Batch size for training
         self.expand_num_min: int = 0               # Number of nodes to expand per iteration (for parallelism)
         self.expand_num_max: int = 3               # Maximum number of nodes to expand
         assert self.expand_num_max <= self.width_threshold
         self.rollout_length_min: int = 1          # Minimum rollout path depth
         self.rollout_length_max: int = 4           # Rollout path depth (fixed-length simulation)
-        self.rollout_width: int = 1
         self.rollout_early_stop_rounds: int = 3
         self.rollout_early_stop_delta: float = 0.01
 
@@ -32,12 +31,14 @@ class SearchConfig:
         self.rnn_rl_reward_scale = 10          # Reward scale (reduced from 100 to avoid large value loss)
 
         # Multi-threaded reward evaluation
-        self.reward_thread_num: int = 8       # Number of threads for reward evaluation
+        self.reward_thread_num: int = 3       # Number of threads for reward evaluation
 
         # Debugging indicators (for tracing internal states)
         self.rollout_idx: int = 1              # Current rollout path index
         self.choose_idx: int = 2               # Current chosen action index
         self.uct_idx: int = 0                  # Current UCT path index
+
+        self.use_sample_pool: bool = True
 
         # Model configuration
         # self.model_name: str = "zhiyan3"
