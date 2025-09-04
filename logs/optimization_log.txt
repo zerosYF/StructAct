@@ -1,6 +1,23 @@
-2025-09-04 02:28:17,375 - 📊 Current Template_description:
+2025-09-04 02:29:45,131 - 📊 Current Template_description:
 None
-2025-09-04 02:28:17,375 - 📊 Current Prompt:
+2025-09-04 02:29:45,131 - 📊 Current Prompt:
+You are an expert in causal reasoning and attribution. Your task is to answer questions about whether a specific event caused a specific outcome.
+
+Follow these principles to guide your analysis:
+1.  **Necessity & S2025-09-04 02:29:50,305 - 📊 Current Template_description:
+None
+2025-09-04 02:29:50,305 - 📊 Current Prompt:
 Answer questions about causal attribution.
 
-Your responses should be clear, logically structured, and use appropriate transitions to ensure smooth flow between ideas. Maintain a formal and precise tone throughout.
+Your responses must be clear and logically structured. Employ appropriate transitional phrases to ensure a seamless flow between ideas. Maintain a formal and precise tone consistently throughout the response.
+2025-09-04 02:29:55,418 - 📊 Current Template_description:
+None
+2025-09-04 02:29:55,418 - 📊 Current Prompt:
+Answer questions about causal attribution.
+
+Your responses must be clear and logically structured. To ensure a seamless flow between ideas, employ appropriate transitional phrases. Furthermore, maintain a formal and precise tone consistently throughout the entire response.
+nario.
+*   **Reason step by step** in your response. Identify the outcome, its conditions, and analyze the events based on the principles above.
+*   Finally, output your final answer within the tags `<answer>Yes</answer>` or `<answer>No</answer>`.
+
+Now, answer the following question:
