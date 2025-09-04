@@ -1,7 +1,7 @@
 from program.base_action import OptimizeAction
 from search.evaluator import PromptEvaluator
 from mcts.node import Node, Step
-from structs.prompt_template import PromptTemplate
+from program.sample_pools import DynamicSamplePool
 from typing import List, Set
 from logger import logger
 
@@ -13,7 +13,8 @@ class PromptNode(Node):
                  prompt: str, 
                  evaluator: PromptEvaluator, 
                  depth: int, 
-                 max_depth: int):
+                 max_depth: int,
+                 sample_pool: DynamicSamplePool = None):
         
         self.type = prompt
         self.action_set: Set[OptimizeAction] = action_set
@@ -28,6 +29,7 @@ class PromptNode(Node):
         self.depth = depth
         self.max_depth = max_depth
         self.reward_value: float = self.reward()
+        self.pool = sample_pool
 
     def __hash__(self):
         return hash(tuple(self.action_seq))
@@ -46,7 +48,11 @@ class PromptNode(Node):
 
     def take_action(self, action: OptimizeAction, step_type:Step):
         # Then apply the strategy-level semantic transformation.
-        new_prompt = action.do(current_prompt=self.current_prompt, trajectory_prompts=self.trajectory_prompts)
+        new_prompt = action.do(
+            current_prompt=self.current_prompt, 
+            trajectory_prompts=self.trajectory_prompts, 
+            sample_pool=self.pool
+            )
         logger.info(f"📊 Current Prompt:\n{new_prompt}")
         return PromptNode(
             action_set=self.action_set,
@@ -56,6 +62,7 @@ class PromptNode(Node):
             evaluator=self.evaluator,
             depth=self.depth + 1,
             max_depth=self.max_depth,
+            sample_pool=self.pool
         )
 
     def is_terminal(self):
@@ -76,6 +83,7 @@ class PromptNode(Node):
             evaluator=self.evaluator,
             depth=self.depth,
             max_depth=self.max_depth,
+            sample_pool=self.pool
         )
     
     def q_value(self, last_q, rollout_reward):

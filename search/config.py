@@ -21,7 +21,6 @@ class SearchConfig:
         assert self.expand_num_max <= self.width_threshold
         self.rollout_length_min: int = 1          # Minimum rollout path depth
         self.rollout_length_max: int = 4           # Rollout path depth (fixed-length simulation)
-        self.rollout_width: int = 1
         self.rollout_early_stop_rounds: int = 3
         self.rollout_early_stop_delta: float = 0.01
 
@@ -38,6 +37,8 @@ class SearchConfig:
         self.rollout_idx: int = 1              # Current rollout path index
         self.choose_idx: int = 2               # Current chosen action index
         self.uct_idx: int = 0                  # Current UCT path index
+
+        self.use_sample_pool: bool = True
 
         # Model configuration
         # self.model_name: str = "zhiyan3"

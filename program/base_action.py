@@ -27,7 +27,7 @@ class OptimizeAction(ABC):
     @abstractmethod
     def do(self, 
            current_prompt: str, trajectory_prompts: list[str] = None,  
-           template_description: str = None) -> str:
+           template_description: str = None, sample_pool=None) -> str:
         """
         Args:
             current_prompt: the current prompt string
@@ -48,7 +48,7 @@ class StructureSyncAction(OptimizeAction):
         super().__init__(task, name)
         self.rewriter_model: Model = getEvalModel()
 
-    def do(self, current_prompt, trajectory_prompts, template_description):
+    def do(self, current_prompt, trajectory_prompts, template_description, sample_pool=None):
 
         # Sample examples for filling content (e.g., few-shot, constraints, etc.)
         samples = self.task.sample_train_mcts(self.task.config.batch_size)
@@ -75,7 +75,7 @@ class StructureSyncAction(OptimizeAction):
         rewritten_prompt = self.rewriter_model.api_call(rewrite_prompt)
         end_time = time.time()
         logger.info(f"⏱️ [StructureSyncAction] LLM api calling/infer time: {end_time - start_time:.2f} seconds")
-        super().do(rewritten_prompt, trajectory_prompts, template_description)
+        super().do(rewritten_prompt, trajectory_prompts, template_description, sample_pool)
         return rewritten_prompt
 
     

@@ -12,6 +12,7 @@ from mcts.rollout import get_rollout_strategy
 from mcts.choose import get_choose_strategy
 from program.strategy_actions import define_full_actions
 from search.search import SearchController
+from program.sample_pools import DynamicSamplePool
 from logger import logger
 import os
 import json
@@ -23,6 +24,7 @@ class MCTSearchController(SearchController):
                  task: TaskBase):
         super().__init__(evaluator, config, task)
         self.actions: Set[OptimizeAction] = define_full_actions(task)
+        self.pool: DynamicSamplePool = DynamicSamplePool(max_size=1000, low=0.5, high=0.9)
 
     def search(self):
         init_prompt = self.task.origin_prompt
@@ -32,6 +34,7 @@ class MCTSearchController(SearchController):
         return "", optimized_prompt
     
     def _mcts_workflow(self, init_prompt: str):
+        self.pool.initialize(self.task.get_train_mcts(), self.evaluator, init_prompt)
         root_node = PromptNode(
                 action_set=self.actions,
                 action_seq=[],
@@ -40,6 +43,7 @@ class MCTSearchController(SearchController):
                 evaluator=self.evaluator,
                 depth=0,
                 max_depth=self.config.depth_threshold,
+                sample_pool=self.pool
             )
 
         mcts_iters = self.config.mcts_iter_num_max
@@ -94,7 +98,7 @@ class MCTSearchController(SearchController):
         }
 
         os.makedirs("logs", exist_ok=True)
-        with open(f"logs/{self.task.name}/mcts_full_tree.json", "w", encoding="utf-8") as f:
+        with open(f"logs/{self.task.name}_mcts_full_tree.json", "w", encoding="utf-8") as f:
             json.dump(result_dict, f, indent=2, ensure_ascii=False)
 
         logger.info("✅ Full MCTS tree has been saved to logs/mcts_full_tree.json")

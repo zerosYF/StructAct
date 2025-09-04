@@ -19,6 +19,9 @@ class DefaultExpandStrategy(ExpandStrategy):
         self.config = config
 
     def expand(self, node: Node, mcts, expand_width) -> List[Node]:
+        if not node.is_terminal():
+            return []
+
         if node not in mcts.children:
             mcts.children[node] = []
             mcts.untried_actions[node] = node.get_untried_actions()

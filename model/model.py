@@ -18,7 +18,6 @@ class Model:
             messages=[
                 {"role": "user", "content": input}
             ],
-            seed=42,
         )
         return response.choices[0].message.content
 

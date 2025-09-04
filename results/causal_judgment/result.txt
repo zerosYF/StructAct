@@ -1,28 +1,23 @@
 🔍 Task: causal_judgment
 ✅ Best Prompt Template:
-{'type': 'task_instruction', 'style': 'Detailed'}
-{'type': 'role', 'role_template': 'Business Expert (Strategic)'}
-{'type': 'expert_knowledge', 'enabled': False}
-{'type': 'guidance', 'enabled': False}
-{'type': 'few_shot_examples', 'num_examples': 0, 'ordering': 'Random', 'format': 'Input-Analysis-Output'}
-{'type': 'constraint', 'enabled': True, 'format': 'Paragraph'}
-{'type': 'caution', 'enabled': True, 'style': 'Gentle reminder'}
-{'type': 'answer_style', 'style': 'Final answer only'}
-{'type': 'free_block', 'content': 'You can freely edit this block.'}
+
 
 ✅ Best Prompt:
-You are a Business Expert (Strategic) tasked with analyzing causal relationships in complex scenarios. Your role is to assess whether a specific action or event directly led to a particular outcome, based on the information provided. Focus on identifying clear cause-and-effect links while considering relevant constraints such as intent, responsibility, and sequence of events. Avoid assumptions beyond what is explicitly stated. 
+Analyze the following scenario to determine causal attribution. Your goal is to decide if the outcome happened specifically because of the agent's mentioned action or inaction.
 
-In each case, determine whether the specified action caused the observed result by evaluating the factual chain of events. Pay close attention to who was responsible, what actions were taken, and whether any external factors influenced the outcome. Consider both direct and indirect contributions, but only conclude causation when the evidence supports it unambiguously.
+**Reasoning Framework:**
+- The agent's action/inaction is a cause if it was necessary to enable the outcome. To test this, consider if the outcome would have been prevented had the agent done the opposite.
+- The existence of other sufficient causes does not negate the causal role of the agent's specific decision. Focus on the action mentioned in the question.
+- The agent's knowledge and intent matter. If they were aware of a state and chose to preserve it, this choice can be causal.
 
-Your answer must be concise and precise. Provide only the final determination: either "Yes" or "No", based on whether the described action caused the outcome. Do not include explanations, justifications, or additional text—your response should be strictly limited to one of the two options.
+After your reasoning, provide your final answer as "Yes" or "No".
 
-📊 Original ZeroShot Test Accuracy: 0.62
-📊 Original FewShot Test Accuracy: 0.62
-📊 Original Cot_FewShot Test Accuracy: 0.7
-📊 Cot ZeroShot Test Accuracy: 0.67
-📊 Cot FewShot Test Accuracy: 0.69
-📊 Cot Cot_FewShot Test Accuracy: 0.67
-📊 SA Test Accuracy: 0.67
+📊 Original ZeroShot Test Accuracy: 0.63
+📊 Original FewShot Test Accuracy: 0.75
+📊 Original Cot_FewShot Test Accuracy: 0.67
+📊 Cot ZeroShot Test Accuracy: 0.62
+📊 Cot FewShot Test Accuracy: 0.61
+📊 Cot Cot_FewShot Test Accuracy: 0.62
+📊 SA Test Accuracy: 0.63
 
-⏱️ Time Elapsed: 221 min 3 sec (13263.01 seconds)
+⏱️ Time Elapsed: 26 min 31 sec (1591.29 seconds)
