@@ -200,29 +200,9 @@ class SuccessDrivenAction(OptimizeAction):
         super().do(rewritten_prompt, trajectory_prompts, sample_pool=sample_pool)
         return rewritten_prompt
 
-class CohesionImprover(OptimizeAction):
-    """Improve the transitions and cohesion between different prompt blocks."""
-    def __init__(self, task, name="CohesionImprover"):
-        super().__init__(task, name)
-        self.rewriter_model = rewriter_model
-
-    def do(self, current_prompt, trajectory_prompts, sample_pool=None):
-
-        rewriting_input = (
-            f"Current prompt:\n{current_prompt}\n\n"
-            f"There are a list of former prompts including the current prompt, and each prompt is modified from its former prompts:\n{trajectory_prompts}\n"
-            "Please improve the linguistic cohesion and transitions. "
-            "The new prompts should consider the list of prompts and evolve based on the current prompt."
-            "Only output the revised prompt."
-        )
-        rewritten_prompt = self.rewriter_model.api_call(rewriting_input)
-        super().do(rewritten_prompt, trajectory_prompts, sample_pool=sample_pool)
-        return rewritten_prompt
-
     
 def define_full_actions(task: TaskBase):
     return [
         FailureDrivenAction(task),
         SuccessDrivenAction(task),
-        CohesionImprover(task),
     ]
