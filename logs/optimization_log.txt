@@ -1,4 +1,521 @@
-2025-09-04 11:24:15,194 - 📊 Current Template_description:
+2025-09-04 13:24:56,231 - 📊 Current Template_description:
 None
-2025-09-04 11:24:15,194 - 📊 Current Prompt:
-Answer the following questions about causal attribution. Your responses should demonstrate a clear understanding of the principles involved, including but not limited to distinguishing between necessary and sufficient causes, identifying correlation versus causation, and recognizing common cognitive biases that affect attributive reasoning. Support your analysis with logical coherence and, where applicable, relevant theoretical frameworks.
+2025-09-04 13:24:56,231 - 📊 Current Prompt:
+You are an expert in causal reasoning. Your task is to answer questions about whether one event caused another.
+
+**Instructions:**
+1.  **Base your reasoning on the actual events that occurred,** not only on counterfactual scenarios. A counterfactual (what if X hadn't happened?) can be useful, but it is not the sole determinant of causation.
+2.  **Use common-sense intuition.** Your answers should align with how people typically use the wor2025-09-04 13:25:07,315 - 📊 Current Template_description:
+None
+2025-09-04 13:25:07,315 - 📊 Current Prompt:
+Answer questions about causal attribution by rigorously applying the following causal reasoning framework, which has been developed and refined through previous iterations:
+
+**Step 1: Identify the Causal Mechanism**
+First, determine the precise rule governing the outcome. What are the necessary and sufficient conditions for it to occur?
+
+**Step 2: Apply the Counterfactual (But-For) Test**
+Next, ask: "Would the outcome have happened if the specific action in question had NOT occurred?"
+-2025-09-04 13:26:02,397 - 📊 Current Template_description:
+None
+2025-09-04 13:26:02,397 - 📊 Current Prompt:
+Answer the following question by performing a rigorous, step-by-step causal analysis. Your response must be structured as follows:
+
+1.  **Deconstruct the Scenario:** Summarize the key facts, rules, and conditions governing the 2025-09-04 13:26:51,194 - 📊 Current Template_description:
+None
+2025-09-04 13:26:51,195 - 📊 Current Prompt:
+You are an expert in causal and intentional reasoning. Your task is to answer questions about whether one event caused another or whether an outcome was intentionally brought about.
+
+**Instructions:**2025-09-04 13:27:10,064 - 📊 Current Template_description:
+None
+2025-09-04 13:27:10,064 - 📊 Current Prompt:
+You are an expert in causal and intentional reasoning. Your task is to answer questions about whether one event caused another or whether an outcome was intentionally brought about.
+
+**Instructions:**
+1.  **Base your analysis on the actual events that occurred.** While counterfactual thinking ("what if X hadn't happened?") can be informative, it is not the sole basis for your judgment.
+2.  **Apply common-sense intuition.** Your answers must align with how people typically use words like "cause" and "intentionally" in everyday language and standard benchmarks.
+3.  **Rule for Overdetermination:** If an outcome has multiple sufficient causes and they all occur, then each one is considered a cause. (2025-09-04 13:28:58,524 - 📊 Current Template_description:
+None
+2025-09-04 13:28:58,524 - 📊 Current Prompt:
+You are an expert in causal and intentional reasoning. Your task is to answer questions about whether one event caused another or whether an outcome was intentionally brought about.
+
+**Instructions:**
+1.  **Identify Question Type:** First determine if the question is about causation or intention.
+2.  **Base Analysis on Actual Events:** List relevant actual events in chronological order. Do not rely on counterfactuals as the sole basis for judgment.
+3.  **Apply Common-Sense Intuition:** Align with everyday usage of "cause" and "intentionally."
+4.  **For Causation Questions:**
+    - Check if the event was necessary and/or sufficient for the outcome
+    - Apply Overdetermination Rule: If multiple sufficient causes occur, each is a cause
+    - Evaluate Salience: Favor proximate, abnormal events over distant, normal conditions
+    - Consider Normative Frameworks: Actions violating rules/policies are more likely causes
+    - Check for Intervening Causes: Independent, abnormal events can sever causal chains
+5.  **For Intention Questions:**
+    - Distinguish between desired goals and foreseen side effects
+    - Outcome is intentional only if it was an aim of the actor's plan
+6.  **Provide Final Answer:** After structured analysis, output <answer>Yes</answer> or <answer>No</answer>
+
+**Example for Guidance:**
+*   **Scenario:** Two factories each dump enough poison to kill a lake's fish. Both dump their poison. The fish die.
+*   **Question:** Did Factory A's dumping cause the fish to die?
+*   **Reasoning:** Factory A's dumping was sufficient on its own and was part of the actual events. Therefore, yes.
+*   **Answer:** <answer>Yes</answer>
+
+Now, carefully analyze the following question. Follow the structured approach above. Provide your final answer.
+2025-09-04 13:31:55,578 - 📊 Current Template_description:
+None
+2025-09-04 13:31:55,578 - 📊 Current Prompt:
+You are an expert in causal reasoning. Your task is to answer questions about whether one event caused another.
+
+**Instructions:**
+1.  **Base your reasoning on the actual events that occurred.** A counterfactual ("what if X hadn't happened?") is a crucial tool for testing necessity, but it is not the sole determinant of causation.
+2.  **Use common-sense intuition.** Your final answer must align with how people typically use the word "cause" in everyday language. If a reasonable person would say "that didn't cause it, it would have happened anyway," reflect that judgment.
+3.  **Rule for Overdetermination:** If an outcome has multiple sufficient causes and they all occur, then each one is considered a cause.
+4.  **Rule for Preemption:** If a sufficient cause was already present and active **before** the event in question occurred, making the outcome inevitable, then the subsequent event is **not** a cause. Apply the counterfactual test: if the outcome would have happened even without the event, then the event did not cause it.
+5.  **For Intentionality:** An agent intentionally causes an outcome only if they act with the specific goal or purpose of bringing that outcome about. Foreseeability or causal responsibility alone is not enough.
+6.  **Key Question:** Focus on whether the event was a necessary part of the actual set of conditions that were sufficient for the outcome. If it was redundant due to a pre-existing sufficient condition, it is not a cause.
+
+**Example for Guidance:**
+*   **Scenario:** Two factories each dump enough poison to kill a lake's fish. Both dump their poison. The fish die.
+*   **Question:** Did Factory A's dumping cause the fish to die?
+*   **Reasoning:** Factory A's dumping was sufficient on its own and was part of the actual events that occurred. Therefore, yes, it was a cause.
+*   **Answer:** Yes
+
+Now, carefully analyze the following question and provide your final answer.
+2025-09-04 13:36:23,014 - 📊 Current Template_description:
+None
+2025-09-04 13:36:23,015 - 📊 Current Prompt:
+You are an expert in causal reasoning, tasked with answering questions about whether one event caused another. Your analysis must be grounded strictly in the actual sequence of events that occurred.
+
+**Instructions:**
+1.  **Base your reasoning on the actual causal sequence.** First, factually describe the specific events that led to the outcome.
+2.  **Apply a refined but-for test for necessity:** Ask: "But for Event X, would the outcome have occurred **at the specific time and in the specific manner it did**?" If "no," Event X was a cause. Use this as a primary tool, but apply it cautiously in cases of overdetermination or joint causation.
+3.  **If the but-for test suggests overdetermination (the outcome would have happened anyway), determine the specific causal structure:**
+    *   **Simultaneous Sufficient Causes (Overdetermination):** If multiple independent events occurred and **each one alone was sufficient** to cause the outcome, then each is a cause. (Example: Two lethal poisons dumped simultaneously).
+    *   **Preemptive Cause:** If one sufficient cause occurs **first** and brings about the outcome, any subsequent sufficient cause is **redundant and not a cause**. (Example: First assassin kills the victim; second assassin shoots the corpse).
+    *   **Joint Causation (CONJUNCTIVE Cause):** If the outcome was produced by a **combination of events**, where **no single event was sufficient** on its own, then each event in the combination is a **necessary part of the cause**. (Example: Two chemicals that are only toxic when combined).
+4.  **Key Question:** Was the event a **necessary part of the actual sequence** that produced the outcome? Was it a difference-maker?
+
+**Step-by-Step Analysis Framework:**
+*   **Step 1: [ACTUAL SEQUENCE]** Describe the actual events factually. Identify all relevant events and the outcome.
+*   **Step 2: [BUT-FOR TEST]** Apply the "but-for" test to the event in question.
+*   **Step 3: [DIAGNOSE STRUCTURE]** Based on the but-for result and the actual sequence, diagnose the causal structure (Standard cause, Simultaneous Overdetermination, Preemption, or Joint Causation).
+*   **Step 4: [APPLY RULE]** Apply the correct rule from the instructions above.
+*   **Step 5: [CONCLUSION]** Conclude definitively if the event was a cause. Your final answer must be "Yes" or "No".
+
+Now, carefully analyze the following question and provide your final answer.
+2025-09-04 13:39:24,541 - 📊 Current Template_description:
+None
+2025-09-04 13:39:24,541 - 📊 Current Prompt:
+You are an expert in causal, normative, and intentional reasoning. Your task is to answer questions about whether one event caused another, or whether an agent acted intentionally, by integrating physical mechanisms with normative contexts like permissions, duties, and intentions.
+
+**Critical Reasoning Checklist:**
+1.  **First, CLASSIFY the question:** Is it about **Physical Causation**, **Normative Causation**, or **Intentionality**?
+2.  **Reconstruct events:** List all relevant actions, pre-existing conditions, rules, duties, and permissions.
+3.  **Determine if symmetry is broken:** Are all events equally normatively positioned (permitted, expected, dutiful)? If not, the deviant event is salient.
+4.  **Apply the overriding principle:** For causation, the **Normative Filter** and **Salience Principle** trump physical necessity alone.
+
+**Instructions:**
+
+1.  **Classify the Question:** Determine if the question is primarily about:
+    *   **Physical Causation:** "Did X cause Y?" (e.g., Did the spark cause the fire?)
+    *   **Normative Causation:** "Did X's action/inaction cause Y?" in a context of rules, duties, or expected practices.
+    *   **Intentionality:** "Did X intentionally cause Y?"
+
+2.  **Base Reasoning on Actual Events:** Identify all relevant events, pre-existing conditions, and any rules, permissions, policies, or probabilistic norms that provide context.
+
+3.  **For Physical Causation:**
+    *   Identify the necessary and sufficient conditions for the outcome.
+    *   Use the **Overdetermination Rule:** If multiple sufficient causes occur, each is a cause.
+    *   Perform a **counterfactual check:** Would Y have occurred if X had not? (This shows necessity, but not salience).
+    *   **Apply the Salience Principle:** The most salient cause is typically the one that was:
+        *   **Least probable** or least expected.
+        *   A **change** from a stable pre-existing condition.
+        *   The **deviant** or rule-breaking event in a normative context.
+
+4.  **For Normative Causation:**
+    *   **Apply the Normative Filter FIRST:** A permitted, prescribed, or highly expected action is typically not the salient *cause* of a problem. The cause is the deviant, unexpected, or rule-breaking event.
+
+5.  **For Intentionality:**
+    *   An agent **intentionally causes Y** if either:
+        *   **(a) Goal Intention:** They acted *in order to* bring about Y.
+        *   **OR (b) Knowledge Intention:** They knew their action would **with near certainty** cause Y, and they performed the action **anyway, accepting Y.**
+    *   **Clarification:** Indifference to a near-certain outcome constitutes acceptance. However, if a harmful outcome is a known but unintended side-effect of a goal, and the agent would have preferred to avoid it, then they **did not intentionally cause Y**.
+
+6.  **Handling Inaction:** An inaction is a cause only if (1) there was a duty to act, and (2) the action would have prevented the outcome.
+
+7.  **Rule for Symmetric Causation:** If an outcome requires multiple actions that are all equally necessary, permitted, and expected, no single action is the salient cause. The answer is **No**.
+
+8.  **Synthesize for Common Sense:** Your final answer must reflect the **most salient cause**, integrating all considerations. **Salient causation wins over physical causation.**
+
+Now, carefully analyze the following question. First classify it, then apply the corresponding reasoning steps. Provide your final answer.
+2025-09-04 13:41:18,016 - 📊 Current Template_description:
+None
+2025-09-04 13:41:18,016 - 📊 Current Prompt:
+You are an expert in causal, normative, and intentional reasoning. Your task is to answer questions by integrating physical mechanisms with normative contexts like permissions, duties, and intentions.
+
+**CRITICAL REASONING FRAMEWORK:**
+
+1.  **CLASSIFY & INTEGRATE:** First, classify the question's primary type: **Physical Causation**, **Normative Causation**, or **Intentionality**. Immediately identify if a normative context (rules, duties, design intentions) exists that could influence the judgment, even for a physical question.
+
+2.  **RECONSTRUCT the SCENARIO:** List all relevant events, pre-existing conditions, and the normative context (rules, permissions, duties). Label each event as **Deviant/Violation** or **Permitted/Expected/Dutiful**.
+
+3.  **BREAK SYMMETRY:** Compare the normative status of all contributing events. If symmetry is broken (a mix of permitted and deviant events), the **deviant** event is the salient cause. The permitted event is filtered out as a non-salient background condition.
+
+4.  **APPLY DECISION RULES:**
+    *   **The Overriding Principle: Normative Salience Trumps Physical Necessity.** A permitted or expected action is not the salient *cause* of a problem; the deviant event is.
+    *   **For Physical Causation:** Perform a **counterfactual test** and apply the **Salience Principle** (least probable, a change, or the deviant event).
+    *   **For Intentionality:** An agent **intentionally causes Y** if they acted *in order to* bring about Y (Goal Intention) OR knew their action would **with near certainty** cause Y and performed it **anyway, accepting Y** (Knowledge Intention). A known but unintended side-effect is not intentional.
+    *   **For Inaction:** Inaction is a cause **only if** (a) there was a duty to act, and (b) the action would have prevented the outcome.
+    *   **Symmetric Causation Rule:** If multiple necessary actions are all equally normative, no single one is the salient cause. The answer is **No**.
+
+5.  **SYNTHESIZE & ANSWER:** Integrate all analyses. Your final answer must identify the **most salient cause**, which is almost always the normatively deviant element. **Salient causation wins over physical causation.**
+
+Now, carefully analyze the following question.
+**Follow the steps: Classify & Integrate, Reconstruct, Break Symmetry, Apply Rules, Synthesize.**
+**Provide your final answer after a thorough analysis.**
+
+**Question:**
+{question}
+2025-09-04 13:41:24,525 - 📊 Current Template_description:
+None
+2025-09-04 13:41:24,525 - 📊 Current Prompt:
+You are an expert in causal reasoning. Your task is to answer questions about whether one event caused another.
+
+**Critical Distinction:** Determine **causal contribution**, not moral responsibility or blame. An agent can be causally responsible without being morally blameworthy. First, establish factual causation using logical rules. Only then consider conversational salience.
+
+**Core Reasoning Framework:**
+1.  **Establish Factual Causation:** Ground analysis in actual events. Use counterfactuals as tools but not as definitive proof.
+   - **Key Question:** Was the event a necessary part of the actual set of conditions sufficient for the outcome? If redundant due to a pre-existing sufficient condition, it is not a cause.
+   - **Preemption is Paramount:** If, just before the event, a condition was already present that guaranteed the outcome (and the process could not be interrupted), the event is not a cause.
+   - **Symmetrical Overdetermination:** If multiple identical, sufficient events occur simultaneously, each is a cause.
+
+2.  **Apply Normative Filters (After Factual Causation is Established):**
+   - **Normative Context:** A violation of normal rules/policies that creates a pre-emptive potential is typically the principal cause. A subsequent normal action completing the chain is not.
+   - **Causal Selection (Salience):** In conversation, the "cause" is often the most abnormal or unexpected factor, even if other events are factually necessary.
+
+3.  **Special Cases:**
+   - **Omissions:** A failure to act is a cause only if: (a) there was a norm/expectation/capability to act, (b) acting would have prevented the outcome, and (c) the omission allowed a pre-existing sufficient process to continue.
+   - **Temporal Precision:** An event causes an outcome if it was necessary for the outcome to occur at the specific time it did.
+   - **Joint Action:** Attribute causation to the collective or shared instruction, not an individual following orders, unless specifically asked.
+
+**Inviolable Principle:** Factual causation (Step 1) is logically prior to and cannot be negated by normative or salience considerations (Step 2). Use common-sense intuition only as a final check for absurd conclusions, interpreting it as a reasonable, technical understanding of causation.
+
+Now, carefully analyze the following question and provide your final answer.
+en the event was a cause. Use this test as a primary tool, but apply it cautiously in cases of overdetermination.
+3.  **Distinguish types of overdetermination:**
+    *   **Simultaneous Sufficient Causes:** If multiple independent events occur at the same time and each is sufficient to cause the outcome, then each is a cause. (Example: Two switches flipped simultaneously, both turning on a light).
+    *   **Preemptive Cause:** If one sufficient cause occurs and brings about the outcome, rendering another potential cause redundant, then only the first is the cause. The redundant event is not a cause, even though it was sufficient. (Example: Assassin A shoots a victim dead. Assassin B shoots the corpse a moment later. Only Assassin A caused the death).
+4.  **Key Question:** Determine if the event was a **necessary part of the actual sequence** that produced the outcome. Was it a difference-maker?
+
+**Step-by-Step Analysis Framework:**
+*   **Step 1:** Describe the actual events factually.
+*   **Step 2:** Apply the "but-for" test: "But for Event X, would the outcome have happened at the exact time and in the exact way that it did?"
+*   **Step 3:** If the "but-for" test suggests overdetermination (the outcome would have happened anyway), analyze whether the causes were simultaneous or if one preempted the other.
+*   **Step 4:** Apply the correct overdetermination rule from above.
+*   **Step 5:** Conclude if the event was a cause based on whether it was necessary for the actual outcome.
+
+**Examples for Guidance:**
+*   **Scenario (Simultaneous):** Two factories each dump enough poison to kill a lake's fish. Both dump their poison. The fish die.
+*   **Question:** Did Factory A's dumping cause the fish to die?
+*   **Reasoning:** But for Factory A's dumping, the fish would still have died (from Factory B's poison). This is simultaneous overdetermination. Both sufficient causes occurred, so both are causes.
+*   **Answer:** Yes
+
+*   **Scenario (Preemption):** The travel agency employees (sufficient to trigger the system) arrive at 8:45 am. The design studio employees (also sufficient) unexpectedly arrive at 8:45 am instead of 10:00 am. The system turns on at 8:45 am.
+*   **Question:** Did the design studio employees' arrival cause the system to turn on?
+*   **Reasoning:** But for the design studio employees arriving early, the system would still have turned on at 8:45 am due to the travel agency employees. The travel agency's arrival preempted the design studio's arrival as the cause. The design studio's presence was redundant and did not change the outcome.
+*   **Answer:** No
+
+Now, carefully analyze the following question and provide your final answer.
+2025-09-04 13:34:39,923 - 📊 Current Template_description:
+None
+2025-09-04 13:34:39,924 - 📊 Current Prompt:
+You are an expert in causal, normative, and intentional reasoning. Your task is to answer questions about whether one event caused another, or whether an agent acted intentionally, by integrating physical mechanisms with normative contexts like permissions, duties, and intentions.
+
+**Instructions:**
+
+1.  **Classify the Question:** First, determine if the question is primarily about:
+    *   **Physical Causation:** "Did X cause Y?" (e.g., Did the spark cause the fire?)
+    *   **Normative Causation:** "Did X's action/inaction cause Y?" in a context of rules, duties, or expected practices.
+    *   **Intentionality:** "Did X intentionally cause Y?"
+
+2.  **Base Reasoning on Actual Events:** Identify all relevant events, pre-existing conditions, and any rules, permissions, policies, or probabilistic norms that provide context.
+
+3.  **For Physical Causation:**
+    *   Identify the necessary and sufficient conditions for the outcome.
+    *   Use the **Overdetermination Rule:** If multiple sufficient causes occur, each is a cause.
+    *   Perform a **counterfactual check:** Would Y have occurred if X had not? This is informative but not solely determinative.
+    *   **Apply the Salience Principle:** When multiple necessary events contribute to an outcome, the most salient cause is typically the one that was:
+        *   **Least probable** or least expected.
+        *   A **change** from a stable pre-existing condition.
+        *   The **deviant** or rule-breaking event in a normative context.
+
+4.  **For Normative Causation:**
+    *   Apply the **Normative Filter:** In scenarios with rules or standard practices, a permitted, prescribed, or highly expected action is typically not considered the salient *cause* of a problem. The cause is attributed to the deviant, unexpected, or rule-breaking event.
+    *   **Example:** If two logins are needed for a deletion, but only one violates policy, the violation is the cause.
+
+5.  **For Intentionality:**
+    *   An agent **intentionally causes Y** if either:
+        *   **(a) Goal Intention:** They acted *in order to* bring about Y or desired Y as a goal.
+        *   **OR (b) Knowledge Intention:** They knew that their action would certainly or very likely cause Y, and they performed the action **anyway, accepting Y as a consequence.** This applies even if Y was a known means to their goal or a known byproduct they considered acceptable.
+    *   A known but **truly undesired and unintended** side effect, which the agent did not require for their goal and would have avoided if possible, is not intentional. **Indifference or acceptance qualifies as intention.**
+
+6.  **Handling Inaction:** An inaction is rarely a cause if the outcome was already guaranteed by a pre-existing condition. The inaction must make a difference to be causal.
+
+7.  **Synthesize for Common Sense:** Your final answer must align with nuanced human judgment, integrating physical causality with normative, probabilistic, and intentional considerations.
+
+**Examples for Guidance:**
+
+*   **Salience Example (Physical/Normative):**
+    *   **Scenario:** Joe wins a game by drawing a likely green ball and an unlikely blue ball.
+    *   **Question:** Did drawing the green ball cause the win?
+    *   **Reasoning:** Both draws are physically necessary. However, the green ball was highly probable and expected, while the blue ball was unlikely and decisive. The salient cause is the unlikely event.
+    *   **Answer:** No
+
+*   **Normative Example:**
+    *   **Scenario:** Two logins cause a deletion. Only Suzy is permitted to log in; Billy is not.
+    *   **Question:** Did Suzy's login cause the deletion?
+    *   **Reasoning:** While physically necessary, Suzy's action was permitted and expected. Billy's rule-breaking action is the deviant cause.
+    *   **Answer:** No
+
+*   **Intentionality Example (Knowledge Intention):**
+    *   **Scenario:** A CEO approves a profitable program knowing it will harm the environment, stating he doesn't care about the harm.
+    *   **Question:** Did the CEO intentionally harm the environment?
+    *   **Reasoning:** The CEO knew harm was certain and accepted it as a consequence of achieving his profit goal. This satisfies knowledge intention.
+    *   **Answer:** Yes
+
+*   **Inaction Example:**
+    *   **Scenario:** A dryer dries clothes if either Setting A or B is high. Both were already high. David did not change Setting B.
+    *   **Question:** Did David's inaction cause the drying?
+    *   **Reasoning:** The outcome was guaranteed by the pre-existing Setting A. David's inaction made no difference.
+    *   **Answer:** No
+
+Now, carefully analyze the following question. First classify it, then apply the corresponding reasoning steps. Provide your final answer.
+2025-09-04 13:34:42,574 - 📊 Current Template_description:
+None
+2025-09-04 13:34:42,574 - 📊 Current Prompt:
+You are an expert in causal reasoning. Your task is to answer questions about whether one event caused another.
+
+**Instructions:**
+1.  **Base your reasoning on the actual events that occurred.** A counterfactual ("what if X hadn't happened?") is a crucial tool for testing necessity, but it is not the sole determinant of causation.
+2.  **Use common-sense intuition.** Your final answer must align with how people typically use the word "cause" in everyday language, which often incorporates notions of responsibility, fault, and normalcy. If a reasonable person would say "that didn't cause it, it would have happened anyway," or "the real cause was something else," reflect that judgment.
+3.  **Rule for Overdetermination:** If an outcome has multiple sufficient causes and they all occur, then each one is considered a cause.
+4.  **Rule for Preemption:** If, **at the time just before the event in question**, a set of conditions was already present that **guaranteed the outcome would occur regardless of the event**, then the event is **not** a cause. The outcome must have been truly inevitable, not just highly probable.
+5.  **Temporal Precision:** An outcome is caused by an event if the event was necessary for the outcome **to occur at the specific time it actually occurred**. A later sufficient cause does not negate the causal role of an earlier sufficient cause that already brought the outcome about.
+6.  **Normative Context:** If an event violates a normal rule, policy, or expected procedure and this violation creates a pre-emptive potential for an outcome, then that violating event is typically considered the principal cause. A subsequent event that is a normal action and merely completes the pre-empted causal chain is not considered a cause, even if it is a "but-for" necessity.
+7.  **Joint Action:** If multiple agents act together based on a shared instruction or to achieve a common goal, and their joint action is sufficient for the outcome, then causation is typically attributed to the collective or the instruction itself. Do not attribute causation to an individual member of the group acting as instructed unless the question specifically asks about their individual contribution.
+8.  **For Intentionality:** An agent intentionally causes an outcome only if they act with the specific goal or purpose of bringing that outcome about. Foreseeability or causal responsibility alone is not enough.
+9.  **Key Question:** Focus on whether the event was a necessary part of the actual set of conditions that were sufficient for the outcome. If it was redundant due to a pre-existing sufficient condition, it is not a cause.
+
+**Example for Guidance:**
+*   **Scenario:** Two factories each dump enough poison to kill a lake's fish. Both dump their poison. The fish die.
+*   **Question:** Did Factory A's dumping cause the fish to die?
+*   **Reasoning:** Factory A's dumping was sufficient on its own and was part of the actual events that occurred. Therefore, yes, it was a cause.
+*   **Answer:** Yes
+
+**New Example for Normative Context:**
+*   **Scenario:** A robber knocks out an employee and steals the safe code. The employee, under duress, later enters the code to open the safe for the robber.
+*   **Question:** Did the employee cause the safe to open?
+*   **Reasoning:** The robber's violation created a pre-empted potential. The employee's action was necessary under the counterfactual test but was performed under duress and against normal procedure. The principal cause is the robber's action.
+*   **Answer:** No
+
+Now, carefully analyze the following question and provide your final answer.
+2025-09-04 13:37:32,173 - 📊 Current Template_description:
+None
+2025-09-04 13:37:32,173 - 📊 Current Prompt:
+You are an expert in causal, normative, and intentional reasoning. Your task is to answer questions about whether one event caused another, or whether an agent acted intentionally, by integrating physical mechanisms with normative contexts like permissions, duties, and intentions.
+
+**Instructions:**
+
+1.  **Classify the Question:** First, determine if the question is primarily about:
+    *   **Physical Causation:** "Did X cause Y?" (e.g., Did the spark cause the fire?)
+    *   **Normative Causation:** "Did X's action/inaction cause Y?" in a context of rules, duties, or expected practices.
+    *   **Intentionality:** "Did X intentionally cause Y?"
+
+2.  **Base Reasoning on Actual Events:** Identify all relevant events, pre-existing conditions, and any rules, permissions, policies, or probabilistic norms that provide context.
+
+3.  **For Physical Causation:**
+    *   Identify the necessary and sufficient conditions for the outcome.
+    *   Use the **Overdetermination Rule:** If multiple sufficient causes occur, each is a cause.
+    *   Perform a **counterfactual check:** Would Y have occurred if X had not? This is informative but not solely determinative.
+    *   **Apply the Salience Principle:** When multiple necessary events contribute to an outcome, the most salient cause is typically the one that was:
+        *   **Least probable** or least expected.
+        *   A **change** from a stable pre-existing condition.
+        *   The **deviant** or rule-breaking event in a normative context.
+
+4.  **For Normative Causation:**
+    *   Apply the **Normative Filter:** In scenarios with rules or standard practices, a permitted, prescribed, or highly expected action is typically not considered the salient *cause* of a problem. The cause is attributed to the deviant, unexpected, or rule-breaking event.
+    *   **Example:** If two logins are needed for a deletion, but only one violates policy, the violation is the cause.
+
+5.  **For Intentionality:**
+    *   An agent **intentionally causes Y** if either:
+        *   **(a) Goal Intention:** They acted *in order to* bring about Y or desired Y as a goal or a means to their goal.
+        *   **OR (b) Knowledge Intention:** They knew that their action would **with near certainty** cause Y, and they performed the action **anyway, accepting Y as a consequence.**
+    *   **Clarifications on Intentionality:**
+        *   **'Near certainty'** means the outcome was almost inevitable. Use words like "surely," "certainly," or "would" as strong signals. Words like "might," "could," or "possibly" indicate mere probability and weigh against knowledge intention.
+        *   **Acceptance** requires recognizing a near-certain outcome and proceeding. **Mere indifference to a possibility is not sufficient for knowledge intention;** it must be indifference to a near-certainty.
+        *   If a harmful outcome Y is a **known but unintended side-effect** of achieving goal Z, and the agent would have preferred a way to achieve Z without Y, then the agent **did not intentionally cause Y**, even if they knew Y was likely and were indifferent to it.
+
+6.  **Handling Inaction:** An inaction is rarely a cause if the outcome was already guaranteed by a pre-existing condition. The inaction must make a difference to be causal.
+
+7.  **Rule for Symmetric Causation:** When an outcome requires multiple actions that are all equally necessary, normatively permitted, and expected, no single action is typically considered the salient cause. The cause is the **joint event** or the **situation itself**. The answer to "Did X cause Y?" in such a symmetric context is usually **No**.
+
+8.  **Synthesize for Common Sense:** Your final answer must reflect the **most salient cause** according to nuanced human judgment, integrating physical causality with normative, probabilistic, and intentional considerations. If physical causation and salient causation conflict, **salient causation wins**.
+
+**Examples for Guidance:**
+
+*   **Salience Example (Physical/Normative):**
+    *   **Scenario:** Joe wins a game by drawing a likely green ball and an unlikely blue ball.
+    *   **Question:** Did drawing the green ball cause the win?
+    *   **Reasoning:** Both draws are physically necessary. However, the green ball was highly probable and expected, while the blue ball was unlikely and decisive. The salient cause is the unlikely event.
+    *   **Answer:** No
+
+*   **Normative Example:**
+    *   **Scenario:** Two logins cause a deletion. Only Suzy is permitted to log in; Billy is not.
+    *   **Question:** Did Suzy's login cause the deletion?
+    *   **Reasoning:** While physically necessary, Suzy's action was permitted and expected. Billy's rule-breaking action is the deviant cause.
+    *   **Answer:** No
+
+*   **Intentionality Example (Knowledge Intention):**
+    *   **Scenario:** A CEO approves a profitable program knowing it will certainly harm the environment, stating he doesn't care about the harm.
+    *   **Question:** Did the CEO intentionally harm the environment?
+    *   **Reasoning:** The CEO knew harm was certain and accepted it as a consequence of achieving his profit goal. This satisfies knowledge intention.
+    *   **Answer:** Yes
+
+*   **Intentionality Example (Not Intentional):**
+    *   **Scenario:** A hunter shoots a deer, knowing the bullet might possibly hit a bystander. He doesn't care about the bystander but his goal is only to kill the deer.
+    *   **Question:** Did the hunter intentionally shoot the bystander?
+    *   **Reasoning:** The outcome was a possibility, not a near certainty. His indifference was to a risk, not an accepted certain outcome. The harm was an undesired, unintended side-effect.
+    *   **Answer:** No
+
+*   **Inaction Example:**
+    *   **Scenario:** A dryer dries clothes if either Setting A or B is high. Both were already high. David did not change Setting B.
+    *   **Question:** Did David's inaction cause the drying?
+    *   **Reasoning:** The outcome was guaranteed by the pre-existing Setting A. David's inaction made no difference.
+    *   **Answer:** No
+
+*   **Symmetric Causation Example:**
+    *   **Scenario:** Two employees arrive at a room at the same time as instructed, triggering a motion detector that requires two people.
+    *   **Question:** Did Billy cause the motion detector to go off?
+    *   **Reasoning:** Both actions were equally necessary, normatively permitted, and expected. Neither action is individually salient; the cause is the joint event of both arriving together.
+    *   **Answer:** No
+
+Now, carefully analyze the following question. First classify it, then apply the corresponding reasoning steps. Provide your final answer.
+2025-09-04 13:37:37,589 - 📊 Current Template_description:
+None
+2025-09-04 13:37:37,590 - 📊 Current Prompt:
+You are an expert in causal reasoning. Your task is to answer questions about whether one event caused another.
+
+**Instructions:**
+1.  **Base your reasoning on the actual events that occurred.** A counterfactual ("what if X hadn't happened?") is a crucial tool for testing necessity, but it is not the sole determinant of causation.
+2.  **Use common-sense intuition as your primary guide.** Your final answer must align with how a reasonable person would use the word "cause" in everyday conversation, even if this seems to conflict with a strict logical test. If the rules lead to a conclusion that feels unintuitive, prioritize this rule.
+3.  **Rule for Overdetermination:** If an outcome has multiple sufficient causes and they all occur, then each one is considered a cause.
+4.  **Rule for Preemption:** If, at the time just before the event in question, a set of conditions was already present that guaranteed the outcome would occur regardless of the event, then the event is not a cause. For processes that take time, the outcome is only inevitable if the process cannot be interrupted.
+5.  **Temporal Precision:** An outcome is caused by an event if the event was necessary for the outcome to occur at the specific time it actually occurred. A later sufficient cause does not negate the causal role of an earlier sufficient cause that already brought the outcome about.
+6.  **Normative Context:** If an event violates a normal rule, policy, or expected procedure and this violation creates a pre-emptive potential for an outcome, then that violating event is typically considered the principal cause. A subsequent event that is a normal action and merely completes the pre-empted causal chain is not considered a cause, even if it is a "but-for" necessity.
+7.  **Rule for Omissions:** A failure to act can be a cause if: (a) there was a norm, expectation, or capability to act, (b) acting would have prevented the outcome, and (c) the omission allowed a pre-existing sufficient process to continue uninterrupted.
+8.  **Rule for Causal Selection:** In everyday language, the "cause" is often identified as the most abnormal or unexpected factor in the causal chain. A highly probable or normal event is less likely to be singled out as the cause, even if it is logically necessary.
+9.  **Joint Action:** If multiple agents act together based on a shared instruction or to achieve a common goal, and their joint action is sufficient for the outcome, then causation is typically attributed to the collective or the instruction itself. Do not attribute causation to an individual member of the group acting as instructed unless the question specifically asks about their individual contribution.
+10. **For Intentionality:** An agent intentionally causes an outcome only if they act with the specific goal or purpose of bringing that outcome about. Foreseeability or causal responsibility alone is not enough.
+11. **Key Question:** Focus on whether the event was a necessary part of the actual set of conditions that were sufficient for the outcome. If it was redundant due to a pre-existing sufficient condition, it is not a cause.
+
+**Hierarchy for Rule Conflicts:** If rules conflict, use this order of precedence: 1) Common-Sense Intuition (Rule 2), 2) Preemption (Rule 4) & Normative Context (Rule 6), 3) Causal Selection (Rule 8), 4) the Key Question (Rule 11).
+
+**Examples for Guidance:**
+*   **Scenario (Overdetermination):** Two factories each dump enough poison to kill a lake's fish. Both dump their poison. The fish die.
+    *   **Question:** Did Factory A's dumping cause the fish to die?
+    *   **Reasoning:** Factory A's dumping was sufficient on its own and was part of the actual events that occurred.
+    *   **Answer:** Yes
+
+*   **Scenario (Normative Context & Omission):** Wayne's watch is correctly positioned to charge (plugged in and on pad). He checks, sees it is correct, and does not move it. It charges fully.
+    *   **Question:** Did Wayne's not moving the watch cause it to charge?
+    *   **Reasoning:** His omission (failure to move it) was necessary to maintain the charging condition. There was an expectation he could have acted, and acting would have prevented the outcome.
+    *   **Answer:** Yes
+
+*   **Scenario (Causal Selection):** Joe wins a game by drawing a likely green ball and a very unlikely blue ball.
+    *   **Question:** Did drawing the green ball cause the win?
+    *   **Reasoning:** While the green ball was logically necessary, the win is attributed in everyday language to the abnormal event (drawing the blue ball). The green ball is the expected, normal background condition.
+    *   **Answer:** No
+
+Now, carefully analyze the following question and provide your final answer.
+2025-09-04 13:38:49,696 - 📊 Current Template_description:
+None
+2025-09-04 13:38:49,696 - 📊 Current Prompt:
+You are an expert analyst tasked with answering nuanced questions about human action, causality, and responsibility. Your analysis must be grounded strictly in the actual sequence of events that occurred and the mental states of the actors involved.
+
+**FIRST, CLASSIFY THE QUESTION TYPE:**
+*   **Type A: Causal Necessity (Cause-in-Fact):** Questions asking "Did X cause Y?" or "Was X a cause of Y?" that focus on whether X was a necessary part of the sequence leading to Y.
+*   **Type B: Intentionality/Mental State:** Questions asking "Did X intentionally Y?" or "Did X knowingly Y?" that focus on the purpose and foresight of the actor.
+*   **Type C: Responsibility/Blame (Proximate Cause):** Questions asking "Is X responsible for Y?" or "Did X cause Y?" that imply a moral or legal judgment beyond mere causation-in-fact.
+
+**APPLY THE APPROPRIATE FRAMEWORK BASED ON THE TYPE:**
+
+**For TYPE A (Causal Necessity):**
+1.  **[ACTUAL SEQUENCE]** Factually describe the specific events that led to the outcome.
+2.  **[BUT-FOR TEST]** Apply a refined but-for test: "But for Event X, would the outcome have occurred **at the specific time and in the specific manner it did**?" If "no," Event X was a cause-in-fact.
+3.  **[DIAGNOSE STRUCTURE]** If the but-for test suggests overdetermination (the outcome would have happened anyway), determine the causal structure:
+    *   **Simultaneous Sufficient Causes:** Multiple independent events occurred and each was sufficient. Each is a cause.
+    *   **Preemptive Cause:** One sufficient cause occurred first. Subsequent sufficient causes are redundant and not causes.
+    *   **Joint Causation:** The outcome required a combination of events; no single event was sufficient. Each event in the combination is a necessary part of the cause.
+4.  **[CONCLUSION]** Conclude if the event was a necessary part of the actual sequence (a cause-in-fact).
+
+**For TYPE B (Intentionality/Mental State):**
+1.  **[IDENTIFY ACT AND OUTCOME]** Clearly state the person's action and the specific outcome in question.
+2.  **[ANALYZE PURPOSE]** Did the actor perform the act *with the purpose or desire* of bringing about the outcome? If yes, it is intentional.
+3.  **[ANALYZE KNOWLEDGE]** If the outcome was not the purpose, was it *known to the actor as a virtually certain result* of their action? If yes, then the outcome is also considered intentional.
+4.  **[CONCLUSION]** Based on the analysis of purpose and knowledge, conclude yes or no.
+
+**For TYPE C (Responsibility/Blame):**
+1.  **[CAUSATION-IN-FACT]** First, use the **Type A framework** to determine if X was a cause-in-fact of Y.
+2.  **[PROXIMATE CAUSE ANALYSIS]** Even if X was a cause-in-fact, analyze:
+    *   **Foreseeability:** Was the type of outcome a **foreseeable** result of X?
+    *   **Superseding Cause:** Was the causal chain interrupted by a **new, independent force** that was not a normal or probable result of the original action? (e.g., a criminal act, a freak natural event). If yes, this may break the chain of legal responsibility.
+    *   **Moral Norms:** Would holding X responsible conflict with **moral or social values** (e.g., punishing someone for a good-faith effort to help)?
+3.  **[CONCLUSION]** Weigh the findings from Step 1 and Step 2 to give a final, common-sense judgment on responsibility.
+
+**GENERAL INSTRUCTIONS:**
+*   Always begin your analysis by classifying the question type (A, B, or C).
+*   Then, carefully apply the corresponding framework step-by-step.
+*   Your final answer must be "Yes" or "No".
+
+Now, carefully analyze the following question and provide your final answer.
+2025-09-04 13:39:56,689 - 📊 Current Template_description:
+None
+2025-09-04 13:39:56,689 - 📊 Current Prompt:
+You are an expert in causal reasoning. Your task is to answer questions about whether one event caused another.
+
+**Critical Distinction:** Your task is to determine **causal contribution**, not moral responsibility or blame. An agent can be causally responsible for an outcome without being morally blameworthy. First, determine factual causation using logical rules. Only then consider which cause might be most salient in conversation.
+
+**Instructions:**
+1.  **Base Reasoning on Actual Events:** Ground your analysis in what actually happened. Counterfactuals ("what if X hadn't happened?") are tools for testing necessity but are not definitive alone.
+2.  **Common-Sense Intuition (Refined):** Your final answer must align with a reasonable, reflective understanding of causation. Avoid conflating causation with blame. If an event was a necessary part of the actual sufficient conditions, it is a cause, even if the agent is faultless.
+3.  **Rule for Symmetrical Overdetermination:** If multiple identical, sufficient events occur simultaneously, each is a cause.
+4.  **Rule for Preemption (Asymmetrical):** If, just before the event in question, a condition was already present that guaranteed the outcome would occur regardless of the event, then the event is not a cause. For processes that take time, the outcome is only inevitable if the process cannot be interrupted.
+5.  **Temporal Precision:** An outcome is caused by an event if the event was necessary for the outcome to occur at the specific time it actually occurred. For instantaneous outcomes, the first event to complete a sufficient condition is the cause. If timing is ambiguous, assume simultaneity.
+6.  **Normative Context:** If an event violates a normal rule, policy, or expected procedure and this violation creates a pre-emptive potential for an outcome, then that violating event is typically considered the principal cause. A subsequent event that is a normal action and merely completes the pre-empted causal chain is not considered a cause, even if it is a "but-for" necessity.
+7.  **Rule for Omissions:** A failure to act can be a cause if: (a) there was a norm, expectation, or capability to act, (b) acting would have prevented the outcome, and (c) the omission allowed a pre-existing sufficient process to continue uninterrupted.
+8.  **Rule for Causal Selection (Salience):** After establishing factual causation, in everyday language, the "cause" is often identified as the most abnormal or unexpected factor in the causal chain. A highly probable or normal event is less likely to be singled out as *the* cause in conversation, even if it is a cause.
+9.  **Joint Action:** If multiple agents act together based on a shared instruction or to achieve a common goal, and their joint action is sufficient for the outcome, then causation is typically attributed to the collective or the instruction itself. Do not attribute causation to an individual member of the group acting as instructed unless the question specifically asks about their individual contribution.
+10. **For Intentionality:** An agent intentionally causes an outcome only if they act with the specific goal or purpose of bringing that outcome about. Foreseeability or causal responsibility alone is not enough.
+11. **Key Question:** Focus on whether the event was a necessary part of the actual set of conditions that were sufficient for the outcome. If it was redundant due to a pre-existing sufficient condition, it is not a cause.
+
+**Hierarchy for Rule Conflicts:** If rules conflict, use this order of precedence:
+1.  **Establish Factual Causation:** First, apply Rules 3 (Symmetry), 4 (Preemption), and 11 (Key Question).
+2.  **Apply Normative Filters:** Only *after* factual causation is established, apply Rules 6 (Normative Context) and 8 (Causal Selection) to determine salience. These cannot negate factual causation.
+3.  **Final Check:** Rule 2 (Common Sense) is a final check for absurd conclusions. It must be interpreted as a reasonable, technical understanding of causation.
+
+**Examples for Guidance:**
+*   **Scenario (Symmetrical Overdetermination):** Two factories each dump enough poison to kill a lake's fish. Both dump their poison at the same time. The fish die.
+    *   **Question:** Did Factory A's dumping cause the fish to die?
+    *   **Reasoning:** The dumps were simultaneous and sufficient. This is symmetrical overdetermination.
+    *   **Answer:** Yes
+
+*   **Scenario (Preemption):** Suzy throws a rock at a bottle, shattering it. Billy throws a rock a moment later, which hits the shattered glass.
+    *   **Question:** Did Billy's throw cause the bottle to shatter?
+    *   **Reasoning:** Suzy's throw was a sufficient cause that preempted Billy's. The outcome was guaranteed before Billy's rock arrived.
+    *   **Answer:** No
+
+*   **Scenario (Causal Selection):** Joe wins a game by drawing a likely green ball and a very unlikely blue ball. Both are necessary to win.
+    *   **Question:** Did drawing the green ball cause the win?
+    *   **Reasoning:** The green ball was necessary. It is *a* cause. However, the win is attributed in conversation to the abnormal event (the blue ball).
+    *   **Answer:** Yes (It is a cause, though not the salient one).
+
+Now, carefully analyze the following question and provide your final answer.

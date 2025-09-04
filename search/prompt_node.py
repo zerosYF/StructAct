@@ -27,7 +27,7 @@ class PromptNode(Node):
 
         self.depth = depth
         self.max_depth = max_depth
-        self.reward_value: float = None  # Cache reward after evaluation
+        self.reward_value: float = self.reward()
 
     def __hash__(self):
         return hash(tuple(self.action_seq))
@@ -64,8 +64,7 @@ class PromptNode(Node):
     def reward(self):
         val_samples = self.evaluator.task.get_eval()
         score = self.evaluator.batch_reward(self.current_prompt, val_samples)
-        self.reward_value = score
-        logger.info(f"🎯 [RolloutFinished] Prompt evaluation score = {score:.4f}, Action sequence = {[a.name for a in self.action_seq]}")
+        logger.info(f"🎯 [Reward] Prompt evaluation score = {score:.4f}, Action sequence = {[a.name for a in self.action_seq]}")
         return score
 
     def clone_node(self):

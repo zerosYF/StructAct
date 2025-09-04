@@ -10,7 +10,7 @@ class SearchConfig:
         self.shuffle_seed: int = 42        # Random seed for data shuffling
         # MCTS search control
         self.exploration_weight: float = 2.5   # Exploration factor in UCT formula
-        self.mcts_iter_num_max: int = 10          # Number of iterations in MCTS main loop
+        self.mcts_iter_num_max: int = 1          # Number of iterations in MCTS main loop
         self.mcts_iter_num_min: int = 0           # Minimum MCTS iterations
         self.depth_threshold: int = 5          # Maximum search depth
         self.width_threshold: int = 3          # Number of children per expanded node
@@ -32,7 +32,7 @@ class SearchConfig:
         self.rnn_rl_reward_scale = 10          # Reward scale (reduced from 100 to avoid large value loss)
 
         # Multi-threaded reward evaluation
-        self.reward_thread_num: int = 8       # Number of threads for reward evaluation
+        self.reward_thread_num: int = 3       # Number of threads for reward evaluation
 
         # Debugging indicators (for tracing internal states)
         self.rollout_idx: int = 1              # Current rollout path index

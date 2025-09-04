@@ -1,4 +1,4 @@
-from model.model import Model, getOptimModel, getEvalModel
+from model.model import getOptimModel, getEvalModel
 from task.base_task import TaskBase
 from program.base_action import OptimizeAction
 import concurrent.futures
