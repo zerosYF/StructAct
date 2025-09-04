@@ -29,11 +29,12 @@ class MCTSearchController(SearchController):
         optimized_prompt = self._mcts_workflow(init_prompt)
         return "", optimized_prompt
     
-    def _mcts_workflow(self, best_prompt: str):
+    def _mcts_workflow(self, init_prompt: str):
         root_node = PromptNode(
                 action_set=self.actions,
                 action_seq=[],
-                prompt=best_prompt,
+                trajectory_prompts=[],
+                prompt=init_prompt,
                 evaluator=self.evaluator,
                 depth=0,
                 max_depth=self.config.depth_threshold,
