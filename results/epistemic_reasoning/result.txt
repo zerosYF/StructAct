@@ -1,55 +1,42 @@
 🔍 Task: epistemic_reasoning
 ✅ Best Prompt Template:
-{'type': 'task_instruction', 'style': 'Concise'}
-{'type': 'role', 'role_template': 'Data Interpreter (Neutral)'}
-{'type': 'expert_knowledge', 'enabled': True}
-{'type': 'guidance', 'enabled': False}
-{'type': 'few_shot_examples', 'num_examples': 3, 'ordering': 'Semantic similarity', 'format': 'Input-Output'}
-{'type': 'constraint', 'enabled': False, 'format': 'Bullet list'}
-{'type': 'caution', 'enabled': False, 'style': 'Strict directive'}
-{'type': 'answer_style', 'style': 'Final answer only'}
+
 
 ✅ Best Prompt:
-### Task Objective:
-Determine whether one sentence entails the next.
+Task: Determine Textual Entailment with Epistemic Reasoning
 
-### Role:
-You will assume the role of a Data Interpreter (Neutral). Your task is to analyze the relationship between two sentences and determine if the first sentence (premise) entails the second sentence (hypothesis). You should base your analysis on logical reasoning and the principles of natural language understanding.
+Instructions:
+You are a logical reasoning system. Your task is to determine if the Premise sentence logically entails the Hypothesis sentence. Pay special attention to sentences about beliefs, knowledge, and perception.
 
-### Expert Knowledge:
-Incorporate relevant domain-specific expert knowledge to enhance reasoning and accuracy. This may include logical principles, standard practices, or expert-level insights relevant to the input task.
+**Key Definitions:**
+- **Entailment:** The premise entails the hypothesis if, whenever the premise is true, the hypothesis must also be true.
+- **Factive Verbs:** Verbs like "knows", "learns", "sees", "realizes" imply that their embedded clause is a true fact. (e.g., "He knows that X" entails that X is true).
+- **Non-Factive Verbs:** Verbs like "suspects", "believes", "assumes" do not imply that their embedded clause is true. The belief could be wrong.
+- **Belief Propagation:** If a person holds a belief about a complex fact, they also hold beliefs about the components of that fact. This includes resolving pronouns and other anaphoric references within the believed clause. (e.g., If Alex believes "the tall chef is cooking," then Alex believes "a chef is cooking". If Alex believes "a woman is running," then Alex believes the runner is a woman).
 
-### Nested Beliefs and Knowledge:
-- **Belief:** A person's belief about a fact or another person's belief/knowledge.
-- **Knowledge:** A person's certain knowledge about a fact.
-- **Entailment:** The premise logically implies the hypothesis.
-- **Non-entailment:** The premise does not logically imply the hypothesis.
+**Reasoning Steps:** For each problem, follow these steps strictly:
+1.  **Identify Structure:** Parse the Premise and Hypothesis. Identify the main subject and the epistemic verb (e.g., knows, suspects).
+2.  **Check Factivity:** If the embedded clause in the premise uses a factive verb (knows, learns, sees), note that this clause entails the truth of its own embedded content.
+3.  **Propagate Beliefs:** For any belief verb (suspects, believes, assumes), the content of the belief is what the person believes to be true. If that content contains a factive statement (e.g., "that Charles learns that X") or a specific detail (like a pronoun), that detail is part of their belief. A belief that "Y knows X" entails a belief that "X".
+4.  **Compare:** Determine if the Hypothesis is a logical consequence of the Premise after applying the above rules.
 
-### Examples:
-1. **Premise:** Abigail believes that John learns that two people in coats kiss on the side of a road.
-   **Hypothesis:** Abigail believes that two people in coats kiss on the side of a road.
-   **Answer:** entailment
-   **Explanation:** If Abigail believes John learns something, she believes it is true.
+**Final Output Format:** After your reasoning, your final answer must be exactly on a new line as one of the following:
+<answer>entailment</answer>
+<answer>non-entailment</answer>
 
-2. **Premise:** Charles assumes that David suspects that a man in a plaid shirt is walking on a street where there are advertisements in Chinese.
-   **Hypothesis:** David suspects that a man in a plaid shirt is walking on a street where there are advertisements in Chinese.
-   **Answer:** non-entailment
-   **Explanation:** Charles's assumption about David's suspicion does not mean David actually suspects it.
+Now, analyze the following:
+Question: Premise: [PREMISE]
+Hypothesis: [HYPOTHESIS]
+Options:
+entailment
+non-entailment
 
-3. **Premise:** Richard believes that David remembers that a man is sitting on a blue bench with a blue blanket covering his face.
-   **Hypothesis:** Richard believes that a man is sitting on a blue bench with a blue blanket covering his face.
-   **Answer:** entailment
-   **Explanation:** If Richard believes David remembers something, Richard believes it is true.
+📊 Original ZeroShot Test Accuracy: 0.676
+📊 Original FewShot Test Accuracy: 0.682
+📊 Original Cot_FewShot Test Accuracy: 0.82
+📊 Cot ZeroShot Test Accuracy: 0.852
+📊 Cot FewShot Test Accuracy: 0.82
+📊 Cot Cot_FewShot Test Accuracy: 0.878
+📊 SA Test Accuracy: 0.908
 
-### Answer Style:
-Provide your answer in the following format: **Final answer only**.
-
-📊 Original ZeroShot Test Accuracy: 0.706
-📊 Original FewShot Test Accuracy: 0.602
-📊 Original Cot_FewShot Test Accuracy: 0.682
-📊 Cot ZeroShot Test Accuracy: 0.882
-📊 Cot FewShot Test Accuracy: 0.77
-📊 Cot Cot_FewShot Test Accuracy: 0.896
-📊 SA Test Accuracy: 0.782
-
-⏱️ Time Elapsed: 1476 min 26 sec (88586.13 seconds)
+⏱️ Time Elapsed: 304 min 34 sec (18274.28 seconds)

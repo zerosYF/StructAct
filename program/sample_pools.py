@@ -69,21 +69,18 @@ class DynamicSamplePool:
         logger.info(f"Sampling {k} from pool '{pool}' with {len(values)} available samples.")
         return random.sample(values, min(k, len(values)))
 
-    def initialize(self, dataset, evaluator, current_prompt: str, eval_repeat: int = 5):
+    def initialize(self, dataset, evaluator, current_prompt: str):
         """dataset: list of raw sample dicts"""
         logger.info(f"Initializing sample pool with {len(dataset)} samples...")
-        for raw in dataset:
-            # 把同一个样本复制 N 次
-            repeated = [raw] * eval_repeat
 
-            # 一次并行计算
-            rewards = evaluator.batch_reward(current_prompt, repeated)
+        # 一次性评估整个 dataset
+        rewards = evaluator.batch_reward(current_prompt, dataset)  # list[float], 长度 = len(dataset)
 
-            # 统计
+        for raw, r in zip(dataset, rewards):
             s = PoolSample(raw)
-            s.visits = eval_repeat
-            s.corrects = int(rewards * eval_repeat)
-            s.reward = rewards
+            s.visits = 1
+            s.corrects = int(r)   # 正确样本: 1，错误样本: 0
+            s.reward = float(r)   # 和 corrects 相同，只是用 float 存储
 
             # 分类
             if s.reward < self.low_threshold:
@@ -98,4 +95,7 @@ class DynamicSamplePool:
             if len(self.order) > self.max_size:
                 self._evict_oldest()
 
-        logger.info(f"Sample pool initialized: hard={len(self.hard)}, mix={len(self.mix)}, success={len(self.success)}")
+        logger.info(
+            f"Sample pool initialized: "
+            f"hard={len(self.hard)}, mix={len(self.mix)}, success={len(self.success)}"
+        )

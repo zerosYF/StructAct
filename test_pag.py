@@ -4,7 +4,7 @@ from search.config import SearchConfig
 from task.bbh.causal_judgement import CausalJudgementTask
 pag_prompt = """
 """
-with open(os.path.join("promptagent_cj.txt"), "r", encoding="utf-8") as f:
+with open(os.path.join("test_prompt.txt"), "r", encoding="utf-8") as f:
     pag_prompt = f.read()
 
 config = SearchConfig()

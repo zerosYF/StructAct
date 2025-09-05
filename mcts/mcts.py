@@ -7,6 +7,7 @@ from mcts.select import UCTStrategy
 from logger import logger
 from mcts.node import Node
 from threading import Lock
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 class MCTS:
     def __init__(self, 
@@ -25,41 +26,39 @@ class MCTS:
         self.choose_strategy = choose_strategy
         self.lock = Lock()
 
-    def _select(self, node: Node, max_width: int) -> list[Node]:
+    def _select(self, node: Node) -> list[Node]:
         """
         自顶向下走到一个可扩展的位置：
         - 若 node 不在 self.children 中，返回路径（首次到达叶子，等待 expand）
-        - 若 node 的子节点数 < max_children，返回路径（允许在此处扩展一个）
         - 否则，使用 UCT 继续向下选择
         """
         path: list['Node'] = []
         while True:
             path.append(node)
-            if node not in self.children:
-                return path
             children_count = len(self.children.get(node, []))
-            if children_count < max_width:
+            if children_count == 0 or node.is_terminal():
                 return path
             node = self._uct_select(node)
 
     def _uct_select(self, node: Node) -> Node:
         return self.select_strategy.select(node, self)
 
-    def _expand(self, node: Node) -> Node:
+    def _expand(self, node: Node, expand_width=1) -> Node:
         """
-        一次只扩展一个 child。
-        兼容新的 expand_strategy 接口：expand(node, mcts) -> Optional[Node]
+        一次扩展多个 child，并返回列表。
         """
-        child = self.expand_strategy.expand(node, self)
-        if child is None:
-            return None
+        children = self.expand_strategy.expand(node, self, expand_width)
+        if not children:
+            return []
 
-        # 确保 children 字典同步（若 expand_strategy 内部已维护，这里不会重复添加）
         if node not in self.children:
             self.children[node] = []
-        if child not in self.children[node]:
-            self.children[node].append(child)
-        return child
+
+        for child in children:
+            if child not in self.children[node]:
+                self.children[node].append(child)
+
+        return children
 
     def _rollout(self, node: Node, length:int):
         return self.rollout_strategy.rollout(node, length)
@@ -73,25 +72,33 @@ class MCTS:
     def do_iter(self, node: Node, expand_width:int, rollout_length:int):
         logger.info("--------------Start Iteration----------------")
         logger.info("Step 1: Performing Select")
-        path = self._select(node, max_width=expand_width)
+        path = self._select(node)
         leaf = path[-1]
         logger.info(f"Selected leaf node type: {leaf.type}")
         logger.info("Step 2: Performing Expand")
-        child = self._expand(leaf)
-        # 若无法扩展（终止状态或策略返回 None），对 leaf 自身 rollout；否则对 child rollout
-        rollout_target = child if child is not None else leaf
-
-        logger.info("Step 3: Running Rollout")
+        children = self._expand(leaf, expand_width)
+        rollout_targets = children if children else [leaf]
         rollout_path = path.copy()
-        if child is not None:
-            rollout_path.append(child)
 
-        try:
-            reward = self._rollout(rollout_target, rollout_length)
-            self._backpropagate(rollout_path, reward)
-            logger.info(f"Rollout target {rollout_target} score: {reward:.2f}")
-        except Exception as e:
-            logger.error(f"⚠️ Error during rollout: {e}")
+        results = []
+        # Step 3: 并行 rollout
+        with ThreadPoolExecutor(max_workers=len(rollout_targets)) as executor:
+            future_to_child = {
+                executor.submit(self._rollout, child, rollout_length): child
+                for child in rollout_targets
+            }
+            for future in as_completed(future_to_child):
+                child = future_to_child[future]
+                try:
+                    reward = future.result()
+                    results.append((child, reward))
+                    logger.info(f"Rollout target {child} score: {reward:.2f}")
+                except Exception as e:
+                    logger.error(f"⚠️ Error during rollout of {child}: {e}")
+
+        # Step 4: 串行回传，确保 lock
+        for child, reward in results:
+            self._backpropagate(rollout_path + [child], reward)
 
         logger.info("---------------End Iteration------------------")
 

@@ -17,26 +17,45 @@ class DefaultExpandStrategy(ExpandStrategy):
         self.lock = threading.Lock()
         self.config = config
 
-    def expand(self, node: Node, mcts) -> Node:
+    def expand(self, node: Node, mcts, expand_width: int) -> list[Node]:
+        import concurrent.futures
         if node.is_terminal():
-            return None
+            return []
 
         if node not in mcts.children:
             mcts.children[node] = []
 
         actions = list(node.get_untried_actions())
         if not actions:
-            return None
+            return []
 
-        # 🚀 Use softmax weighted random selection based on usage_count to pick k actions
-        selected_action = self._weighted_random_choice(actions)
+        selected_actions = []
+        # 明确循环 expand_width 次，每次按 usage_count 采样 1 个（允许重复）
+        for _ in range(expand_width):
+            action = self._weighted_random_choice(actions)  # 返回单个 action
+            if action is not None:
+                selected_actions.append(action)
 
-        try:
-            child = self._expand_action_threadsafe(node, selected_action, mcts)
-            return child
-        except Exception as e:
-            logger.error(f"Error expanding action {getattr(selected_action, 'name', 'Unknown')}: {e}")
-            return None
+        if not selected_actions:
+            return []
+
+        children: list[Node] = []
+        with concurrent.futures.ThreadPoolExecutor(max_workers=len(selected_actions)) as executor:
+            futures = {executor.submit(self._expand_action_threadsafe, node, act, mcts): act
+                    for act in selected_actions}
+            for fut in concurrent.futures.as_completed(futures):
+                try:
+                    child = fut.result()
+                    if child is not None:
+                        children.append(child)
+                except Exception as e:
+                    action = futures[fut]
+                    logger.error(f"Error expanding action {getattr(action, 'name', 'Unknown')}: {e}")
+
+        with mcts.lock:
+            mcts.children[node].extend(children)
+
+        return children
     
     def _expand_action_threadsafe(self, node: Node, action, mcts) -> Node:
         try:

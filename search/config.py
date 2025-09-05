@@ -10,7 +10,7 @@ class SearchConfig:
         self.shuffle_seed: int = 42        # Random seed for data shuffling
         # MCTS search control
         self.exploration_weight: float = 2.5   # Exploration factor in UCT formula
-        self.mcts_iter_num_max: int = 1         # Number of iterations in MCTS main loop
+        self.mcts_iter_num_max: int = 10         # Number of iterations in MCTS main loop
         self.mcts_iter_num_min: int = 0           # Minimum MCTS iterations
         self.depth_threshold: int = 5          # Maximum search depth
         self.width_threshold: int = 3          # Number of children per expanded node
@@ -41,10 +41,12 @@ class SearchConfig:
         # self.api_key: str =  "zhiyan123" 
         # self.base_url: str =  "http://192.168.200.222:12025/v1"
 
-        self.eval_model_name: str = "qwen3-30b-a3b-instruct-2507"
+        self.eval_model_name: str = "qwen-flash"
         self.eval_api_key: str = "62507c5f747745ada8bbd35e570788d2"
         self.eval_model_url: str = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+        self.eval_model_temperature: float = 0.0
 
         self.optim_model_name:str = "deepseek-chat"
         self.optim_api_key: str = "12a83368c59545e6af1c0a17810cd675"
         self.optim_model_url:str = "https://api.deepseek.com/v1"
+        self.optim_model_temperature: float = 1.0
