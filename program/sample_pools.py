@@ -74,7 +74,7 @@ class DynamicSamplePool:
         logger.info(f"Initializing sample pool with {len(dataset)} samples...")
 
         # 一次性评估整个 dataset
-        rewards = evaluator.batch_reward(current_prompt, dataset)  # list[float], 长度 = len(dataset)
+        rewards = evaluator.batch_reward_n(current_prompt, dataset)  # list[float], 长度 = len(dataset)
 
         for raw, r in zip(dataset, rewards):
             s = PoolSample(raw)
