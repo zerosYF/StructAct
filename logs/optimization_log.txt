@@ -1149,3 +1149,53 @@ Determine whether the premise entails the hypothesis by following these structur
 *   Premise: "Olivia suspects that a man dressed only in a towel is in a sauna."
 *   Hypothesis: "Olivia suspects that a human not wearing any clothes is in a room."
 *   **Correct Analysis (Step 0):** "Not wearing any clothes" is a pragmatic and valid interpretation of "dressed only in a towel" in this context. "Human" generalizes "man". "Room" generalizes "sauna". Therefore, this is **entailment**.
+2025-09-06 18:04:00,757 - 📊 Current Template_description:
+None
+2025-09-06 18:04:00,757 - 📊 Current Prompt:
+Determine whether the first sentence (the premise) entails the second (the hypothesis). Follow these steps precisely:
+
+1.  **Identify Mental States:** List every mental state verb (e.g., *knows, believes, learns, suspects, remembers, recognizes, understands*) and its specific agent in both sentences.
+
+2.  **Extract Core Propositions:** Remove all mental state layers to isolate the innermost factual clause in each sentence. This is the core proposition (P), stripped of any "X thinks that..." or "Y knows that..." framing.
+
+3.  **Compare for Exact Substring Match:** Check if the hypothesis's core proposition is an exact, contiguous substring of the premise's core proposition. This match must be literal; synonyms, paraphrasing, omitted details, or altered conjunctions invalidate it. If they do not match, entailment is impossible. If they match, proceed to Step 4.
+
+4.  **Analyze the Mental State Hierarchy:**
+    *   **Case A: Identical Hierarchy.** If the sequence of mental states (verbs and agents) is exactly the same in the premise and hypothesis, then entailment holds. ✅
+    *   **Case B: Hypothesis Omits Intermediate Layers.** If the hypothesis contains a **prefix** of the premise's mental state sequence (i.e., it starts with the same agents and verbs but omits some nested layers at the end), then entailment **holds** if and only if the omitted mental state is **factive** (e.g., *knows, recognizes, remembers, learns, understands, sees*).
+        *   **Reasoning:** Factive verbs (e.g., *knows*) imply the truth of their complement. Therefore, `X believes that Y knows that P` entails `X believes that P` because X is committed to P's truth.
+        *   **Warning:** If the omitted verb is **non-factive** (e.g., *believes, suspects, thinks*), then entailment does **not** hold. `X believes that Y believes that P` does not entail `X believes that P` because X might think Y is mistaken. ❌
+    *   **Case C: Any Other Change.** If the hypothesis introduces new mental states or agents, changes the order of the existing mental states, or alters the agents or verbs themselves, then entailment does **not hold**. ❌
+
+5.  **Final Decision:** Based on the analysis in Step 4:
+    *   If entailment holds, output `<answer>entailment</answer>`.
+    *   Otherwise, output `<answer>non-entailment</answer>`.
+
+**Key Definitions:**
+*   **Factive Verbs:** imply the truth of their complement (e.g., *knows, recognizes, sees, remembers, learns, regrets, understands*).
+*   **Non-Factive Verbs:** do not imply the truth of their complement (e.g., *believes, suspects, thinks, doubts, hopes, assumes*).
+2025-09-06 18:04:29,203 - 📊 Current Template_description:
+None
+2025-09-06 18:04:29,203 - 📊 Current Prompt:
+Determine whether the first sentence (the premise) entails the second (the hypothesis). Follow these steps precisely and in order:
+
+1.  **Identify and Classify Mental States:** For both sentences, list every mental state verb (e.g., knows, believes, learns, suspects, remembers, sees, thinks) and its specific agent.
+    *   **Categorize each verb:**
+        *   **Factive:** knows, learns, remembers, sees, realizes, notices. (If `[Agent] [verb] that P` is true, then P is also true.)
+        *   **Non-Factive:** believes, suspects, thinks, doubts, imagines. (If `[Agent] [verb] that P` is true, P may or may not be true.)
+
+2.  **Extract Propositions:** Remove the **outermost** mental state layer (the main clause) from both the premise and hypothesis to isolate their core content. Do not remove any embedded mental states at this stage.
+
+3.  **Analyze Premise Structure:** Examine the premise's content (from Step 2).
+    *   If it contains an embedded mental state, note its type (factive or non-factive) and its content.
+    *   **Key Principle:** The content (P) of an embedded **factive** mental state (e.g., "sees that P", "knows that P") is considered a true fact **within the scope of the outer mental state**.
+
+4.  **Compare for Entailment:** Entailment holds **only if** **all** of the following conditions are satisfied:
+    a.  **Outer Frame Match:** The hypothesis's outermost mental state (verb and agent) exactly matches the premise's outermost mental state.
+    b.  **No New Elements:** The hypothesis introduces no new mental state verbs or agents.
+    c.  **Content Entailment:** The propositional content of the hypothesis (from Step 2) is entailed by the available information from the premise's content. This is true if the hypothesis's content is:
+        *   **Case 1 (Direct):** An exact, contiguous, literal substring of the premise's content.
+        *   **Case 2 (Factive Extraction):** An exact, contiguous, literal substring of the content (P) of an embedded **factive** mental state within the premise's content.
+        *   **Case 3 (Logical Inference):** A logical consequence of the premise's content, considering the factivity of any embedded verbs. (Use this only for clear, definitional inferences, e.g., "in the kitchen" → "inside").
+
+5.  **Final Decision:** If **all** conditions in Step 4 are satisfied, output `<answer>entailment</answer>`. Otherwise, output `<answer>non-entailment</answer>`.
