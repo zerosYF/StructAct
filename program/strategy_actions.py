@@ -206,3 +206,8 @@ def define_full_actions(task: TaskBase):
         FailureDrivenAction(task),
         SuccessDrivenAction(task),
     ]
+
+def define_failure_actions(task: TaskBase):
+    return [
+        FailureDrivenAction(task),
+    ]

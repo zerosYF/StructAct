@@ -20,6 +20,7 @@ from task.mmlu.mmlu_engineering import EngineeringMCQTask
 
 from search.mct_search import MCTSearchController
 from search.beam_search import BeamSearchController
+from search.prompt_agent import PromptAgentController
 from search.config import SearchConfig
 from search.evaluator import PromptEvaluator
 
@@ -46,7 +47,7 @@ def run_task(task_name: str):
         task_cls = TASK_REGISTRY[task_name]
         task: TaskBase = task_cls(config)
         evaluator = PromptEvaluator(task, config.reward_thread_num)
-        controller = BeamSearchController(evaluator, config, task)
+        controller = PromptAgentController(evaluator, config, task)
 
         logger.info(f"🚀 Running task: {task.name}")
         start_time = time.time()
