@@ -52,16 +52,11 @@ class DefaultExpandStrategy(ExpandStrategy):
                     action = futures[fut]
                     logger.error(f"Error expanding action {getattr(action, 'name', 'Unknown')}: {e}")
 
-        with mcts.lock:
-            mcts.children[node].extend(children)
-
         return children
     
     def _expand_action_threadsafe(self, node: Node, action, mcts) -> Node:
         try:
             child: Node = node.take_action(action, Step.Expand)
-            with self.lock:
-                mcts.children[node].append(child)
             return child
         except Exception as e:
             logger.error(f"Exception in take_action: {e}")
