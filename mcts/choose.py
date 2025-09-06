@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from mcts.node import Node
 from search.config import SearchConfig
 import math
+from logger import logger
 
 class ChooseStrategy(ABC):
     @abstractmethod
@@ -197,7 +198,7 @@ class MaxPathBestNodeStrategy(ChooseStrategy):
             max_idx = max(range(len(rewards)), key=lambda i: rewards[i])
             return path[max_idx]
         else:
-            mcts.logger.warning("⚠️ MaxPathBestNodeStrategy did not find a valid action sequence")
+            logger.warning("⚠️ MaxPathBestNodeStrategy did not find a valid action sequence")
             return []
 
 def get_choose_strategy(config: SearchConfig):
