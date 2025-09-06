@@ -47,17 +47,6 @@ CONTROLLER_REGISTRY = {
     "BeamSearchController": BeamSearchController,
 }
 
-def evaluate_baselines(task: TaskBase, evaluator: PromptEvaluator):
-    """计算任务的基础准确率（除 SA 外）"""
-    return {
-        "acc_origin_zs": evaluator.evaluate(task.get_test(), task.process_origin_prompt(fs=False, cot=False, fs_cot=False)),
-        "acc_origin_fs": evaluator.evaluate(task.get_test(), task.process_origin_prompt(fs=True, cot=False, fs_cot=False)),
-        "acc_origin_fs_": evaluator.evaluate(task.get_test(), task.process_origin_prompt(fs=True, cot=False, fs_cot=True)),
-        "acc_cot_zs": evaluator.evaluate(task.get_test(), task.process_origin_prompt(fs=False, cot=True, fs_cot=False)),
-        "acc_cot_fs": evaluator.evaluate(task.get_test(), task.process_origin_prompt(fs=True, cot=True, fs_cot=False)),
-        "acc_cot_fs_": evaluator.evaluate(task.get_test(), task.process_origin_prompt(fs=True, cot=True, fs_cot=True)),
-    }
-
 def parse_args():
     parser = argparse.ArgumentParser(description="Run prompt search on selected tasks.")
     parser.add_argument(
@@ -86,8 +75,6 @@ def run_task(args):
 
         best_template, best_prompt = controller.search()
 
-        # 拆分 baseline
-        baseline_results = evaluate_baselines(task, evaluator)
         acc_sa = evaluator.evaluate(task.get_test(), best_prompt)
 
         end_time = time.time()
@@ -101,14 +88,6 @@ def run_task(args):
             f.write(f"🔍 Task: {task.name}\n")
             f.write(f"✅ Best Prompt Template:\n{best_template}\n\n")
             f.write(f"✅ Best Prompt:\n{best_prompt}\n\n")
-
-            # 输出 baseline
-            f.write(f"📊 Original ZeroShot Test Accuracy: {baseline_results['acc_origin_zs'].get('accuracy')}\n")
-            f.write(f"📊 Original FewShot Test Accuracy: {baseline_results['acc_origin_fs'].get('accuracy')}\n")
-            f.write(f"📊 Original Cot_FewShot Test Accuracy: {baseline_results['acc_origin_fs_'].get('accuracy')}\n")
-            f.write(f"📊 Cot ZeroShot Test Accuracy: {baseline_results['acc_cot_zs'].get('accuracy')}\n")
-            f.write(f"📊 Cot FewShot Test Accuracy: {baseline_results['acc_cot_fs'].get('accuracy')}\n")
-            f.write(f"📊 Cot Cot_FewShot Test Accuracy: {baseline_results['acc_cot_fs_'].get('accuracy')}\n")
             f.write(f"📊 SA Test Accuracy: {acc_sa.get('accuracy')}\n")
             f.write(f"\n⏱️ Time Elapsed: {int(minutes)} min {int(seconds)} sec ({duration:.2f} seconds)\n")
 
