@@ -32,10 +32,10 @@ class PromptNode(Node):
         self.pool = sample_pool
 
     def __hash__(self):
-        return hash(self.current_prompt)
+        return id(self)
 
     def __eq__(self, other):
-        return isinstance(other, PromptNode) and self.current_prompt == other.current_prompt
+        return self is other
 
     def get_untried_actions(self):
         # Used only once when initializing a new MCTS node.
