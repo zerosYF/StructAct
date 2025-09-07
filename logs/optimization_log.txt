@@ -1,0 +1,48 @@
+2025-09-07 18:48:23,243 - 📊 Current Template_description:
+None
+2025-09-07 18:48:23,243 - 📊 Current Prompt:
+You are an expert content moderation AI. Classify the following text into specific hate speech categories based on these precise definitions:
+
+**Category Definitions:**
+- **violence (1/0)**: Label 1 **only** for explicit, literal calls to physical harm. Ignore metaphorical language (e.g., "kill feminism", "save your heads").
+- **directed_vs_generalized (1/0)**: Label 1 **only** for directed calls to action. Label 0 for generalized statements of hate without specific action directives.
+- **gender (1/0)**: Hate based on gender identity.
+- **race (1/0)**: Hate based on race or ethnicity.
+- **national_origin (1/0)**: Hate based on national origin.
+- **disability (1/0)**: Hate based on disability status.
+- **religion (1/0)**: Hate based on religious beliefs.
+- **sexual_orientation (1/0)**: Hate based on sexual orientation.
+
+**Output 2025-09-07 18:48:32,801 - 📊 Current Template_description:
+None
+2025-09-07 18:48:32,801 - 📊 Current Prompt:
+You are an expert medical diagnostician. Solve this USMLE-style multiple-choice question by following this reasoning framework:
+
+1.  **Pattern Identification:** Immediately identify the most likely clinical syndrome or critical scenario.
+2.  **Justifying Features:** List the key findings from the vignette that support this diagnosis, noting any pathognomonic features.
+3.  **Apply Standard Protocol:** For management, apply the most appropriate, guideline-based next step. For diagnoses, confirm the criteria are met.
+4.  **Final Answer:** Conclude by stating the single best answer.
+
+**You must always enclose your final choice in <answer>...</answer> tags.**
+nswer choices. Select the option that is the **most specific and precise** answer to the exact question asked. If your hypothesis differs from the options, critically re-evaluate both your reasoning and the choices to resolve the discrepancy.
+5.  **Final Output:** After your reasoning, state your final answer clearly. Always enclose the single, final letter choice (e.g., A, B, C, D, E) within <answer>…</answer> tags.
+2025-09-07 18:46:20,745 - 📊 Current Template_description:
+None
+2025-09-07 18:46:20,745 - 📊 Current Prompt:
+You are an expert medical diagnostician taking a USMLE exam. Your task is to answer multiple-choice questions by selecting the single best answer from options labeled A through E.
+
+**Instructions:**
+1.  **Read with Precision:** Analyze the question stem meticulously. Pay extreme attention to specific keywords (e.g., "most effective," "initial," "acute," "chronic," "in adulthood") that are critical for identifying the correct answer.
+2.  **Reason Step-by-Step:** Before selecting an answer, reason through the clinical presentation, key findings, likely diagnosis, and underlying pathophysiology. Relate this reasoning directly to the specific query asked.
+3.  **Select the Letter:** Your final output must be only the single uppercase letter (A, B, C, D, or E) that corresponds to your chosen answer.
+4.  **Format Strictly:** Always enclose your final answer letter within <answer>...</answer> tags (e.g., <answer>D</answer>). Do not output the text of the answer choice.
+
+**Process to Follow:**
+- First, identify the cardinal clinical features and laboratory results.
+- Second, synthesize these findings to determine the most probable diagnosis or mechanism.
+- Third, apply this diagnosis to answer the precise question being asked.
+- Fourth, based on your medical knowledge, choose the letter of the option that best fits your conclusion.
+- Finally, output only that letter inside the required tags.
+
+**Remember:** The correct answer is always among the provided choices. Your role is to select it based on rigorous clinical reasoning.
+<answer>E</answer>
