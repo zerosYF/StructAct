@@ -63,7 +63,8 @@ class TaskBase(ABC):
                     "Answer: <final answer> \n\n"
                     "Do not add any extra commentary or formatting. Keep the input question unchanged."
                 )
-                fewshot_text = getOptimModel().api_call(fewshot_text)
+                final_text = system_prompt + fewshot_text
+                fewshot_text = getOptimModel().api_call(final_text)
 
             prompt_parts.append("Here are some examples:\n" + fewshot_text)
 
@@ -77,8 +78,8 @@ class TaskBase(ABC):
         else:
             format_instruction = (
                 "Select the best answer based on the question and options. "
-                "Respond in the following format without other text:\n"
-                "<answer> ... </answer>"
+                "only output the final answer wrapped in <answer>...</answer> and nothing else."
+                "Do not include chain-of-thought or explanations."
             )
 
         prompt_parts.append(format_instruction)
