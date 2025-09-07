@@ -22,6 +22,9 @@ class Model:
                 temperature=self.termperature,
             )
             output = response.choices[0].message.content.strip()
+            logger.info(
+                f"  Model Response: {output}\n"
+                )
             return output
 
         except BadRequestError as e:

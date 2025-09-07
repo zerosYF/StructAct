@@ -1,0 +1,9 @@
+🔍 Task: medical_exam
+📊 Original ZeroShot Test Accuracy: 0.22
+📊 Original FewShot Test Accuracy: 0.205
+📊 Original Cot_FewShot Test Accuracy: 0.2
+📊 Cot ZeroShot Test Accuracy: 0.235
+📊 Cot FewShot Test Accuracy: 0.23
+📊 Cot Cot_FewShot Test Accuracy: 0.205
+
+⏱️ Time Elapsed: 43 min 48 sec (2628.92 seconds)

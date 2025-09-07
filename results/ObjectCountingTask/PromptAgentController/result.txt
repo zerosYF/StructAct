@@ -3,57 +3,8 @@
 
 
 ✅ Best Prompt:
-```
-Task: Count the total number of distinct physical items described in the user's list.
+Questions that involve enumerating objects of different types and asking the model to count them
 
-Instructions:
-1.  Parse the list carefully. Count each item based on how it is phrased.
-2.  If an item is stated in the plural with a number (e.g., "four cauliflowers"), that number is its count.
-3.  If an item is stated in the singular with "a" or "an" (e.g., "a potato", "an onion"), it counts as 1 item.
-4.  Treat compound nouns as a single unit. For example:
-    - "a head of lettuce" is 1 item.
-    - "a stalk of celery" is 1 item.
-    - "a clove of garlic" is 1 item.
-    - "a bunch of carrots" is 1 item (unless a number is specified, e.g., "a bunch of 6 carrots").
-5.  Do not break down compound items into smaller parts. Count them exactly as described.
-6.  Ignore whether the items are logically related (e.g., all being "vegetables"). Your only task is to count the explicitly mentioned objects.
+📊 SA Test Accuracy: 0.912
 
-Examples:
-
-User Input: "I have four cauliflowers, a lettuce head, a garlic, a yam, a cabbage, a stalk of celery, a head of broccoli, a potato, an onion, and a carrot."
-Model Reasoning:
-- "four cauliflowers" = 4 items
-- "a lettuce head" = 1 item (treated as a compound noun, like "a head of lettuce")
-- "a garlic" = 1 item
-- "a yam" = 1 item
-- "a cabbage" = 1 item
-- "a stalk of celery" = 1 item
-- "a head of broccoli" = 1 item
-- "a potato" = 1 item
-- "an onion" = 1 item
-- "a carrot" = 1 item
-Total: 4 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 = 13 items.
-<answer>13</answer>
-
-User Input: "There are three apples, two bunches of grapes, and a banana."
-Model Reasoning:
-- "three apples" = 3 items
-- "two bunches of grapes" = 2 items (each "bunch" is a single unit)
-- "a banana" = 1 item
-Total: 3 + 2 + 1 = 6 items.
-<answer>6</answer>
-
-User Input: "I see five ships, a car, and an bicycle."
-Model Reasoning:
-- "five ships" = 5 items
-- "a car" = 1 item
-- "an bicycle" = 1 item
-Total: 5 + 1 + 1 = 7 items.
-<answer>7</answer>
-
-Now, apply these rules to the following user input:
-```
-
-📊 SA Test Accuracy: 0.72
-
-⏱️ Time Elapsed: 151 min 3 sec (9063.45 seconds)
+⏱️ Time Elapsed: 153 min 32 sec (9212.71 seconds)

@@ -1,6 +1,6 @@
 import json
 import random
-from typing import List, Dict
+from typing import List, Dict, Any
 from loguru import logger
 from task.base_task import TaskBase
 import re
@@ -55,7 +55,7 @@ class HateSpeechDetectionTask(TaskBase):
     def inject_final_input(self, current_prompt: str, input: str) -> str:
         return (
             current_prompt + self.system_prompt + "\n"
-            "\n\nText: " + input + 
+            "\n\nText: " + input + "\n" +
             self.answer_format_prompt
         )
 
@@ -68,7 +68,9 @@ class HateSpeechDetectionTask(TaskBase):
             for s in samples
         ])
 
-    def _normalize_answer(self, text: str) -> Dict:
+    def _normalize_answer(self, text: Any) -> Dict:
+        if isinstance(text, dict):
+            return text
         match = re.search(r"<answer>([\s\S]*?)</answer>", text, re.IGNORECASE)
         if match:
             text = match.group(1).strip()

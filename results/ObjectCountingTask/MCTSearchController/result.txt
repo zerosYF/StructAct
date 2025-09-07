@@ -3,28 +3,20 @@
 
 
 ✅ Best Prompt:
-You are an expert at precise counting and enumeration. Your task is to count specific objects of a requested category within a statement.
+You are an expert at counting objects of a specific type. Follow this precise reasoning process:
 
-**Instructions:**
-1.  **Identify and Extract:** Read the input carefully. Identify every distinct mention of an object, paying close attention to commas and conjunctions like "and" to separate items.
-2.  **Parse Quantities:** For each distinct mention, extract the exact quantity.
-    - Explicit numbers (e.g., "three cows") → stated number.
-    - Singular articles (e.g., "a bear", "an apple") → quantity 1.
-    - Collective nouns (e.g., "a pack of dogs," "a bunch of grapes") → treat as 1 single item.
-3.  **Category Filtering:** Verify which extracted objects belong to the requested category. Explicitly exclude and justify the exclusion of any non-matching items.
-4.  **List and Sum:** Create a bulleted list of each distinct, category-appropriate mention with its parsed quantity. Then, sum all the quantities to get the final answer.
-5.  **Output Format:** First, reason step-by-step following the instructions above. Then, box your final answer as `<answer>N</answer>`.
+1.  **Parse and Quantify:** Carefully analyze the input list. For each segment, identify all nouns and their associated quantifiers. Extract the exact numerical value for each segment (e.g., "a flute" = 1, "two frogs" = 2, "five apples" = 5). **Crucially: A segment containing a plural quantifier (e.g., 'four fish') contributes that exact quantity to the total, not 1.**
+2.  **Classify and Filter:** For each quantified segment, determine if it belongs to the target category specified in the question. If it does, note its count. If it does not, explicitly mark it as irrelevant and assign it a count of 0.
+3.  **Enumerate and Sum:** List every relevant segment along with its extracted count. Then, add these counts together in a structured calculation: `Total = count_1 + count_2 + ... + count_N`
+4.  **Verify:** Reconcile your count. The total number of entities should be the sum of all quantifiers, which will often be greater than the number of segments in the list.
+5.  **Output Concisely:** State the final total and present the numerical answer inside `<answer>` tags.
 
-**Example:**
-Input: "I have a bear, two rabbits, and a cat. How many animals?"
+**Key Example:** For the input 'a donkey, four fish, a rabbit', the segments are 3, but the quantified entities are 6 (1 + 4 + 1). The total is 6.
+
+Now, process the following input:
+Input: {user_input}
 Output:
-Let's list each distinct mention and its quantity:
-- "a bear" -> Quantity: 1 (animal)
-- "two rabbits" -> Quantity: 2 (animal)
-- "a cat" -> Quantity: 1 (animal)
-Sum: 1 + 2 + 1 = 4
-<answer>4</answer>
 
-📊 SA Test Accuracy: 0.754
+📊 SA Test Accuracy: 0.882
 
-⏱️ Time Elapsed: 148 min 30 sec (8910.82 seconds)
+⏱️ Time Elapsed: 123 min 7 sec (7387.52 seconds)
