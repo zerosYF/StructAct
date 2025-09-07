@@ -7,4 +7,4 @@ Classify text into multiple hate speech labels.
 
 📊 SA Test Accuracy: 0.155
 
-⏱️ Time Elapsed: 127 min 36 sec (7656.73 seconds)
+⏱️ Time Elapsed: 124 min 2 sec (7442.16 seconds)

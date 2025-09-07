@@ -5,6 +5,6 @@
 ✅ Best Prompt:
 Classify text into multiple hate speech labels.
 
-📊 SA Test Accuracy: 0.16
+📊 SA Test Accuracy: 0.145
 
-⏱️ Time Elapsed: 78 min 3 sec (4683.95 seconds)
+⏱️ Time Elapsed: 86 min 1 sec (5161.95 seconds)

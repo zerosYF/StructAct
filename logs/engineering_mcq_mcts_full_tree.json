@@ -6,25 +6,26 @@
     "width_threshold": 3
   },
   "search_stats": {
-    "total_nodes": 31,
-    "total_Q_values": 31
+    "total_nodes": 16,
+    "total_Q_values": 16
   },
   "best_node": {
     "action_sequence": [
-      "SuccessDrivenAction"
+      "FailureDrivenAction",
+      "FailureDrivenAction"
     ],
-    "prompt": "Answer electrical and electronics engineering multiple-choice questions by rigorously following this structured protocol:\n\n1.  **Deconstruct & Identify:** Parse the question for distinct sub-parts. For each, identify the governing physical law or core concept (e.g., Ohm's Law, motor characteristics, thermodynamic reversibility).\n2.  **Formulate & Condition:** State the precise formulae required. Explicitly account for any special conditions (e.g., back EMF=0 at standstill, no-load operation).\n3.  **Calculate & Compare:** Execute numerical calculations methodically, preserving precision through all intermediate steps. Do not round prematurely.\n4.  **Match & Conclude:** Systematically compare your computed result against all provided options to find the exact match. State your final answer clearly.\n\n**Apply this analytical process to the following question:**",
-    "depth": 1,
-    "Q": 6.004166666666666,
-    "N": 10
+    "prompt": "Answer electrical and electronics engineering multiple-choice questions by following a rigorous, step-by-step problem-solving methodology. For each question, adhere to this protocol:\n\n1.  **Contextual Analysis:** Carefully read the question to identify all given parameters, constraints, and required outputs. Determine the problem context: whether it requires fundamental theory application, precise calculation, or practical engineering approximation using standard values or simplified models common in textbook problems.\n2.  **Strategic Formulation:** Before calculations, outline the solution approach. Select the most efficient and context-appropriate method. For applied problems, consider whether standard empirical correlations, typical value ranges, or simplified formulas are expected rather than full first-principles derivations.\n3.  **Unit Consistency:** Convert all given quantities into a consistent unit system (preferably SI units: kg, m, s, A, V, Ω, J, etc.) before computations. Explicitly show all necessary conversions.\n4.  **Systematic Solution:**\n    - **General Formulation:** Recall and state all pertinent physical laws, equations, and principles. Present general symbolic formulas before numerical substitution.\n    - **Structured Computation:** Solve symbolically where possible. Substitute numerical values only into final expressions. Document all computational steps clearly, including arithmetic operations.\n5.  **Validation & Sanity Checking:**\n    - **Mathematical Verification:** When feasible, validate the answer by checking against original equations or using alternative methods.\n    - **Physical Plausibility:** Assess whether results are physically reasonable. Compare calculated values to known typical ranges and the distribution of provided options. If results are outliers, re-evaluate method selection and assumptions.\n6.  **Option Selection:** After verification, compare final results to provided choices. If no exact match exists but one option is consistently close to all calculated values, select it as the intended answer. Choose the letter corresponding to the best match.\n\nYour final output must be structured precisely as follows:\n\n**<reasoning>**\n[Your complete, step-by-step analysis, calculations, and validation checks go here.]\n**</reasoning>**\n\n**<answer>**\n[The single letter of the correct choice, e.g., A]\n**</answer>**",
+    "depth": 2,
+    "Q": 0.6,
+    "N": 1
   },
   "search_tree": {
     "id": 0,
     "depth": 0,
     "action_sequence": [],
     "prompt": "Answer electrical and electronics engineering multiple-choice questions.",
-    "Q": 17.65833333333333,
-    "N": 30,
+    "Q": 7.049999999999999,
+    "N": 12,
     "reward": 0.55,
     "children": [
       {
@@ -33,9 +34,9 @@
         "action_sequence": [
           "SuccessDrivenAction"
         ],
-        "prompt": "You are an expert electrical and electronics engineer. Solve multiple-choice questions by executing precise calculations based on first principles.\n\n**Follow this strict process:**\n1.  **Identify the governing equation** for the core concept (e.g., Carnot efficiency, resonant frequency, energy balance).\n2.  **Extract all given values and their units.** Convert units to a consistent system before calculating.\n3.  **Perform the numerical solution** meticulously. The final answer is almost always a direct result of this calculation.\n4.  **Select the option** that matches your calculated result.\n\n**Now, solve the following question:**\n{Input Question}",
-        "Q": 5.6375,
-        "N": 10,
+        "prompt": "Answer electrical and electronics engineering multiple-choice questions by systematically applying core principles and precise calculations.\n\n**Reasoning Strategy:**\n1.  **Identify the governing physical law** and recall its exact formula.\n2.  **Extract all given values**, noting units. Convert to base SI units (e.g., µF to F, µs to s) for dimensional consistency.\n3.  **For dynamic systems:** Apply calculus. Capacitor voltage: `v(t) = (1/C) ∫ i(t) dt + v(0)`. Inductor current: `i(t) = (1/L) ∫ v(t) dt + i(0)`.\n4.  **Execute calculations meticulously**, handling exponents, integrals, and constants with care.\n5.  **Match your precise result** to the provided options.\n6.  **Output only the single correct letter** enclosed in `<answer></answer>` tags.\n\n**Examples of Correct Application:**\n[Insert Example 1 Here]\n[Insert Example 2 Here]\n\n**New Question:**\n`{Question}`\n**Reasoning:** `{Step-by-step reasoning}`\n**Final Answer:** `<answer>{Letter}</answer>`",
+        "Q": 2.3333333333333335,
+        "N": 4,
         "reward": 0.45,
         "children": [
           {
@@ -43,398 +44,183 @@
             "depth": 2,
             "action_sequence": [
               "SuccessDrivenAction",
-              "FailureDrivenAction"
+              "SuccessDrivenAction"
             ],
-            "prompt": "You are an expert electrical and electronics engineer. Your task is to solve multiple-choice questions with extreme precision and accuracy by adapting your reasoning to the question type.\n\n**Follow this strict reasoning process:**\n\n1.  **Analyze the Question Type:**\n    *   **If the question contains numerical values and requires a calculation:** Identify the core concept and its governing equation(s) or principle (e.g., Ohm's Law, Kirchhoff's laws, Carnot efficiency).\n    *   **If the question is conceptual (e.g., definitions, classifications, properties):** Identify the key term and recall its precise definition, standard taxonomy, or fundamental properties from first principles. Do not rely on common associations or approximations.\n\n2.  **Extract Relevant Information:**\n    *   For numerical questions: List all given values and their units. Convert all units to a consistent system (SI preferred) before any calculation.\n    *   For conceptual questions: Ignore this step.\n\n3.  **Execute the Solution Meticulously:**\n    *   For numerical questions: Perform the calculation step-by-step. The final answer must be a direct result of this calculation.\n    *   For conceptual questions: Systematically reason through the options. Compare each option against the strict definition or properties you identified. Eliminate options that are incorrect based on fundamental, unambiguous truths.\n\n4.  **Select the Option:**\n    *   Choose the option that exactly matches your calculated result or reasoned conclusion. Your conclusion must be based solely on foundational engineering principles.\n\n**Now, solve the following question:**\n{Input Question}",
-            "Q": 2.283333333333333,
-            "N": 4,
-            "reward": 0.55,
-            "children": [
-              {
-                "id": 3,
-                "depth": 3,
-                "action_sequence": [
-                  "SuccessDrivenAction",
-                  "FailureDrivenAction",
-                  "SuccessDrivenAction"
-                ],
-                "prompt": "You are an expert electrical and electronics engineer. Your task is to solve multiple-choice questions with extreme precision and accuracy by strictly following this reasoning process:\n\n**1. Analyze Question Type:**\n   *   **Numerical Question:** If the question contains numerical values requiring calculation. Identify the governing equation or principle.\n   *   **Conceptual Question:** If the question is about definitions, properties, or classifications. Identify the key term and its authoritative source (e.g., fundamental law, standard truth table, precise definition).\n\n**2. Extract & Convert (Numerical Questions Only):**\n   *   List all given values and their units. **You MUST convert all units to the SI system (e.g., H, F, m, s) before any calculation.**\n\n**3. Execute the Solution Meticulously:**\n   *   **For Numerical Questions:** Solve the governing equation for the desired variable *symbolically* before substituting numerical values. Perform the calculation step-by-step, showing key intermediate results.\n   *   **For Conceptual Questions:** Systematically compare each option against the strict definition or authoritative source you identified. Eliminate options that violate foundational, unambiguous truths.\n\n**4. Select the Final Answer:**\n   *   Convert your final numerical result to the units used in the options, if necessary. Choose the option that exactly or most closely matches your calculated result or reasoned conclusion. Your conclusion must be based solely on first principles.\n\n**Now, solve the following question:**\n{Input Question}",
-                "Q": 0.575,
-                "N": 1,
-                "reward": 0.6,
-                "children": []
-              },
-              {
-                "id": 4,
-                "depth": 3,
-                "action_sequence": [
-                  "SuccessDrivenAction",
-                  "FailureDrivenAction",
-                  "SuccessDrivenAction"
-                ],
-                "prompt": "You are an expert electrical and electronics engineer. Solve multiple-choice questions with extreme precision by rigorously applying fundamental principles and structured reasoning.\n\n**Follow this strict process:**\n\n1.  **Analyze the Question Type:**\n    *   **Numerical/Calculation:** Identify the governing equation or physical law. Extract all given values and units, converting to a consistent system (SI preferred).\n    *   **Conceptual/Definitional:** Identify the key term and its precise definition or properties from first principles.\n    *   **Dimensional Analysis:** List all variables and their dimensions. Apply the Buckingham Pi Theorem to form dimensionless groups.\n    *   **Stability/Vector Calculus:** Derive conditions from first principles (e.g., metacentric height, curl definition).\n\n2.  **Execute the Solution Meticulously:**\n    *   **For numerical problems:** Perform calculations step-by-step symbolically first. Maintain high precision and only round the final result to match options.\n    *   **For conceptual problems:** Systematically compare each option against strict definitions to eliminate incorrect ones.\n    *   **For dimensional analysis:** Ensure all terms in a functional relationship are dimensionally consistent. Validate each option for dimensional homogeneity.\n    *   **For stability/vector problems:** Compute intermediate quantities (e.g., displaced volume, partial derivatives) rigorously before assembling the final solution.\n\n3.  **Select the Option:**\n    *   Choose the option that exactly matches your calculated result or reasoned conclusion based solely on foundational principles.\n\n**Now, solve the following question:**\n{Input Question}",
-                "Q": 0.6,
-                "N": 1,
-                "reward": 0.65,
-                "children": []
-              },
-              {
-                "id": 5,
-                "depth": 3,
-                "action_sequence": [
-                  "SuccessDrivenAction",
-                  "FailureDrivenAction",
-                  "FailureDrivenAction"
-                ],
-                "prompt": "You are an expert electrical and electronics engineer. Your task is to solve complex multiple-choice questions with extreme precision by integrating conceptual analysis with numerical execution. Your reasoning must be context-aware, critical, and must prioritize information explicitly provided in the problem.\n\n**Follow this structured reasoning process:**\n\n1.  **Problem Inspection and Context Setup:**\n    *   Read the entire problem, including all text, tables, and options.\n    *   Identify the specific quantity requested and note any key definitions, formulas, or intermediate results provided in the problem text. **THIS INFORMATION OVERRULES INTERNAL RECALL OR REASONING.**\n    *   Check the provided options for approximate magnitude to establish a baseline for reasonability.\n\n2.  **Analyze the Core Concept and Strategy:**\n    *   Identify the fundamental principle governing the problem (e.g., energy balance, Nusselt's theory, fan laws).\n    *   Determine if the solution requires a direct application of a provided formula, a multi-step numerical derivation, or a conceptual comparison. Most problems are hybrid.\n    *   If a table of calculated data is provided, determine if the final answer requires a simple operation (e.g., summation) on this data as defined in the problem text.\n\n3.  **Resolve Ambiguities and Extract Information:**\n    *   List all given values and their units. Note any inconsistencies (e.g., conflicting `UA` values) and proceed using the most explicitly stated values or those used in provided tables.\n    *   Convert all units to a consistent system. **If the answer options are in a specific unit system (e.g., English), prefer performing the calculation in that system to minimize conversion errors.**\n    *   Resolve ambiguities (e.g., \"molar specific volume at what condition?\") by using fundamental relations (e.g., ideal gas law) to verify values against other given data (e.g., P, T). State your assumption clearly if unresolvable.\n\n4.  **Execute the Solution with Critical Checks:**\n    *   Outline your solution path before calculating.\n    *   Perform calculations step-by-step.\n    *   **Implement a sanity check mid-calculation:** Compare intermediate results against the expected scale from the options. If there is a significant discrepancy (e.g., an order of magnitude), immediately pause and re-evaluate your approach, assumptions, or unit conversions.\n\n5.  **Validate and Select the Final Answer:**\n    *   Ensure your final answer is physically reasonable (e.g., efficiencies between 0-100%, plausible physical property values).\n    *   Match your result to the closest option.\n    *   If no option matches, re-check the problem for a key definition, a simpler interpretation, or a direct statement you may have overlooked. The most straightforward path informed by the problem's own data is often correct.\n\n**Now, solve the following question:**\n{Input Question}",
-                "Q": 0.575,
-                "N": 1,
-                "reward": 0.55,
-                "children": []
-              }
-            ]
-          },
-          {
-            "id": 6,
-            "depth": 2,
-            "action_sequence": [
-              "SuccessDrivenAction",
-              "FailureDrivenAction"
-            ],
-            "prompt": "You are an expert electrical and electronics engineer specializing in probability, information theory, and communications systems. Solve the following multiple-choice question by building your solution from fundamental principles.\n\n**Follow this structured process:**\n\n1.  **Reasoning and Interpretation:** Begin by interpreting the problem's scenario. Carefully define all concepts (e.g., \"maximum-likelihood decision rule\") and translate the textual description into a precise logical procedure or mathematical model. Do not recall a formula; derive your approach from first principles.\n2.  **Strategy Formulation:** Based on your reasoning, plan your solution path. Determine what quantities need to be calculated and in what sequence. Justify why each step is necessary.\n3.  **Numerical Execution:** Meticulously perform all required calculations. Keep values as fractions for precision where appropriate.\n4.  **Selection:** Choose the option that exactly matches your final result.\n\n**Now, solve the following question:**\n{Input Question}",
-            "Q": 2.3000000000000003,
-            "N": 4,
-            "reward": 0.5,
-            "children": [
-              {
-                "id": 7,
-                "depth": 3,
-                "action_sequence": [
-                  "SuccessDrivenAction",
-                  "FailureDrivenAction",
-                  "SuccessDrivenAction"
-                ],
-                "prompt": "You are an expert electrical and electronics engineer specializing in probability, information theory, and communications systems. Solve the following multiple-choice question by deriving your solution rigorously from fundamental principles.\n\n**Follow this structured process:**\n\n1.  **Reasoning and Interpretation:** Interpret the problem scenario and carefully define all concepts. Translate the textual description into a precise logical procedure or mathematical model. **Do not recall formulas; derive relationships from first principles.**\n2.  **Strategy Formulation:** Plan your solution path. Determine what quantities need calculation and justify why each step is necessary. **Choose the appropriate physical model based on context.**\n3.  **Numerical Execution:** **Ensure all quantities are in consistent units; convert as necessary before calculations.** Perform computations step-by-step, keeping values as exact expressions (e.g., π, fractions) to preserve precision. Round only at the final step. **For multi-part questions, solve each part systematically and label your work clearly.**\n4.  **Selection:** Choose the option that matches your result. **If no exact match exists, select the closest option and justify any minor discrepancies due to rounding or accepted constants.**\n\n**Now, solve the following question:**\n{Input Question}",
-                "Q": 0.6000000000000001,
-                "N": 1,
-                "reward": 0.65,
-                "children": []
-              },
-              {
-                "id": 8,
-                "depth": 3,
-                "action_sequence": [
-                  "SuccessDrivenAction",
-                  "FailureDrivenAction",
-                  "SuccessDrivenAction"
-                ],
-                "prompt": "You are an expert electrical and electronics engineer specializing in probability, information theory, and communications systems. Solve the following multiple-choice question by building your solution from fundamental principles.\n\n**Follow this structured process:**\n\n1.  **Reasoning and Interpretation:** Begin by interpreting the problem's scenario. Carefully define all concepts (e.g., \"maximum-likelihood decision rule\") and translate the textual description into a precise logical procedure or mathematical model from first principles. Do not recall formulas; derive your approach. Resolve ambiguities by considering context and answer options.\n2.  **Strategy Formulation:** Plan your solution path. Determine what needs to be calculated and in what sequence. Justify each step's necessity. Outline how you will ensure dimensional consistency and handle unit conversions.\n3.  **Numerical Execution:** Meticulously perform all calculations. Keep values as fractions for precision. Convert all units to a consistent system. Use standard reference values if needed, noting any approximations.\n4.  **Selection:** Choose the option that exactly or most closely matches your final result. Justify your selection if approximations are involved.\n\n**Now, solve the following question:**\n{Input Question}",
-                "Q": 0.5,
-                "N": 1,
-                "reward": 0.6,
-                "children": []
-              },
-              {
-                "id": 9,
-                "depth": 3,
-                "action_sequence": [
-                  "SuccessDrivenAction",
-                  "FailureDrivenAction",
-                  "SuccessDrivenAction"
-                ],
-                "prompt": "You are an expert electrical and electronics engineer specializing in probability, information theory, and communications systems. Solve the following multiple-choice question by building your solution entirely from fundamental principles.\n\n**Follow this structured process:**\n\n1.  **Reasoning and Interpretation:**\n    - Carefully define all technical terms and concepts mentioned in the question. Translate the textual description into a precise mathematical model or logical procedure.\n    - **Crucially, derive all relationships from first principles** (e.g., circuit laws, energy conservation, statistical decision theory). Do not recall or assume formulas without explicit derivation.\n\n2.  **Strategy Formulation:**\n    - Plan your solution path based on your reasoning. Justify why each step is necessary and how it connects to foundational concepts.\n    - Determine the sequence of calculations required, ensuring you derive symbolic expressions for all intermediate quantities.\n\n3.  **Numerical Execution:**\n    - **First, manipulate equations symbolically** to isolate the desired variable before any numerical substitution.\n    - Perform all calculations meticulously. Convert units explicitly and verify dimensional consistency at each step.\n    - Retain values as exact fractions or expressions (e.g., use π, not 3.14) until the final computation to prevent premature rounding.\n\n4.  **Selection:**\n    - Choose the option that exactly matches your final result in both numerical value and units. Ensure your precision aligns with the provided choices.\n\n**Now, solve the following question:**\n{Input Question}",
-                "Q": 0.6,
-                "N": 1,
-                "reward": 0.55,
-                "children": []
-              }
-            ]
-          },
-          {
-            "id": 10,
-            "depth": 2,
-            "action_sequence": [
-              "SuccessDrivenAction",
-              "FailureDrivenAction"
-            ],
-            "prompt": "You are an expert electrical and electronics engineer. Your task is to solve multiple-choice questions with high accuracy by applying appropriate solution strategies based on question type.\n\n**Follow this structured process:**\n\n1.  **Classify the Question:**\n    *   **Calculation-Based:** Requires numerical computation using equations and unit analysis.\n    *   **Conceptual:** Requires knowledge recall, definitions, or architectural understanding.\n\n2.  **Execute the Corresponding Strategy:**\n\n    **For Calculation-Based Questions:**\n    a.  **Identify Governing Equations:** Determine the fundamental equations (e.g., energy balance, Darcy-Weisbach, Ohm's law) that apply to the problem.\n    b.  **Extract and Convert Values:** List all given values and their units. Convert all units to a fully consistent system (SI or English) before any calculation.\n        *   **Critical Check:** For material properties (e.g., density, molar volume), explicitly identify their reference state (e.g., STP, inlet conditions). If a property is given at standard conditions but the problem operates at different conditions, use the ideal gas law or other relevant relationships to find the correct value at the operating state.\n    c.  **Solve Meticulously:** Perform the numerical solution step-by-step. For problems requiring iteration (e.g., friction factor dependent on Reynolds number), you may test the provided options to find the one that satisfies the problem's conditions.\n    d.  **Select the Answer:** Choose the option that matches your calculated result. If no option matches exactly, re-check your unit conversions and property states. If the problem specifies a constraint (e.g., \"must not exceed\"), select the smallest or most optimal option that meets the requirement.\n\n    **For Conceptual Questions:**\n    a.  **Recall the Definition:** Identify the precise concept or term described in the question.\n    b.  **Match the Description:** Select the option that is the most accurate and direct match based on your expertise.\n    c.  **Select the Answer:** Choose the correct letter option.\n\n3.  **Final Output:**\n    *   Always box your final answer in the format: `<answer>[LETTER]</answer>`\n\n**Now, solve the following question:**\n{Input Question}",
-            "Q": 0.5166666666666667,
-            "N": 1,
-            "reward": 0.65,
-            "children": []
-          }
-        ]
-      },
-      {
-        "id": 11,
-        "depth": 1,
-        "action_sequence": [
-          "SuccessDrivenAction"
-        ],
-        "prompt": "Answer electrical and electronics engineering multiple-choice questions by systematically applying core principles. Follow this reasoning structure:\n\n1.  **Decompose the Problem:** Break it into logical steps. Identify the governing concepts (e.g., Ohm's law, back EMF, similitude with Re, Pr, Nu).\n2.  **Apply Fundamentals:** Anchor your solution in first principles and fundamental equations. Perform calculations with precision, tracking units.\n3.  **State Assumptions:** Explicitly note any necessary assumptions (e.g., constant flux, Prandtl number matching).\n4.  **Derive and Match:** Compute the required values. Compare your result to the provided options, selecting the exact or closest match.\n5.  **Sanity Check:** Verify your answer is physically reasonable.\n\nProvide a clear, step-by-step explanation. Conclude with your final answer in the tag: `<answer>X</answer>` where X is the correct option letter.",
-        "Q": 6.016666666666666,
-        "N": 10,
-        "reward": 0.6,
-        "children": [
-          {
-            "id": 12,
-            "depth": 2,
-            "action_sequence": [
-              "SuccessDrivenAction",
-              "FailureDrivenAction"
-            ],
-            "prompt": "Answer electrical and electronics engineering multiple-choice questions by applying core principles with rigorous, physically-grounded reasoning. Follow this structured protocol:\n\n1.  **Unit Scrutiny and Conversion:**\n    *   Extract all numerical values and their units. Immediately convert them to a consistent unit system (SI is strongly recommended for calculations).\n    *   Check the physical realism of given values or initial calculations (e.g., current density, flow velocity). If a value seems non-physical (e.g., 0.01 ft/s flow in a pipe), identify the most probable intended value or unit correction (e.g., lbm/min instead of lbm/hr).\n\n2.  **Strategic Decomposition:**\n    *   Break the problem into logical steps. Identify the most direct governing concepts and fundamental equations (e.g., energy balance, Ohm's law). Choose the simplest valid solution path; avoid unnecessary complexity.\n\n3.  **Application of Fundamentals:**\n    *   Anchor your solution in first principles. Perform calculations precisely in your chosen unit system, explicitly tracking all units.\n    *   State all necessary assumptions clearly (e.g., \"assuming constant fluid properties,\" \"neglecting edge effects\").\n\n4.  **Solution and Physical Verification:**\n    *   Derive the required value. **Before comparing to options, conduct a sanity check:** Is the result physically reasonable and of the correct order of magnitude?\n    *   **If the result is non-physical, re-trace your steps.** Re-check unit conversions, method selection, and assumptions. The most likely error is a unit mistake.\n\n5.  **Final Answer Selection:**\n    *   Only after a result passes the sanity check, compare it to the provided options.\n    *   **If no option matches your reasoned answer, output `<answer>E</answer>` and explain the discrepancy.**\n    *   If an option matches, select it.\n\nProvide a clear, step-by-step explanation. Conclude with your final answer in the tag: `<answer>X</answer>` where X is the correct option letter or 'E'.",
+            "prompt": "Answer electrical and electronics engineering multiple-choice questions by systematically applying core principles and precise calculations.\n\n**Reasoning Strategy:**\n1.  **Identify Governing Law:** Explicitly state the fundamental physical law or mathematical theorem and its exact formula.\n2.  **Standardize Units:** Extract all given values and immediately convert them to consistent base SI units (e.g., µF to F, kts to m/s or ft/s, µs to s). Show these conversions.\n3.  **Setup Equation:** Formulate the specific equation for the scenario using the identified law and the converted values.\n4.  **Execute Mathematics Meticulously:**\n    *   **For dynamic systems (C, L):** Apply calculus. For a capacitor: `v(t) = v(0) + (1/C) ∫ i(τ) dτ from 0 to t`. Clearly show the integral setup, limits, and solution.\n    *   **For transforms:** Use Laplace transforms for convolution or transients. Show the transformation, multiplication in s-domain, and the inverse transform steps (including partial fraction decomposition).\n    *   **For systems of equations:** Show the setup from coefficient matching and the step-by-step algebraic solution.\n5.  **Calculate Step-by-Step:** Perform numerical calculations sequentially, showing all intermediate results. Carefully manage exponents and constants.\n6.  **Match to Options:** Compare your precise final result to the provided options. Identify the single best match, justifying the selection if an exact value isn't found.\n7.  **Output only the single correct letter** enclosed in `<answer></answer>` tags.\n\n**Examples of Correct Application:**\n[Insert Example 1 Here]\n[Insert Example 2 Here]\n\n**New Question:**\n`{Question}`\n**Reasoning:** `{Step-by-step reasoning}`\n**Final Answer:** `<answer>{Letter}</answer>`",
             "Q": 0.5833333333333334,
             "N": 1,
             "reward": 0.6,
             "children": []
           },
           {
-            "id": 13,
+            "id": 3,
             "depth": 2,
             "action_sequence": [
               "SuccessDrivenAction",
-              "FailureDrivenAction"
+              "SuccessDrivenAction"
             ],
-            "prompt": "Answer electrical and electronics engineering multiple-choice questions by systematically applying core principles. Follow this structured reasoning process:\n\n1.  **Problem Decomposition:** Break the problem into logical steps. Identify governing concepts, equations, and dimensionless numbers (e.g., Ohm's law, back EMF, Rayleigh number, Nusselt number). For multi-part questions, address each part sequentially while maintaining consistency.\n2.  **Fundamental Application:** Solve using first principles and fundamental equations. Ensure strict unit consistency throughout all calculations (e.g., use consistent time units; convert temperatures to absolute scales for radiation). Use standard property tables with accurate interpolation methods. Justify your choice of correlations or approximations.\n3.  **Explicit Assumptions:** Clearly state all assumptions (e.g., constant properties, chosen correlation validity, negligible effects).\n4.  **Calculation and Matching:** Compute values with precision. For multi-part questions, verify that all parts align with the options. Select the option that matches all computed values most closely.\n5.  **Enhanced Sanity Check:** Validate results against physical intuition and typical value ranges (e.g., natural convection coefficients for air: 0.5-2 Btu/ft²·hr·°F). If values fall outside expected ranges, re-check property values, unit conversions, and formula applications. Prioritize re-evaluation of sensitive parameters like dimensionless numbers.\n\nProvide a clear, step-by-step explanation. Conclude with your final answer in the tag: `<answer>X</answer>` where X is the correct option letter.",
-            "Q": 2.458333333333333,
-            "N": 4,
-            "reward": 0.55,
-            "children": [
-              {
-                "id": 14,
-                "depth": 3,
-                "action_sequence": [
-                  "SuccessDrivenAction",
-                  "FailureDrivenAction",
-                  "FailureDrivenAction"
-                ],
-                "prompt": "Answer engineering multiple-choice questions by systematically applying first principles and domain-specific knowledge. Follow this structured reasoning process:\n\n1.  **Domain Identification:** First, identify the engineering domain (e.g., Electrical, Mechanical, Thermodynamics, Machine Design). Select the appropriate fundamental principles, failure modes, and property tables for that domain.\n2.  **Problem Decomposition:** Break the problem into logical steps. Identify governing concepts, key variables, and target unknowns. For multi-part questions, address each part sequentially while maintaining consistency.\n3.  **Fundamental Application:** Solve using first principles and fundamental equations. Ensure strict unit consistency throughout all calculations. Use standard property tables with appropriate interpolation methods. Justify your choice of correlations or approximations.\n4.  **Assumption Strategy:** If critical information is missing or the path is blocked (e.g., an undefined final state):\n    *   Clearly state the ambiguity.\n    *   Check the available answer options for clues to a reasonable solution path.\n    *   Make a standard assumption for the problem type (e.g., for a keyed joint, calculate length based on both shear and compression stress and select the larger result; for an expansion process, consider a saturated final state if options suggest it).\n    *   Justify your chosen assumption.\n5.  **Calculation and Matching:** Compute values with precision. For multi-part questions, verify that all parts align. If an exact computed value is not among the options, find the closest match based on typical rounding conventions and the consistency of the result.\n6.  **Enhanced Sanity Check:** Validate results against physical intuition and typical value ranges (e.g., natural convection coefficients, key lengths relative to shaft diameter). If values are implausible, re-evaluate your assumptions, property values, and unit conversions.\n\nProvide a clear, step-by-step explanation, including your domain identification and any assumptions made. Conclude with your final answer in the tag: `<answer>X</answer>` where X is the correct option letter.",
-                "Q": 0.6000000000000001,
-                "N": 1,
-                "reward": 0.5,
-                "children": []
-              },
-              {
-                "id": 15,
-                "depth": 3,
-                "action_sequence": [
-                  "SuccessDrivenAction",
-                  "FailureDrivenAction",
-                  "FailureDrivenAction"
-                ],
-                "prompt": "Answer electrical and electronics engineering multiple-choice questions by adapting your reasoning to the question type. For conceptual questions, rely on precise definitions and contextual knowledge. For numerical problems, apply core principles systematically using the following structured approach:\n\n1.  **Question Analysis:** First, determine if the question is conceptual (e.g., definitions, classifications) or numerical. For conceptual questions, proceed directly to step 4.\n2.  **Problem Decomposition:** Break the numerical problem into logical steps. Identify governing concepts, key equations, and relevant dimensionless numbers (e.g., Reynolds, Rayleigh, Nusselt). For multi-part questions, address each part sequentially while maintaining consistency.\n3.  **Fundamental Application:** Solve using first principles and fundamental equations. Ensure strict unit consistency throughout all calculations. Use standard property tables (e.g., NIST for thermodynamics) and justify your choice of correlations or approximations (e.g., Churchill-Chu for natural convection on a cylinder). If a process is underspecified, state a justified assumption (e.g., assume a reversible process for a piston-cylinder expansion if no other path is indicated).\n4.  **Option Evaluation:** For conceptual questions, evaluate all options based on authoritative definitions and select the most precise answer. For numerical questions, compute values and match them to the provided options. If an exact match isn't found, re-check property values, unit conversions, and formula applications.\n5.  **Enhanced Validation:** Validate results against physical intuition and typical value ranges (e.g., natural convection coefficients for air: 0.5-2 Btu/ft²·hr·°F). If values are unreasonable, prioritize re-evaluation of sensitive parameters like dimensionless numbers or try an alternative correlation.\n\nProvide a clear, concise explanation. Conclude with your final answer in the tag: `<answer>X</answer>` where X is the correct option letter.",
-                "Q": 0.6499999999999999,
-                "N": 1,
-                "reward": 0.5,
-                "children": []
-              },
-              {
-                "id": 16,
-                "depth": 3,
-                "action_sequence": [
-                  "SuccessDrivenAction",
-                  "FailureDrivenAction",
-                  "FailureDrivenAction"
-                ],
-                "prompt": "Answer electrical and electronics engineering multiple-choice questions by systematically applying core principles. Follow this structured reasoning process:\n\n1.  **Problem Decomposition and Ambiguity Resolution:**\n    - Break the problem into logical steps. Identify governing concepts, equations, and dimensionless numbers (e.g., Ohm’s law, back EMF, Rayleigh number, Nusselt number).\n    - Identify any ambiguous terms, data, or terminology (e.g., \"molar specific volume,\" \"useful work,\" \"position\"). Resolve them by considering standard engineering conventions, contextual clues, or by evaluating multiple interpretations if necessary.\n    - Clearly define the coordinate system and which variable is being solved for, especially in kinematics or multi-axis problems.\n    - For multi-part questions, address each part sequentially while maintaining consistency.\n\n2.  **Fundamental Application with Domain-Specific Validation:**\n    - Solve using first principles and fundamental equations. Ensure strict unit consistency throughout all calculations (e.g., use consistent time units; convert temperatures to absolute scales for radiation).\n    - For thermodynamics, ensure terms like \"useful work\" are interpreted correctly (e.g., \\( W_{\\text{useful}} = W_{\\text{boundary}} - P_0 \\Delta V \\) when applicable).\n    - For fluid mechanics, verify whether properties are given at standard or actual conditions. If ambiguous, evaluate both interpretations and choose the one that aligns with physical realism or option matching.\n    - Use standard property tables with accurate interpolation methods. Justify your choice of correlations or approximations.\n\n3.  **Explicit Assumptions and Interpretation Rationale:**\n    - Clearly state all simplifying assumptions (e.g., constant properties, chosen correlation validity, negligible effects).\n    - Also state assumptions made for data interpretation and ambiguity resolution (e.g., \"Assuming molar volume is given at actual conditions based on context\").\n    - If terminology is ambiguous, explicitly declare your interpretation and justify it with domain knowledge.\n\n4.  **Iterative Calculation and Option Matching:**\n    - Compute values with precision. For multi-part questions, verify that all parts align with the options.\n    - If the computed value does not match any option closely, re-check assumptions, unit conversions, and data interpretation. Systematically try alternative interpretations or methods.\n    - Select the option that matches all computed values most closely. If multiple options are close, choose based on the most physically plausible interpretation.\n\n5.  **Enhanced Sanity Check and Cross-Validation:**\n    - Validate results against physical intuition and typical value ranges (e.g., natural convection coefficients for air: 0.5-2 Btu/ft²·hr·°F).\n    - Cross-validate results against the provided options. If no option is close, re-evaluate key assumptions and sensitive parameters (e.g., dimensionless numbers, property values).\n    - For kinematics, verify that the solution satisfies initial conditions and that the reported variable (e.g., x-position vs. z-position) is unambiguous and physically consistent.\n\nProvide a clear, step-by-step explanation. Conclude with your final answer in the tag: `<answer>X</answer>` where X is the correct option letter.",
-                "Q": 0.575,
-                "N": 1,
-                "reward": 0.6,
-                "children": []
-              }
-            ]
+            "prompt": "Answer electrical and electronics engineering multiple-choice questions by systematically applying core principles, precise calculations, and justified assumptions.\n\n**Reasoning Strategy:**\n1.  **Identify the governing law/formula** and its context (e.g., series vs. parallel capacitors, time-shifting in Laplace transforms).\n2.  **Extract all given values**, converting units to base SI (e.g., mm to m, cm² to m²) for dimensional consistency. If values are missing, make and justify reasonable assumptions (e.g., standard values like V₀=100 V or typical dimensions).\n3.  **For dynamic systems:** Apply calculus. Capacitor voltage: `v(t) = (1/C) ∫ i(t) dt + v(0)`. Inductor current: `i(t) = (1/L) ∫ v(t) dt + i(0)`.\n4.  **Execute calculations meticulously**, using exact constants (e.g., π) and avoiding premature rounding. For non-uniform parameters (e.g., varying permittivity), set up and evaluate integrals or sums.\n5.  **Match your precise result** to the provided options. If not exact, find the closest match and verify assumptions.\n6.  **Output only the single correct letter** enclosed in `<answer></answer>` tags.\n\n**Examples of Correct Application:**\n[Insert Example 1 Here]\n[Insert Example 2 Here]\n\n**New Question:**\n`{Question}`\n**Reasoning:** `{Step-by-step reasoning}`\n**Final Answer:** `<answer>{Letter}</answer>`",
+            "Q": 0.6000000000000001,
+            "N": 1,
+            "reward": 0.65,
+            "children": []
           },
           {
-            "id": 17,
+            "id": 4,
             "depth": 2,
             "action_sequence": [
               "SuccessDrivenAction",
-              "FailureDrivenAction"
+              "SuccessDrivenAction"
             ],
-            "prompt": "Answer engineering multiple-choice questions by combining systematic reasoning with recognized knowledge. First, classify the problem type to adapt your strategy:\n\n1.  **Classify the Problem:**\n    *   **Terminological:** Tests definitions, standards, or naming conventions.\n    *   **Quantitative Calculational:** Requires numerical computation based on given data.\n    *   **Conceptual/Theory-Based:** Requires applying fundamental principles and logical deduction.\n    *   **Lookup/Standard Value:** The solution is a well-documented value, constant, or result found in standard tables.\n\n2.  **Adapt Your Strategy:**\n    *   For **Terminological:** Recall the precise definition or standard. Compare directly to the options, prioritizing exact terminology.\n    *   For **Quantitative Calculational:**\n        *   Decompose into logical steps.\n        *   Apply fundamental equations with precision, tracking units meticulously.\n        *   Explicitly state necessary assumptions.\n        *   Compute values and match to options.\n        *   Perform a sanity check on the result's physical reasonableness.\n    *   For **Conceptual/Theory-Based:** Apply core principles to reason through the scenario. Use deductive logic and eliminate incorrect options.\n    *   For **Lookup/Standard Value:** If you recognize the problem has a standard answer (e.g., flame temperatures, material properties), state the known value based on established data. Do not attempt a full derivation if it is computationally infeasible.\n\n3.  **Resolve Ambiguity:** If a parameter or unit is ambiguous, state the most reasonable interpretation based on engineering context. If options reference external information (e.g., \"distribution number X\"), use the option values to guide and check your solution.\n\nProvide a clear, step-by-step explanation tailored to the problem class. Conclude with your final answer in the tag: `<answer>X</answer>` where X is the correct option letter.",
-            "Q": 2.425,
-            "N": 4,
-            "reward": 0.65,
-            "children": [
-              {
-                "id": 18,
-                "depth": 3,
-                "action_sequence": [
-                  "SuccessDrivenAction",
-                  "FailureDrivenAction",
-                  "FailureDrivenAction"
-                ],
-                "prompt": "Answer engineering multiple-choice questions by integrating systematic reasoning with domain knowledge and option-driven validation. Follow these steps:\n\n1.  **Classify the Problem Type:**\n    *   **Terminological:** Tests definitions, standards, or naming conventions.\n    *   **Quantitative Calculational:** Requires numerical computation based on given data.\n    *   **Conceptual/Theory-Based:** Requires applying fundamental principles and logical deduction.\n    *   **Lookup/Standard Value:** The solution is a well-documented value, constant, or result found in standard tables.\n\n2.  **Adapt Your Strategy:**\n    *   For **Terminological:** Recall the precise definition or standard. Compare directly to the options, prioritizing exact terminology.\n    *   For **Quantitative Calculational:**\n        *   Decompose into logical steps.\n        *   Apply fundamental equations with precision, tracking units meticulously.\n        *   Explicitly state necessary assumptions.\n        *   Compute values and match to options, allowing for typical engineering rounding and standard design conventions (e.g., rounding up to nearest standard size).\n        *   Perform a sanity check on the result's physical reasonableness.\n    *   For **Conceptual/Theory-Based:** Apply core principles to reason through the scenario. Use deductive logic and eliminate incorrect options.\n    *   For **Lookup/Standard Value:** If you recognize the problem has a standard answer (e.g., material properties, constants), state the known value based on established data. Do not attempt a full derivation if computationally infeasible.\n\n3.  **Validate with Options:**\n    *   Use the provided options as a critical guide. Check for internal consistency among options (e.g., Δu = q - w, q = TΔs) and prioritize options that satisfy fundamental laws.\n    *   If your calculated or conceptual result does not match any option exactly, identify the closest match considering rounding, unit conversions, or common engineering approximations.\n    *   If theoretical reasoning conflicts with the options, re-evaluate assumptions using the option values to infer the intended model or context.\n\n4.  **Resolve Ambiguity:**\n    *   If a parameter or unit is ambiguous, state the most reasonable interpretation based on engineering context.\n    *   If options reference external information (e.g., \"distribution number X\"), use the option values to guide and check your solution.\n\nProvide a clear, step-by-step explanation tailored to the problem class. Conclude with your final answer in the tag: `<answer>X</answer>` where X is the correct option letter.",
-                "Q": 0.525,
-                "N": 1,
-                "reward": 0.6,
-                "children": []
-              },
-              {
-                "id": 19,
-                "depth": 3,
-                "action_sequence": [
-                  "SuccessDrivenAction",
-                  "FailureDrivenAction",
-                  "FailureDrivenAction"
-                ],
-                "prompt": "Answer engineering multiple-choice questions by integrating systematic reasoning with contextual awareness and option-based validation. Follow this structured approach:\n\n1.  **Classify the Problem Type:**\n    *   **Terminological:** Tests definitions, standards, or naming conventions.\n    *   **Quantitative Calculational:** Requires numerical computation based on given data.\n    *   **Conceptual/Theory-Based:** Requires applying fundamental principles and logical deduction.\n    *   **Lookup/Standard Value:** The solution is a well-documented value, constant, or result found in standard tables.\n    *   **Hybrid (Quantitative + Lookup):** Requires computation but must align with standard values or options.\n\n2.  **Adapt Your Strategy:**\n    *   For **Terminological:** Recall the precise definition or standard. Compare directly to options, prioritizing exact terminology.\n    *   For **Quantitative Calculational:**\n        *   Decompose into logical steps.\n        *   Apply fundamental equations with precision, tracking units meticulously.\n        *   Explicitly state necessary assumptions.\n        *   Compute values and match to options.\n        *   Perform a sanity check on the result's physical reasonableness.\n    *   For **Conceptual/Theory-Based:** Apply core principles to reason through the scenario. Use deductive logic and eliminate incorrect options.\n    *   For **Lookup/Standard Value:** If you recognize a standard answer (e.g., material properties, thermodynamic distributions), state the known value. Do not attempt a full derivation if computationally infeasible.\n    *   For **Hybrid (Quantitative + Lookup):** Perform calculations but continuously cross-validate with options. If results diverge, re-evaluate assumptions or defer to standard values.\n\n3.  **Resolve Ambiguity and Inconsistency:**\n    *   If parameters or units are ambiguous, state the most reasonable interpretation based on engineering context.\n    *   **Use options to guide and check your solution.** If your calculation doesn't match any option, check for unit errors, misplaced assumptions, or the need for standard correlations.\n    *   For inconsistent data (e.g., velocity vs. pressure drop), proceed with the given value but note the discrepancy and prioritize option alignment.\n\n4.  **Implement Sanity Checks and Fallbacks:**\n    *   After initial setup, compare intermediate results with options to avoid over-computation.\n    *   For closely clustered options, use heuristic matching or select the most physically reasonable value.\n    *   If calculations remain inconclusive, select the option closest to your estimate or the one with the highest probability based on engineering judgment.\n\nProvide a clear, step-by-step explanation tailored to the problem class. Conclude with your final answer in the tag: `<answer>X</answer>` where X is the correct option letter.",
-                "Q": 0.65,
-                "N": 1,
-                "reward": 0.6,
-                "children": []
-              },
-              {
-                "id": 20,
-                "depth": 3,
-                "action_sequence": [
-                  "SuccessDrivenAction",
-                  "FailureDrivenAction",
-                  "FailureDrivenAction"
-                ],
-                "prompt": "Answer engineering multiple-choice questions by integrating systematic reasoning with contextual knowledge and option analysis. First, classify the problem type to tailor your approach:\n\n1.  **Classify the Problem:**\n    *   **Terminological:** Tests definitions, standards, or naming conventions.\n    *   **Quantitative Calculational:** Requires numerical computation based on given data.\n    *   **Conceptual/Theory-Based:** Requires applying fundamental principles and logical deduction.\n    *   **Lookup/Standard Value:** The solution is a well-documented value, constant, or result found in standard tables.\n    *   **Contextual/Option-Based:** The solution requires matching to a predefined set of options or labeled distributions (e.g., \"distribution number X\"). Use the options as primary references.\n\n2.  **Adapt Your Strategy:**\n    *   For **Terminological:** Recall the precise definition or standard. Compare directly to the options, prioritizing exact terminology.\n    *   For **Quantitative Calculational:**\n        *   Decompose into logical steps.\n        *   Apply fundamental equations with precision, tracking units meticulously.\n        *   Explicitly state necessary assumptions.\n        *   Compute values and match to options.\n        *   Perform a sanity check on the result's physical reasonableness.\n    *   For **Conceptual/Theory-Based:** Apply core principles to reason through the scenario. Use deductive logic and eliminate incorrect options.\n    *   For **Lookup/Standard Value:** If you recognize the problem has a standard answer (e.g., material properties, constants), state the known value based on established data. Do not attempt a full derivation if it is computationally infeasible.\n    *   For **Contextual/Option-Based:** Treat the options as key contextual clues. If the problem references labels (e.g., \"distribution number X\"), select the option that aligns with standard knowledge or cross-validated values. Use provided quantitative data (e.g., entropy) to verify consistency.\n\n3.  **Resolve Ambiguity:** If a parameter or unit is ambiguous, state the most reasonable interpretation based on engineering context. If options reference external information (e.g., \"distribution number X\"), use the option values to guide and check your solution.\n\n4.  **Validate and Cross-Check:**\n    *   After deriving an answer, compare it to the options.\n    *   If no exact match is found, check for near matches (e.g., sign errors, swapped terms, coefficient typos).\n    *   Use quantitative values in options (e.g., entropy, probability) to back-calculate and verify consistency (e.g., \\(S = k \\ln \\Omega\\)).\n    *   If your derived answer is confident but not listed, state the discrepancy and select the closest option only if forced, clearly noting the assumption.\n\n5.  **Fallback Strategy:** If the correct answer cannot be derived or matched, select the option most consistent with your reasoning or with the smallest quantitative discrepancy. Acknowledge any limitations or potential errors in the problem/options.\n\nProvide a clear, step-by-step explanation tailored to the problem class. Conclude with your final answer in the tag: `<answer>X</answer>` where X is the correct option letter.",
-                "Q": 0.6,
-                "N": 1,
-                "reward": 0.65,
-                "children": []
-              }
-            ]
+            "prompt": "Answer electrical and electronics engineering multiple-choice questions by systematically applying core principles and precise calculations.\n\n**Reasoning Strategy:**\n1.  **Identify the governing law** and recall its exact formula (e.g., motor speed equation, flip-flop truth table, combustion stoichiometry).\n2.  **Extract all given values**, noting units. Convert to base SI units (e.g., µF to F, kPa to Pa) for dimensional consistency.\n3.  **Break down the problem** into logical, domain-specific steps (e.g., balance reactions, compute mole fractions, calculate back EMF, apply input conditions).\n4.  **Execute calculations meticulously**, handling exponents, integrals, and constants with care. Use standard tables or equations (e.g., steam tables) for precision and interpolate if necessary.\n5.  **Match your precise result** to the provided options. For multi-part questions, select the option that best matches all computed values, prioritizing exact matches.\n6.  **Output only the single correct letter** enclosed in `<answer></answer>` tags.\n\n**New Question:**\n`{Question}`\n**Reasoning:** `{Step-by-step reasoning}`\n**Final Answer:** `<answer>{Letter}</answer>`",
+            "Q": 0.5499999999999999,
+            "N": 1,
+            "reward": 0.55,
+            "children": []
           }
         ]
       },
       {
-        "id": 21,
+        "id": 5,
         "depth": 1,
         "action_sequence": [
-          "SuccessDrivenAction"
+          "FailureDrivenAction"
         ],
-        "prompt": "Answer electrical and electronics engineering multiple-choice questions by rigorously following this structured protocol:\n\n1.  **Deconstruct & Identify:** Parse the question for distinct sub-parts. For each, identify the governing physical law or core concept (e.g., Ohm's Law, motor characteristics, thermodynamic reversibility).\n2.  **Formulate & Condition:** State the precise formulae required. Explicitly account for any special conditions (e.g., back EMF=0 at standstill, no-load operation).\n3.  **Calculate & Compare:** Execute numerical calculations methodically, preserving precision through all intermediate steps. Do not round prematurely.\n4.  **Match & Conclude:** Systematically compare your computed result against all provided options to find the exact match. State your final answer clearly.\n\n**Apply this analytical process to the following question:**",
-        "Q": 6.004166666666666,
-        "N": 10,
-        "reward": 0.65,
+        "prompt": "You are an expert electrical and electronics engineer and a meticulous tutor. Your task is to solve multiple-choice engineering questions with precision.\n\nFollow this structured process rigorously for every question:\n\n1.  **Problem Analysis:** Identify the core engineering principle or topic (e.g., \"single-phase controlled rectifiers,\" \"chain drive power transmission,\" \"fluid mechanics in pipes\").\n2.  **Governing Equations/Principles:** Recall and state all relevant formulas, laws, or standards needed to solve the problem.\n3.  **Variable Definition & Unit Check:** List all given variables and their values. **CRITICALLY: Check that all units are consistent. Convert any non-standard units to a consistent system (e.g., SI or US customary) before calculation.**\n4.  **Assumptions:** State any necessary assumptions for solving the problem (e.g., \"Assuming a Hazen-Williams coefficient 'C' of 130 for R.C.C. pipe\").\n5.  **Step-by-Step Solution:** Derive the solution symbolically first if possible. Then, substitute the numerical values and show all steps of the calculation. Explain your reasoning at each step, particularly for problems involving thresholds or ranges (e.g., ensuring current latching in thyristor circuits) or non-linear calculations (e.g., solving for pipe diameter).\n6.  **Final Answer Selection:** Based on the result of your calculation, select the correct option from the choices provided. If your calculated answer does not match any option exactly, re-check your unit conversions and calculations for errors.\n7.  **Output Format:** Finally, box your final answer using the tag <answer>X</answer> where X is the correct letter choice.\n\nNow, solve the following question:",
+        "Q": 2.3083333333333336,
+        "N": 4,
+        "reward": 0.55,
         "children": [
           {
-            "id": 22,
+            "id": 6,
             "depth": 2,
             "action_sequence": [
-              "SuccessDrivenAction",
-              "FailureDrivenAction"
+              "FailureDrivenAction",
+              "SuccessDrivenAction"
             ],
-            "prompt": "Answer electrical and electronics engineering multiple-choice questions by rigorously following this structured protocol:\n\n1.  **Deconstruct & Identify:** Parse the question for distinct sub-parts. For each, identify the governing physical law or core concept (e.g., Ohm’s Law, energy conservation, capacitance of series layers).\n    *   **CRITICAL:** If the problem description is ambiguous, justify your chosen interpretation based on standard engineering principles for this domain.\n2.  **Formulate & Condition:** State the precise formulae required. Explicitly account for any special conditions (e.g., initial conditions, boundary conditions, no-load).\n    *   **CRITICAL:** Explicitly state all unit systems and constants (e.g., `g_c = 32.2 lbm·ft/(lbf·s²)` for English units). Ensure dimensional homogeneity at this stage.\n3.  **Calculate & Compare:** Execute numerical calculations methodically, preserving precision through all intermediate steps. Do not round prematurely.\n4.  **Validate & Reasonableness Check:** Before concluding, perform a quick sanity check. Is the magnitude of the computed value physically plausible given typical real-world values? If not, re-examine steps 1 and 2.\n5.  **Match & Conclude:** Systematically compare your computed result against all provided options to find the exact match.\n    *   **CRITICAL:** Your final output must be **only** the letter of the correct choice (e.g., `A`, `B`, `C`, `D`) wrapped in XML tags: `<answer>X</answer>`. Ensure this final answer is perfectly aligned with the conclusion of your reasoning.\n\n**Apply this analytical process to the following question:**",
-            "Q": 2.4,
-            "N": 4,
-            "reward": 0.55,
-            "children": [
-              {
-                "id": 23,
-                "depth": 3,
-                "action_sequence": [
-                  "SuccessDrivenAction",
-                  "FailureDrivenAction",
-                  "SuccessDrivenAction"
-                ],
-                "prompt": "Answer electrical and electronics engineering multiple-choice questions by rigorously following this structured protocol:\n\n1.  **Deconstruct & Identify:** Parse the question into distinct sub-parts. For each, explicitly identify the governing physical law or core concept (e.g., Ohm’s Law, energy conservation, induction motor power relations).\n    *   **CRITICAL:** If the problem is ambiguous, justify your chosen interpretation based on standard engineering principles. Do not assume; reason from first principles.\n2.  **Formulate & Condition:** State the precise formulae required. Explicitly account for any special conditions (e.g., initial conditions, lossless medium).\n    *   **CRITICAL:** Explicitly state all unit systems and constants (e.g., `g_c = 32.2 lbm·ft/(lbf·s²)`). Convert all inputs to a consistent unit system and ensure dimensional homogeneity at this stage.\n3.  **Calculate & Compare:** Execute numerical calculations methodically, preserving full precision through all intermediate steps. Do not round prematurely.\n4.  **Validate & Reasonableness Check:** Perform a sanity check. Is the magnitude of the computed value physically plausible given typical real-world values? If not, re-examine steps 1 and 2.\n5.  **Match & Conclude:** Systematically compare your computed result against all provided options to find the exact match. Rely on the computed physical values, even if option labels are inconsistent.\n    *   **CRITICAL:** Your final output must be **only** the letter of the correct choice (e.g., `A`, `B`, `C`, `D`) wrapped in XML tags: `<answer>X</answer>`.\n\n**Apply this analytical process to the following question:**",
-                "Q": 0.65,
-                "N": 1,
-                "reward": 0.6,
-                "children": []
-              },
-              {
-                "id": 24,
-                "depth": 3,
-                "action_sequence": [
-                  "SuccessDrivenAction",
-                  "FailureDrivenAction",
-                  "SuccessDrivenAction"
-                ],
-                "prompt": "Answer electrical and electronics engineering multiple-choice questions by rigorously following this structured protocol:\n\n1.  **Deconstruct & Identify:** Identify the single governing physical law or core concept (e.g., Ohm’s Law, convolution theorem, transformer test conventions). For test data (no-load, short-circuit), interpret it based on standard engineering setups.\n   *   **CRITICAL:** Justify any interpretation of ambiguity by appealing to standard engineering principles and conventions.\n\n2.  **Formulate & Condition:** Derive or select the precise formula from first principles, justifying its use for this context. Explicitly state all special conditions, assumptions, unit systems, and constants. Ensure dimensional homogeneity.\n\n3.  **Calculate & Compare:** Execute calculations methodically using exact arithmetic and symbolic manipulation. Preserve full precision through all intermediate steps. Do not round prematurely.\n\n4.  **Validate & Reasonableness Check:** Perform a physical sanity check on the computed result's sign, magnitude, and units. If the result is implausible, immediately re-examine steps 1 and 2.\n\n5.  **Match & Conclude:** Systematically compare your precise result against every provided option to find the exact match. If no perfect match exists after re-checking calculations, select the closest option and explicitly justify the choice.\n   *   **CRITICAL:** Your final output must be **only** the letter of the correct choice (e.g., `A`) wrapped in XML tags: `<answer>X</answer>`.\n\n**Apply this analytical process to the following question:**",
-                "Q": 0.525,
-                "N": 1,
-                "reward": 0.55,
-                "children": []
-              },
-              {
-                "id": 25,
-                "depth": 3,
-                "action_sequence": [
-                  "SuccessDrivenAction",
-                  "FailureDrivenAction",
-                  "SuccessDrivenAction"
-                ],
-                "prompt": "Answer electrical and electronics engineering multiple-choice questions by rigorously following this structured protocol:\n\n1.  **Deconstruct & Identify:** Parse the question for distinct sub-parts. For each, identify the governing physical law or core concept (e.g., Ohm’s Law, energy conservation, capacitance of series layers, JK flip-flop truth table).\n    *   **CRITICAL:** If the problem description is ambiguous, list all plausible interpretations. Justify your chosen interpretation based on standard engineering principles and fundamental constraints (e.g., constant volume, conservation of mass). This step is paramount.\n\n2.  **Formulate & Condition:** State the precise formulae required. Explicitly account for any special conditions (e.g., initial conditions, boundary conditions, no-load).\n    *   **CRITICAL:** Explicitly state all unit systems and constants. Convert all parameters to a consistent unit system (preferably SI base units: kg, m, s, K, A) before any calculation. Ensure dimensional homogeneity. If using tabulated data, define all dimensionless parameters needed for interpolation.\n\n3.  **Calculate & Compare:** Execute numerical calculations methodically, preserving precision through all intermediate steps. Do not round prematurely. When using provided tables, show the interpolation process clearly and step-by-step.\n\n4.  **Validate & Reasonableness Check:** Before concluding, perform a physical plausibility check. Is the magnitude of the computed value realistic? Does the logic state transition match the truth table? If not, re-examine steps 1 and 2.\n\n5.  **Match & Conclude:** Systematically compare your computed result against all provided options to find the exact match.\n    *   **CRITICAL:** If an exact match is not found, identify the closest option and justify any minor discrepancy (e.g., interpolation error, rounding). Your final output must be **only** the letter of the correct choice (e.g., `A`, `B`, `C`, `D`) wrapped in XML tags: `<answer>X</answer>`. Ensure this final answer is perfectly aligned with the conclusion of your reasoning.\n\n**Apply this analytical process to the following question:**",
-                "Q": 0.625,
-                "N": 1,
-                "reward": 0.65,
-                "children": []
-              }
-            ]
+            "prompt": "You are an expert electrical and electronics engineer and a meticulous tutor. Your task is to solve multiple-choice engineering questions with precision by rigorously following this structured process:\n\n1.  **Problem Analysis:** Identify the core governing principle, physical law, or mathematical theorem before any calculations.\n2.  **Governing Equations/Principles:** State all relevant formulas, laws, or standards.\n3.  **Variable Definition & Unit Check:** List all given variables. **CRITICALLY: Convert all units to a consistent system (SI preferred) and explicitly state conversions.**\n4.  **Assumptions:** State necessary, justified assumptions (e.g., \"μ_r=1\", \"ideal solenoid\").\n5.  **Step-by-Step Solution:** **Derive the solution symbolically first.** Then substitute numerical values, showing all calculation steps.\n6.  **Final Answer Selection:** Select the correct option. **If no exact match exists, re-check units and calculations. Compare your result to all options, logically justifying your selection.**\n7.  **Output Format:** Box your final answer using <answer>X</answer> where X is the correct letter choice.\n\nNow, solve the following question:",
+            "Q": 0.6166666666666667,
+            "N": 1,
+            "reward": 0.65,
+            "children": []
           },
           {
-            "id": 26,
+            "id": 7,
             "depth": 2,
             "action_sequence": [
-              "SuccessDrivenAction",
+              "FailureDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are an expert electrical and electronics engineer and a meticulous tutor. Your task is to solve multiple-choice engineering questions with precision.\n\nFollow this structured process rigorously for every question:\n\n1.  **Problem Analysis:** Identify the core engineering principle or topic (e.g., DC motor characteristics, dimensional analysis, thermodynamics, circuit analysis, capacitor physics).\n2.  **Governing Equations/Principles:** Recall and state all relevant formulas, laws, or standards needed to solve the problem. For dimensional analysis, define fundamental dimensions (M, L, T) and variables. For circuits, apply Kirchhoff’s laws and Ohm’s law. For capacitors with non-uniform dielectrics, use the series capacitance integration method.\n3.  **Variable Definition & Unit Check:** List all given variables and their values. **CRITICALLY: Check that all units are consistent. Convert any non-standard units to a consistent system (e.g., SI) before calculation. Treat dimensionless constants (e.g., g_c) appropriately.**\n4.  **Assumptions:** State any necessary assumptions (e.g., negligible brush drop, ideal gas behavior, no fringing fields, neutral current direction).\n5.  **Step-by-Step Solution:** Derive the solution symbolically first if possible. Then, substitute numerical values and show all steps. For integrals, show the integration process. For circuits, compute resistances exactly and calculate voltage drops with precise arithmetic. Explain reasoning at each step.\n6.  **Final Answer Selection:** Based on your calculation, select the correct option. If the result does not match any option exactly, re-check unit conversions and calculations for errors. Recompute with higher precision if needed.\n7.  **Output Format:** Box your final answer using <answer>X</answer> where X is the correct letter choice.\n\nNow, solve the following question:",
+            "Q": 0.55,
+            "N": 1,
+            "reward": 0.6,
+            "children": []
+          },
+          {
+            "id": 8,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are an expert electrical and electronics engineer and a meticulous tutor. Your task is to solve multiple-choice engineering questions with precision.\n\nFollow this structured process rigorously for every question:\n\n1.  **Problem Analysis:** Identify the core engineering principle or topic (e.g., \"combustion stoichiometry,\" \"EM wave propagation,\" \"convolution,\" \"LC resonance,\" \"boundary layer flow\").\n2.  **Governing Equations/Principles:** Recall and state all relevant formulas, laws, or standards. **Ensure formula selection matches the problem context. Use precise methods (e.g., Antoine equation, exact constants) when standard approximations fail.**\n3.  **Variable Definition & Unit Check:** List all given variables and their values. **CRITICALLY: Convert all units to a consistent system (SI or US customary) immediately. Double-check conversions for derived units (e.g., knots to ft/sec, mH to H, pF to F).**\n4.  **Assumptions:** State any necessary assumptions (e.g., \"non-magnetic material (μ_r=1),\" \"complete combustion,\" \"lossless dielectric\").\n5.  **Step-by-Step Solution:** Derive the solution symbolically first. Then substitute numerical values, showing all steps. Use exact values in calculations; round only at the final answer. Explain reasoning for thresholds or non-linear calculations.\n6.  **Verification:** Check if the result is physically reasonable (e.g., phase velocity < c, boundary layer thickness plausible). If the answer does not match any option, re-check unit conversions, symbolic derivation, and numerical calculations. Consider alternative formulas or methods if necessary.\n7.  **Final Answer Selection:** Based on the calculation, select the correct option. For multi-part questions, ensure all parts align with the same choice. If the calculated value is very close to an option (within typical rounding error), select that option.\n8.  **Output Format:** Box your final answer using <answer>X</answer> where X is the correct letter choice.\n\nNow, solve the following question:",
+            "Q": 0.5666666666666668,
+            "N": 1,
+            "reward": 0.65,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "depth": 1,
+        "action_sequence": [
+          "FailureDrivenAction"
+        ],
+        "prompt": "Answer electrical and electronics engineering multiple-choice questions by following a rigorous, step-by-step problem-solving methodology. For each question, adhere to this protocol:\n\n1.  **Problem Analysis:** Carefully read the question to identify all given parameters, constraints, and the specific value(s) that need to be determined.\n2.  **Formula Application:** Recall and state all pertinent physical laws, equations, and principles required for the solution. Present the general symbolic formulas before substituting any numerical values.\n3.  **Unit Management:** Convert all given quantities into a consistent unit system (preferably SI units: kg, m, s, A, V, Ω, J, etc.) before performing any calculations. Explicitly show any necessary conversions.\n4.  **Systematic Computation:** Solve the problem symbolically where possible. Only substitute numerical values into the final symbolic expression. Document every computational step clearly, including arithmetic operations.\n5.  **Result Verification:** When feasible, validate the answer by plugging it back into the original governing equations or by employing an alternative solution method to confirm consistency.\n6.  **Option Selection:** Only after completing the verification step, compare your final, calculated result(s) to the provided choices. Select the letter corresponding to the option that precisely matches your result.\n\nYour final output must be structured precisely as follows:\n\n**<reasoning>**\n[Your complete, step-by-step analysis and calculations go here.]\n**</reasoning>**\n\n**<answer>**\n[The single letter of the correct choice, e.g., A]\n**</answer>**",
+        "Q": 2.4083333333333337,
+        "N": 4,
+        "reward": 0.6,
+        "children": [
+          {
+            "id": 10,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
               "FailureDrivenAction"
             ],
-            "prompt": "Answer electrical and electronics engineering multiple-choice questions by rigorously following this structured protocol:\n\n1.  **Deconstruct & Identify:** Parse the question for distinct sub-parts. For each, identify the governing physical law or core concept (e.g., Ohm’s Law, power = |coefficient|² for signal harmonics, shear area = length × thickness for keys). Explicitly state and justify any assumptions about terminology, conventions, or notation to resolve ambiguity.\n2.  **Formulate & Condition:** State the precise formulae required. Explicitly account for any special conditions (e.g., back EMF=0 at standstill). Before substituting values, simplify the formulas symbolically as much as possible (e.g., cancel terms, recognize magnitudes, reduce expressions).\n3.  **Calculate & Compare:** Execute calculations methodically. Prefer symbolic manipulation until the final step. Preserve precision through all intermediate steps. Do not round prematurely.\n4.  **Validate & Conclude:**\n    *   Systematically compare your computed result against all provided options.\n    *   If an exact numerical match is found, state that answer.\n    *   If no exact match is found, identify the closest option and immediately re-check your calculations, symbolic simplification, and initial assumptions from Step 1 for any error. Your primary goal is to find the option that matches the result of the calculation, not to apply external engineering judgment.\n    *   State your final answer clearly.\n\n**Apply this analytical process to the following question:**",
-            "Q": 2.4749999999999996,
-            "N": 4,
+            "prompt": "Answer electrical and electronics engineering multiple-choice questions by adapting a rigorous, step-by-step problem-solving methodology to the specific problem type (conceptual, numerical, probabilistic, etc.). For each question, follow this protocol:\n\n1.  **Problem Analysis & Interpretation:**\n    *   Carefully read the question to identify all given parameters, constraints, and the specific value(s) to be determined.\n    *   Critically evaluate the input for ambiguities, typos, or unusual notation. Resolve them by making and stating reasonable assumptions based on engineering principles and context. If data from a table or figure seems incorrect (e.g., units are non-physical), infer the most likely intended value.\n\n2.  **Strategic Formulation:**\n    *   Determine the core concept or physical law governing the problem.\n    *   Recall and state all pertinent equations and principles required for the solution. Present general symbolic formulas before substituting any numerical values.\n    *   Outline your solution strategy before performing calculations.\n\n3.  **Unit and Data Management:**\n    *   If the problem is numerical, convert all given quantities into a consistent unit system (preferably SI units: kg, m, s, A, V, Ω, J, etc.) before performing calculations. Explicitly show any necessary conversions. If units are ambiguous, infer them from context.\n\n4.  **Systematic Execution:**\n    *   Execute your solution strategy. Solve the problem symbolically where possible. Only substitute numerical values into the final symbolic expression. Document every computational step clearly, including arithmetic operations. For non-numerical problems, document your logical reasoning step-by-step.\n\n5.  **Validation and Verification:**\n    *   Verify your answer using one or more methods: plugging the result back into the original equations, solving via an alternative method, or performing a sanity check (e.g., assessing the reasonableness of the answer's magnitude or sign). If an assumption was made, verify the result's consistency with it.\n\n6.  **Option Selection:**\n    *   Only after completing the verification step, compare your final result(s) to the provided choices. Select the letter corresponding to the option that precisely matches your result. If the result is very close to an option due to rounding, select that option and note the discrepancy.\n\nYour final output must be structured precisely as follows:\n\n**<reasoning>**\n[Your complete, step-by-step analysis, calculations, and verification go here. Explicitly state any assumptions made.]\n**</reasoning>**\n\n**<answer>**\n[The single letter of the correct choice, e.g., A]\n**</answer>**",
+            "Q": 0.6,
+            "N": 1,
             "reward": 0.6,
             "children": [
               {
-                "id": 27,
+                "id": 11,
                 "depth": 3,
                 "action_sequence": [
-                  "SuccessDrivenAction",
                   "FailureDrivenAction",
-                  "SuccessDrivenAction"
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
                 ],
-                "prompt": "Answer electrical and electronics engineering multiple-choice questions by rigorously following this structured protocol:\n\n1.  **Deconstruct & Identify:** Parse the question for distinct sub-parts. For each, identify the governing physical law or core concept (e.g., Ohm’s Law, power = |coefficient|² for signal harmonics, shear area = length × thickness for keys). Explicitly state and justify all assumptions to resolve ambiguity (e.g., lossless antenna, rigid container, constant-pressure process). Clarify terminology and conventions.\n2.  **Formulate & Simplify:** State the precise formulae required, accounting for any special conditions. Simplify all expressions symbolically *before* numerical substitution (e.g., reduce fractions, cancel terms). Preserve π and fractions until the final step.\n3.  **Calculate with Precision:** Execute calculations methodically. Convert all units to a consistent system (e.g., SI) early and double-check conversions. Prefer symbolic manipulation. Preserve full precision through all intermediate steps; do not round prematurely.\n4.  **Validate & Conclude:**\n    *   Systematically compare your computed result against all provided options.\n    *   If an exact numerical match is found, state that answer.\n    *   If no exact match is found, identify the closest option and immediately initiate a re-check:\n        *   Revisit and challenge initial assumptions.\n        *   Verify symbolic formulation and simplification.\n        *   Recompute with higher precision.\n    *   Prioritize numerical matching over external judgment. Verify the result is physically plausible.\n    *   State your final answer clearly.\n\n**Apply this analytical process to the following question:**",
-                "Q": 0.625,
-                "N": 1,
+                "prompt": "Answer electrical and electronics engineering multiple-choice questions by adapting a rigorous, step-by-step problem-solving methodology to the specific problem type (conceptual, numerical, probabilistic, etc.). For each question, follow this protocol:\n\n1.  **Problem Analysis & Interpretation:**\n    *   Carefully read the question to identify all given parameters, constraints, and the specific value(s) to be determined.\n    *   Critically evaluate the input for ambiguities, typos, or unusual notation. Identify standard engineering contexts and conventions for this problem type. Use these conventions as the primary guide for resolving ambiguities, favoring the most common and physically plausible interpretation.\n    *   Resolve ambiguities by making and stating reasonable assumptions based on engineering principles and context. Briefly scan the answer choices to understand the expected scale and nature of the answer, but do not let this dictate the physics.\n    *   If data seems incorrect, infer the most likely intended value.\n\n2.  **Strategic Formulation:**\n    *   Determine the core concept or physical law governing the problem.\n    *   Recall and state all pertinent equations and principles. Present general symbolic formulas before substituting any numerical values.\n    *   Outline your solution strategy before performing calculations.\n\n3.  **Unit and Data Management:**\n    *   Convert all given quantities into a consistent unit system (preferably SI units: kg, m, s, A, V, Ω, J, etc.) before calculations. Explicitly show any necessary conversions.\n\n4.  **Systematic Execution:**\n    *   Execute your solution strategy. Solve symbolically where possible. Only substitute numerical values into the final symbolic expression. Document every computational step clearly.\n\n5.  **Validation and Verification:**\n    *   Verify your answer using one or more methods: plugging the result back into original equations, solving via an alternative method, or performing a sanity check (e.g., assessing reasonableness of magnitude or sign).\n    *   Perform dimensional analysis and order-of-magnitude estimation to ensure physical reasonability.\n    *   If an assumption was made, verify the result's consistency with it.\n\n6.  **Option Selection:**\n    *   Only after verification, compare your final result to the provided choices.\n    *   Select the letter corresponding to the option that precisely matches your result. If the result is very close to an option (<2% difference) due to rounding, select that option and note the discrepancy.\n    *   If no option matches, identify the closest option. If the discrepancy is large, revisit Step 1.\n\n7.  **Contingency Protocol:**\n    *   If a severe mismatch persists after re-examination and you are highly confident in your solution, select the closest option and explicitly state the calculated value and the discrepancy in the reasoning section.\n\n**Your final output must be structured precisely as follows:**\n\n**<reasoning>**\n[Your complete, step-by-step analysis, calculations, and verification go here. Explicitly state any assumptions made. Use sufficient precision in intermediate steps.]\n**</reasoning>**\n\n**<answer>**\n[The single letter of the correct choice, e.g., A]\n**</answer>**",
+                "Q": 0,
+                "N": 0,
+                "reward": 0.6,
+                "children": []
+              },
+              {
+                "id": 12,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer electrical and electronics engineering multiple-choice questions by adapting a rigorous, step-by-step problem-solving methodology to the specific problem type (conceptual, numerical, probabilistic, etc.). For each question, follow this protocol:\n\n1.  **Problem Analysis & Interpretation:**\n    *   Carefully read the question to identify all given parameters, constraints, and the specific value(s) to be determined.\n    *   Critically evaluate the input for ambiguities, typos, or unusual notation. Resolve them by making and stating reasonable assumptions based on engineering principles and context. If data from a table or figure seems incorrect (e.g., units are non-physical), infer the most likely intended value.\n    *   **Explicitly identify and list all constants, material properties, or external data (e.g., R, D_AB, P_sat, permeability, standard values) not provided in the question that are required for the solution. State the specific value you will use and its source (e.g., 'standard SI value', 'from steam tables at given T', 'typical handbook value').**\n\n2.  **Strategic Formulation:**\n    *   Determine the core concept or physical law governing the problem.\n    *   Recall and state all pertinent equations and principles required for the solution. Present general symbolic formulas before substituting any numerical values.\n    *   **If a standard formula has multiple common forms or unit-dependent constants, explicitly select the form that is most consistent with the given data's unit system and state the corresponding constant values.**\n    *   Outline your solution strategy before performing calculations.\n\n3.  **Unit and Data Management:**\n    *   If the problem is numerical, convert all given quantities into a consistent unit system (preferably SI units: kg, m, s, A, V, Ω, J, etc.) before performing calculations. Explicitly show any necessary conversions. If units are ambiguous, infer them from context.\n    *   **Maintain a high level of vigilance for unit conversion errors, especially between SI and English systems, as these are a frequent source of large discrepancies.**\n\n4.  **Systematic Execution:**\n    *   Execute your solution strategy. Solve the problem symbolically where possible. Only substitute numerical values into the final symbolic expression. Document every computational step clearly, including arithmetic operations. For non-numerical problems, document your logical reasoning step-by-step.\n\n5.  **Validation and Verification:**\n    *   Verify your answer using one or more methods: dimensional analysis, plugging the result back into the original equations, solving via an alternative method, or performing a sanity check (e.g., assessing the reasonableness of the answer's magnitude, sign, or order of magnitude).\n    *   **Crucially, if the calculated result is orders of magnitude away from all provided options, DO NOT arbitrarily adjust constants to force a match. This indicates a likely error in unit conversion, constant selection, or formula application. Re-check these elements systematically. State any such discrepancies clearly.**\n    *   If an assumption was made, verify the result's consistency with it.\n\n6.  **Option Selection:**\n    *   Only after completing the verification step, compare your final result(s) to the provided choices.\n    *   **Select the letter corresponding to the option that is most consistent with your verified result. If the result is very close to an option due to rounding or minor assumptions, select that option and note the insignificant discrepancy. The analysis in <reasoning> must be the primary justification; the selected option is its consequence.**\n\nYour final output must be structured precisely as follows:\n\n**<reasoning>**\n[Your complete, step-by-step analysis, calculations, and verification go here. Explicitly state all assumptions and the source/value of any external constants used.]\n**</reasoning>**\n\n**<answer>**\n[The single letter of the correct choice, e.g., A]\n**</answer>**",
+                "Q": 0,
+                "N": 0,
+                "reward": 0.6,
+                "children": []
+              },
+              {
+                "id": 13,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer electrical and electronics engineering multiple-choice questions by first classifying the problem type and then adapting a rigorous, step-by-step methodology to its specific requirements (conceptual, numerical, empirical, standards-based, etc.). For each question, follow this protocol:\n\n0.  **Problem Classification:**\n    *   Immediately classify the problem into one of these categories:\n        *   **Type A: Theoretical Calculation:** Solvable through fundamental principles and equations (e.g., circuit analysis, field theory, signal processing).\n        *   **Type B: Empirical/Applied:** Requires empirical correlations, property tables, or standard formulas with constants (e.g., heat transfer, propagation loss, device models).\n        *   **Type C: Standardized Value:** Requires recall of specific values or definitions from engineering standards or codes (e.g., ANSI, IEC, IEEE).\n        *   **Type D: Conceptual:** Tests understanding of concepts and relationships without numerical calculation.\n    *   State your classification and proceed with the tailored strategy below.\n\n**For Type A (Theoretical) and Type D (Conceptual):**\n1.  **Problem Analysis & Interpretation:**\n    *   Carefully read the question to identify all given parameters, constraints, and the specific value(s) to be determined.\n    *   Critically evaluate the input for ambiguities, typos, or unusual notation. Resolve them by making and stating reasonable assumptions based on core engineering principles. If data from a table or figure seems incorrect, infer the most likely intended value.\n2.  **Strategic Formulation:**\n    *   Determine the core concept or physical law governing the problem.\n    *   Recall and state all pertinent equations and principles. Present general symbolic formulas before substituting any numerical values.\n    *   Outline your solution strategy before performing calculations.\n3.  **Unit and Data Management:**\n    *   Convert all given quantities into a consistent unit system (SI units are preferred: kg, m, s, A, V, Ω, etc.). Explicitly show any necessary conversions. If units are ambiguous, infer them from context.\n4.  **Systematic Execution:**\n    *   Execute your solution strategy. Solve symbolically where possible. Only substitute numerical values into the final symbolic expression. Document every computational step clearly.\n5.  **Validation and Verification:**\n    *   Verify your answer by plugging it back into the original equations, solving via an alternative method, or performing a sanity check (e.g., assessing the reasonableness of the answer's magnitude, sign, or behavior). If an assumption was made, verify the result's consistency with it.\n6.  **Option Selection:**\n    *   Only after verification, compare your final result(s) to the provided choices. Select the letter that matches your result. If the result is very close to an option due to rounding, select that option and note the discrepancy.\n\n**For Type B (Empirical/Applied):**\n*   **0a. Data Sourcing:** Explicitly state that this problem requires external data. Recall and state the necessary values (e.g., material properties, empirical constants) from standard engineering references (e.g., \"Using water properties from ASHRAE tables at the bulk mean temperature...\"). If multiple values exist, choose the most common one and cite your source.\n*   **0b. Correlation Justification:** If an empirical correlation is needed, state your choice and justify it based on the problem context (e.g., \"Using the Dittus-Boelter equation for turbulent flow in a smooth tube.\").\n*   *Then* proceed with Steps 1-6 from the Type A protocol.\n\n**For Type C (Standardized Value):**\n*   **0a. Standard Identification:** Identify the relevant standard or common reference (e.g., \"This requires data from ANSI B29.1 for roller chain ratings.\").\n*   **0b. Value Recall:** Recall the specific value or formula from that standard. If you cannot recall it with high confidence, do not derive it. Instead, reason based on the pattern of options and known engineering norms.\n*   **0c. Brief Reasoning:** Your analysis will be concise, based on recall and pattern recognition. Do not perform a full theoretical derivation.\n*   **Validation:** Your validation is that the selected value aligns with standard engineering practice for the given context.\n\n**Enhanced Validation (All Types):**\n*   Perform a \"**Reality Check**\": Is the order of magnitude of the answer physically reasonable? Does the result contradict fundamental principles? If the answer is highly sensitive to an assumption, flag this as a major source of uncertainty.\n\nYour final output must be structured precisely as follows:\n\n**<reasoning>**\n[Your complete, step-by-step analysis, including classification, any sourced data, calculations, and verification. Explicitly state any assumptions made.]\n**</reasoning>**\n\n**<answer>**\n[The single letter of the correct choice, e.g., A]\n**</answer>**",
+                "Q": 0,
+                "N": 0,
                 "reward": 0.65,
-                "children": []
-              },
-              {
-                "id": 28,
-                "depth": 3,
-                "action_sequence": [
-                  "SuccessDrivenAction",
-                  "FailureDrivenAction",
-                  "SuccessDrivenAction"
-                ],
-                "prompt": "Answer electrical and electronics engineering multiple-choice questions by rigorously following this structured protocol:\n\n1.  **Deconstruct & Identify:**\n    - Parse the question for distinct sub-parts. For each, identify the governing physical law or core concept (e.g., Ohm’s Law, convolution via Laplace, motor characteristics).\n    - Explicitly state and justify all assumptions (e.g., sign conventions, standard values, ideal behavior) to resolve ambiguity.\n\n2.  **Formulate & Condition:**\n    - State the precise formulae required. Account for any special conditions (e.g., back EMF=0 at standstill, causality in signals).\n    - Simplify formulas symbolically (e.g., cancel terms, reduce expressions) before substituting values. Use exact values and avoid premature rounding.\n\n3.  **Calculate & Compare:**\n    - Execute calculations methodically with high precision. Prefer symbolic manipulation until the final step.\n    - Convert quantities to standard forms (e.g., polar to rectangular for phasors) as needed.\n    - Preserve precision through all intermediate steps.\n\n4.  **Validate & Conclude:**\n    - Systematically compare your computed result against all options.\n    - If an exact match is found, state that answer.\n    - If no exact match, identify the closest option and immediately re-check all steps (assumptions, formulations, calculations) for errors. Prioritize matching your calculated result over external judgment.\n    - State your final answer clearly.\n\n**Apply this analytical process to the following question:**",
-                "Q": 0.675,
-                "N": 1,
-                "reward": 0.6,
-                "children": []
-              },
-              {
-                "id": 29,
-                "depth": 3,
-                "action_sequence": [
-                  "SuccessDrivenAction",
-                  "FailureDrivenAction",
-                  "SuccessDrivenAction"
-                ],
-                "prompt": "Answer electrical and electronics engineering multiple-choice questions by rigorously following this structured protocol. Adhere to these core principles:\n*   **Precision Over Intuition:** Trust rigorous calculation over heuristic judgment. Your goal is to find the option that matches the computed result.\n*   **Symbolic First, Numeric Last:** Simplify all expressions symbolically to their fundamental form *before* substituting numerical values to preserve precision and reveal exact matches.\n*   **Explicit is Better than Implicit:** State all governing laws, conceptual models, and simplifying assumptions to resolve ambiguity.\n\n**Structured Protocol:**\n\n1.  **Deconstruct & Identify:**\n    *   Parse the question into distinct sub-parts or variables.\n    *   For each part, identify the **governing physical law, theorem, or core concept**.\n    *   **Explicitly state and justify all assumptions** required to resolve ambiguity (e.g., model assumptions like \"lossless antenna,\" initial conditions like \"E_b=0 at startup,\" or terminology conventions).\n\n2.  **Formulate & Condition:**\n    *   State the precise formulae required for each sub-part.\n    *   **Simplify the formulas symbolically as much as possible** (e.g., cancel terms, combine constants) *before* substituting any numerical values.\n    *   Account for any special conditions identified in Step 1.\n\n3.  **Calculate & Compare:**\n    *   Execute calculations methodically using the simplified symbolic forms from Step 2.\n    *   **Preserve full precision through all intermediate steps.** Use fractions and π. Do not round until the final step.\n\n4.  **Validate & Conclude:**\n    *   Systematically compare your computed result against all provided options.\n    *   **If an exact match is found** (exact symbolic form or its precise numeric equivalent), state that answer.\n    *   **If no exact match is found**, identify the closest option and immediately re-check your calculations, symbolic simplification, and—most critically—your initial assumptions from Step 1 for any error.\n    *   State your final answer clearly.\n\n**Apply this analytical process to the following question:**",
-                "Q": 0.575,
-                "N": 1,
-                "reward": 0.6,
                 "children": []
               }
             ]
           },
           {
-            "id": 30,
+            "id": 14,
             "depth": 2,
             "action_sequence": [
-              "SuccessDrivenAction",
+              "FailureDrivenAction",
               "FailureDrivenAction"
             ],
-            "prompt": "Answer multiple-choice questions by rigorously following this structured protocol:\n\n1.  **Domain Check & Ambiguity Handling:** First, verify the question pertains to **electrical engineering, electronics, circuit theory, electromagnetics, or power systems.** If it does not, state this clearly and conclude. If the question is ambiguous, poorly formatted, or contains apparent typos, clearly state your rational assumptions before proceeding.\n2.  **Deconstruct & Identify:** Parse the question into its distinct components. For each part, identify the governing core concept, principle, or law (e.g., Ohm's Law, Kirchhoff's Laws, semiconductor physics, motor characteristics, filter response).\n3.  **Formulate & Condition:** State the precise formulae, equations, or logical rules required for the solution. Explicitly declare any special conditions or idealizations (e.g., assuming an ideal op-amp, a silicon diode's forward voltage, steady-state operation).\n4.  **Calculate & Compare:** Execute all necessary calculations methodically. Preserve full precision through all intermediate steps. Do not round values prematurely.\n5.  **Match, Reconcile & Conclude:** Systematically compare your computed result against the provided options.\n    *   If an exact match is found, state it as the final answer.\n    *   If no exact match exists, but one option is within a reasonable margin of error (e.g., <2%) attributable to rounding or constant variations, select and justify that option.\n    *   If the calculation matches no option and re-checking confirms no error, prioritize your rigorous result. Conclude based on your calculation and note the discrepancy with the options.\n6.  **Final Output:** Present your final answer clearly at the end.\n\n**Apply this analytical process to the following question:**",
-            "Q": 0.5666666666666667,
+            "prompt": "Answer electrical and electronics engineering multiple-choice questions by following a rigorous, step-by-step problem-solving methodology. For each question, adhere to this protocol:\n\n1.  **Contextual Analysis:** Carefully read the question to identify all given parameters, constraints, and required outputs. Determine the problem context: whether it requires fundamental theory application, precise calculation, or practical engineering approximation using standard values or simplified models common in textbook problems.\n2.  **Strategic Formulation:** Before calculations, outline the solution approach. Select the most efficient and context-appropriate method. For applied problems, consider whether standard empirical correlations, typical value ranges, or simplified formulas are expected rather than full first-principles derivations.\n3.  **Unit Consistency:** Convert all given quantities into a consistent unit system (preferably SI units: kg, m, s, A, V, Ω, J, etc.) before computations. Explicitly show all necessary conversions.\n4.  **Systematic Solution:**\n    - **General Formulation:** Recall and state all pertinent physical laws, equations, and principles. Present general symbolic formulas before numerical substitution.\n    - **Structured Computation:** Solve symbolically where possible. Substitute numerical values only into final expressions. Document all computational steps clearly, including arithmetic operations.\n5.  **Validation & Sanity Checking:**\n    - **Mathematical Verification:** When feasible, validate the answer by checking against original equations or using alternative methods.\n    - **Physical Plausibility:** Assess whether results are physically reasonable. Compare calculated values to known typical ranges and the distribution of provided options. If results are outliers, re-evaluate method selection and assumptions.\n6.  **Option Selection:** After verification, compare final results to provided choices. If no exact match exists but one option is consistently close to all calculated values, select it as the intended answer. Choose the letter corresponding to the best match.\n\nYour final output must be structured precisely as follows:\n\n**<reasoning>**\n[Your complete, step-by-step analysis, calculations, and validation checks go here.]\n**</reasoning>**\n\n**<answer>**\n[The single letter of the correct choice, e.g., A]\n**</answer>**",
+            "Q": 0.6,
+            "N": 1,
+            "reward": 0.65,
+            "children": []
+          },
+          {
+            "id": 15,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Answer electrical and electronics engineering multiple-choice questions by following a rigorous, step-by-step problem-solving methodology. For each question, adhere to this protocol:\n\n1.  **Problem Analysis:** Carefully read the question to identify all given parameters, constraints, and the specific value(s) that need to be determined. Consider the physical context and expected outcomes based on fundamental principles (e.g., for compression, expect entropy decrease; for isothermal processes, internal energy change may be negligible for ideal gases but not for solids under high pressure).\n2.  **Formula Application:** Recall and state all pertinent physical laws, equations, and principles required for the solution. Present the general symbolic formulas before substituting any numerical values. If the problem involves high-pressure solids or other complex scenarios, acknowledge the relevant thermodynamic relations (e.g., $(\\partial u/\\partial P)_T = v - T(\\partial v/\\partial T)_P$).\n3.  **Unit Management:** Convert all given quantities into a consistent unit system (preferably SI units) only if necessary. Explicitly show any necessary conversions. Note that problems may use specialized units (e.g., °R, atm, Btu); ensure conversions are done correctly using standard factors (e.g., 1 atm = 14.696 psia, 1 Btu = 778 ft·lbf).\n4.  **Systematic Computation:** Solve the problem symbolically where possible. Only substitute numerical values into the final symbolic expression. Document every computational step clearly. If critical data (e.g., specific volume $v$, thermal expansion coefficient $\\beta$) is missing, use standard values from engineering knowledge (e.g., for copper, $v \\approx 0.00174$ ft³/lbm, $\\beta \\approx 5.0 \\times 10^{-5}$ °R⁻¹) but note this assumption. If calculation yields results orders of magnitude different from options, re-evaluate the approach.\n5.  **Result Verification:** Validate the answer by checking consistency with physical laws (e.g., first law: $\\Delta u = q - w$), sign conventions (heat absorbed is positive, work done by system is positive), and option patterns. For problems with multiple parts (a, b, c, d), ensure the values across options satisfy known relations (e.g., $q = T \\Delta s$ for reversible isothermal process). Use dimensional analysis to catch unit errors.\n6.  **Option Selection:** Compare your final result(s) to the provided choices. If no option matches exactly, choose the one that is physically consistent and has the correct magnitudes, even if signs are misprinted in the options (e.g., for isothermal compression, $\\Delta s < 0$, so if an option has the correct magnitude for $\\Delta s$ but wrong sign, it may be acceptable if other variables have correct signs and magnitudes). Prioritize options that satisfy the first law and other fundamental checks.\n\nYour final output must be structured precisely as follows:\n\n**<reasoning>**\n[Your complete, step-by-step analysis and calculations go here. If you use standard values for missing data, state them explicitly. If you perform a consistency check on options, detail it.]\n**</reasoning>**\n\n**<answer>**\n[The single letter of the correct choice, e.g., A]\n**</answer>**",
+            "Q": 0.5833333333333334,
             "N": 1,
             "reward": 0.55,
             "children": []
