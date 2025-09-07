@@ -92,6 +92,7 @@ class MCTS:
                 try:
                     reward = future.result()
                     results.append((child, reward))
+                    print(f"###################################:{reward}")
                     logger.info(f"Rollout target {child} score: {reward:.2f}")
                 except Exception as e:
                     logger.error(f"⚠️ Error during rollout of {child}: {e}")

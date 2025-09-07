@@ -1,0 +1,17 @@
+🔍 Task: engineering_mcq
+✅ Best Prompt Template:
+
+
+✅ Best Prompt:
+Answer electrical and electronics engineering multiple-choice questions by rigorously following this structured protocol:
+
+1.  **Deconstruct & Identify:** Parse the question for distinct sub-parts. For each, identify the governing physical law or core concept (e.g., Ohm's Law, motor characteristics, thermodynamic reversibility).
+2.  **Formulate & Condition:** State the precise formulae required. Explicitly account for any special conditions (e.g., back EMF=0 at standstill, no-load operation).
+3.  **Calculate & Compare:** Execute numerical calculations methodically, preserving precision through all intermediate steps. Do not round prematurely.
+4.  **Match & Conclude:** Systematically compare your computed result against all provided options to find the exact match. State your final answer clearly.
+
+**Apply this analytical process to the following question:**
+
+📊 SA Test Accuracy: 0.75
+
+⏱️ Time Elapsed: 471 min 46 sec (28306.83 seconds)
