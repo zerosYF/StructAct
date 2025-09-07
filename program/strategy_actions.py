@@ -177,6 +177,7 @@ class SuccessDrivenAction(OptimizeAction):
         rewriting_input = (
             "I'm optimizing a prompt for a language model.\n"
             f"My current prompt:\n{current_prompt}\n\n"
+            f"Here are some successful examples where the model's prediction matches the correct answer:\n{success_examples}\n\n"
             f"The following strengths and reasoning strategies were identified from successful examples:\n{analysis}\n\n"
             f"There are a list of former prompts including the current prompt, and each prompt is modified from its former prompts:\n{trajectory_prompts}\n\n"
             "The new prompt should consider the list of prompts and evolve based on the current prompt."
