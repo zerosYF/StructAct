@@ -36,11 +36,11 @@ class BusinessMCQTask(TaskBase):
         self.origin_prompt = "Answer business and management multiple-choice questions by selecting the correct option letter."
         self.system_prompt = (
             "Choose the most appropriate option (A, B, C, D) for the question below. "
-            "Only output the letter of the correct answer (e.g., 'A')."
+            "Only output the option letter (e.g., A, B, C), not the content."
         )
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
-        return current_prompt + f"\n\nQuestion: {input}\nAnswer:"
+        return  current_prompt + f"\n\nQuestion: {input}\n" + self.system_prompt + self.answer_format_prompt
 
     def extract_tuple(self, sample) -> tuple:
         return sample["question"], sample["answer"]

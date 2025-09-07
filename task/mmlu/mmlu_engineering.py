@@ -40,7 +40,7 @@ class EngineeringMCQTask(TaskBase):
         )
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
-        return current_prompt + f"\n\nQuestion: {input}\nAnswer:"
+        return current_prompt + f"\n\nQuestion: {input}\n" + self.system_prompt + self.answer_format_prompt
     
     def extract_tuple(self, sample) -> tuple:
         return sample["question"], sample["answer"]
@@ -58,9 +58,13 @@ class EngineeringMCQTask(TaskBase):
         if match:
             text = match.group(1)
 
-        text = re.sub(r"^(Answer\s*[:：]?\s*)?", "", text.strip(), flags=re.IGNORECASE)
-        text = re.sub(r"[\.\s]+$", "", text.strip())  
-        return text.strip().upper()
+        text = text.strip()
+
+        match = re.search(r"\b([A-D])\b", text.upper())
+        if match:
+            return match.group(1).upper()
+
+        return text[:1].upper()
 
     def get_reward(self, output: str, target: str) -> float:
         norm_out = self._normalize_answer(output)

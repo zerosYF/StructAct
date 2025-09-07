@@ -14,18 +14,23 @@ class PromptEvaluator:
         q, a = self.task.extract_tuple(sample)
         final_input = self.task.inject_final_input(current_prompt, q)
         output = self.model.api_call(final_input)
+        if output == "__FILTERED__":
+            return None
         return self.task.get_reward(output, a)
     
     def batch_reward(self, current_prompt: str, samples: List[dict]) -> float:
         total = len(samples)
         with ThreadPoolExecutor(max_workers=self.thread_num) as executor:
             results = list(executor.map(self.reward, current_prompt, samples))
-        return sum(results) / total
+        results = [r for r in results if r is not None]
+
+        total = len(results)
+        return sum(results) / total if total > 0 else 0.0
     
     def batch_reward_n(self, current_prompt: str, samples: List[dict]) -> List[float]:
         with ThreadPoolExecutor(max_workers=self.thread_num) as executor:
             results = list(executor.map(lambda s: self.reward(current_prompt, s), samples))
-        return results
+        return [r for r in results if r is not None]
 
     def evaluate(self, test_data: list[dict], final_prompt: str) -> dict:
         total = len(test_data)
@@ -34,6 +39,10 @@ class PromptEvaluator:
             question, gold = self.task.extract_tuple(item)
             final_input = self.task.inject_final_input(final_prompt, question)
             output = self.model.api_call(final_input)
+
+            if output == "__FILTERED__":
+                return None
+
             correct = int(self.task.get_reward(output, gold) > 0)
             return {
                 "prompt": final_prompt,
@@ -45,7 +54,7 @@ class PromptEvaluator:
         with ThreadPoolExecutor(max_workers=self.thread_num) as executor:
             results = list(executor.map(_evaluate_one, test_data))
 
-        correct = sum(r["correct"] for r in results)
+        correct = sum(r["correct"] for r in results if r is not None)
         outputs = [{'prompt': r["prompt"], "output": r["output"], "answer": r["answer"]} for r in results]
 
         return {

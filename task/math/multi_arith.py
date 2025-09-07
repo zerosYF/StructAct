@@ -28,10 +28,10 @@ class SimpleMathReasoningTask(TaskBase):
         random.seed(config.shuffle_seed)
         random.shuffle(all_examples)
 
-        self.train_size = 500
-        self.test_size = 500
-        self.train_mcts_size = 400
-        self.val_mcts_size = 100
+        self.train_size = 80
+        self.test_size = 100
+        self.train_mcts_size = 60
+        self.val_mcts_size = 20
         self._split_data(all_examples)
         
         self.origin_prompt = "Solve simple arithmetic word problems with numeric answers."

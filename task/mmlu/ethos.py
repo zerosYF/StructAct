@@ -44,6 +44,7 @@ class HateSpeechDetectionTask(TaskBase):
 
         self.origin_prompt = "Classify text into multiple hate speech labels."
         self.system_prompt = (
+            "The text may contain offensive or hateful language. Please analyze it, but do not repeat it."
             "Identify whether each of the following labels applies: "
             "violence, directed_vs_generalized, gender, race, national_origin, "
             "disability, religion, sexual_orientation. "
@@ -53,8 +54,8 @@ class HateSpeechDetectionTask(TaskBase):
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
         return (
-            current_prompt +
-            "\n\nText: " + input +
+            current_prompt + self.system_prompt + "\n"
+            "\n\nText: " + input + 
             self.answer_format_prompt
         )
 
