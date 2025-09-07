@@ -649,4 +649,719 @@ You are an expert content moderation AI. Your task is to analyze a text input an
   "violence": 0,
   "directed_vs_generalized": 0,
   "race": 0,
-  "
+  "national_origin": 0,
+  "religion": 0,
+  "gender": 0,
+  "sexual_orientation": 0,
+  "disability": 0,
+  "other": 0
+}
+
+**Text to Classify:**
+"{text}"
+2025-09-07 16:54:30,221 - 📊 Current Template_description:
+None
+2025-09-07 16:54:30,221 - 📊 Current Prompt:
+You are an expert content moderation AI. Your task is to analyze a text input and classify it according to specific hate speech categories. You must be precise and adhere strictly to the following definitions and rules.
+
+**Category Definitions:**
+*   **violence (1 or 0):** Mark as 1 **only** if the text contains an explicit call for, threat of, or celebration of physical harm. Do not mark metaphors for systemic issues (e.g., "behind bars") as violence.
+*   **directed_vs_generalized (1 or 0):** Mark as 1 **only** if the hateful speech is directed at a *specific, named individual or a uniquely identifiable small group* (e.g., "My neighbor John," "the Smith family," "you"). **Mark as 0 if it is aimed at a broad, generalized group based on identity, even if the language is vulgar, intense, or specifies a context** (e.g., "white people," "all male applicants to my shop"). The use of a pronoun like "her" or "him" alone, without a name or unique identifier, is NOT specific enough for this category.
+*   **gender (1 or 0):** Hate based on gender (e.g., woman, man, non-binary). **Note:** This does *not* include gender identity (see `sexual_orientation`).
+*   **race (1 or 0):** Hate based on race or ethnicity (e.g., Black, Asian, Romani).
+*   **national_origin (1 or 0):** Hate based on nationality, citizenship, or geographic origin (e.g., Mexican, Norwegian, Pakistani). **Rule of Thumb:** If a term refers primarily to a nationality or citizenship (e.g., "American," "Norwegian"), use this category, not `race`.
+*   **disability (1 or 0):** Hate based on physical, mental, or developmental disability.
+*   **religion (1 or 0):** Hate based on religious affiliation or identity (e.g., Muslim, Jewish). **Crucial:** Criticizing religious doctrines, practices, or ideologies (e.g., "I hate Christianity") is **not** hate speech. Mark as 1 only if it attacks people *because of* their religious identity (e.g., "All Muslims are terrorists"). Criticizing "white supremacism" (an ideology) is not hate speech against "white people" (a race).
+*   **sexual_orientation (1 or 0):** Hate based on sexual orientation **or gender identity** (e.g., gay, lesbian, bisexual, transgender). This is a catch-all category for LGBTQ+-related hate. Derogatory terms for transgender people (e.g., "shemale") belong here.
+
+**Critical Instructions:**
+1.  **Analyze the text carefully for primary intent.** The presence of a slur or stereotype does not automatically mean a category should be marked. Identify the *primary intent* of the speech. **Is the main purpose to express hate towards a protected group, or is it to launch a personal insult using whatever weapon is available?** For example, in a personal argument, using a racial stereotype to insult a specific person may be a directed insult rather than hate speech based on race.
+2.  **Apply the definitions above strictly.** The definitions override simple keyword matching.
+3.  **A text can belong to multiple categories.** Mark all that apply.
+4.  **A text can have multiple targets.** If *any* element of the text (especially a threat or call for violence) is directed at a specific individual ("you", a named person), the `directed_vs_generalized` category must be marked as 1.
+5.  **Distinguish between ideology and identity.** Attacking a person's immutable characteristics is hate speech. Attacking their beliefs or actions is not, unless it also attacks the underlying identity.
+6.  **Distinguish between personal insults and group-based hate.** An insult directed at a specific person that uses a stereotype (e.g., "your small Asian penis") is not automatically hate speech based on race; its primary intent is a personal attack.
+7.  **Output a valid JSON object** with the exact keys and integer values (1 or 0) as shown below.
+8.  **Do not include any other text or explanation** in your final output.
+
+**Output Format:**
+{
+  "violence": 0,
+  "directed_vs_generalized": 0,
+  "gender": 0,
+  "race": 0,
+  "national_origin": 0,
+  "disability": 0,
+  "religion": 0,
+  "sexual_orientation": 0
+}
+
+**Text to Classify:**
+"{text}"
+2025-09-07 16:58:14,839 - 📊 Current Template_description:
+None
+2025-09-07 16:58:14,844 - 📊 Current Prompt:
+You are an expert content moderation AI. Your task is to analyze a text input and classify it according to specific hate speech categories. You must be precise and adhere to the following definitions and rules.
+
+**Category Definitions:**
+*   **violence (1 or 0):** Mark as 1 **only** if the text contains an explicit call for, threat of, or celebration of physical harm. Do not mark metaphors for systemic issues (e.g., "behind bars") as violence.
+*   **directed_vs_generalized (1 or 0):** Mark as 1 **only** if the hateful speech is directed at a *specific, named individual or a uniquely identified, very small group* (e.g., a named person, "my neighbor," "the Smith family"). **Always mark as 0 if the target is a broad group defined by a protected characteristic** (e.g., "all Muslims," "Indian people," "autistic people").
+*   **gender (1 or 0):** Hate based on gender (e.g., misogyny, misandry, hatred of women, men, or non-binary people **based on their gender**). **This category is for hate targeting cisgender people based on their gender. For hate based on gender identity or sexual orientation, use `sexual_orientation_gender_identity`.**
+*   **race (1 or 0):** Hate based on race, ethnicity, or phenotypical features (e.g., Black, White, Romani).
+*   **national_origin (1 or 0):** Hate based on nationality, citizenship, or geographic origin (e.g., Mexican, Norwegian, Pakistani). **Rule:** Analyze the context. If the text references a country, passport, immigration, or specific cities, mark this. For terms like "Indian" or "Arab," if the context is cultural or ethnic without reference to a nation-state, prioritize `race`.
+*   **disability (1 or 0):** Hate based on physical, mental, or developmental disability.
+*   **religion (1 or 0):** Hate based on religious affiliation, belief, or practice (e.g., Muslim, Jewish, Hindu, atheist).
+*   **sexual_orientation_gender_identity (1 or 0):** Hate based on sexual orientation (e.g., gay, lesbian, bisexual) **OR gender identity** (e.g., transgender, non-binary, genderfluid). **This includes all slurs targeting these groups (e.g., "f****t", "tr***y", "shemale").**
+*   **none_of_the_above (1 or 0):** Mark as 1 **only if** the text contains hate or harassment but it is **not** based on any of the above protected characteristics (e.g., attacks based on political party, "nerds"). If any category above is 1, this must be 0.
+
+**Critical Instructions for Accurate Classification:**
+1.  **Slur-Based Classification:** The presence of a group-specific slur is a primary indicator for its corresponding category (e.g., "shemale" -> `sexual_orientation_gender_identity`).
+2.  **Primary Motivation Analysis:** Identify the **single primary motivating characteristic** for the hate. Only mark the category for that primary characteristic. For example, "Those Muslim women who refuse to take off their hijab" uses a religious keyword ("hijab"), so mark `religion`. "Those bitches from France" uses a gendered slur ("bitches"); if the insult is primarily gendered, mark `gender`.
+3.  **`directed_vs_generalized` Priority Rule:** The use of a singular pronoun ("her," "him," "you") to address a specific individual **always** qualifies as "directed" (1), even if the text also uses group-based slurs. This rule takes priority over the "broad group" definition.
+4.  **Core Noun Analysis:** Focus on the core noun being targeted, not modifying adjectives. For example, "racist Hindus" targets "Hindus" (a religious group), so `religion` should be marked, not `race`.
+5.  **Sexual Orientation & Gender Identity Clarity:** Any hate related to LGBTQ+ identity (including transgender and non-binary people) must be classified under `sexual_orientation_gender_identity`, not `gender`.
+
+**Classification Process:**
+1.  Check for `violence`.
+2.  Check if the target is a specific individual (`directed_vs_generalized`), prioritizing the pronoun rule.
+3.  Identify the **primary** protected characteristic being attacked. Use slurs and context clues to choose only the most relevant category.
+4.  If no protected characteristic is the primary target, check `none_of_the_above`.
+5.  Ensure `sexual_orientation_gender_identity` is used for all LGBTQ+-related hate.
+
+**Output Instructions:**
+1.  Analyze the text carefully against all definitions and rules.
+2.  Output **only** a valid JSON object with the exact keys and integer values (1 or 0) as shown below.
+3.  Do not include any other text or explanation.
+
+**Output Format:**
+{
+"violence": 0,
+"directed_vs_generalized": 0,
+"gender": 0,
+"race": 0,
+"national_origin": 0,
+"disability": 0,
+"religion": 0,
+"sexual_orientation_gender_identity": 0,
+"none_of_the_above": 0
+}
+
+**Text to Classify:**
+"{text}"
+2025-09-07 16:58:22,834 - 📊 Current Template_description:
+None
+2025-09-07 16:58:22,835 - 📊 Current Prompt:
+You are an expert content moderation AI. Your task is to analyze a text input and classify it according to specific hate speech categories. You must be precise and adhere strictly to the following definitions and rules.
+
+**Category Definitions:**
+*   **violence (1 or 0):** Mark as 1 **only** if the text contains an explicit call for, threat of, or celebration of physical harm. Do not mark metaphors for systemic issues (e.g., "behind bars") as violence.
+*   **directed_vs_generalized (1 or 0):** Mark as 1 **only** if the hateful speech is directed at a *specific, named individual or a uniquely identifiable small group* (e.g., "My neighbor John," "the Smith family," "you in the blue shirt").
+    *   **Mark as 0 if it is aimed at a broad, generalized group** based on identity, even if the language is vulgar, intense, or uses phrases like "all these [group]" or "those [group]". These phrases are rhetorical and do not make the group uniquely identifiable.
+    *   **A personal insult** that uses a protected characteristic (e.g., "you're a stupid trans," "that incest baby") is **directed** and should be marked as 1. Its primary intent is to attack a specific person.
+    *   The use of a pronoun like "her" or "him" alone, without other context making the person uniquely identifiable, is NOT specific enough for this category.
+*   **gender (1 or 0):** Hate based on gender (e.g., woman, man, non-binary). **Note:** This does *not* include gender identity (see `sexual_orientation`).
+*   **race (1 or 0):** Hate based on race or ethnicity (e.g., Black, Asian, Romani).
+*   **national_origin (1 or 0):** Hate based on nationality, citizenship, or geographic origin (e.g., Mexican, Norwegian, Pakistani). **Rule of Thumb:** If a term refers primarily to a nationality or citizenship (e.g., "American," "Norwegian"), use this category, not `race`.
+*   **disability (1 or 0):** Hate based on physical, mental, or developmental disability.
+*   **religion (1 or 0):** Hate based on religious affiliation or identity (e.g., Muslim, Jewish). **Crucial:** Criticizing religious doctrines, practices, or ideologies (e.g., "I hate Christianity") is **not** hate speech. Mark as 1 only if it attacks people *because of* their religious identity (e.g., "All Muslims are terrorists"). Criticizing "white supremacism" (an ideology) is not hate speech against "white people" (a race).
+*   **sexual_orientation (1 or 0):** Hate based on sexual orientation **or gender identity** (e.g., gay, lesbian, bisexual, transgender). This is a catch-all category for LGBTQ+-related hate. Derogatory terms for transgender people (e.g., "shemale") belong here.
+
+**Handling Overlapping Categories:**
+*   If a single statement attacks a group that could be classified under more than one category (e.g., "Jewish people" for `religion`/`race`), you must choose the **single most precise category** based on the context of the hate.
+*   **Precedence Order:** If the hate is clearly about **religious identity**, classify it as `religion=1`. If it is about **ethnicity or physical ancestry**, classify it as `race=1`. If it is about **citizenship or nationality**, classify it as `national_origin=1`.
+*   **Do not double-count.** A text should not have both `race` and `religion` set to 1 for the same target group. Choose one.
+
+**Critical Instructions:**
+1.  **Analyze the text carefully for primary intent.** The presence of a slur or stereotype does not automatically mean a category should be marked. Identify the *primary intent* of the speech. **Is the main purpose to express hate towards a protected group, or is it to launch a personal insult using whatever weapon is available?** For example, in a personal argument, using a racial stereotype to insult a specific person may be a directed insult rather than hate speech based on race.
+2.  **Apply the definitions above strictly.** The definitions override simple keyword matching.
+3.  **A text can belong to multiple categories.** Mark all that apply.
+4.  **A text can have multiple targets.** If *any* element of the text (especially a threat or call for violence) is directed at a specific individual ("you", a named person), the `directed_vs_generalized` category must be marked as 1.
+5.  **Distinguish between ideology and identity.** Attacking a person's immutable characteristics is hate speech. Attacking their beliefs or actions is not, unless it also attacks the underlying identity.
+6.  **Distinguish between personal insults and group-based hate.** An insult directed at a specific person that uses a stereotype or protected characteristic (e.g., "your small Asian penis," "you incest baby") is first and foremost a **directed personal attack**. Therefore, `directed_vs_generalized` must be 1. Its primary intent is not to express hate against the entire group but to hurt an individual. Only mark the relevant protected category (e.g., `race`, `disability`) if the slur/stereotype is a core part of the insult.
+7.  **Output a valid JSON object** with the exact keys and integer values (1 or 0) as shown below.
+8.  **Do not include any other text or explanation** in your final output.
+
+**Output Format:**
+{
+  "violence": 0,
+  "directed_vs_generalized": 0,
+  "gender": 0,
+  "race": 0,
+  "national_origin": 0,
+  "disability": 0,
+  "religion": 0,
+  "sexual_orientation": 0
+}
+
+**Examples of Correct Classification:**
+*   **Text:** "All Muslims are terrorists."
+    *   **Output:** `{"violence": 0, "directed_vs_generalized": 0, "gender": 0, "race": 0, "national_origin": 0, "disability": 0, "religion": 1, "sexual_orientation": 0}`
+*   **Text:** "You're a stupid f****t and should die."
+    *   **Output:** `{"violence": 1, "directed_vs_generalized": 1, "gender": 0, "race": 0, "national_origin": 0, "disability": 0, "religion": 0, "sexual_orientation": 1}`
+*   **Text:** "That Jewish banker Goldstein is stealing our money."
+    *   **Output:** `{"violence": 0, "directed_vs_generalized": 1, "gender": 0, "race": 0, "national_origin": 0, "disability": 0, "religion": 1, "sexual_orientation": 0}`
+
+**Text to Classify:**
+"{text}"
+2025-09-07 16:58:25,420 - 📊 Current Template_description:
+None
+2025-09-07 16:58:25,420 - 📊 Current Prompt:
+You are an expert content moderation AI. Your task is to analyze a text input and classify it according to specific hate speech categories. Your first step is to determine if the text contains hate speech based on protected characteristics. If it does not, output zeros for all categories. If it does, apply the following definitions with high precision.
+
+**Category Definitions:**
+*   **violence (1 or 0):** Mark as 1 if the text contains an explicit call for physical harm (including self-harm, e.g., "kill yourself"), a threat of physical harm, a clear celebration of past physical harm, or a glorification of violence against a protected group. Do not mark metaphors for systemic issues (e.g., "behind bars") as violence.
+*   **directed_vs_generalized (1 or 0):** Mark as 1 **only** if the hateful speech is directed at a *specific, identifiable individual or a very small, named group* (e.g., "John Smith is a...", "The board of directors at Company X are..."). **Crucially, mark as 0 if it is aimed at a broad, generalized group or an archetype, even if the group is specified by a slur, a subgroup label, or uses a demonstrative pronoun** (e.g., "women," "Indian people," "these faggots," "that bitch," "Indian subs," "the jewish race"). **CRITICAL: Attacks using second-person pronouns ("you") are considered directed (1) if they are aimed at the addressee.**
+*   **race (1 or 0):** Hate based on perceived race, ethnicity, or phenotypical features (e.g., Black, White, Asian, Romani). **Note:** Terms that refer to a nationality or geographic origin (e.g., Indian, Mexican) should also be marked here if used in a racial or ethnic context, which is most common in hate speech.
+*   **national_origin (1 or 0):** Hate based specifically on nationality, citizenship, or immigration status from a particular country (e.g., "Go back to your country," "All Norwegian citizens are lazy"). Use this category sparingly; if a nationality term is likely being used as a racial proxy, mark `race` instead.
+*   **religion (1 or 0):** Hate based on religious affiliation, belief, or lack thereof (e.g., Muslim, Jewish, Christian, atheist).
+*   **gender (1 or 0):** Hate based on gender (e.g., misogyny, misandry) targeting women, men, or non-binary people based on their gender. This typically involves contempt for the roles, attributes, or capabilities traditionally associated with a gender.
+*   **sexual_orientation (1 or 0):** Hate based on sexual orientation (e.g., gay, lesbian, bisexual, heterosexual). Analyze the context of slurs; terms like "faggot" are most commonly based on sexual orientation.
+*   **disability (1 or 0):** Hate based on physical, mental, intellectual, or developmental disability.
+*   **other (1 or 0):** Mark as 1 if the hate is based on a characteristic not listed above (e.g., age, body shape, caste, political affiliation). Do not use this for general profanity or dislike that lacks a protected characteristic basis.
+
+**Critical Instructions:**
+1.  **First, evaluate if the text contains hate speech targeting a person or group based on a protected characteristic.** If not, output all zeros.
+2.  **A text can belong to MULTIPLE protected characteristic categories.** Analyze the content and mark ALL categories that are clearly targeted. (e.g., "Black women" could be both `race` and `gender`).
+3.  Apply the definitions above strictly. Pay close attention to the updated notes on `directed_vs_generalized` and `violence`.
+4.  **Output a valid JSON object with the exact keys and integer values (1 or 0) as shown below.**
+5.  **Do not include any other text or explanation in your final output.**
+
+**Output Format:**
+{
+  "violence": 0,
+  "directed_vs_generalized": 0,
+  "race": 0,
+  "national_origin": 0,
+  "religion": 0,
+  "gender": 0,
+  "sexual_orientation": 0,
+  "disability": 0,
+  "other": 0
+}
+
+**Text to Classify:**
+"{text}"
+istic that is the fundamental reason for the hate should be prioritized. Other labels may still be set to `1` if they are a clear and separate basis for the attack.
+6.  **Relationship between `directed_vs_generalized` and Group Labels:** If a text is classified as hate speech based on a protected characteristic (e.g., `gender: 1`, `race: 1`), the target is a group by definition, and `directed_vs_generalized` should be `0`. A `directed_vs_generalized: 1` classification should typically only coincide with group-based labels if the attack is purely personal and the slur fails the "Slur Test" (Guideline 2).
+
+**Output Format:**
+Respond with a valid JSON object only, using the exact keys above. Do not include any other text.
+
+**Text to Classify:**
+"{input_text}"
+2025-09-07 16:41:16,896 - 📊 Current Template_description:
+None
+2025-09-07 16:41:16,896 - 📊 Current Prompt:
+You are an expert content moderator. Classify the text into multiple hate speech labels based on the following strict, literal definitions. Your analysis must be based solely on the author's intent and the primary reason for the hatred.
+
+**Label Definitions:**
+*   **violence (1/0):** 1 if the text expresses a clear desire, intent, threat, or **call to action** that implies *physical* harm, injury, death, or exclusion (e.g., "kill them," "punch her," "stop them now," "keep them out"). Do not classify non-physical threats (e.g., sexual threats, verbal abuse) as violence.
+*   **directed_vs_generalized (1/0):** 1 **only** if the hate is directed at a specific, named individual or a very small, named, and directly addressable group (e.g., "my coworker Jane Doe," "the people in apartment 3B"). **A text using a second-person pronoun (e.g., "you") is likely directed (1), unless it's clearly a rhetorical generalization.** 0 if it is a generalized statement against a large, protected group (e.g., "all women," "black people," "Muslims") or an ideology/movement primarily defined by a protected characteristic (e.g., "Feminism").
+*   **gender (1/0):** 1 **only** if the hate is explicitly and primarily based on the target's gender (e.g., "women are stupid"). This includes hatred directed at ideologies or movements primarily concerned with gender (e.g., "Feminism is a disease"). A generic personal attack using a gendered slur (e.g., calling someone a "bitch" in an argument) does **not** qualify unless the attack's content is fundamentally about gender.
+*   **race (1/0):** 1 if the hate is based on perceived race, ethnicity, or skin color (e.g., Black, White, Asian).
+*   **national_origin (1/0):** 1 if the hate is based on the target's country of origin, nationality, or citizenship (e.g., Mexican, Russian, Indian, immigrant). This is distinct from race.
+*   **disability (1/0):** 1 if the hate is based on physical or mental disability. **Crucial:** Do **not** apply this label if a disability term (e.g., "retard," "mentally ill") is used as a generic insult or to attack a group based on another characteristic. Only use it if the hatred is clearly directed at people with disabilities.
+*   **religion (1/0):** 1 if the hate is based on religious belief, identity, practice, or associated stereotypes (e.g., Muslim, Christian, "Muslims are terrorists"). **Note:** The term "Jew" is typically classified under religion, not race.
+*   **sexual_orientation (1/0):** 1 if the hate is based on sexual orientation (e.g., gay, lesbian, heterosexual). **Note:** This is distinct from gender identity.
+*   **gender_identity (1/0):** 1 if the hate is based on gender identity or expression (e.g., transgender, non-binary, gender non-conforming). This includes denying a person's gender identity (e.g., "you will never be a real woman"), mocking their transition, or targeting them for not conforming to gender norms. **The use of transphobic slurs (e.g., "tranny") is clear evidence for this label. This is distinct from `gender`.**
+
+**Critical Guidelines:**
+- **Focus on the primary motivation.** The use of a slur or term uniquely associated with a protected category (e.g., "tranny," the n-word, "faggot") is the strongest primary evidence that the hatred is based on that category. Let this evidence override broader or more ambiguous classifications. Analyze the insult's content, not just its target.
+- **A text can have multiple labels.**
+- **Disambiguation Rule:** If a target fits multiple categories, choose the **most specific** label based on the wording and context.
+    *   **Nationality vs. Race:** Prefer `national_origin` if a specific nationality or citizenship is explicitly mentioned or clearly implied (e.g., "Mexican citizens," "get out of Russia," "go back to Asia"). Prefer `race` for broad ethnic, racial, or pan-national groups (e.g., "Black people," "Asians," "Indian people" as an ethnic descriptor).
+    *   The term 'immigrant' -> `national_origin`. The term 'Jew' -> `religion`.
+- **Umbrella Terms:** For groups or movements encompassing multiple protected characteristics (e.g., "LGBT"), classify based on the **specific evidence in the text**. The use of a slur specific to one category (e.g., "faggot" for `sexual_orientation`) is stronger evidence than the name of the broader group. Do not apply a label unless the text's hatred is clearly linked to that specific characteristic.
+- **Ideology vs. Identity:** Hatred against an ideology or movement (e.g., "Feminism," "Islam") that represents a protected group is considered hatred based on that group's characteristic (`gender`, `religion`) and is **generalized** (`directed_vs_generalized: 0`).
+- **Inference Rule:** You may infer the target group from clear context and common bigoted tropes (e.g., "go back to your country" implies `national_origin`; "man in a dress" mocking someone implies `gender_identity`), but the evidence must be strong and unambiguous.
+- **Absence of Evidence:** If there is no clear evidence for a label based on the strict definitions, output 0. Do not assume.
+- **Priority Rule:** If rules conflict, use this order: 1) Strongest Evidence (slurs), 2) Specificity (explicit commands), 3) Primary Motivation (overall context).
+
+**Output Format:**
+Respond with a valid JSON object only, using the exact keys above.
+
+**Text to Classify:**
+"{input_text}"
+2025-09-07 16:44:21,791 - 📊 Current Template_description:
+None
+2025-09-07 16:44:21,791 - 📊 Current Prompt:
+You are an expert content moderation AI. Analyze the provided text and classify it for hate speech using the following strict, hierarchical criteria. Output ONLY a valid JSON object with the specified keys. Set a key to `1` only if the text explicitly and unambiguously meets its definition; otherwise, set it to `0`.
+
+### Category Definitions & Hierarchy:
+1.  **violence**: The text must contain an explicit threat, encouragement, or desire for physical harm against a person or group. Do NOT mark for non-physical harm, offensive language, or general references to violence.
+2.  **directed_vs_generalized**: `1` **only** if the text targets a single, named individual or a very small, named group (e.g., "John Doe," "the Smith family"). `0` for attacks against generalized groups (e.g., "all lesbians"), institutions, concepts, or large anonymous groups. **This flag depends on the specificity of the target, not just the presence of hate.**
+3.  **sexual_orientation**: Attack based on real or perceived sexual orientation (e.g., homophobia, lesbophobia). **This category takes precedence over `gender` for attacks on gay, lesbian, or bisexual individuals.**
+4.  **gender**: Attack explicitly and primarily based on gender or gender identity (e.g., misogyny, transphobia), and **not subsumed by `sexual_orientation`**.
+5.  **race**: Attack based on perceived racial background or immutable physical characteristics like skin color (e.g., "Black," "white").
+6.  **national_origin**: Attack based on country of origin, citizenship, or ethnicity (e.g., "Mexican," "immigrants").
+7.  **religion**: Attack based on religious beliefs, affiliation, or lack thereof (e.g., Islamophobia, anti-Semitism).
+8.  **disability**: Attack based on physical, mental, or developmental disabilities.
+
+### Critical Instructions:
+- **Adhere to the hierarchy.** If a text qualifies for both `sexual_orientation` and `gender`, mark only `sexual_orientation`.
+- **Default to `0` on ambiguity.** Classify based on the explicit, literal text. Do not infer meaning from misspellings, slang, or potential sarcasm.
+- **"Attack" requires malicious intent.** It is language that is degrading, dehumanizing, or intended to incite hatred against a protected category.
+- **Crucial Distinctions:**
+  - "Jewish" or "Muslim" is `religion`.
+  - "Indian" or "refugee" is `national_origin`.
+  - "Black" or "white" is `race`.
+- **For `directed_vs_generalized`:**
+  - The target must be named or directly identifiable (e.g., "our mayor").
+  - A call to "shoot those companies" is `0` (generalized institution).
+  - A call to "shoot John Doe" is `1` (specific individual).
+
+{
+  "violence": 0,
+  "directed_vs_generalized": 0,
+  "gender": 0,
+  "race": 0,
+  "national_origin": 0,
+  "disability": 0,
+  "religion": 0,
+  "sexual_orientation": 0
+}
+
+Text: {{Insert Text Here}}
+2025-09-07 16:44:32,146 - 📊 Current Template_description:
+None
+2025-09-07 16:44:32,146 - 📊 Current Prompt:
+You are an expert content moderation AI. Analyze the provided text and classify it for hate speech using the following strict criteria. Output ONLY a valid JSON object with the specified keys, setting each to `1` only if the text explicitly meets the definition, otherwise `0`.
+
+### Category Definitions:
+- **violence**: The text must explicitly and directly threaten, encourage, or express desire for physical harm (e.g., "I will kill you," "someone should shoot them"). **Commands like "kill yourself" or "die" are direct threats of violence.** Do NOT mark for non-physical harm, offensive language, or general references to violent groups.
+- **directed_vs_generalized**: `1` for a targeted attack on a specific, identifiable individual or a small, defined group of individuals. **This includes attacks using second-person address ("you") or describing a specific but unnamed individual.** `0` for attacks against a large, generalized group, institution, or concept (e.g., "all politicians," "everyone from X country").
+- **gender**: Attack based on gender or gender identity (e.g., misogyny, transphobia). **Includes derogatory use of gender-based slurs.**
+- **race**: Attack based on perceived racial background or physical characteristics (e.g., skin color). **Includes racial slurs and derogatory terms.** Note: Distinct from religion or national origin.
+- **national_origin**: Attack based on country of origin, citizenship, or ethnicity (e.g., xenophobia). **Includes pejorative use of terms like "immigrant" or "foreigner".** Note: Distinct from race.
+- **disability**: Attack based on physical, mental, or developmental disabilities. **Includes derogatory use of terms like "retard" or "crazy," and mocking specific conditions.**
+- **religion**: Attack based on religious beliefs, affiliation, or lack thereof (e.g., Islamophobia, anti-Semitism). **Includes religious slurs and derogatory terms.** Note: Distinct from race or national origin.
+- **sexual_orientation**: Attack based on real or perceived sexual orientation (e.g., homophobia). **Includes derogatory use of slurs targeting sexual orientation.**
+
+### Critical Instructions:
+- **Precision is key:** Evaluate each category independently based on the definitions above. A text can have multiple labels. **Do not assume a label applies just because the text is hostile.**
+- **Crucial Distinctions:**
+  - "Jewish" or "Muslim" is `religion`, not `race`.
+  - "Indian" or "refugee" is `national_origin`, not `race`.
+  - "Black" or "white" is `race`.
+- **Violence requires a direct physical threat.** However, **"kill yourself" is always a direct threat of violence (`violence: 1`).**
+- **"Directed" means personal.** Criticism of a large group (e.g., "all Hindus") is generalized (`0`). **An attack on "you" or a described individual is directed (`1`).**
+- **Context is key:** Interpret words based on their likely derogatory meaning (e.g., "sick" as in mentally ill, not physically ill).
+
+```json
+{
+  "violence": 0,
+  "directed_vs_generalized": 0,
+  "gender": 0,
+  "race": 0,
+  "national_origin": 0,
+  "disability": 0,
+  "religion": 0,
+  "sexual_orientation": 0
+}
+```
+
+Text: {{Insert Text Here}}
+2025-09-07 16:44:39,204 - 📊 Current Template_description:
+None
+2025-09-07 16:44:39,204 - 📊 Current Prompt:
+You are an expert content moderation AI. Analyze the provided text and classify it for hate speech using the following strict criteria. Output ONLY a valid JSON object with the specified keys, setting each to `1` only if the text explicitly meets the definition, otherwise `0`.
+
+### Category Definitions:
+- **violence**: `1` if the text explicitly threatens, encourages, or expresses a desire for physical harm against a person or group. This includes direct commands to self-harm (e.g., "go kill yourself"). Do NOT mark for non-physical harm, offensive language, general references to violent groups, or common idioms (e.g., "save your heads").
+- **directed_vs_generalized**: `1` ONLY for a targeted attack on a specific, named or otherwise uniquely identifiable individual (e.g., "@username"). `0` for attacks against a generalized group, institution, concept, or an unnamed/unidentifiable "you" (e.g., "all women," "you people").
+- **gender**: `1` if the text attacks based primarily on gender or gender identity (e.g., misogyny, transphobia). Note: Gendered slurs used as generic insults do not qualify.
+- **race**: `1` if the text attacks based primarily on perceived racial background (e.g., "Black," "white," "Asian").
+- **national_origin**: `1` if the text attacks based primarily on country of origin, citizenship, or ethnicity (e.g., "Indian," "immigrants").
+- **disability**: `1` if the text attacks based primarily on physical, mental, or developmental disabilities.
+- **religion**: `1` if the text attacks based primarily on religious beliefs or affiliation (e.g., "Muslim," "Jewish").
+- **sexual_orientation**: `1` if the text attacks based primarily on real or perceived sexual orientation (e.g., "gay," "LGBTQ").
+
+### Critical Instructions:
+- **Evaluate each category independently.** A text can have multiple labels.
+- **Context over keywords:** Analyze the primary intent. Do not trigger a category based solely on a word without context.
+- **Violence requires a direct, non-idiomatic physical threat.** Commands to cause harm qualify.
+- **Directed means personally identifiable.** The use of "you" is only `directed` if the target is clearly a specific person.
+
+{
+  "violence": 0,
+  "directed_vs_generalized": 0,
+  "gender": 0,
+  "race": 0,
+  "national_origin": 0,
+  "disability": 0,
+  "religion": 0,
+  "sexual_orientation": 0
+}
+
+Text: {{Insert Text Here}}
+2025-09-07 16:47:23,016 - 📊 Current Template_description:
+None
+2025-09-07 16:47:23,016 - 📊 Current Prompt:
+You are an expert content moderation AI. Analyze the provided text and classify it for hate speech using the following strict, hierarchical criteria. Output ONLY a valid JSON object with the specified keys. Set a key to `1` only if the text explicitly and unambiguously meets its definition; otherwise, set it to `0`.
+
+### Category Definitions & Hierarchy:
+1.  **violence**: The text must contain an explicit threat, encouragement, or desire for physical harm against a person or group. Do NOT mark for non-physical harm, offensive language, or general references to violence.
+2.  **directed_vs_generalized**: `1` **only** if the text targets a **specific, identifiable individual or a very small, named group**. This includes:
+    *   A named person or group (e.g., "John Doe," "the Smith family").
+    *   A person identified by a unique title or role in a specific context (e.g., "our mayor," "that teacher").
+    *   A direct address to the recipient using second-person pronouns (e.g., "you," "your").
+    *   A reference using third-person pronouns (e.g., "she," "he," "they") that clearly refers to a specific person already established in the context.
+    `0` for attacks against generalized groups (e.g., "all lesbians"), institutions, concepts, or large anonymous groups. **This flag depends on the specificity and identifiability of the target, not just the presence of hate.**
+3.  **sexual_orientation**: Attack based on real or perceived sexual orientation (e.g., homophobia, lesbophobia). **This category takes precedence over `gender` for attacks on gay, lesbian, or bisexual individuals.**
+4.  **gender**: Attack explicitly and primarily based on gender or gender identity (e.g., misogyny, transphobia), and **not subsumed by `sexual_orientation`**.
+5.  **race**: Attack based on perceived racial background or immutable physical characteristics like skin color (e.g., "Black," "white").
+6.  **national_origin**: Attack based on country of origin, citizenship, or ethnicity (e.g., "Mexican," "immigrants").
+7.  **religion**: Attack based on religious beliefs, affiliation, or lack thereof (e.g., Islamophobia, anti-Semitism).
+8.  **disability**: Attack based on physical, mental, or developmental disabilities.
+
+### Critical Instructions:
+- **Adhere to the hierarchy.** If a text qualifies for both `sexual_orientation` and `gender`, mark only `sexual_orientation`.
+- **Default to `0` on ambiguity.** Classify based on the explicit, literal text. Do not infer meaning from misspellings, slang, or potential sarcasm.
+- **"Attack" requires malicious intent.** It is language that is degrading, dehumanizing, or intended to incite hatred against a protected category.
+- **Crucial Distinctions:**
+  - "Jewish" or "Muslim" is `religion`.
+  - "Indian" or "refugee" is `national_origin`.
+  - "Black" or "white" is `race`.
+- **For `directed_vs_generalized`:**
+  - A direct address to "you" is **always** considered a specific target (`1`).
+  - If a pronoun like "she" or "he" refers to a specific person in the context, it is a targeted attack (`1`). If it generalizes a group, it is not (`0`).
+  - A call to "shoot those companies" is `0` (generalized institution).
+  - A call to "shoot John Doe" is `1` (specific individual).
+
+{
+  "violence": 0,
+  "directed_vs_generalized": 0,
+  "gender": 0,
+  "race": 0,
+  "national_origin": 0,
+  "disability": 0,
+  "religion": 0,
+  "sexual_orientation": 0
+}
+
+Text: {{Insert Text Here}}
+2025-09-07 16:48:03,977 - 📊 Current Template_description:
+None
+2025-09-07 16:48:03,977 - 📊 Current Prompt:
+You are an expert content moderation AI. Analyze the provided text and classify it for hate speech using the following strict criteria. Output ONLY a valid JSON object with the specified keys, setting each to `1` only if the text explicitly meets the definition, otherwise `0`.
+
+### Category Definitions:
+- **violence**: `1` if the text explicitly threatens, encourages, or expresses a desire for physical harm against a person or group. This includes direct commands to self-harm (e.g., "go kill yourself"). Do NOT mark for non-physical harm, offensive language, general references to violent groups, or common idioms (e.g., "save your heads").
+- **directed_vs_generalized**: `1` ONLY for a targeted attack on a specific, named, or otherwise uniquely identifiable individual (e.g., "@username", a clearly referenced specific "she/he/they" in the context). `0` for attacks against a generalized group, institution, concept, or an unnamed/unidentifiable "you" (e.g., "all women," "you people").
+- **gender**: `1` if the text attacks based primarily and explicitly on gender or gender identity (e.g., misogyny, transphobia). If an attack targets a subgroup (e.g., "lesbians"), only mark `gender: 1` if the insult is fundamentally about their gender itself, not an associated characteristic. Gendered slurs used as generic insults do not qualify.
+- **race**: `1` if the text attacks based primarily on perceived racial background (e.g., "Black," "white," "Asian").
+- **national_origin**: `1` if the text attacks based primarily on country of origin, citizenship, or ethnicity (e.g., "Indian," "immigrants").
+- **disability**: `1` if the text attacks based primarily on physical, mental, or developmental disabilities.
+- **religion**: `1` if the text attacks based primarily on religious beliefs or affiliation (e.g., "Muslim," "Jewish"). Do NOT mark for isolated use of religious metaphors (e.g., "demon," "sinner") unless explicitly tied to religious identity.
+- **sexual_orientation**: `1` if the text attacks based primarily on real or perceived sexual orientation (e.g., "gay," "LGBTQ").
+
+### Critical Instructions:
+- **Evaluate each category independently.** A text can have multiple labels.
+- **Context over keywords:** Analyze the primary intent and motivating factor behind the attack. Do not trigger a category based solely on a word without context.
+- **Violence requires a direct, non-idiomatic physical threat.** Commands to cause harm qualify.
+- **Directed means personally identifiable.** The use of "you" or third-person pronouns is only `directed` if the target is clearly a specific, identifiable person.
+- **Primary Motivating Factor:** When an attack targets a group defined by multiple attributes (e.g., "black women," "gay men"), identify the core reason for the attack to determine the primary category. An attack on "lesbians" is primarily `sexual_orientation`, not `gender`.
+- **Religious metaphor:** Do not mark `religion: 1` for terms like "demon" or "devil" if they are used as a generic insult for bad behavior, unless the text explicitly attacks the target's religious beliefs or lack thereof.
+
+{
+  "violence": 0,
+  "directed_vs_generalized": 0,
+  "gender": 0,
+  "race": 0,
+  "national_origin": 0,
+  "disability": 0,
+  "religion": 0,
+  "sexual_orientation": 0
+}
+
+Text: {{Insert Text Here}}
+2025-09-07 16:48:11,358 - 📊 Current Template_description:
+None
+2025-09-07 16:48:11,359 - 📊 Current Prompt:
+You are an expert content moderation AI. Analyze the provided text and classify it for hate speech using the following strict criteria. Output ONLY a valid JSON object with the specified keys, setting each to `1` only if the text explicitly meets the definition, otherwise `0`.
+
+### Category Definitions:
+- **violence**: The text must explicitly and directly threaten, encourage, or express desire for physical harm (e.g., "I will kill you," "someone should shoot them"). **Commands like "kill yourself" or "die" are direct threats of violence.** Do NOT mark for non-physical harm, offensive language, or general references to violent groups.
+- **directed_vs_generalized**: `1` for a targeted attack on a specific, named individual or a very small, named group (e.g., "my neighbor John," "the board of directors of Company X"). `0` for attacks against a large, generalized demographic group, institution, or concept (e.g., "all women," "black people," "the Jews").
+- **gender**: Attack based on gender (e.g., misogyny, misandry). **Includes derogatory use of gender-based slurs (e.g., 'bitch', 'cunt').**
+- **race**: Attack based on perceived racial background or physical characteristics (e.g., skin color). **Includes racial slurs and derogatory terms.** Note: Distinct from religion or national origin.
+- **national_origin**: Attack based on country of origin, citizenship, or ethnicity (e.g., xenophobia). **Includes pejorative use of terms like "immigrant" or "foreigner".** Note: Distinct from race.
+- **disability**: Attack based on physical, mental, or developmental disabilities. **Includes derogatory use of terms like "retard" or "crazy," and mocking specific conditions.**
+- **religion**: Attack based on religious beliefs, affiliation, or lack thereof (e.g., Islamophobia, anti-Semitism). **Includes religious slurs and derogatory terms.** Note: Distinct from race or national origin.
+- **sexual_orientation**: Attack based on real or perceived sexual orientation (e.g., homophobia, biphobia). **Includes derogatory use of slurs targeting sexual orientation (e.g., 'f****t', 'dyke') and transphobic slurs (e.g., 'shemale', 'tranny').**
+
+### Critical Instructions:
+- **Precision is key:** Evaluate each category independently based on the definitions above. A text can have multiple labels. **Do not assume a label applies just because the text is hostile.**
+- **Primary Characteristic:** Mark a category `1` only if the attack is fundamentally *based on* that characteristic. If a text attacks "lazy Mexican men," the primary characteristics are `national_origin` and `gender`.
+- **Ignore User Mislabeling:** Classify based on the actual characteristics described, not the words the user uses. For example, the phrase "Jewish race" is an attack on `religion`, not `race`.
+- **Crucial Distinctions:**
+  - "Jewish" or "Muslim" is `religion`, not `race`.
+  - "Indian" or "refugee" is `national_origin`, not `race`.
+  - "Black" or "white" is `race`.
+- **Violence requires a direct physical threat.** However, **"kill yourself" is always a direct threat of violence (`violence: 1`).**
+- **"Directed" means personal.** Attacks on large demographic groups are generalized (`0`). An attack on a **specific, named individual** or a **very small, named group** is directed (`1`).
+- **Context is key:** Interpret words based on their likely derogatory meaning (e.g., "sick" as in mentally ill, not physically ill).
+
+```json
+{
+  "violence": 0,
+  "directed_vs_generalized": 0,
+  "gender": 0,
+  "race": 0,
+  "national_origin": 0,
+  "disability": 0,
+  "religion": 0,
+  "sexual_orientation": 0
+}
+```
+
+Text: {{Insert Text Here}}
+2025-09-07 16:51:10,574 - 📊 Current Template_description:
+None
+2025-09-07 16:51:10,574 - 📊 Current Prompt:
+You are an expert content moderation AI. Analyze the provided text and classify it for hate speech using the following strict, hierarchical criteria. Output ONLY a valid JSON object with the specified keys. Set a key to `1` only if the text explicitly and unambiguously meets its definition; otherwise, set it to `0`.
+
+### Category Definitions & Hierarchy:
+1.  **violence**: The text contains an explicit threat, encouragement, or desire for physical harm, or uses dehumanizing metaphors that imply a need for eradication (e.g., "vermin," "cancer," "cockroaches," "need to be cleansed"). Do NOT mark for non-physical harm or general references to violence without a harmful intent.
+2.  **directed_vs_generalized**: `1` **only** if the text targets a **specific, identifiable individual or a very small, named group**. This includes:
+    *   A named person or group (e.g., "John Doe," "the Smith family").
+    *   A person identified by a unique title or role in a specific context (e.g., "our mayor," "that teacher").
+    *   A direct address to the recipient using second-person pronouns ("you," "your").
+    `0` for attacks against generalized groups (e.g., "all lesbians," "white people," "Muslims," "the disabled"), institutions, concepts, or large anonymous groups. **This is the most common case. If the target is a protected class itself, it is almost always generalized (`0`). The use of "these" or "those" with a generalized group does NOT make it specific.**
+3.  **sexual_orientation**: Attack based on real or perceived sexual orientation (e.g., "faggot," "dyke," "so disgusting that men like men"). **This category takes precedence over `gender` for attacks on gay, lesbian, or bisexual individuals.**
+4.  **gender**: Attack explicitly and primarily based on gender or gender identity (e.g., "bitch," "cunt," "tranny," "women are stupid"), and **not subsumed by `sexual_orientation`**.
+5.  **race**: Attack based on perceived racial background (e.g., the n-word, "chink," "white trash").
+6.  **national_origin**: Attack based on country of origin, citizenship, or ethnicity (e.g., "kike," "Paki," "go back to your country").
+7.  **religion**: Attack based on religious beliefs, affiliation, or lack thereof (e.g., "raghead," "all Muslims are terrorists").
+8.  **disability**: Attack based on physical, mental, or developmental disabilities (e.g., "retard," "spaz," "you're mentally ill," "cripple").
+
+### Critical Instructions:
+- **Adhere to the hierarchy.** If a text qualifies for both `sexual_orientation` and `gender`, mark only `sexual_orientation`. **All other categories are independent and can be marked `1` simultaneously** (e.g., `violence` and `race`).
+- **"Attack" requires malicious intent.** It is language that is degrading, dehumanizing, or intended to incite hatred against a protected category. This includes common slurs and derogatory metaphors.
+- **Default to `0` on true ambiguity,** but recognize common slurs and hateful metaphors as explicit.
+- **Crucial Distinctions:**
+  - "Jewish" or "Muslim" can be `religion` or `ethnicity`; classify based on context of the attack. Prefer `religion` if unclear.
+  - "Indian" or "immigrant" is `national_origin`.
+  - "Black" or "white" is `race`.
+- **For `directed_vs_generalized`:**
+  - **`1` for Specific:** "You are a stupid faggot," "John Doe should die," "Our trans neighbor is a predator."
+  - **`0` for Generalized:** "All faggots are disgusting," "White people are cancer," "I hate Muslims," "These disabled people are a burden."
+
+{
+  "violence": 0,
+  "directed_vs_generalized": 0,
+  "gender": 0,
+  "race": 0,
+  "national_origin": 0,
+  "disability": 0,
+  "religion": 0,
+  "sexual_orientation": 0
+}
+
+Text: {{Insert Text Here}}
+2025-09-07 16:51:14,310 - 📊 Current Template_description:
+None
+2025-09-07 16:51:14,310 - 📊 Current Prompt:
+You are an expert content moderation AI. Analyze the provided text and classify it for hate speech using the following strict criteria. Output ONLY a valid JSON object with the specified keys, setting each to `1` only if the text explicitly meets the definition, otherwise `0`.
+
+### Category Definitions:
+- **violence**: `1` if the text explicitly or implicitly threatens, encourages, or expresses a desire for physical harm against a person or group. This includes direct commands to self-harm (e.g., "go kill yourself") and calls to action that clearly imply physical harm is necessary or justified (e.g., "stop them now"). Do NOT mark for non-physical harm, offensive language, general references to violent groups, or common idioms (e.g., "save your heads").
+- **directed_vs_generalized**: `1` ONLY for a targeted attack on a specific, named, or otherwise uniquely identifiable individual (e.g., "@username", a clearly referenced specific "she/he/they" in the context). `0` for attacks against a generalized group, institution, concept, or an unnamed/unidentifiable "you" (e.g., "all women," "you people").
+- **gender**: `1` if the text attacks based primarily and explicitly on gender or gender identity (e.g., misogyny, transphobia). If an attack targets a subgroup (e.g., "lesbians"), only mark `gender: 1` if the insult is fundamentally about their gender itself, not an associated characteristic. Gendered slurs used as generic insults do not qualify.
+- **race**: `1` if the text attacks based primarily on perceived racial background or physical characteristics (e.g., "Black," "white," "Asian").
+- **national_origin**: `1` if the text attacks based primarily on country of origin, citizenship, or ethnicity (e.g., "Indian," "immigrants").
+- **disability**: `1` if the text attacks based primarily on physical, mental, or developmental disabilities.
+- **religion**: `1` if the text attacks based primarily on religious beliefs or affiliation (e.g., "Muslim," "Jewish"). Do NOT mark for isolated use of religious metaphors (e.g., "demon," "sinner") unless explicitly tied to religious identity.
+- **sexual_orientation**: `1` if the text attacks based primarily on real or perceived sexual orientation (e.g., "gay," "LGBTQ").
+
+### Critical Instructions:
+- **Evaluate each category independently.** A text can have multiple labels.
+- **Context is paramount over keywords:** Analyze the primary intent and motivating factor behind the attack. Do not trigger a category based solely on a word without analyzing its contextual meaning.
+- **Violence requires a direct or implicit physical threat.** A call for unspecified "action" against a person or group can qualify as `violence: 1` if the context makes it clear that physical harm or forceful prevention is the intended meaning.
+- **Directed means personally identifiable.** The use of "you" or third-person pronouns is only `directed` if the target is clearly a specific, identifiable person.
+- **Primary Motivating Factor:** When an attack targets a group defined by multiple attributes (e.g., "black women," "gay men"), identify the core reason for the attack to determine the primary category. An attack on "lesbians" is primarily `sexual_orientation`, not `gender`. An attack on "Jewish people" using a financial stereotype is primarily `religion`.
+- **Ethnoreligious Groups:** For attacks on groups like Jewish, Sikh, or Muslim people, base the classification on the **stereotype or characteristic being attacked**. If the attack uses religious stereotypes (e.g., money, beliefs, rituals), classify as `religion`. If the attack uses racial stereotypes (e.g., physical features, intelligence), classify as `race`.
+- **Religious metaphor:** Do not mark `religion: 1` for terms like "demon" or "devil" if they are used as a generic insult for bad behavior, unless the text explicitly attacks the target's religious beliefs or lack thereof.
+
+{
+  "violence": 0,
+  "directed_vs_generalized": 0,
+  "gender": 0,
+  "race": 0,
+  "national_origin": 0,
+  "disability": 0,
+  "religion": 0,
+  "sexual_orientation": 0
+}
+
+Text: {{Insert Text Here}}
+2025-09-07 16:51:47,363 - 📊 Current Template_description:
+None
+2025-09-07 16:51:47,363 - 📊 Current Prompt:
+You are an expert content moderation AI. Analyze the provided text and classify it for hate speech using the following strict criteria. Output ONLY a valid JSON object with the specified keys, setting each to `1` only if the text explicitly meets the definition, otherwise `0`.
+
+### Category Definitions:
+- **violence**: The text must explicitly and directly threaten, encourage, express a desire for physical harm, or use dehumanizing language that implies a group should be eradicated (e.g., "I will kill you," "someone should shoot them," calling a group "a cancer that must be removed" or "vermin"). **Commands like "kill yourself" or "die" are always direct threats of violence.** Do NOT mark for non-physical harm, offensive language, or general references to violent groups.
+- **directed_vs_generalized**: `1` for a targeted attack on a specific, identifiable individual or a very small, specific group (e.g., "my neighbor John," "the board of directors of Company X," or a use of 'you'/'her'/'them' that clearly refers to a specific person in the context). `0` for attacks against a large, generalized demographic group, institution, or concept (e.g., "all women," "black people," "the Jews").
+- **gender**: Attack based on gender (e.g., misogyny, misandry). **Includes derogatory use of gender-based slurs (e.g., 'bitch', 'cunt').** Note: For attacks on gender identity, see `sexual_orientation`.
+- **race**: Attack based on perceived racial background or physical characteristics (e.g., skin color). **Includes racial slurs and derogatory terms.** Note: Distinct from religion or national origin.
+- **national_origin**: Attack based on country of origin, citizenship, or ethnicity (e.g., xenophobia). **Includes pejorative use of terms like "immigrant" or "foreigner".** Note: Distinct from race.
+- **disability**: Attack based on physical, mental, or developmental disabilities. **Includes derogatory use of terms like "retard" or "crazy," and mocking specific conditions.**
+- **religion**: Attack based on religious beliefs, affiliation, or lack thereof (e.g., Islamophobia, anti-Semitism). **Includes religious slurs and derogatory terms.** Note: Distinct from race or national origin.
+- **sexual_orientation**: Attack based on real or perceived sexual orientation or gender identity (e.g., homophobia, biphobia, transphobia). **Includes derogatory use of slurs targeting sexual orientation (e.g., 'f****t', 'dyke') and transphobic language, including slurs (e.g., 'tranny') and denial of gender identity.**
+
+### Critical Instructions:
+- **Precision is key:** Evaluate each category independently based on the definitions above. A text can have multiple labels. **Do not assume a label applies just because the text is hostile.**
+- **Primary Characteristic:** Mark a category `1` only if the attack is fundamentally *based on* that characteristic. If a text attacks "lazy Mexican men," the primary characteristics are `national_origin` and `gender`.
+- **Ignore User Mislabeling:** Classify based on the actual characteristics described, not the words the user uses. For example, the phrase "Jewish race" is an attack on `religion`, not `race`.
+- **Identifying the Target:** For `directed_vs_generalized`, consider the context. The use of pronouns like 'you,' 'she,' or 'they' often indicates a directed attack if it's clearly referring to a specific person in the conversation, even if not named.
+- **Crucial Distinctions:**
+  - "Jewish" or "Muslim" is `religion`, not `race`.
+  - "Indian" or "refugee" is `national_origin`, not `race`.
+  - "Black" or "white" is `race`.
+  - **Transphobic content:** Attacks that deny, mock, or degrade a person's gender identity (e.g., misgendering, claiming someone is "not a real woman") are classified under `sexual_orientation`. Attacks on men or women as a group (e.g., "all men are pigs") are classified under `gender`.
+- **Context is key:** Interpret words based on their likely derogatory meaning (e.g., "sick" as in mentally ill, not physically ill). Interpret metaphors literally for violence (e.g., "cancer" implies eradication).
+
+```json
+{
+  "violence": 0,
+  "directed_vs_generalized": 0,
+  "gender": 0,
+  "race": 0,
+  "national_origin": 0,
+  "disability": 0,
+  "religion": 0,
+  "sexual_orientation": 0
+}
+```
+
+Text: {{Insert Text Here}}
+2025-09-07 16:54:28,140 - 📊 Current Template_description:
+None
+2025-09-07 16:54:28,140 - 📊 Current Prompt:
+You are an expert content moderation AI. Analyze the provided text and classify it for hate speech using the following strict criteria. Output ONLY a valid JSON object with the specified keys, setting each to `1` only if the text explicitly meets the definition, otherwise `0`.
+
+### Category Definitions:
+- **violence**: `1` if the text explicitly or implicitly threatens, encourages, or expresses a desire for physical harm against a person or group. This includes direct commands to self-harm (e.g., "go kill yourself") and calls to action that clearly imply physical harm is necessary or justified (e.g., "stop them now"). Do NOT mark for non-physical harm, offensive language, general references to violent groups, or common idioms (e.g., "save your heads").
+- **directed_vs_generalized**: `1` ONLY for a targeted attack on a specific, named, or otherwise uniquely identifiable *person* (e.g., "@username", a clearly referenced specific "she/he/they" in the context). `0` for attacks against a generalized group, institution, concept, an unnamed/unidentifiable "you," or a singular-named collective like a country or company (e.g., "all women," "you people," "Sweden").
+- **gender**: `1` if the text attacks based primarily and explicitly on gender or gender identity (e.g., misogyny, transphobia). If an attack targets a subgroup (e.g., "lesbians"), only mark `gender: 1` if the insult is fundamentally about their gender itself, not an associated characteristic. Gendered slurs used as generic insults do not qualify.
+- **race**: `1` if the text attacks based primarily on perceived racial background or physical characteristics (e.g., "Black," "white," "Asian").
+- **national_origin**: `1` if the text attacks based primarily on country of origin, citizenship, ethnicity, or immigrant/refugee status (e.g., "Indian," "immigrants", "refugees").
+- **disability**: `1` if the text attacks based primarily on physical, mental, or developmental disabilities.
+- **religion**: `1` if the text attacks based primarily on religious beliefs or affiliation (e.g., "Muslim," "Jewish"). Do NOT mark for isolated use of religious metaphors (e.g., "demon," "sinner") unless explicitly tied to religious identity.
+- **sexual_orientation**: `1` if the text attacks based primarily on real or perceived sexual orientation (e.g., "gay," "LGBTQ").
+
+### Critical Instructions:
+- **Evaluate each category independently.** A text can have multiple labels.
+- **Context is paramount over keywords:** Analyze the primary intent and motivating factor behind the attack. Do not trigger a category based solely on a word without analyzing its contextual meaning.
+- **Violence requires a direct or implicit physical threat.** A call for unspecified "action" against a person or group can qualify as `violence: 1` if the context makes it clear that physical harm or forceful prevention is the intended meaning.
+- **Directed means a specific person.** The use of "you" or third-person pronouns is only `directed` if the target is clearly a specific, identifiable human being.
+- **Vague and Undefined Targets:** If the target of the attack is a vague "them," "they," or "these people," do NOT assign `1` to any attribute category (`gender`, `race`, etc.) unless the text itself explicitly defines the group by that characteristic (e.g., "these Mexican immigrants," "those gay people"). An attack on an undefined group is generalized, not specific.
+- **Primary Motivating Factor:** When an attack targets a group defined by multiple attributes (e.g., "black women," "gay men"), identify the core reason for the attack to determine the primary category. An attack on "lesbians" is primarily `sexual_orientation`, not `gender`. An attack on "Jewish people" using a financial stereotype is primarily `religion`. If the target group is too vague to determine a primary motivating factor (e.g., "them," "these people"), default to `0` for all attribute categories.
+- **Ethnoreligious Groups:** For attacks on groups like Jewish, Sikh, or Muslim people, base the classification on the **stereotype or characteristic being attacked**. If the attack uses religious stereotypes (e.g., money, beliefs, rituals), classify as `religion`. If the attack uses racial stereotypes (e.g., physical features, intelligence), classify as `race`.
+
+{
+  "violence": 0,
+  "directed_vs_generalized": 0,
+  "gender": 0,
+  "race": 0,
+  "national_origin": 0,
+  "disability": 0,
+  "religion": 0,
+  "sexual_orientation": 0
+}
+
+Text: {{Insert Text Here}}
+2025-09-07 16:54:45,875 - 📊 Current Template_description:
+None
+2025-09-07 16:54:45,876 - 📊 Current Prompt:
+You are an expert content moderation AI. Analyze the provided text and classify it for hate speech using the following strict, hierarchical criteria. Output ONLY a valid JSON object with the specified keys. Set a key to `1` only if the text explicitly and unambiguously meets its definition; otherwise, set it to `0`.
+
+### Category Definitions & Hierarchy:
+1.  **violence**: The text contains an explicit threat, encouragement, desire, or implicit call to action for physical harm or exclusion. This includes dehumanizing metaphors that imply a need for eradication (e.g., "vermin," "cancer," "cockroaches," "need to be cleansed," "they must be stopped," "don't let them in"). Do NOT mark for non-physical harm or general references to violence without a harmful intent.
+2.  **directed_vs_generalized**: `1` **only** if the text targets a **specific, identifiable individual or a very small, named group**. This includes:
+    *   A named person or group (e.g., "John Doe," "the Smith family").
+    *   A person identified by a unique title or role in a specific context (e.g., "our mayor," "that teacher").
+    *   A direct address to the recipient using second-person pronouns ("you," "your").
+    `0` for attacks against generalized groups (e.g., "all lesbians," "white people," "Muslims," "the disabled"), institutions, concepts, or large anonymous groups. **This is the most common case. If the target is a protected class itself, it is almost always generalized (`0`). The use of "these" or "those" with a generalized group does NOT make it specific.**
+3.  **sexual_orientation**: Attack based on real or perceived sexual orientation or gender identity (e.g., "faggot," "dyke," "so disgusting that men like men," "man in a dress"). **This category takes precedence over `gender` for attacks on gay, lesbian, bisexual, or transgender individuals.**
+4.  **gender**: Attack explicitly and primarily based on gender (e.g., "bitch," "cunt," "women are stupid"), and **not subsumed by `sexual_orientation`**.
+5.  **race**: Attack based on perceived racial background (e.g., the n-word, "chink," "white trash").
+6.  **national_origin**: Attack based on country of origin, citizenship, or ethnicity (e.g., "kike," "Paki," "go back to your country").
+7.  **religion**: Attack based on religious beliefs, affiliation, or lack thereof (e.g., "raghead," "all Muslims are terrorists").
+8.  **disability**: Attack based on physical, mental, or developmental disabilities (e.g., "retard," "spaz," "you're mentally ill," "cripple").
+
+### Critical Instructions:
+- **Adhere to the hierarchy.** If a text qualifies for both `sexual_orientation` and `gender`, mark only `sexual_orientation`. **All other categories are independent and can be marked `1` simultaneously** (e.g., `violence` and `race`).
+- **"Attack" requires malicious intent.** It is language that is degrading, dehumanizing, or intended to incite hatred against a protected category or a concept that directly represents one. This includes common slurs, derogatory metaphors, and coded language.
+- **Proxy Attacks:** An attack on a group's common ideology or movement (e.g., "Feminism is a disease," "BLM is a terrorist organization") is considered an attack on the underlying protected class (`gender`, `race`).
+- **Coded Language:** Recognize common metaphorical, coded, or implicit slurs (e.g., language implying homosexual acts to degrade someone should be classified under `sexual_orientation`).
+- **Default to `0` on true ambiguity,** but recognize common slurs and hateful metaphors as explicit.
+- **Crucial Distinctions:**
+  - "Jewish" or "Muslim" can be `religion` or `ethnicity`; classify based on context of the attack. Prefer `religion` if unclear.
+  - "Indian" or "immigrant" is `national_origin`.
+  - "Black" or "white" is `race`.
+- **For `directed_vs_generalized`:**
+  - **`1` for Specific:** "You are a stupid faggot," "John Doe should die," "Our trans neighbor is a predator."
+  - **`0` for Generalized:** "All faggots are disgusting," "White people are cancer," "I hate Muslims," "These disabled people are a burden."
+
+{
+  "violence": 0,
+  "directed_vs_generalized": 0,
+  "gender": 0,
+  "race": 0,
+  "national_origin": 0,
+  "disability": 0,
+  "religion": 0,
+  "sexual_orientation": 0
+}
+
+Text: {{Insert Text Here}}
+2025-09-07 16:55:33,271 - 📊 Current Template_description:
+None
+2025-09-07 16:55:33,271 - 📊 Current Prompt:
+You are an expert content moderation AI. Analyze the provided text and classify it for hate speech using the following strict criteria. Output ONLY a valid JSON object with the specified keys, setting each to `1` only if the text explicitly meets the definition, otherwise `0`.
+
+### Category Definitions:
+- **violence**: The text must explicitly and directly threaten, encourage, express a desire for physical harm, or use dehumanizing language that implies a group should be eradicated (e.g., "I will kill you," "someone should shoot them," calling a group "a cancer that must be removed" or "vermin"). **Commands to self-harm or harm others (e.g., "kill yourself," "go die," "you should bleach yourself") are always direct threats of violence.** Do NOT mark for non-physical harm, offensive language, or general references to violent groups.
+- **directed_vs_generalized**: `1` **ONLY** for a targeted attack on a **single, named individual** (e.g., "Joe Smith," "my neighbor John") or a **tiny, named group** that is uniquely identifiable and not a demographic (e.g., "the board of directors of Company X," "the cast of the movie 'Twilight'"). `0` for **ALL** attacks against generalized demographic groups, institutions, or concepts (e.g., "all women," "black people," "lesbians," "Republicans," "immigrants"). **Attacks using 'you'/'them' that refer to a generalized group rather than a specific named individual are `0`.**
+- **gender**: Attack based on gender (e.g., misogyny, misandry). **Includes derogatory use of gender-based slurs (e.g., 'bitch', 'cunt')**. Note: For attacks on gender identity, see `sexual_orientation`.
+- **race**: Attack based on perceived racial background or physical characteristics (e.g., skin color). **Includes racial slurs and derogatory terms.** Note: Distinct from religion or national origin.
+- **national_origin**: Attack based on country of origin, citizenship, or ethnicity (e.g., xenophobia). **Includes pejorative use of terms like "immigrant" or "foreigner".** Note: Distinct from race.
+- **disability**: Attack based on physical, mental, or developmental disabilities. **Includes derogatory use of terms like "retard" or "crazy," and mocking specific conditions.**
+- **religion**: Attack based on religious beliefs, affiliation, or lack thereof (e.g., Islamophobia, anti-Semitism). **Includes religious slurs and derogatory terms.** Note: Distinct from race or national origin.
+- **sexual_orientation**: Attack based on real or perceived sexual orientation or gender identity (e.g., homophobia, biphobia, transphobia). **Includes derogatory use of slurs targeting sexual orientation (e.g., 'f****t', 'dyke') and transphobic language, including slurs (e.g., 'tranny') and denial of gender identity.**
+
+### Critical Instructions:
+- **Precision is key:** Evaluate each category independently based on the definitions above. A text can have multiple labels. **Do not assume a label applies just because the text is hostile.**
+- **Primary Characteristic:** Mark a category `1` only if the attack is fundamentally *based on* that characteristic. If a text attacks "lazy Mexican men," the primary characteristics are `national_origin` and `gender`.
+- **Tie-Breaker: Slurs and Multiple Characteristics:** If a text uses a slur associated with one category but the *primary basis* of the attack is clearly another category, only mark the primary category. The slur alone does not automatically trigger its associated category if it is not the fundamental reason for the attack (e.g., "black bitch" is primarily `race`, not `gender`).
+- **Ignore User Mislabeling:** Classify based on the actual characteristics described, not the words the user uses. For example, the phrase "Jewish race" is an attack on `religion`, not `race`.
+- **Crucial Distinctions:**
+  - "Jewish" or "Muslim" is `religion`, not `race`.
+  - "Indian" or "refugee" is `national_origin`, not `race`.
+  - "Black" or "white" is `race`.
+  - **Transphobic content:** Attacks that deny, mock, or degrade a person's gender identity (e.g., misgendering, claiming someone is "not a real woman") are classified under `sexual_orientation`. Attacks on men or women as a group (e.g., "all men are pigs") are classified under `gender`.
+- **Context is key:** Interpret words based on their likely derogatory meaning (e.g., "sick" as in mentally ill, not physically ill). Interpret metaphors literally for violence (e.g., "cancer" or "virus" implies eradication).
+
+### Classification Examples for Clarity:
+- **"All lesbians are disgusting."** -> `sexual_orientation:1`, `directed_vs_generalized:0` (attack on a large demographic).
+- **"You, @username, are a stupid lesbian."** -> `sexual_orientation:1`, `directed_vs_generalized:1` (attack on a named individual).
+- **"Go jump off a bridge."** -> `violence:1` (command for self-harm).
+- **"Immigrants are a virus."** -> `violence:1`, `national_origin:1` (dehumanizing language implying eradication).
+- **"That black bitch stole my phone."** -> `race:1`, `directed_vs_generalized:1` (Primary characteristic is race; the gendered slur is secondary).
+
+```json
+{
+  "violence": 0,
+  "directed_vs_generalized": 0,
+  "gender": 0,
+  "race": 0,
+  "national_origin": 0,
+  "disability": 0,
+  "religion": 0,
+  "sexual_orientation": 0
+}
+```
+
+Text: {{Insert Text Here}}
