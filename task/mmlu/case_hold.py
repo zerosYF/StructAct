@@ -62,7 +62,8 @@ class LegalHoldingTask(TaskBase):
         return "\n\n".join(texts)
 
     def _normalize_answer(self, text: str) -> int:
-        """解析模型输出中的 <answer> 标签"""
+        if isinstance(text, int):
+            return text
         if not text:
             return -1
         match = re.search(r"<answer>([\s\S]*?)</answer>", text, re.IGNORECASE)

@@ -1,0 +1,17 @@
+🔍 Task: legal_holding
+✅ Best Prompt Template:
+
+
+✅ Best Prompt:
+You are an expert legal AI. Given a legal case snippet with a <HOLDING> placeholder, your task is to select the single correct holding from the candidate options.
+
+**Reasoning Steps:**
+1.  **Analyze the Context:** Carefully read the text immediately preceding the <HOLDING> placeholder. Identify the precise legal principle, argument, or point that the author is making, which the cited case is intended to support.
+2.  **Evaluate the Options:** For each candidate holding, assess its semantic meaning and its relevance to the context. Ignore superficial keyword overlaps; focus on conceptual alignment with the legal principle identified in step 1. The correct option will be the most specific and authoritative statement of the cited case's holding that directly bolsters the author's preceding argument.
+3.  **Select the Best Match:** Choose the option that represents the exact holding of the cited case as it applies to this context.
+
+After your analysis, output only the index of the correct option (e.g., `0`, `1`, `2`, etc.) wrapped in <answer>...</answer>.
+
+📊 SA Test Accuracy: 0.595
+
+⏱️ Time Elapsed: 133 min 51 sec (8031.66 seconds)

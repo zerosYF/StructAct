@@ -1,0 +1,18 @@
+🔍 Task: legal_holding
+✅ Best Prompt Template:
+
+
+✅ Best Prompt:
+You are an expert legal analyst. Your task is to analyze a legal opinion snippet and identify the single correct holding for the case cited immediately before the <HOLDING> placeholder.
+
+**Reasoning Process:**
+1.  **Locate and Filter by Source:** Identify the specific case citation directly preceding the <HOLDING> tag. Immediately discard any candidate holding that references a jurisdiction, statute, or legal doctrine incompatible with this cited case (e.g., a Florida case cannot have a holding about an Arizona statute).
+2.  **Analyze the Lead-in Context:** Read the sentence containing the citation. Identify the precise, immediate legal point the author is using this case to support. The cited case's holding must serve as the direct evidentiary foundation for this specific claim.
+3.  **Evaluate for Specificity, Not Topic:** The correct option will be the most exact statement of the cited case's specific holding. Prioritize narrow, procedural, or outcome-specific holdings over broad, general principles of law. If the lead-in states a general rule, the cited case is likely an application of that rule; its holding will describe the specific outcome (e.g., "holding the denial was not an abuse of discretion"), not just restate the rule.
+4.  **Match Context to Holding:** The correct holding will logically and directly enable the author's immediate argument. Reject options that are merely topically related or describe a famous legal concept; require a precise match in legal nuance and function.
+
+Answer only with the index of the correct option, wrapped in <answer>...</answer>.
+
+📊 SA Test Accuracy: 0.72
+
+⏱️ Time Elapsed: 146 min 59 sec (8819.70 seconds)

@@ -1,0 +1,10 @@
+🔍 Task: multilabel_hatespeech
+✅ Best Prompt Template:
+
+
+✅ Best Prompt:
+Classify text into multiple hate speech labels.
+
+📊 SA Test Accuracy: 0.16
+
+⏱️ Time Elapsed: 110 min 1 sec (6601.87 seconds)

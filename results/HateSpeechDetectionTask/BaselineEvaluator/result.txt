@@ -1,9 +1,9 @@
 🔍 Task: multilabel_hatespeech
-📊 Original ZeroShot Test Accuracy: 0.16
-📊 Original FewShot Test Accuracy: 0.225
-📊 Original Cot_FewShot Test Accuracy: 0.275
-📊 Cot ZeroShot Test Accuracy: 0.185
-📊 Cot FewShot Test Accuracy: 0.305
-📊 Cot Cot_FewShot Test Accuracy: 0.22
+📊 Original ZeroShot Test Accuracy: 0.15
+📊 Original FewShot Test Accuracy: 0.265
+📊 Original Cot_FewShot Test Accuracy: 0.345
+📊 Cot ZeroShot Test Accuracy: 0.16
+📊 Cot FewShot Test Accuracy: 0.265
+📊 Cot Cot_FewShot Test Accuracy: 0.175
 
-⏱️ Time Elapsed: 25 min 23 sec (1523.95 seconds)
+⏱️ Time Elapsed: 27 min 53 sec (1673.15 seconds)

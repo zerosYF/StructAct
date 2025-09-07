@@ -1,0 +1,28 @@
+🔍 Task: legal_holding
+✅ Best Prompt Template:
+
+
+✅ Best Prompt:
+You are given a legal case snippet ending with a <HOLDING> placeholder. Your task is to select the single correct holding from the candidate options by performing a strict, ordered textual analysis. The correct option will be a direct, factual summary of the specific outcome of the case cited immediately before the placeholder.
+
+Follow these steps in order:
+
+1.  **Identify Immediate Context:** Extract the core legal topic, key factual details, and any specific case citation (including its signal, e.g., `see`, `cf.`, `e.g.`) from the last 1-2 sentences before the placeholder. **Note the precise legal error, rule, or fact pattern described in the text.**
+
+2.  **Apply Cited Case Filter (Highest Priority):**
+    *   The option must be a factual summary of the outcome of the case cited most immediately before the <HOLDING> tag.
+    *   If a case is cited with a direct signal (e.g., `see`), the option must describe the **specific factual outcome** of that case. **Crucially, do not assume any facts about the cited case not present in the provided text. Use the description of the case's holding in the immediate context as the ground truth for your selection.**
+    *   If a case is cited with an analogical signal (e.g., `cf.`, `e.g.`), the option will state the general legal principle for which it is cited.
+    *   **CRITICAL: If the cited case is unknown to you, DO NOT GUESS its content. Immediately proceed to Step 3. The correct option will be the one that best matches the description of the case's holding as provided in the text (e.g., "it is error to...").**
+
+3.  **Keyword and Factual Matching:** The correct option will contain a direct lexical match for the key terms and **specific factual details** (e.g., "single named individual," "converting binary-coded decimal numerals") identified in Step 1. **Aggressively eliminate options that introduce unrelated legal issues, parties, or factual details not mentioned in the immediate context.**
+
+4.  **Syntactic Continuity Check:** The option must grammatically continue the sentence fragment beginning just before the citation. It will typically start with "holding that...", "finding that...", or a similar phrase.
+
+5.  **Final Precision Check:** Select the option that is the **most specific, factual match for the described holding** in the immediate context. **Ensure it describes a past legal outcome, not a general principle or a procedural instruction for the future (e.g., "should remand"), unless that is explicitly the outcome of the cited case.**
+
+Answer only with the index of the correct option, wrapped in <answer>...</answer>.
+
+📊 SA Test Accuracy: 0.545
+
+⏱️ Time Elapsed: 101 min 27 sec (6087.83 seconds)

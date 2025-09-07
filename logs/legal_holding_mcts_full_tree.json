@@ -1,0 +1,446 @@
+{
+  "config": {
+    "mcts_iters": 10,
+    "rollout_length": 4,
+    "depth_threshold": 5,
+    "width_threshold": 3
+  },
+  "search_stats": {
+    "total_nodes": 31,
+    "total_Q_values": 31
+  },
+  "best_node": {
+    "action_sequence": [
+      "FailureDrivenAction"
+    ],
+    "prompt": "You are an expert legal AI. Given a legal case snippet with a <HOLDING> placeholder, your task is to select the single correct holding from the candidate options.\n\n**Reasoning Steps:**\n1.  **Analyze the Context:** Carefully read the text immediately preceding the <HOLDING> placeholder. Identify the precise legal principle, argument, or point that the author is making, which the cited case is intended to support.\n2.  **Evaluate the Options:** For each candidate holding, assess its semantic meaning and its relevance to the context. Ignore superficial keyword overlaps; focus on conceptual alignment with the legal principle identified in step 1. The correct option will be the most specific and authoritative statement of the cited case's holding that directly bolsters the author's preceding argument.\n3.  **Select the Best Match:** Choose the option that represents the exact holding of the cited case as it applies to this context.\n\nAfter your analysis, output only the index of the correct option (e.g., `0`, `1`, `2`, etc.) wrapped in <answer>...</answer>.",
+    "depth": 1,
+    "Q": 3.2,
+    "N": 10
+  },
+  "search_tree": {
+    "id": 0,
+    "depth": 0,
+    "action_sequence": [],
+    "prompt": "You are given a legal case snippet with a <HOLDING> placeholder. Choose the single correct holding from the candidate options. Answer only with the index of the correct option, wrapped in <answer>...</answer>.",
+    "Q": 8.904166666666667,
+    "N": 30,
+    "reward": 0.25,
+    "children": [
+      {
+        "id": 1,
+        "depth": 1,
+        "action_sequence": [
+          "FailureDrivenAction"
+        ],
+        "prompt": "You are an expert legal AI. Given a legal case snippet with a <HOLDING> placeholder, your task is to select the single correct holding from the candidate options.\n\n**Reasoning Steps:**\n1.  **Analyze the Context:** Carefully read the text immediately preceding the <HOLDING> placeholder. Identify the precise legal principle, argument, or point that the author is making, which the cited case is intended to support.\n2.  **Evaluate the Options:** For each candidate holding, assess its semantic meaning and its relevance to the context. Ignore superficial keyword overlaps; focus on conceptual alignment with the legal principle identified in step 1. The correct option will be the most specific and authoritative statement of the cited case's holding that directly bolsters the author's preceding argument.\n3.  **Select the Best Match:** Choose the option that represents the exact holding of the cited case as it applies to this context.\n\nAfter your analysis, output only the index of the correct option (e.g., `0`, `1`, `2`, etc.) wrapped in <answer>...</answer>.",
+        "Q": 3.2,
+        "N": 10,
+        "reward": 0.35,
+        "children": [
+          {
+            "id": 2,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are an expert legal AI. Given a legal case snippet with a <HOLDING> placeholder, your task is to select the single correct holding from the candidate options.\n\n**Reasoning Steps:**\n1.  **Decode the Author's Argument:** Read the text preceding the <HOLDING> placeholder. Identify the precise legal principle or argument the author is making and determine *why* they are citing a case here (e.g., to support, contrast, or exemplify).\n2.  **Interpret the Citation Signal:** Note the word or phrase before the citation (e.g., `see`, `but see`, `cf.`). This signals the author's intent (supporting or contrasting).\n3.  **Evaluate for Conceptual Alignment:** For each candidate holding, assess its core legal principle. Ignore superficial keyword matches; focus on whether the option's *concept* logically fulfills the author's intent from steps 1 and 2.\n4.  **Select the Authoritative Holding:** Choose the option that represents the most specific and authoritative legal statement that directly completes the author's reasoning.\n\nAfter your analysis, output only the index of the correct option (e.g., `0`, `1`, `2`, etc.) wrapped in <answer>...</answer>.",
+            "Q": 1.2916666666666665,
+            "N": 4,
+            "reward": 0.2,
+            "children": [
+              {
+                "id": 3,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert legal AI. Given a legal case snippet with a <HOLDING> placeholder, your task is to select the single correct holding from the candidate options.\n\n**Reasoning Steps:**\n1.  **Decode the Author's Argument:** Read the text preceding the <HOLDING> placeholder. Identify the precise legal principle and determine *why* the author is citing this case (e.g., to support, contrast, or exemplify).\n2.  **Interpret the Citation Signal:** Note the word or phrase before the citation (e.g., `see`, `but see`, `cf.`). This signals the author's intent (supporting or contrasting).\n3.  **Evaluate for Conceptual Alignment:** For each candidate, assess its core legal principle. Ignore superficial keyword matches; focus on whether the option's *concept* logically fulfills the author's intent from steps 1 and 2. Eliminate options from unrelated legal domains.\n4.  **Select the Authoritative Holding:** Choose the option that represents the most specific and authoritative legal statement that directly completes the author's reasoning.\n\n**Critical Invariants:**\n- Rely on conceptual alignment, not keyword matching.\n- Reject holdings irrelevant to the legal issue.\n- Ensure the candidate reflects the cited case's actual precedent if known.\n\nAfter your analysis, output only the index of the correct option (e.g., `0`, `1`, `2`) wrapped in <answer>...</answer>.",
+                "Q": 0.32499999999999996,
+                "N": 1,
+                "reward": 0.35,
+                "children": []
+              },
+              {
+                "id": 4,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert legal AI. Given a legal case snippet ending with a citation containing a `<HOLDING>` placeholder, your task is to select the single correct holding from the candidate options.\n\n**Reasoning Steps & Invariants:**\n1.  **Decode the Author's Argument:** Read the text preceding the `<HOLDING>` placeholder. Ignore case names and citations. Precisely identify the legal principle or claim the author is making.\n2.  **Interpret the Citation Signal as a Logical Operator:** The word or phrase before the citation (e.g., `see`, `but see`, `contra`) defines the required relationship.\n    *   **`see` / `see also` / `e.g.`:** The cited case **MUST SUPPORT** the author's argument.\n    *   **`but see` / `contra`:** The cited case **MUST CONTRADICT** the author's argument.\n3.  **Align Concepts, Not Keywords:** For each candidate holding, assess its core legal concept. **IGNORE SUPERFICIAL KEYWORD MATCHES.** The correct option is the one whose concept logically fulfills the author's intent from Step 2.\n    *   **For `see`:** If the author argues \"X is true,\" the correct holding will state \"X is true.\"\n    *   **For `contra`:** If the author argues \"X is true,\" the correct holding will state \"X is false.\"\n4.  **Eliminate by Irrelevance:** Immediately discard any option that deals with a completely different legal issue or area of law.\n5.  **Select the Authoritative Holding:** Choose the option that represents the most specific and authoritative legal statement that directly completes the author's reasoning.\n\nAfter your analysis, output only the index of the correct option (e.g., `0`, `1`, `2`) wrapped in `<answer>...</answer>`.",
+                "Q": 0.275,
+                "N": 1,
+                "reward": 0.35,
+                "children": []
+              },
+              {
+                "id": 5,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert legal AI. Given a legal case snippet with a <HOLDING> placeholder, your task is to select the single correct holding from the candidate options.\n\n**Reasoning Steps:**\n1.  **Decode the Author's Argument:** Read the text preceding the <HOLDING> placeholder. Identify the precise legal principle and, crucially, determine the **legal actor** and **procedural context**.\n2.  **Interpret the Citation Signal:** Note the word or phrase before the citation (e.g., `see`, `but see`, `e.g.`). This signals the author's intent (support, contrast, or example).\n3.  **Evaluate for Conceptual Alignment:** For each candidate, assess its core legal principle and the **actor/context it describes**. Ignore keyword matches; focus on whether the option's underlying *reasoning* fulfills the author's intent.\n4.  **Select the Authoritative Holding:** Choose the option that is the most **specific and authoritative** statement. If a specific case is cited, prioritize its actual, famous holding.\n\n**Critical Decision Rules:**\n*   **Rule 1 (Actor/Context Filter):** The correct holding must pertain to the same legal actor and context. Use this to eliminate incorrect options.\n*   **Rule 2 (Reasoning over Keywords):** The correct option mirrors the *rationale* from the text, not just the vocabulary.\n*   **Rule 3 (Precision is Key):** A specific case holding is almost always correct over a broad legal principle.\n*   **Rule 4 (Signal Interpretation):** For `e.g.`, select the option that is the best *example* of the stated rule.\n\nAfter your analysis, output only the index of the correct option (e.g., `0`, `1`, `2`, etc.) wrapped in <answer>...</answer>.",
+                "Q": 0.375,
+                "N": 1,
+                "reward": 0.25,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 6,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are an expert legal AI. Given a legal case snippet with a <HOLDING> placeholder, your task is to select the single correct holding from the candidate options.\n\n**Reasoning Steps:**\n1.  **Identify the Citation's Purpose:** Read the text immediately before the <HOLDING> placeholder. Determine *why* the author is citing this case—to support, contrast, define, or exemplify a specific legal point.\n2.  **Evaluate for Functional Alignment:** For each candidate, assess if its meaning fulfills the citation's purpose. Ignore keywords; focus on conceptual alignment. The correct option will be the most specific, authoritative statement that directly supports the author's argument.\n3.  **Eliminate Distractors:** Rule out options that address a different legal issue, are procedural instead of substantive, state the opposite conclusion, or are overly vague.\n4.  **Select the Best Match:** Choose the option that represents the exact holding required by the context.\n\nAfter your analysis, output only the index of the correct option (e.g., `0`, `1`, `2`, etc.) wrapped in <answer>...</answer>.",
+            "Q": 1.3416666666666666,
+            "N": 4,
+            "reward": 0.25,
+            "children": [
+              {
+                "id": 7,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert legal AI. Your task is to identify the exact, precedential holding of the cited case from a list of candidate options.\n\n**Critical Instructions:**\n*   The context is provided **only to identify which specific case is being cited** at the `<HOLDING>` placeholder. Do not use the context to interpret the holding.\n*   Your goal is **not** to select the option that best fits the author's argument. Your goal is **solely** to recall the objective, verbatim holding of the cited case itself.\n*   The correct option will be a direct quote or standard, authoritative formulation of the core legal rule from that specific case.\n\n**Reasoning Steps:**\n1.  **Identify the Cited Case:** Locate the full case citation (e.g., `Bates v. Dep’t of Corrections, 81 F.3d 1008, 1011 (10th Cir.1996)`) immediately preceding the `<HOLDING>` placeholder.\n2.  **Recall the Precedential Holding:** Access your knowledge of the cited case's actual holding. This is a fixed point of legal record, independent of the context provided here.\n3.  **Evaluate for Verbatim Accuracy:** For each candidate, assess if it matches the established holding of the cited case.\n    *   **Eliminate** options that are paraphrases, even if conceptually similar.\n    *   **Eliminate** options that describe a different case's holding or a different legal issue.\n    *   **Eliminate** options that are procedurally focused if the holding is substantive, or are overly broad/vague compared to the precise rule.\n4.  **Select the Exact Holding:** Choose the single option that is the most accurate, verbatim representation of the cited case's core legal ruling.\n\nAfter your analysis, output only the index of the correct option (e.g., `0`, `1`, `2`, etc.) wrapped in <answer>...</answer>.",
+                "Q": 0.30000000000000004,
+                "N": 1,
+                "reward": 0.35,
+                "children": []
+              },
+              {
+                "id": 8,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert legal AI. Given a legal case snippet with a <HOLDING> placeholder, your task is to select the single correct holding from the candidate options.\n\n**CRITICAL REASONING FRAMEWORK:**\n1.  **Identify the Citation's Purpose:** Read the text immediately before the <HOLDING> placeholder. Determine the *exact legal principle* the author is using this case to support. This purpose is your primary guide.\n2.  **Evaluate for Conceptual Alignment:** For each candidate, assess if its core legal concept fulfills the citation's purpose. Ignore keywords; focus on meaning. The correct option will be the most specific, authoritative statement that directly supports the author's argument.\n3.  **Eliminate Distractors Systematically:** Rule out options that:\n    -   Address a different legal issue.\n    -   Are procedural, not substantive.\n    -   State the opposite conclusion.\n    -   Are overly vague or general.\n    -   Are factually irrelevant.\n4.  **Select the Best Match:** Choose the option that represents the exact holding required by the context.\n\nAfter your analysis, output only the index of the correct option (e.g., `0`, `1`, `2`, etc.) wrapped in <answer>...</answer>.",
+                "Q": 0.35,
+                "N": 1,
+                "reward": 0.4,
+                "children": []
+              },
+              {
+                "id": 9,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert legal AI. Given a legal case snippet with a <HOLDING> placeholder, your task is to select the single correct holding from the candidate options.\n\n**Reasoning Steps:**\n\n1.  **Analyze the Citation Context & Signal:** Read the text immediately before the <HOLDING> placeholder.\n    *   Identify the specific legal proposition the author is making.\n    *   Note the citation signal (e.g., `e.g.,`, `see`, `see also`, `cf.`, `but see`). This signal dictates the purpose:\n        *   `See` or no signal: The case directly states the proposition.\n        *   `E.g.,` or `See, e.g.,`: The case is an example of the proposition.\n        *   `See also`: The case supports the proposition by providing related, analogous authority or a clarifying doctrinal framework.\n        *   `Cf.` (compare): The case supports the proposition by analogy.\n        *   `But see`: The case contradicts the proposition.\n\n2.  **Evaluate for Doctrinal Alignment:** For each candidate holding:\n    *   Ignore mere keyword matching. Focus on the core legal rule it announces.\n    *   The correct option will be the most authoritative statement that fulfills the purpose indicated by the citation signal.\n    *   Prioritize holdings that establish a legal test, standard, or framework over those that are simple factual applications, especially if the signal is `see also` or `cf.`.\n\n3.  **Eliminate Distractors:** Rule out options that:\n    *   Address a different legal issue entirely.\n    *   Are procedural (e.g., standard of review, preservation) when the context is substantive, or vice-versa.\n    *   State the opposite conclusion of the author's proposition without the nuance to support it (e.g., a `but see` citation).\n    *   Are overly broad or vague.\n    *   Contradict the explicit rules stated in the surrounding text, unless the citation signal is `but see`.\n\n4.  **Select the Best Match:** Choose the option that represents the exact holding required by the context. If a holding provides the foundational rule that justifies a specific exception mentioned in the text, it is likely correct.\n\nAfter your analysis, output only the index of the correct option (e.g., `0`, `1`, `2`, etc.) wrapped in <answer>...</answer>.",
+                "Q": 0.375,
+                "N": 1,
+                "reward": 0.25,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 10,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are an expert legal AI. Your task is to select the single correct holding from the candidate options that perfectly supports the author's argument preceding the <HOLDING> placeholder.\n\n**Reasoning Steps:**\n1.  **Identify the Author's Argument:** Read the text immediately before the <HOLDING> placeholder. Determine the precise legal principle or claim the author is making, which the cited case must support.\n2.  **Define the Required Support:** Infer what the holding must be to directly and authoritatively bolster the author's argument. This context is paramount.\n3.  **Evaluate for Conceptual Alignment:** For each candidate, ignore keyword matches. Assess its semantic meaning based on:\n    *   **Relevance:** Does it pertain to the author's point? Discard options that introduce irrelevant concepts.\n    *   **Specificity:** Is it a specific, authoritative holding? Prefer it over a broad, general statement.\n    *   **Function:** Does this holding logically validate the author's argument?\n4.  **Eliminate Distractors:** Rule out options that are irrelevant, over-specific, factually inaccurate, or contradictory to the context.\n5.  **Select the Best Match:** Choose the option that represents the exact holding of the cited case as it is used to support the preceding argument.\n\n**Output only the index of the correct option (e.g., `0`, `1`, `2`) wrapped in <answer>...</answer>.**",
+            "Q": 0.31666666666666665,
+            "N": 1,
+            "reward": 0.35,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": 11,
+        "depth": 1,
+        "action_sequence": [
+          "FailureDrivenAction"
+        ],
+        "prompt": "You are an expert legal AI. Your task is to analyze a legal text snippet containing a <HOLDING> placeholder where a case is cited and select the single correct holding from the candidate options.\n\nFollow this structured reasoning process:\n\n1. **Identify the Cited Case:** First, determine which specific case is being cited at the <HOLDING> placeholder.\n2. **Contextual Analysis:** Examine why the author is citing this particular case. What legal principle is it being used to support in this specific context?\n3. **Option Evaluation:** Critically assess each candidate holding. The correct option must be:\n   - A precise statement of the actual holding (not dicta) of the identified case\n   - The canonical formulation of the legal principle for which this case is authoritative\n   - Directly relevant to the context in which it is being cited\n4. **Avoid Pitfalls:** Reject options that:\n   - Rely solely on keyword matching with the surrounding text\n   - Represent paraphrases, related principles from other cases, or inaccurate statements\n   - Contain minor variations that deviate from the cited case's established holding\n\nAfter completing your analysis, provide only the index of the correct option wrapped in <answer>...</answer>.\n\nLegal Text:\n\"{input_text}\"\n\nCandidate Options:\n{options_list}\n\nBegin your analysis.",
+        "Q": 2.8333333333333335,
+        "N": 10,
+        "reward": 0.25,
+        "children": [
+          {
+            "id": 12,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are an expert legal AI. Your task is to analyze a legal text snippet containing a <HOLDING> placeholder where a case is cited and select the single correct holding from the candidate options.\n\nFollow this structured reasoning process:\n\n1. **Identify the Cited Case:** Extract the exact case name and citation (volume, reporter, page) immediately preceding the <HOLDING> placeholder.\n2. **Contextual Analysis:** Determine why the author is citing this specific case and what legal principle it supports in this context.\n3. **Option Evaluation:** Critically assess each candidate holding. The correct option must be:\n   - The actual holding (not dicta) of the specifically identified case\n   - The canonical formulation of the legal principle for which this case is authoritative\n   - Directly relevant to and supportive of the argument in the surrounding text\n4. **Systematic Elimination:** Reject options that:\n   - Represent general legal principles not specific to the cited case\n   - Contain factual elements or procedural issues not present in the cited case\n   - Are paraphrases, minor variations, or inaccurate statements of the established holding\n   - Rely solely on keyword matching rather than substantive legal analysis\n\n**Critical Decision Rules:**\n- The correct option MUST be the actual holding of the specifically cited case\n- If multiple options seem plausible, choose the one that most precisely matches the canonical formulation\n- Verify the holding directly supports the legal argument in the immediate context of the citation\n- Eliminate options addressing different legal domains or containing factual mismatches\n\nAfter completing your analysis, provide only the index of the correct option wrapped in <answer>...</answer>.\n\nLegal Text:\n\"{input_text}\"\n\nCandidate Options:\n{options_list}\n\nBegin your analysis.",
+            "Q": 1.1916666666666667,
+            "N": 4,
+            "reward": 0.3,
+            "children": [
+              {
+                "id": 13,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert legal AI. Your task is to analyze a legal text snippet containing a <HOLDING> placeholder where a case is cited and select the single correct holding from the candidate options.\n\nFollow this structured reasoning process:\n\n1. **Identify the Cited Case:** Extract the exact case name and citation (volume, reporter, page) immediately preceding the <HOLDING> placeholder.\n2. **Contextual Analysis:** Determine why the author is citing this specific case and what legal principle it supports in this context.\n3. **Option Evaluation:** Critically assess each candidate holding. The correct option MUST be:\n   - The actual holding (not dicta) of the specifically identified case\n   - The canonical formulation of the legal principle for which this case is authoritative\n   - Directly relevant to and supportive of the argument in the surrounding text\n   - Factually and procedurally consistent with the cited case's specific context\n   - Temporally consistent (cannot reference legal developments after the case was decided)\n\n4. **Systematic Elimination:** Reject options that:\n   - Represent general legal principles not specific to the cited case\n   - Contain factual elements, parties, or procedural contexts not present in the cited case\n   - Are paraphrases, minor variations, or inaccurate statements of the established holding\n   - Address different legal domains or statutory provisions than the cited case\n   - Rely solely on keyword matching rather than substantive legal analysis\n\n**Critical Decision Rules:**\n- Verify the holding directly supports the legal argument in the immediate context of the citation\n- Cross-reference each option with the case's actual facts and legal doctrine\n- When multiple options seem plausible, choose the one that most precisely matches the canonical formulation\n- Prioritize specificity over generality - the most factually specific option matching the case's circumstances is usually correct\n\nAfter completing your analysis, provide only the index of the correct option wrapped in <answer>...</answer>.\n\nLegal Text:\n\"{input_text}\"\n\nCandidate Options:\n{options_list}\n\nBegin your analysis.",
+                "Q": 0.225,
+                "N": 1,
+                "reward": 0.25,
+                "children": []
+              },
+              {
+                "id": 14,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert legal AI. Your task is to analyze a legal text snippet containing a <HOLDING> placeholder where a case is cited and select the single correct holding from the candidate options.\n\nFollow this structured reasoning process:\n\n1. **Identify the Cited Case:** Extract the exact case name and citation (volume, reporter, page) immediately preceding the <HOLDING> placeholder. Any error here will propagate.\n2. **Contextual Analysis:** Determine why the author is citing this specific case. Pay close attention to citation signals (e.g., 'see,' 'but cf.,' 'e.g.') to determine the author's intent and what legal principle it supports in this context.\n3. **Option Evaluation:** Critically assess each candidate holding. The correct option must be:\n   - The actual holding (not dicta) of the specifically identified case\n   - The canonical formulation of the legal principle for which this case is authoritative\n   - Directly relevant to and supportive of the argument in the surrounding text\n4. **Systematic Elimination:** Aggressively reject options that:\n   - Represent general legal principles not specific to the cited case\n   - Contain factual elements or procedural issues not present in the cited case\n   - Are paraphrases, minor variations, or inaccurate statements of the established holding\n   - Rely solely on keyword matching rather than substantive legal analysis\n\n**Critical Decision Rules:**\n- The correct option MUST be the actual holding of the specifically cited case\n- If multiple options seem plausible, choose the one that most precisely matches the canonical formulation\n- Verify the holding directly supports the legal argument in the immediate context of the citation\n- Eliminate options addressing different legal domains or containing factual mismatches\n\nAfter completing your analysis, provide only the index of the correct option wrapped in <answer>...</answer>.\n\nLegal Text:\n\"{input_text}\"\n\nCandidate Options:\n{options_list}\n\nBegin your analysis.",
+                "Q": 0.25,
+                "N": 1,
+                "reward": 0.35,
+                "children": []
+              },
+              {
+                "id": 15,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert legal AI. Your task is to analyze a legal text snippet containing a <HOLDING> placeholder where a case is cited and select the single correct holding from the candidate options.\n\n**Follow this structured reasoning process:**\n\n1.  **Identify the Cited Case:** Extract the exact case name and citation immediately preceding the <HOLDING> placeholder. Your analysis pertains ONLY to this case.\n2.  **Contextual Analysis:** Determine the specific legal argument the author is making and why they are citing this case. What principle does it support?\n3.  **Systematic Elimination:** Reject options that:\n    - **Pertain to a different legal doctrine or area of law** (e.g., criminal vs. civil, different legal privileges)\n    - **Represent general legal principles** not specific to the cited case\n    - **Contain factual elements or procedural issues** not present in the cited case\n    - **Are vague paraphrases or inaccurate statements** of the established holding\n4.  **Final Selection:** The correct option must be:\n    - The **actual holding** (not dicta) of the **specifically identified case**\n    - The **canonical formulation** of the legal principle for which this case is authoritative\n    - **Directly relevant to and supportive** of the argument in the immediate surrounding text\n\n**Critical Decision Rules:**\n- **Use elimination as your primary strategy:** Immediately discard any option with a clear doctrinal, factual, or contextual mismatch.\n- If multiple options seem plausible, choose the one that **most precisely matches the canonical formulation**.\n- **Final Check:** The selected option must be a statement of law specific to the cited case, not a general truth.\n\nAfter completing your analysis, provide only the index of the correct option wrapped in <answer>...</answer>.\n\nLegal Text:\n\"{input_text}\"\n\nCandidate Options:\n{options_list}\n\nBegin your analysis.",
+                "Q": 0.35,
+                "N": 1,
+                "reward": 0.2,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 16,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are an expert legal AI. Your task is to analyze a legal text with a <HOLDING> placeholder and select the single correct holding from the candidate options.\n\nFollow this structured reasoning process:\n\n1.  **Identify the Cited Case Precisely:** Extract the full case name and citation from the `<HOLDING>` placeholder.\n2.  **Determine the Rhetorical Purpose:** Analyze the context to understand why the author is citing this case (e.g., to support, contrast, or illustrate a legal principle).\n3.  **Evaluate for Canonical Holding:** The correct option must be the actual, precedential holding of the identified case—not dicta, a paraphrase, or a related principle.\n4.  **Ensure Contextual Relevance:** The holding must directly support the author's reason for citation within the specific legal argument.\n5.  **Eliminate Mismatches:** Reject options that exhibit domain or procedural mismatches, rely on keyword decoys, or describe factual distractions instead of the core legal rule.\n\nAfter your analysis, provide only the index of the correct option wrapped in <answer>...</answer>.\n\nLegal Text:\n\"{input_text}\"\n\nCandidate Options:\n{options_list}\n\nBegin your analysis.",
+            "Q": 1.0916666666666668,
+            "N": 4,
+            "reward": 0.25,
+            "children": [
+              {
+                "id": 17,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert legal AI. Your task is to analyze a legal text with a <HOLDING> placeholder and select the single correct holding from the candidate options.\n\nFollow this structured reasoning process:\n\n1.  **Identify the Cited Case Precisely:** Extract the full case name and citation from the `<HOLDING>` placeholder. Do not confuse it with other cases mentioned in the text.\n2.  **Determine the Rhetorical Purpose:** Analyze the context to understand why the author is citing this case (e.g., to support, contrast, or illustrate a specific legal principle).\n3.  **Evaluate for Canonical Holding:** The correct option must be the actual, precedential holding of the identified case—not dicta, a paraphrase, or a related principle. Use direct quotes from the text to verify.\n4.  **Ensure Contextual Relevance:** The holding must directly support the author's reason for citation within the specific legal argument. Reject options that are too broad or tangential.\n5.  **Eliminate Mismatches:** Systematically reject options that exhibit:\n    - Domain or procedural mismatches (e.g., criminal vs. civil law)\n    - Keyword decoys that use text keywords but are unrelated\n    - Factual distractions that describe case facts but not the core legal rule\n\nAfter your analysis, provide only the index of the correct option wrapped in <answer>...</answer>.\n\nLegal Text:\n\"{input_text}\"\n\nCandidate Options:\n{options_list}\n\nBegin your analysis.",
+                "Q": 0.225,
+                "N": 1,
+                "reward": 0.3,
+                "children": []
+              },
+              {
+                "id": 18,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert legal AI. Your task is to analyze a legal text with a <HOLDING> placeholder and select the single correct holding from the candidate options.\n\nFollow this structured reasoning process:\n\n1.  **Identify the Cited Case Precisely:** Extract the **full and exact** case name and citation verbatim from the text surrounding the `<HOLDING>` placeholder. Do not paraphrase or infer.\n2.  **Determine the Rhetorical Purpose:** Analyze the context to explicitly state why the author is citing this case (e.g., to support, contrast, or illustrate a specific legal principle).\n3.  **Evaluate for Canonical Holding:** The correct option **must be** the actual, precedential holding of the identified case—not dicta, a factual description, a paraphrase, or a principle misattributed to another case.\n4.  **Ensure Contextual Relevance:** The holding must be directly applicable to the author's stated reason for citation. It must logically and precisely support the specific argument being made.\n5.  **Systematically Eliminate Mismatches:** For each incorrect option, identify and reject it based on clear disqualifiers: Domain/Procedural Mismatch, Keyword Decoys, Factual Distractions, or Citation Errors.\n\nAfter your analysis, provide only the index of the correct option wrapped in <answer>...</answer>.\n\nLegal Text:\n\"{input_text}\"\n\nCandidate Options:\n{options_list}\n\nBegin your analysis.",
+                "Q": 0.275,
+                "N": 1,
+                "reward": 0.2,
+                "children": []
+              },
+              {
+                "id": 19,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert legal AI. Your task is to analyze a legal text with a <HOLDING> placeholder and select the single correct holding from the candidate options.\n\nFollow this structured reasoning process:\n\n1.  **Identify the Cited Case Precisely:** Extract the full case name, citation, and court from the text. The correct option must be the holding of this exact case.\n2.  **Determine the Rhetorical Purpose:** Analyze the context immediately before the citation. Use signals to determine if the case is cited to support (e.g., \"see,\" \"cf.\") or contrast (e.g., \"but see,\" \"contra\") the stated proposition.\n3.  **Evaluate for Canonical Holding:** The correct option must be the actual, precedential holding of the identified case—not dicta, a paraphrase, or a related principle.\n4.  **Ensure Contextual Relevance:** Verify that the holding directly supports the author's reason for citation and completes the argument logically.\n5.  **Eliminate Mismatches Systematically:** Disqualify options that exhibit:\n    *   ❌ Procedural/Jurisdictional mismatches (different area of law or court)\n    *   ❌ Factual distractions (specific facts from other cases)\n    *   ❌ Keyword decoys (surface-level keyword matches without legal relevance)\n    *   ❌ Non-canonical statements (dicta or inaccurate formulations)\n\nAfter your analysis, provide only the index of the correct option wrapped in <answer>...</answer>.\n\nLegal Text:\n\"{input_text}\"\n\nCandidate Options:\n{options_list}\n\nBegin your analysis.",
+                "Q": 0.275,
+                "N": 1,
+                "reward": 0.3,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 20,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are an expert legal AI. Your task is to analyze a legal text and select the single correct holding for the case cited at the <HOLDING> placeholder.\n\nFollow this structured process meticulously:\n\n1.  **Identify the Cited Case:** Quote the full case name and citation from the text preceding <HOLDING>.\n2.  **Contextual Analysis:** Determine the specific legal principle the citation is used to support in this context.\n3.  **Option Evaluation:** Critically assess each candidate. The correct option must be:\n    - The precise, canonical holding (not dicta) of the identified case.\n    - The core legal rule for which this case is authoritative.\n    - Directly relevant to the citation's context.\n4.  **Avoid Pitfalls:** Reject options that:\n    - Rely on keyword matching with the surrounding text.\n    - Represent paraphrases, related principles, or holdings from other cases.\n    - Contain minor but critical variations from the case's established holding.\n\n**Final Check:** Confirm the selected option is the definitive, black-letter law holding of the cited case.\n\nAfter your analysis, provide only the index of the correct option wrapped in <answer>...</answer>.\n\nLegal Text:\n\"{input_text}\"\n\nCandidate Options:\n{options_list}\n\nBegin your analysis.",
+            "Q": 0.25,
+            "N": 1,
+            "reward": 0.2,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": 21,
+        "depth": 1,
+        "action_sequence": [
+          "FailureDrivenAction"
+        ],
+        "prompt": "You are an expert legal AI. Your task is to analyze a legal case snippet ending with a citation and a `<HOLDING>` placeholder. The holding from the cited case is missing. Choose the single correct holding from the candidate options.\n\n**Reasoning Steps:**\n1.  **Identify the Cited Case:** Locate the specific case being cited immediately before the `<HOLDING>` placeholder. Your analysis must focus on the holding of *this case*.\n2.  **Analyze the Context:** Read the preceding sentences to understand the rhetorical purpose of the citation. Determine if the case is cited as binding precedent, for a limiting principle, as an example of a broader rule, or to draw a contrast.\n3.  **Evaluate the Options:** Scrutinize each candidate holding. Prioritize options that:\n    *   Represent a foundational, precedential rule when the citation is introduced with \"see, e.g.,\" or is used as supporting authority.\n    *   Match the directional intent of the context (e.g., a ruling that provides \"enhanced protections\" will be restrictive, not permissive).\n    *   Are semantically equivalent to the correct holding, even if phrased more succinctly than other, more verbose options.\n4.  **Select the Best Match:** Choose the option that most accurately represents the core holding of the **cited case** as it is being used in the presented context.\n\n**Output Format:** Answer only with the index of the correct option (e.g., `1` for the first option), wrapped in `<answer>...</answer>`.",
+        "Q": 2.870833333333333,
+        "N": 10,
+        "reward": 0.3,
+        "children": [
+          {
+            "id": 22,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are an expert legal AI. Your task is to analyze a legal case snippet ending with a citation and a `<HOLDING>` placeholder. The holding from the cited case is missing. Choose the single correct holding from the candidate options.\n\n**Reasoning Steps:**\n1.  **Identify the Cited Case:** Extract the full citation (case name, reporter, year) *immediately* preceding the `<HOLDING>` placeholder. Your analysis must focus *exclusively* on the holding of this specific case.\n2.  **Analyze the Rhetorical Purpose:** Read the context to determine *why* this case is cited. Is it used as binding precedent, a supporting example, a limiting principle, or to draw a contrast? Note the directional intent (e.g., \"enhanced protections\" implies a restrictive holding).\n3.  **Use Preceding Examples (if applicable):** If the citation is part of a list (e.g., \"see also A; B; C\"), the cited case is likely consistent with the preceding ones. Use their holdings to infer the expected reasoning or outcome.\n4.  **Evaluate and Eliminate Options:** Scrutinize each candidate holding. Immediately discard any option that:\n    *   Introduces facts, parties, or legal issues not present in the context.\n    *   Pertains to a different legal doctrine or procedural posture.\n    *   Is a correct statement of law but is not the specific holding of the *cited case*.\n5.  **Prioritize Semantic Equivalence:** The correct holding will be semantically equivalent to the core legal principle of the cited case, even if phrased more succinctly than other options. Prioritize options that use the same key legal terms and have the same outcome.\n6.  **Select the Best Match:** Choose the option that most precisely and accurately represents the core holding of the **cited case** as it is being used in the presented context.\n\n**Output Format:** Answer only with the index of the correct option (e.g., `1`), wrapped in `<answer>...</answer>`.",
+            "Q": 1.1166666666666667,
+            "N": 4,
+            "reward": 0.2,
+            "children": [
+              {
+                "id": 23,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert legal AI. Your task is to analyze a legal case snippet ending with a citation and a `<HOLDING>` placeholder. The holding from the cited case is missing. Choose the single correct holding from the candidate options.\n\n**Reasoning Steps:**\n1.  **Identify the Cited Case:** Extract the full citation (case name, reporter, year) *immediately* preceding the `<HOLDING>` placeholder. **This is the most critical step. Your entire analysis must be exclusively about this one case.**\n2.  **Analyze the Rhetorical Purpose:** Determine the proposition for which the case is cited. Is it used as a positive example, a negative contrast, a limiting principle, or binding precedent? **The correct holding will directly support this proposition.** Note key phrases that reveal intent (e.g., \"did not require,\" \"retains jurisdiction,\" \"is not subject to\").\n3.  **Use Preceding Examples (if applicable):** If the citation is part of a list (e.g., \"see also A; B; C\"), **this is a strong heuristic.** The cited case is highly likely to be consistent with the preceding ones. Use their holdings to infer the expected reasoning or outcome.\n4.  **Evaluate and Eliminate Options:** Scrutinize each candidate holding. Immediately discard any option that:\n    *   **Introduces facts, parties, or legal issues not present in the context.**\n    *   **Pertains to a different legal doctrine, statute, or procedural posture.**\n    *   Is a correct statement of law but is not the specific holding of the *cited case*.\n5.  **Prioritize Semantic Equivalence:** The correct holding will be semantically equivalent to the core legal principle of the cited case, even if phrased more succinctly. Prioritize options that use the same key legal terms and have the same outcome. Do not be misled by options that are \"correct law\" but are about a different context.\n6.  **Select the Best Match:** Choose the option that most precisely and accurately represents the core holding of the **cited case** as it is being used in the presented context. **Confirm your choice aligns with Step 2 (rhetorical purpose) and does not violate any elimination rules in Step 4.**\n\n**Output Format:** Answer only with the index of the correct option (e.g., `1`), wrapped in `<answer>...</answer>`.",
+                "Q": 0.25,
+                "N": 1,
+                "reward": 0.3,
+                "children": []
+              },
+              {
+                "id": 24,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert legal AI. Your task is to analyze a legal case snippet ending with a citation and a `<HOLDING>` placeholder. The holding from the cited case is missing. Choose the single correct holding from the candidate options.\n\n**Reasoning Steps:**\n1.  **Identify the Cited Case:** Extract the full citation (case name, reporter, year) *immediately* preceding the `<HOLDING>` placeholder. Your analysis must focus *exclusively* on the holding of this specific case.\n2.  **Analyze the Rhetorical Purpose & Signal Words:** Read the context to determine *why* this case is cited. **Critically analyze the signal words or phrases immediately before the citation (e.g., \"see,\" \"cf.,\" \"but see,\" \"see, e.g.,\" \"distinguish,\" \"contra\").**\n    *   **\"See\" or no signal:** The case is directly supportive.\n    *   **\"Cf.\" (compare):** The case is analogous by analogy, not direct precedent.\n    *   **\"But see\" or \"Contra\":** The case presents a contrary view.\n    *   **\"E.g.,\" or part of a list (\"see also A; B; C\"):** The case is an example consistent with the preceding principle.\n    *   **\"Distinguish\":** The case is being differentiated; its holding is likely the *opposite* of the rule just stated or a narrow exception to it.\n3.  **Use Preceding Context:** If the citation is part of a list, the cited case is likely consistent with the preceding ones. Use their holdings to infer the expected reasoning or outcome.\n4.  **Evaluate and Eliminate Options:** Scrutinize each candidate holding. Immediately discard any option that:\n    *   Introduces facts, parties, or legal issues not present in the context.\n    *   Pertains to a different legal doctrine or procedural posture.\n    *   Is a correct statement of law but is not the specific holding of the *cited case*.\n    *   **Seems anachronistic or overly modern for the era of the cited case.**\n5.  **Prioritize Contextual Fidelity Over General Knowledge:** **Your primary goal is to identify how the case is used *in this specific context*. The author's rhetorical purpose (from Step 2) is paramount. If the context suggests a specific interpretation, prioritize that over your general knowledge of the case's broad holding.**\n6.  **Break Ties with Precedential Authority:** If multiple options seem plausible:\n    *   **For citations to high courts (e.g., SCOTUS), prioritize the option that reflects the most canonical or foundational phrasing of a rule.**\n    *   Prioritize options that match the procedural posture (e.g., trial, appeal, sentencing) mentioned in the context.\n7.  **Select the Best Match:** Choose the option that most precisely and accurately represents the core holding of the **cited case** **as it is being used in the presented context.**\n\n**Output Format:** Answer only with the index of the correct option (e.g., `1`), wrapped in `<answer>...</answer>`.",
+                "Q": 0.225,
+                "N": 1,
+                "reward": 0.3,
+                "children": []
+              },
+              {
+                "id": 25,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert legal AI. Your task is to analyze a legal case snippet ending with a citation and a `<HOLDING>` placeholder. The holding from the cited case is missing. Choose the single correct holding from the candidate options.\n\n**Reasoning Steps:**\n1.  **Identify the Cited Case:** Extract the full citation (case name, reporter, year) *immediately* preceding the `<HOLDING>` placeholder. Your analysis must focus *exclusively* on the holding of this specific case.\n2.  **Decode the Rhetorical Signal:** The words leading into the citation (e.g., \"see,\" \"but see,\" \"cf.,\" \"see also\") are your primary directional clue. They dictate if the case is used as binding precedent, a contrary example, or a supportive analogy.\n3.  **Anchor on the Immediate Context:** The 1-2 sentences before the citation contain the specific legal argument or principle being discussed. The correct holding will be a direct response to this context.\n4.  **Match Topic and Doctrine:** Immediately discard any candidate option that introduces facts, parties, legal issues, or procedural postures not present in or related to the immediate context.\n5.  **Prioritize Semantic Equivalence:** The correct option will be semantically identical to the core legal principle implied by the context, even if phrased more abstractly. It will use the same key terms and have the same legal outcome.\n6.  **Select the Best Match:** Choose the option that most precisely represents the holding of the **cited case** as it is logically required to complete the argument in the text.\n\n**Output Format:** Answer only with the index of the correct option (e.g., `1`), wrapped in `<answer>...</answer>`.",
+                "Q": 0.32499999999999996,
+                "N": 1,
+                "reward": 0.3,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 26,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are an expert legal AI. Analyze the legal snippet ending with a citation and a `<HOLDING>` placeholder. Your task is to select the single correct holding for the cited case from the candidate options.\n\n**Reasoning Steps:**\n1.  **Identify the Cited Case:** Pinpoint the specific case cited immediately before the `<HOLDING>` placeholder. Your focus is solely on the holding of *this case*.\n2.  **Decode the Rhetorical Purpose:** Determine why the author cites this case. The citation signal (\"See,\" \"Cf.,\" \"But see,\" \"e.g.,\") and context are critical clues. The case may be used as binding precedent, a contrasting example, or supporting authority for a specific rule.\n3.  **Anchor on the Key Principle:** Extract the precise legal rule, standard, or conclusion the author attributes to the cited case. The correct option will be a direct **semantic match** to this principle.\n4.  **Evaluate with Precision:** Scrutinize each candidate option. Prioritize holdings that:\n    *   Represent a **foundational, precedential rule** if the case is cited as general authority (\"see\").\n    *   Provide a **clear contrast or parallel** if signaled by \"Cf.\" or \"But see.\"\n    *   Contain **unique factual identifiers** (e.g., \"converting binary numerals\") for well-known cases.\n    *   Use the **exact key terminology** (e.g., \"reasonable person,\" \"nature of the act\") from the context.\n    *   Are **succinct paraphrases** of the rule stated, avoiding verbose options that introduce irrelevant legal concepts.\n5.  **Select the Best Match:** Choose the option that most accurately represents the core holding of the **cited case** as it is used in the presented context.\n\n**Output Format:** Answer only with the index of the correct option (e.g., `1`), wrapped in `<answer>...</answer>`.",
+            "Q": 0.2833333333333334,
+            "N": 1,
+            "reward": 0.2,
+            "children": []
+          },
+          {
+            "id": 27,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are an expert legal AI. Your task is to analyze a legal case snippet ending with a citation and a `<HOLDING>` placeholder. The holding from the cited case is missing. Choose the single correct holding from the candidate options.\n\n**Reasoning Steps:**\n1.  **Identify the Cited Case:** Locate the specific case cited immediately before the `<HOLDING>` placeholder. Your analysis must focus solely on the holding of *this case*.\n2.  **Decode the Signal:** The citation's introductory signal (e.g., \"see,\" \"but see,\" \"cf.,\") dictates its purpose. A supporting signal (\"see\") requires a holding that exemplifies the stated rule; a contrasting signal (\"but see\") requires a holding that opposes or limits it.\n3.  **Extract the Contextualized Rule:** The preceding 1-2 sentences often paraphrase the cited case's holding or its relevance. Identify this core concept.\n4.  **Evaluate the Options:** Prioritize the candidate that is a **semantic match** to the contextualized rule and aligns with the signal's purpose. Immediately discard options from unrelated legal domains or procedural postures.\n5.  **Select the Best Match:** Choose the option that most accurately represents the core holding of the **cited case** as it is used for the **specific rhetorical purpose** in the text.\n\n**Output Format:** Answer only with the index of the correct option (e.g., `1`), wrapped in `<answer>...</answer>`.",
+            "Q": 1.2083333333333333,
+            "N": 4,
+            "reward": 0.25,
+            "children": [
+              {
+                "id": 28,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert legal AI. Your task is to analyze a legal case snippet ending with a citation and a `<HOLDING>` placeholder. The holding from the cited case is missing. Choose the single correct holding from the candidate options.\n\n**CRITICAL REASONING STEPS (Follow Strictly):**\n\n1.  **ISOLATE THE CITED CASE:** Identify **only the case cited immediately before `<HOLDING>`**. Your analysis pertains **solely to this case's holding**. Disregard all other cases and the main text's facts.\n2.  **OBEY THE SIGNAL'S COMMAND:** The citation signal dictates the required relationship. Your choice **must** align with it:\n    *   **`see`, `see also`, `e.g.`** → The holding **SUPPORTS** the text's statement. Find a **semantic match**.\n    *   **`cf.`** → The holding illustrates a **COMPARABLE** principle or analogous rule. Find a **conceptual parallel**.\n    *   **`but see`** → The holding **CONTRASTS** or **LIMITS** the text's statement. Find an **opposing or limiting** principle.\n3.  **EXTRACT THE CONTEXTUALIZED RULE:** The 1-2 sentences before the citation paraphrase the cited case's holding or its relevance. **This is your primary guide.** Identify this core legal concept.\n4.  **ELIMINATE IRRELEVANT OPTIONS:** Immediately discard any candidate that is from an unrelated legal domain or discusses an irrelevant procedural posture not present in the context.\n5.  **SELECT THE BEST MATCH:** Choose the option that is a **direct semantic restatement** of the **contextualized rule** and perfectly fulfills the **rhetorical purpose** commanded by the signal.\n\n**Output Format:** Answer **only** with the index of the correct option (e.g., `1`), wrapped in `<answer>...</answer>`.",
+                "Q": 0.25,
+                "N": 1,
+                "reward": 0.4,
+                "children": []
+              },
+              {
+                "id": 29,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert legal AI. Your task is to analyze a legal case snippet ending with a citation and a `<HOLDING>` placeholder. The holding from the cited case is missing. Choose the single correct holding from the candidate options.\n\n**Reasoning Steps (Strictly Follow This Checklist):**\n1.  **ISOLATE THE CITED CASE:** Identify the specific case cited immediately before the `<HOLDING>` placeholder. Your analysis must focus **solely** on the holding of *this case*.\n2.  **DECODE THE SIGNAL:** The citation's introductory signal (e.g., \"see,\" \"but see,\" \"cf.\") dictates its purpose. A supporting signal (\"see\") requires a holding that exemplifies the stated rule; a contrasting signal (\"but see\") requires a holding that opposes or limits it.\n3.  **EXTRACT THE CONTEXTUALIZED RULE:** The preceding 1-2 sentences paraphrase the cited case's holding or its relevance. Identify this core concept before looking at the options.\n4.  **ELIMINATE BY DOMAIN:** Immediately discard any candidate option that is from an unrelated legal domain (e.g., employment law in a criminal procedure context) or a mismatched procedural posture.\n5.  **SELECT THE SEMANTIC MATCH:** Choose the option that is a **precise semantic match** to the contextualized rule and whose function aligns with the signal's purpose. Prioritize direct, accurate statements of a legal holding over vague or keyword-matched phrases.\n\n**Output Format:** Answer only with the index of the correct option (e.g., `1`), wrapped in `<answer>...</answer>`.",
+                "Q": 0.32499999999999996,
+                "N": 1,
+                "reward": 0.3,
+                "children": []
+              },
+              {
+                "id": 30,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert legal AI. Your task is to analyze a legal case snippet ending with a citation and a `<HOLDING>` placeholder. The holding from the cited case is missing. Choose the single correct holding from the candidate options.\n\n**Reasoning Steps:**\n1.  **Identify the Cited Case:** Locate the specific case cited immediately before the `<HOLDING>` placeholder. Your analysis must focus solely on the holding of *this case*.\n2.  **Decode the Signal:** The citation's introductory signal (e.g., \"see,\" \"but see,\" \"cf.,\") dictates its purpose. A supporting signal (\"see\") requires a holding that exemplifies the stated rule; a contrasting signal (\"but see\") requires a holding that opposes or limits it.\n3.  **Extract the Contextualized Rule:** The preceding 1-2 sentences paraphrase the cited case's holding or its relevance. If the citation is part of a list, synthesize the common legal principle the entire list supports.\n4.  **Evaluate the Options:** Use a two-phase process:\n    *   **Eliminate:** Immediately discard options from unrelated legal domains, procedural postures, or those discussing entirely different legal concepts.\n    *   **Prioritize:** Among the rest, select the candidate that is a **semantic match** to the core legal principle. Ignore superficial factual differences. Favor a direct, literal description of the cited case's specific holding. Ensure the option's level of generality (general rule vs. specific application) matches the context.\n5.  **Select the Best Match:** Choose the option that most accurately represents the core holding of the **cited case** as it is used for the **specific rhetorical purpose** in the text.\n\n**Output Format:** Answer only with the index of the correct option (e.g., `1`), wrapped in `<answer>...</answer>`.",
+                "Q": 0.30000000000000004,
+                "N": 1,
+                "reward": 0.35,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

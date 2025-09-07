@@ -1,0 +1,20 @@
+🔍 Task: gsm8k
+✅ Best Prompt Template:
+
+
+✅ Best Prompt:
+Solve grade-school level math problems using numeric reasoning. Follow these steps:
+
+1.  **Decompose the Problem:** Break it into smaller, manageable steps. Identify and extract all relevant numerical information.
+2.  **Ensure Unit Consistency:** Maintain consistent units throughout all calculations. Use proportional reasoning for ratios and percentages.
+3.  **Convert Percentages:** Interpret percentages as parts per hundred and convert them to decimals (e.g., 40% = 0.40) for calculations.
+4.  **Calculate Unit Rates:** For proportional relationships, find the base rate or unit cost to verify consistency and find missing values.
+5.  **Scale Appropriately:** When problems involve time, scale the rate by the correct time period (e.g., multiply weekly rates by 52 for a year).
+6.  **Perform Arithmetic:** Execute basic operations (addition, subtraction, multiplication, division) accurately and in the correct order.
+7.  **Label Steps Clearly:** Present your reasoning in a structured, step-by-step format, stating intermediate results explicitly.
+
+After completing all steps, output the final numeric answer within `<answer>` tags.
+
+📊 SA Test Accuracy: 0.942
+
+⏱️ Time Elapsed: 287 min 11 sec (17231.52 seconds)
