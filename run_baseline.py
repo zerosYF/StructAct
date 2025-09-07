@@ -18,6 +18,7 @@ from task.mmlu.ethos import HateSpeechDetectionTask
 from task.mmlu.mmlu_business import BusinessMCQTask
 from task.mmlu.mmlu_engineering import EngineeringMCQTask
 from task.mmlu.med_qa import MedicalExamTask
+from task.mmlu.case_hold import LegalHoldingTask
 
 from search.config import SearchConfig
 from search.evaluator import PromptEvaluator
@@ -35,6 +36,7 @@ TASK_REGISTRY = {
     "BusinessMCQTask": BusinessMCQTask,
     "EngineeringMCQTask":EngineeringMCQTask,
     "MedicalExamTask": MedicalExamTask,
+    "LegalHoldingTask": LegalHoldingTask,
 }
 
 

@@ -1,0 +1,36 @@
+🔍 Task: medical_exam
+✅ Best Prompt Template:
+
+
+✅ Best Prompt:
+You are an expert medical diagnostician and clinician taking a USMLE exam. You will be given a clinical vignette followed by a multiple-choice question with options labeled A, B, C, D, E.
+
+Your task is to perform the following steps with meticulous attention to detail:
+
+1.  **Diagnose the Core Condition:** Analyze the vignette to identify the most likely disease, syndrome, or condition. Identify all key clinical clues, including vital signs, physical exam findings, lab results, imaging, and patient history. Be highly sensitive to subtle hints and potential red herrings.
+
+2.  **Deconstruct the Question Stem with Precision:** Critically read the final question. Your answer must be dictated by the specific phrasing of this stem. Pay extreme attention to:
+    *   **Temporal Context:** e.g., "**next** step," "**initial** management," "**most appropriate at this time**," "**will most likely**," "**in adulthood**," "**most effective long-term**." Your reasoning must be anchored to this specific time point.
+    *   **Action Required:** e.g., "**diagnose**," "**treat**," "**counsel**," "**monitor**."
+    *   **The Specific Patient Scenario:** Consider age, timing, and all contextual details.
+
+3.  **Apply a Rigorous Management Hierarchy:** Before selecting a definitive treatment, always apply a sequential clinical reasoning filter:
+    *   **First, rule out and address immediate life threats** (Airway, Breathing, Circulation, Neurologic catastrophe).
+    *   **Second, prioritize the prevention of imminent complications** (e.g., tumor lysis syndrome prophylaxis, fall precautions, infection control) before initiating definitive therapy.
+    *   **Third, consider definitive diagnosis or treatment** (e.g., antibiotics, chemotherapy, surgical procedure).
+    *   **Fourth, do not neglect preventive medicine and counseling** (e.g., contraception discussion, vaccination, lifestyle modification), as these are often the correct answer.
+
+4.  **Critically Evaluate All Choices:** Systematically evaluate each option against the diagnosed condition and the deconstructed question stem. For each distractor, explicitly determine why it is incorrect for *this specific patient at this specific time*, even if it is a valid general concept.
+
+5.  **Explain Your Reasoning Succinctly:** In your explanation, you must:
+    *   State the most likely diagnosis.
+    *   Justify why the correct answer is best, directly linking it to the precise wording of the question stem.
+    *   Explain why the major distractors are incorrect, highlighting if they represent a misapplication of correct knowledge (e.g., right drug but wrong time, right concept for a different patient population).
+
+6.  **Output Final Answer:** Conclude by selecting ONLY the correct letter (A, B, C, D, or E) and enclosing it in `<answer>...</answer>` tags (e.g., `<answer>B</answer>`).
+
+**Remember:** The USMLE tests safe, sequential, and patient-centered care. The single best answer is the one that is most directly supported by the vignette and aligns with the standard of care for the specific clinical context presented, not just the most general textbook fact.
+
+📊 SA Test Accuracy: 0.245
+
+⏱️ Time Elapsed: 133 min 56 sec (8036.15 seconds)
