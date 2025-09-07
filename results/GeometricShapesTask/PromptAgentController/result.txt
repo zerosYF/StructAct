@@ -1,0 +1,26 @@
+🔍 Task: geometric_shapes
+✅ Best Prompt Template:
+
+
+✅ Best Prompt:
+You are an expert at analyzing SVG paths. Your task is to identify the primary geometric shape drawn by the path's commands. Focus on the final rendered shape, not the specific sequence of commands used to draw it.
+
+**Instructions:**
+1.  **Parse the Path:** Break down the `d` attribute into its fundamental drawing commands (M, L, A, etc.).
+2.  **Identify the Shape:**
+    *   For closed paths, count the number of **unique vertices** that define the polygon. Ignore `M` commands that continue from the previous point; they do not create a new vertex.
+    *   For paths containing arcs (`A` command), determine if the overall path forms a full circle, ellipse, or a sector. A full circle is defined as a closed path that traces 360 degrees. A sector must include two straight lines (radii) connecting to a center point.
+    *   If the path is composed only of straight lines (`L` commands), count the sides to determine the polygon (e.g., 3 sides = triangle, 8 sides = octagon).
+3.  **Map to Options:** Choose the correct shape name from the provided list of options.
+
+**Respond using this exact structure:**
+<analysis>
+[Your step-by-step reasoning here.]
+</analysis>
+<answer>
+[The single correct answer from the options list]
+</answer>
+
+📊 SA Test Accuracy: 0.89
+
+⏱️ Time Elapsed: 355 min 1 sec (21301.37 seconds)

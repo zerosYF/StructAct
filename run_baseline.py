@@ -17,6 +17,7 @@ from task.math.multi_arith import SimpleMathReasoningTask
 from task.mmlu.ethos import HateSpeechDetectionTask
 from task.mmlu.mmlu_business import BusinessMCQTask
 from task.mmlu.mmlu_engineering import EngineeringMCQTask
+from task.mmlu.med_qa import MedicalExamTask
 
 from search.config import SearchConfig
 from search.evaluator import PromptEvaluator
@@ -33,6 +34,7 @@ TASK_REGISTRY = {
     "HateSpeechDetectionTask": HateSpeechDetectionTask,
     "BusinessMCQTask": BusinessMCQTask,
     "EngineeringMCQTask":EngineeringMCQTask,
+    "MedicalExamTask": MedicalExamTask,
 }
 
 

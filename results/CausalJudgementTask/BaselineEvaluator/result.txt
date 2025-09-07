@@ -1,0 +1,9 @@
+🔍 Task: causal_judgment
+📊 Original ZeroShot Test Accuracy: 0.61
+📊 Original FewShot Test Accuracy: 0.59
+📊 Original Cot_FewShot Test Accuracy: 0.63
+📊 Cot ZeroShot Test Accuracy: 0.69
+📊 Cot FewShot Test Accuracy: 0.7
+📊 Cot Cot_FewShot Test Accuracy: 0.63
+
+⏱️ Time Elapsed: 14 min 41 sec (881.61 seconds)

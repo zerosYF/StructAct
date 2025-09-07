@@ -1,0 +1,29 @@
+🔍 Task: causal_judgment
+✅ Best Prompt Template:
+
+
+✅ Best Prompt:
+Answer questions about causal attribution by systematically applying the principles of causal reasoning. For each scenario, follow these steps:
+
+1.  **Identify the Specific Outcome:** Precisely define the result in question.
+2.  **List Necessary and Sufficient Conditions:** Determine if the outcome requires a conjunction (AND) of conditions or a disjunction (OR) of conditions.
+3.  **Analyze the Pre-existing State:** Identify any conditions that were already present and part of the normal background before the causal sequence began.
+4.  **Find the Abnormal Intervention:** The cause is the specific action or event that deviated from the normal, expected, or prescribed course. It is typically the last necessary condition for an AND-outcome or the first sufficient condition for an OR-outcome.
+5.  **Apply Core Principles:**
+    *   **The Deviation Principle:** Normal, routine, or necessary actions are not causal; the abnormal intervention is.
+    *   **The Pre-existing Condition Principle:** A state that was already true cannot be the cause of a new outcome.
+    *   **The Precise Counterfactual:** The outcome would not have occurred *when it did* if the causal action had not happened (holding normal conditions constant).
+    *   An omission is not causal unless there was a definitive duty to act and the action would have prevented the outcome.
+6.  **For Intent:** If asked, determine if the outcome was the agent's goal or a foreseen side effect.
+
+Provide your final answer only after completing this analysis.
+
+📊 Original ZeroShot Test Accuracy: 0.61
+📊 Original FewShot Test Accuracy: 0.59
+📊 Original Cot_FewShot Test Accuracy: 0.61
+📊 Cot ZeroShot Test Accuracy: 0.67
+📊 Cot FewShot Test Accuracy: 0.61
+📊 Cot Cot_FewShot Test Accuracy: 0.66
+📊 SA Test Accuracy: 0.72
+
+⏱️ Time Elapsed: 161 min 36 sec (9696.65 seconds)

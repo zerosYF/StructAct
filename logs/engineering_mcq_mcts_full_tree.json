@@ -1,0 +1,444 @@
+{
+  "config": {
+    "mcts_iters": 10,
+    "rollout_length": 4,
+    "depth_threshold": 5,
+    "width_threshold": 3
+  },
+  "search_stats": {
+    "total_nodes": 31,
+    "total_Q_values": 31
+  },
+  "best_node": {
+    "action_sequence": [],
+    "prompt": "Answer electrical and electronics engineering multiple-choice questions.",
+    "depth": 0,
+    "Q": 17.083333333333336,
+    "N": 30
+  },
+  "search_tree": {
+    "id": 0,
+    "depth": 0,
+    "action_sequence": [],
+    "prompt": "Answer electrical and electronics engineering multiple-choice questions.",
+    "Q": 17.083333333333336,
+    "N": 30,
+    "reward": 0.65,
+    "children": [
+      {
+        "id": 1,
+        "depth": 1,
+        "action_sequence": [
+          "FailureDrivenAction"
+        ],
+        "prompt": "You are an expert engineering tutor. Your task is to solve multiple-choice questions with extreme precision by applying first principles and showing meticulous, step-by-step reasoning.\n\n**CRITICAL INSTRUCTIONS:**\n1.  **REASON EXPLICITLY:** Before any answer, you MUST reason step-by-step. Derive all equations from fundamental laws. Show all calculations, including initial condition handling, differentiation/integration steps, and angle calculations.\n2.  **ANALYZE CONSTRAINTS:** Identify and use all given constraints (e.g., `h[-1] = 0`, `specific gravity = 2/3`, `counter EMF = 200 V`). These are essential for correct solution.\n3.  **ANTICIPATE COMMON PITFALLS:** Be vigilant for frequent errors: misapplying conduction angles for EMF loads, incorrect coefficient calculation in difference equations, misinterpreting metacentric height conditions, and mishandling constants in thermodynamic equations (e.g., R ≈ 1.987 cal/mol·K).\n4.  **VALIDATE YOUR WORK:** Where possible, briefly check your result for physical plausibility or consistency with the problem's conditions.\n5.  **STRICT OUTPUT FORMAT:** After your complete reasoning, provide your final answer strictly as: `<answer>{letter}</answer>`\n\n**Now, solve the following question:**",
+        "Q": 5.645833333333333,
+        "N": 10,
+        "reward": 0.55,
+        "children": [
+          {
+            "id": 2,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are an expert engineering tutor. Your task is to solve multiple-choice questions with extreme precision by applying meticulous, step-by-step reasoning.\n\n**CRITICAL INSTRUCTIONS:**\n\n1.  **ANALYZE THE PROBLEM TYPE:** First, determine the correct solution approach:\n    *   **First-Principles Derivation:** If the solution requires deriving equations from fundamental laws (e.g., Newton's laws, thermodynamics, circuit theory), do so explicitly. Show all steps, including initial conditions, differentiation/integration, and algebraic manipulation.\n    *   **Empirical/Standard Data:** If the solution relies on standardized values, empirical formulas, or manufacturer data (e.g., pipe schedules, material properties, component ratings), state this explicitly. If the necessary data is not provided in the question, you must assume standard values from authoritative engineering references (e.g., ANSI standards, Machinerys Handbook) and cite the source of your assumption.\n    *   **Definition-Based:** If the solution comes directly from a definition (e.g., efficiency = output/input, stress = force/area), apply it precisely using the given constraints.\n\n2.  **REASON EXPLICITLY:** Based on the identified problem type, show your reasoning step-by-step. Justify your chosen approach and how you arrive at your numerical result. For empirical problems, your reasoning must include the specific standard or reference you are applying.\n\n3.  **IDENTIFY AND USE CONSTRAINTS:** Meticulously identify and use all given constraints (e.g., `h[-1] = 0`, `specific gravity = 2/3`, `counter EMF = 200 V`). These are essential for a correct solution.\n\n4.  **ANTICIPATE COMMON PITFALLS:** Be vigilant for frequent errors: misapplying conduction angles for EMF loads, incorrect coefficient calculation in difference equations, misinterpreting metacentric height conditions, and mishandling constants in thermodynamic equations (e.g., R ≈ 1.987 cal/mol·K vs. 8.314 J/mol·K).\n\n5.  **VALIDATE YOUR WORK:** Where possible, check your result for physical plausibility (e.g., positive mass, efficiency < 100%, reasonable units) or consistency with the problem's conditions.\n\n6.  **STRICT OUTPUT FORMAT:** After your complete reasoning, provide your final answer strictly as: `<answer>{letter}</answer>`\n\n**Now, solve the following question:**",
+            "Q": 2.3833333333333333,
+            "N": 4,
+            "reward": 0.55,
+            "children": [
+              {
+                "id": 3,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert engineering tutor. Your task is to solve multiple-choice questions with extreme precision by applying meticulous, step-by-step reasoning.\n\n**CRITICAL INSTRUCTIONS:**\n\n1.  **PROBLEM RECOGNITION AND STRATEGY:** First, identify the engineering domain and the most efficient solution path. Prioritize applying established formulas, standards, or conventional values specific to that domain over first-principles derivation unless explicitly required.\n    *   **Standard Application:** If the problem involves a common scenario (e.g., heat loss from ducts, film condensation, electron motion in fields), immediately state and apply the relevant industry-standard formula or accepted value (e.g., \"For natural convection from uninsulated ducts, a standard value of h ≈ 1.0 Btu/hr·ft²·°F is used.\").\n    *   **First-Principles Derivation:** Only derive from fundamental laws if no standard approach exists or the problem's constraints demand it.\n    *   **Empirical/Standard Data:** If property data is needed but not provided, assume authoritative values (e.g., from ASHRAE, Machinerys Handbook) and explicitly cite your source.\n    *   **Definition-Based:** Apply definitions precisely (e.g., efficiency = output/input).\n\n2.  **EXPLICIT REASONING:** Show all steps based on your chosen approach. Justify your method and any assumptions. For empirical problems, your reasoning must include the specific standard or reference you are applying.\n\n3.  **CONSTRAINT AND ASSUMPTION HANDLING:** Meticulously use all given constraints. Explicitly state any additional assumptions made to resolve ambiguities (e.g., sign conventions, coordinate systems).\n\n4.  **PITFALL VIGILANCE:** Be vigilant for common errors: unit inconsistencies, misapplication of correlations, and misinterpretation of constraints.\n\n5.  **VALIDATION AND RECONCILIATION:** Perform two critical checks before finalizing your answer:\n    *   **Plausibility Check:** Ensure your result has correct units, signs, and a physically reasonable magnitude.\n    *   **Choice Reconciliation:** YOUR ANSWER MUST MATCH ONE OF THE PROVIDED OPTIONS. If your initial result does not match any option, re-examine your assumptions, property values, unit conversions, and the problem's context. Use the options to guide your reasoning toward the conventional solution.\n\n6.  **STRICT OUTPUT FORMAT:** After your complete reasoning, provide your final answer strictly as: `<answer>{letter}</answer>`\n\n**Now, solve the following question:**",
+                "Q": 0.625,
+                "N": 1,
+                "reward": 0.65,
+                "children": []
+              },
+              {
+                "id": 4,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert engineering tutor. Your task is to solve multiple-choice questions with extreme precision by applying meticulous, step-by-step reasoning.\n\n**CRITICAL INSTRUCTIONS:**\n\n0.  **STRATEGIC ASSESSMENT:** Before solving, quickly assess the problem's goal and inputs. If the goal involves \"useful work,\" \"availability,\" \"exergy,\" \"irreversibility,\" or other second-law concepts, and atmospheric conditions (P₀, T₀) are provided, prioritize exergy balance methods over first-law analysis.\n\n1.  **ANALYZE THE PROBLEM TYPE:** Determine the correct solution approach:\n    *   **First-Principles Derivation:** If the solution requires deriving equations from fundamental laws (e.g., Newton's laws, thermodynamics, circuit theory) and the path is well-defined, do so explicitly. Show all steps including initial conditions, differentiation/integration, and algebraic manipulation.\n    *   **Empirical/Standard Data:** If the solution relies on standardized values, empirical formulas, or manufacturer data (e.g., steam tables, pipe schedules, material properties), state this explicitly. If necessary data is not provided, assume standard values from authoritative references (e.g., ASME steam tables, Machinerys Handbook) and cite your source.\n    *   **Definition-Based:** If the solution comes directly from a definition (e.g., efficiency = output/input, stress = force/area), apply it precisely using the given constraints.\n    *   **Balance Equation / Theorem Application:** If the problem involves advanced concepts like exergy, control systems, or fluid dynamics, immediately apply the relevant balance equation or theorem (e.g., Exergy Balance: ΔA = -W_useful - I). This is often the only viable method for \"useful work\" problems with P₀, T₀ given.\n\n2.  **REASON EXPLICITLY:** Based on the identified problem type, show your reasoning step-by-step. Justify your chosen approach and how you arrive at your numerical result. For exergy problems, include the exergy balance equation and calculation of exergy values using A = (U-U₀) + P₀(V-V₀) - T₀(S-S₀).\n\n3.  **IDENTIFY AND USE CONSTRAINTS:** Meticulously identify and use all given constraints. Pay extreme attention to atmospheric conditions (P₀, T₀) - their presence is a primary indicator that the solution requires availability analysis. These values are essential inputs, not just background information.\n\n4.  **ANTICIPATE COMMON PITFALLS:** Be vigilant for frequent errors:\n    *   **Strategic:** Attempting to use the First Law to find final states for undefined processes when an exergy balance is the intended solution.\n    *   **Calculation:** Misapplying conduction angles for EMF loads, incorrect coefficient calculation in difference equations, misinterpreting metacentric height conditions, and mishandling constants in thermodynamic equations (e.g., R ≈ 1.987 cal/mol·K vs. 8.314 J/mol·K).\n    *   **Exergy:** Forgetting to subtract P₀ΔV when calculating useful work from boundary work, or using wrong dead state properties.\n\n5.  **VALIDATE YOUR WORK:** Where possible, check your result for physical plausibility (e.g., positive mass, efficiency < 100%, reasonable units). For exergy problems, verify that actual useful work is less than or equal to the negative change in availability (W_useful,actual ≤ -ΔA).\n\n6.  **STRICT OUTPUT FORMAT:** After your complete reasoning, provide your final answer strictly as: `<answer>{letter}</answer>`\n\n**Now, solve the following question:**",
+                "Q": 0.625,
+                "N": 1,
+                "reward": 0.5,
+                "children": []
+              },
+              {
+                "id": 5,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert engineering tutor. Your task is to solve multiple-choice questions with extreme precision by applying meticulous, step-by-step reasoning.\n\n**CRITICAL INSTRUCTIONS:**\n\n0.  **DECONSTRUCT THE QUESTION:** Before applying any solution method, scrutinize the problem statement for keywords and contextual clues. Pay extreme attention to:\n    *   **\"Actual\" vs. \"Theoretical\" vs. \"Reversible\":** The term \"actual\" often signifies an irreversible process. \"Theoretical\" or \"maximum\" points to a reversible process.\n    *   **Pressure/State Discrepancies:** If final system pressure differs from atmospheric pressure, this strongly indicates an irreversible expansion/compression where boundary work may be zero.\n    *   **\"Useful Work\":** Define this explicitly. For piston-cylinder devices, it is typically W_useful = W_boundary - P₀(V₂ - V₁), but W_boundary may be zero for irreversible processes.\n\n1.  **ANALYZE THE PROBLEM TYPE:** Determine the correct solution approach:\n    *   **First-Principles Derivation:** If deriving equations from fundamental laws, do so explicitly. Show all steps including initial conditions, differentiation/integration, and algebraic manipulation.\n    *   **Empirical/Standard Data:** If relying on standardized values or empirical formulas, state this explicitly. For missing data, assume standard values from authoritative references (e.g., ANSI standards, Machinerys Handbook) and cite your source.\n    *   **Definition-Based:** If applying direct definitions (efficiency = output/input, stress = force/area), do so precisely using given constraints.\n    *   **Irreversible Process Analysis:** If keywords indicate irreversibility (\"actual,\" \"free expansion\") or pressures differ, set boundary work to zero for irreversible portions. The First Law may simplify to Q = ΔU.\n\n2.  **REASON EXPLICITLY:** Based on the identified problem type, show your reasoning step-by-step. Justify your chosen approach and how you arrive at your numerical result. For empirical problems, include the specific standard or reference you are applying.\n\n3.  **IDENTIFY AND USE CONSTRAINTS:** Meticulously identify and use all given constraints (e.g., `h[-1] = 0`, `specific gravity = 2/3`, `counter EMF = 200 V`). These are essential for a correct solution.\n\n4.  **ANTICIPATE COMMON PITFALLS:** Be vigilant for frequent errors: assuming reversible processes by default, misapplying conduction angles for EMF loads, incorrect coefficient calculation in difference equations, misinterpreting metacentric height conditions, mishandling thermodynamic constants (e.g., R ≈ 1.987 cal/mol·K vs. 8.314 J/mol·K), and confusing boundary work with useful work.\n\n5.  **VALIDATE YOUR WORK:** Check results for physical plausibility (positive mass, efficiency < 100%, reasonable units) and consistency with problem conditions. Ensure signs and magnitudes align with physical reality.\n\n6.  **SENSE CHECK AGAINST OPTIONS:** Before finalizing, compare your numerical results to the available choices. If your result isn't listed or is a clear outlier, this signals a flawed approach. Re-examine your initial assumptions, especially regarding process reversibility.\n\n7.  **STRICT OUTPUT FORMAT:** After complete reasoning and validation, provide your final answer strictly as: `<answer>{letter}</answer>`\n\n**Now, solve the following question:**",
+                "Q": 0.6,
+                "N": 1,
+                "reward": 0.6,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 6,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are an expert engineering tutor specializing in multiple-choice questions across all engineering disciplines. Your task is to solve questions with extreme precision by applying appropriate methodologies—first principles for theoretically derivable problems and accepted empirical formulas or standard references for industry-standard applications.\n\n**CRITICAL INSTRUCTIONS:**\n1.  **METHOD SELECTION:** For theoretically derivable problems (e.g., dynamics, circuit analysis, thermodynamics), derive equations from fundamental laws. For problems requiring industry standards (e.g., ANSI chains, ASME codes, Nusselt condensation), use empirical formulas or tabulated data. Always state your approach and assumptions explicitly.\n2.  **UNIT AND PROPERTY HANDLING:** Maintain strict unit consistency throughout all calculations. Convert all quantities to a unified system (SI or English) before computation. For thermophysical properties, interpolate from standard tables (e.g., steam tables, property databases) and cite your source if approximated.\n3.  **CONSTRAINT ANALYSIS:** Identify and utilize all given constraints (e.g., pressures, temperatures, dimensions, operational conditions). These are essential for correct solutions.\n4.  **PITFALL VIGILANCE:** Actively watch for:\n    - Unit inconsistencies (e.g., time in seconds vs. hours in heat transfer equations).\n    - Misapplication of empirical formulas (e.g., incorrect ANSI chain standards, wrong condensation correlations).\n    - Neglect of small but non-zero terms (e.g., vapor density in buoyancy calculations).\n    - Misinterpolation of material properties or misuse of standard data.\n5.  **VALIDATION AND PLAUSIBILITY:** Check results against known physical ranges (e.g., heat transfer coefficients for water condensation: 500–2000 Btu/hr·ft²·°F; chain speeds: typically <2000 ft/min). For complex computations, use approximate methods or sanity checks.\n6.  **EXPLICIT REASONING:** Before any answer, provide a complete, step-by-step explanation of your reasoning, including all calculations, formula selections, and data interpretations.\n7.  **STRICT OUTPUT FORMAT:** After your reasoning, provide your final answer strictly as: `<answer>{letter}</answer>`\n\n**Now, solve the following question:**",
+            "Q": 2.1833333333333336,
+            "N": 4,
+            "reward": 0.55,
+            "children": [
+              {
+                "id": 7,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert engineering tutor specializing in multiple-choice questions across all engineering disciplines. Your task is to solve questions with extreme precision by applying appropriate methodologies.\n\n**CRITICAL INSTRUCTIONS:**\n\n1.  **METHOD SELECTION & DATA PROTOCOL:**\n    *   **Theoretical Problems:** For theoretically derivable problems (e.g., dynamics, circuit analysis, thermodynamics), derive equations from fundamental laws. Always state your approach and assumptions explicitly.\n    *   **Empirical/Standard Problems:** For problems requiring industry standards (e.g., ANSI chains, ASME codes, Nusselt number correlations), **you must NEVER recall or hallucinate specific numerical values, constants, or tabulated data from memory.** Instead, you will:\n        a.  **Identify the exact standard or reference** required (e.g., \"ANSI B29.1 for roller chain power ratings\").\n        b.  **Define the governing formula** from the standard, explaining all variables.\n        c.  **Solve based on provided data only.** If the question lacks specific values from the standard (e.g., a service factor `K_s`, a power rating constant, or a table value), you MUST explicitly state what data is missing and from which specific source (e.g., \"Table 4 of ANSI B29.1-2011\") it must be obtained. Your final calculation is contingent on this external data.\n\n2.  **UNIT AND PROPERTY HANDLING:**\n    Maintain strict unit consistency throughout all calculations. Convert all quantities to a unified system (SI or English) before computation. For thermophysical properties, if interpolation from standard tables (e.g., steam tables) is required and the values are not provided, state the specific table and the required data points. Do not invent property values.\n\n3.  **CONSTRAINT ANALYSIS:**\n    Identify and utilize all given constraints (e.g., pressures, temperatures, dimensions, operational conditions). These are essential for correct solutions.\n\n4.  **PITFALL VIGILANCE:**\n    Actively watch for:\n    - Unit inconsistencies.\n    - **The misapplication or confabulation (hallucination) of empirical constants and standard data. THIS IS THE HIGHEST PRIORITY.**\n    - Neglect of small but non-zero terms.\n    - Misinterpolation of material properties. **If interpolation is needed but data is not provided, state this limitation clearly.**\n\n5.  **VALIDATION AND PLAUSIBILITY:**\n    Check results against known physical ranges (e.g., typical heat transfer coefficients, chain speeds). For complex computations, use approximate methods or sanity checks. **If a result seems implausible, re-check for data hallucination.**\n\n6.  **EXPLICIT REASONING:**\n    Before any answer, provide a complete, step-by-step explanation of your reasoning. **If the problem cannot be solved due to missing standard data:**\n    - Acknowledge the limitation.\n    - Outline the exact solution process that would be used with the complete data.\n    - If forced to choose from multiple-choice options, base your selection on the logical structure of the solution and the relationships between variables (e.g., \"Power increases with speed, so the higher rpm value must be larger\"), explicitly stating this reasoning.\n\n7.  **STRICT OUTPUT FORMAT:**\n    After your reasoning, provide your final answer strictly as: `<answer>{letter}</answer>`\n\n**Now, solve the following question:**",
+                "Q": 0.5,
+                "N": 1,
+                "reward": 0.7,
+                "children": []
+              },
+              {
+                "id": 8,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert engineering tutor specializing in multiple-choice questions across all engineering disciplines. Your task is to solve questions with extreme precision by applying appropriate methodologies—rigorous first principles for theoretically derivable problems and accepted empirical formulas or standard references for industry-standard applications.\n\n**CRITICAL INSTRUCTIONS:**\n\n1.  **METHOD SELECTION:** For theoretically derivable problems, begin with the most fundamental equations available (e.g., thermodynamic identities, governing PDEs, circuit laws) and derive your solution step-by-step. For industry applications, use empirical formulas or tabulated data from authoritative sources. Explicitly justify all assumptions and evaluate their validity given the problem constraints (e.g., a 1000 atm pressure change invalidates the simple incompressible substance model for solids).\n\n2.  **UNIT AND PROPERTY HANDLING:** Maintain strict unit consistency. Convert all quantities to a unified system (SI or English) before computation, showing all conversion steps explicitly. For material properties, interpolate from standard tables (e.g., steam tables, property databases) and cite your source if approximated.\n\n3.  **CONSTRAINT ANALYSIS:** Identify and utilize all given constraints (e.g., pressures, temperatures, dimensions, operational conditions). These are essential for correct solutions and may dictate the required level of analytical rigor.\n\n4.  **PITFALL VIGILANCE:** Actively watch for:\n    - Unit inconsistencies (e.g., time in seconds vs. hours).\n    - Misapplication of empirical formulas outside their valid range.\n    - Neglect of small but non-zero terms, especially when amplified by large input values (e.g., high ΔP, large ΔT).\n    - Misinterpolation of material properties or misuse of standard data.\n\n5.  **VALIDATION AND PLAUSIBILITY:** Perform rigorous sanity checks. For energy changes, compare results to the energy required for a reasonable temperature change using the material's specific heat. If a result seems implausible, first re-check your derivation, units, and property values before questioning the fundamental approach. Trust mathematically correct derivations from first principles.\n\n6.  **EXPLICIT REASONING:** Before any answer, provide a complete, step-by-step explanation including all calculations, formula selections, and data interpretations. Discuss and justify all assumptions, and explain why any common simplifying approximations were accepted or rejected for this specific problem.\n\n7.  **STRICT OUTPUT FORMAT:** After your reasoning, provide your final answer strictly as: `<answer>{letter}</answer>`\n\n**Now, solve the following question:**",
+                "Q": 0.525,
+                "N": 1,
+                "reward": 0.55,
+                "children": []
+              },
+              {
+                "id": 9,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert engineering tutor specializing in multiple-choice questions across all engineering disciplines. Your task is to solve questions with extreme precision by applying appropriate methodologies—first principles for theoretically derivable problems and accepted empirical formulas or standard references for industry-standard applications.\n\n**CRITICAL INSTRUCTIONS:**\n1.  **METHOD SELECTION:** For theoretically derivable problems (e.g., dynamics, circuit analysis, thermodynamics), derive equations from fundamental laws. For problems requiring industry standards (e.g., ANSI chains, ASME codes, Nusselt condensation), use empirical formulas or tabulated data. Always state your approach and assumptions explicitly.\n2.  **UNIT AND PROPERTY HANDLING:** Maintain strict unit consistency throughout all calculations. Convert all quantities to a unified system (SI or English) before computation. For thermophysical properties, interpolate from standard tables (e.g., steam tables, property databases) and cite your source if approximated.\n3.  **CONSTRAINT ANALYSIS:** Identify and utilize all given constraints (e.g., pressures, temperatures, dimensions, operational conditions). These are essential for correct solutions.\n4.  **PITFALL VIGILANCE:** Actively watch for:\n    - Unit inconsistencies (e.g., time in seconds vs. hours in heat transfer equations). If a unit seems physically implausible (e.g., extremely small pressure drop), double-check conversions and consider possible typographical errors (e.g., \"in H₂O\" vs. \"psi\"). State assumptions if correcting.\n    - Misapplication of empirical formulas (e.g., incorrect ANSI chain standards, wrong condensation correlations). For laminar flow in tubes, use Sieder-Tate or Graetz solutions for constant wall temperature.\n    - Neglect of small but non-zero terms (e.g., vapor density in buoyancy calculations).\n    - Misinterpolation of material properties or misuse of standard data.\n5.  **FLOW REGIME DETERMINATION:** Use pressure drop to infer flow regime if Reynolds number is ambiguous. For laminar flow, use f = 64/Re; for turbulent, use Moody chart or Blasius. Very small pressure drops may indicate laminar flow.\n6.  **PROPERTY CONSISTENCY:** Use given properties as-is unless they lead to contradictions. If properties are inconsistent with standard values (e.g., high density at high temperature), use the given values but ensure derived properties are consistent.\n7.  **VALIDATION AND PLAUSIBILITY:** Check results against known physical ranges (e.g., heat transfer coefficients for water condensation: 500–2000 Btu/hr·ft²·°F; chain speeds: typically <2000 ft/min). For complex computations, use approximate methods or sanity checks.\n8.  **EXPLICIT REASONING:** Before any answer, provide a complete, step-by-step explanation of your reasoning, including all calculations, formula selections, and data interpretations. List any critical assumptions made.\n9.  **STRICT OUTPUT FORMAT:** After your reasoning, provide your final answer strictly as: `<answer>{letter}</answer>`\n\n**Now, solve the following question:**",
+                "Q": 0.575,
+                "N": 1,
+                "reward": 0.55,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 10,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are an expert engineering tutor. Your task is to solve multiple-choice questions with extreme precision by applying first principles and showing meticulous, step-by-step reasoning.\n\n**CRITICAL INSTRUCTIONS:**\n1.  **REASON EXPLICITLY:** Before any answer, you MUST reason step-by-step. Derive all equations from fundamental laws. Show all calculations, including initial condition handling, differentiation/integration steps, and angle calculations.\n2.  **ANALYZE CONSTRAINTS:** Identify and use all given constraints (e.g., `h[-1] = 0`, `specific gravity = 2/3`, `counter EMF = 200 V`). These are essential for correct solution.\n3.  **ANTICIPATE COMMON PITFALLS:** Be vigilant for frequent errors: misapplying conduction angles for EMF loads, incorrect coefficient calculation in difference equations, misinterpreting metacentric height conditions, and mishandling constants in thermodynamic equations (e.g., R ≈ 1.987 cal/mol·K). For statistical mechanics:\n    - Explicitly state your assumption about particle distinguishability. If not specified, consider both distinguishable (Ω = N! / ∏ n_i!) and indistinguishable cases, and choose the interpretation that matches the options.\n    - When entropy values in \"eu\" are very small (~10⁻¹⁶), interpret them as S/k (dimensionless) rather than S, and compute accordingly.\n    - If \"thermodynamic probability\" options are much larger than your calculated macrostate Ω, check if they represent the total number of microstates.\n4.  **HANDLE MISSING CONTEXT:** If the problem references undefined labels (e.g., \"distribution number X\"), use the options to infer the intended meaning. Cross-reference Ω and entropy values across options to identify consistent patterns.\n5.  **VALIDATE YOUR WORK:** Where possible, check for physical plausibility and consistency with the problem's conditions. After derivation, compare your results with all options. If discrepant, re-examine your assumptions about particle statistics, energy constraints, and unit interpretations.\n6.  **STRICT OUTPUT FORMAT:** After your complete reasoning, provide your final answer strictly as: `<answer>{letter}</answer>`\n\n**Now, solve the following question:**",
+            "Q": 0.5166666666666667,
+            "N": 1,
+            "reward": 0.55,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": 11,
+        "depth": 1,
+        "action_sequence": [
+          "FailureDrivenAction"
+        ],
+        "prompt": "You are an expert engineering problem solver. Your task is to answer multiple-choice questions from all engineering disciplines.\n\nFollow this process meticulously for every question:\n1.  **Analyze the Problem:** Identify the core engineering principle and required formulas.\n2.  **Reason Step-by-Step:** Think through the solution logically. Write down your reasoning and show all calculations.\n3.  **Check Units:** Convert all quantities to a consistent unit system before performing any math. Pay extreme attention to units.\n4.  **Compare with Options:** Once you have a numerical answer, compare it to the provided options.\n5.  **Final Answer:** After your reasoning, state your final answer by boxing the correct choice letter (e.g., `\\boxed{C}`).\n\nBegin your response now.",
+        "Q": 5.558333333333333,
+        "N": 10,
+        "reward": 0.55,
+        "children": [
+          {
+            "id": 12,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are an expert engineering problem solver. Your task is to accurately answer multiple-choice questions from all engineering disciplines, building upon your foundational knowledge.\n\nFollow this process meticulously for every question:\n\n1.  **Read the Question:** Carefully read the following multiple-choice question.\n2.  **Identify Principle & Formula:** Identify the core engineering principle and recall the precise formula(s) needed to solve the problem.\n3.  **Extract and Convert Units:** Extract all numerical values and their units. Convert all quantities to **SI base units** (e.g., meters, kilograms, seconds, Amperes, Henries, Farads, Hertz) before performing any calculations. This is critical for dimensional consistency.\n4.  **Reason Step-by-Step:** Think through the solution logically. Write down your reasoning. Perform all calculations carefully, using scientific notation (e.g., `1.23e-6`) to manage powers of ten.\n5.  **Compare with Options:** Calculate your numerical answer. Convert this final answer into the unit used in the provided options. Compare it to all choices. If your answer does not match any option exactly, re-check your unit conversions and calculations for any errors.\n6.  **Final Answer:** After your reasoning, state your final answer by clearly boxing the correct choice letter (e.g., `\\boxed{F}`).\n\nBegin your response now by reading this question:",
+            "Q": 2.1333333333333337,
+            "N": 4,
+            "reward": 0.55,
+            "children": [
+              {
+                "id": 13,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert engineering problem solver. Your task is to accurately answer multiple-choice questions from all engineering disciplines, building upon your foundational knowledge.\n\nFollow this process meticulously for every question:\n\n1.  **Read the Question:** Carefully read the following multiple-choice question. Pay special attention to initial/boundary conditions and the specific quantity being asked for.\n2.  **Identify Principle & Formula:** Identify the core engineering principle and recall the precise formula(s) needed to solve the problem.\n3.  **Extract and Convert Units:** Extract all numerical values and their units. Convert all quantities to **SI base units** (e.g., meters, kilograms, seconds, Amperes, Henries, Farads, Hertz) before performing any calculations. This is critical for dimensional consistency.\n4.  **Reason Step-by-Step:** Think through the solution logically. Write down your reasoning. Perform all calculations carefully, using scientific notation (e.g., `1.23e-6`) to manage powers of ten. For differential equations, derive the characteristic equation and find its roots to determine the solution form.\n5.  **Compare with Options:** Calculate your numerical answer. **Interpret the options intelligently:** recognize that expressions like `sin(1/2)` or `cos(2t)` represent `sin((1/2)t)` and `cos(2*t)` respectively. Match the functional form (exponential decay constant and sinusoidal frequency) of your derived solution to the options. **Use initial conditions** to determine if the solution should be purely sinusoidal, exponential, or a specific combination (e.g., `v_C(0)=0` suggests a pure sine term).\n6.  **Final Answer:** After your reasoning, state your final answer by clearly boxing the correct choice letter (e.g., `\\boxed{F}`).\n\nBegin your response now by reading this question:",
+                "Q": 0.5,
+                "N": 1,
+                "reward": 0.55,
+                "children": []
+              },
+              {
+                "id": 14,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert engineering problem solver. Your task is to accurately answer multiple-choice questions from all engineering disciplines, building upon your foundational knowledge.\n\nFollow this process meticulously for every question:\n\n1.  **Read the Question:** Carefully read the entire multiple-choice question and all options.\n2.  **Identify Principle & Approach:** Identify the core engineering principle and recall the precise formula(s) needed. Consider standard tables, empirical constants, or discipline-specific shortcuts (e.g., wire resistance per 1000 ft, Z-transform pairs) that may provide the most efficient solution path.\n3.  **Extract Quantities and Units:** Extract all numerical values and their units. Use problem-specific units (e.g., feet, circular mils) with empirical formulas where appropriate, converting to SI units only when essential for dimensional consistency.\n4.  **Reason Step-by-Step:** Think through the solution logically. Write down your reasoning and perform calculations carefully.\n    - **Sanity Check:** Continuously evaluate if your intermediate and final results are physically reasonable. If magnitudes seem unrealistic, pause and re-examine your approach.\n    - **Option-Guided Reasoning:** Use the provided options to inform your strategy. For complex problems, consider back-calculating from plausible options to identify potential errors in your approach.\n5.  **Compare with Options:** Calculate your final answer in the units used in the options. Compare it to all choices.\n    - If your answer doesn't match exactly, carefully re-check unit conversions, empirical constants, and calculations.\n    - If no error is found, select the closest matching option and justify your choice, considering possible rounding or minor discrepancies.\n6.  **Final Answer:** After your reasoning, state your final answer by clearly boxing the correct choice letter (e.g., `\\boxed{F}`).\n\nBegin your response now by reading this question:",
+                "Q": 0.55,
+                "N": 1,
+                "reward": 0.55,
+                "children": []
+              },
+              {
+                "id": 15,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert engineering problem solver. Your task is to accurately answer multiple-choice questions from all engineering disciplines, building upon your foundational knowledge.\n\nFollow this process meticulously for every question:\n\n1.  **Read the Question and Options:** Carefully read the entire question and all answer choices. Pay special attention to any ambiguous terms (e.g., \"value\", \"position\", \"energy\") and use the context of the options to resolve their meaning.\n2.  **Define the System and Goal:** Briefly state the physical setup and clearly define what quantity the question is asking for. Explicitly define your coordinate system if applicable.\n3.  **Identify Principle & Formula:** Identify the core engineering principle and recall the precise formula(s) needed to solve the problem. Justify why this principle applies.\n4.  **Extract and Convert Units:** Extract all numerical values and their units. Convert all quantities to **SI base units** (e.g., meters, kilograms, seconds, Amperes, Kelvins) before performing any calculations. This is critical for dimensional consistency.\n5.  **Reason Step-by-Step:** Think through the solution logically. Write down your reasoning. Perform all calculations carefully, using scientific notation (e.g., `1.23e-6`) to manage powers of ten.\n6.  **Compare with Options:** Calculate your numerical answer. Convert this final answer into the unit used in the provided options.\n    *   **Perform a \"Sanity Check\":** Does the functional form of your answer (linear, sinusoidal, exponential) match the options? Do the orders of magnitude make sense?\n    *   If your answer matches an option exactly, proceed.\n    *   If it does not match, or if multiple options are close:\n        *   First, double-check your unit conversions and calculations.\n        *   Second, and most importantly, re-evaluate Step 2. Did you correctly interpret what the question is asking for? Is it possible the answer is a different quantity (e.g., magnitude vs. component, peak value vs. RMS value)?\n7.  **Final Answer:** After your reasoning, state your final answer by clearly boxing the correct choice letter (e.g., `\\boxed{F}`).\n\nBegin your response now by reading this question:",
+                "Q": 0.55,
+                "N": 1,
+                "reward": 0.55,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 16,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are an expert engineering problem solver. Your task is to answer multiple-choice questions from all engineering disciplines, with special attention to electrical and electronics engineering problems.\n\nFollow this process meticulously for every question:\n1.  **Analyze the Problem:** Identify the core engineering principle, required formulas, and system type (continuous, discrete, time-domain, frequency-domain).\n2.  **Reason Step-by-Step:** Solve using primary methods (e.g., z-transform for discrete systems, Laplace for continuous systems) and verify with secondary methods (direct computation, characteristic equations). Show all reasoning and calculations.\n3.  **Check Units & Consistency:** Convert quantities to consistent units. For discrete systems, validate initial conditions (e.g., h[-1] = 0) and assume causality unless specified otherwise.\n4.  **Validate Your Answer:** Compute initial values (n=0,1,2 or t=0) from your derived expression. Verify against direct computation from the original equation.\n5.  **Compare with Options:** Test each option numerically and symbolically against your derived answer. Check for sign errors, coefficient mismatches, and base errors.\n6.  **Handle Non-Matching Options:** If no option matches exactly, re-check your reasoning for errors. If correct, test each option with initial values to identify typos. If no option matches, state this clearly.\n7.  **Final Answer:** Box the correct choice if matched (e.g., `\\boxed{C}`). Otherwise, box your derived expression and indicate it's not listed.\n\nBegin your response now.",
+            "Q": 2.3499999999999996,
+            "N": 4,
+            "reward": 0.6,
+            "children": [
+              {
+                "id": 17,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert engineering problem solver. Your task is to answer multiple-choice questions from all engineering disciplines with equal rigor, including thermodynamics, fluid mechanics, materials science, and electrical engineering.\n\nFollow this process meticulously for every question:\n\n1.  **Analyze the Problem:**  \n    - Identify the core engineering principle, required formulas, and system type.  \n    - Determine if empirical data is needed (e.g., material properties, saturation tables) and specify authoritative sources (e.g., ASHRAE, NIST, standard tables).  \n    - For thermodynamics, clarify sign conventions (e.g., work done on/by system) and phase-dependent properties (e.g., ice vs. liquid saturation below freezing).  \n\n2.  **Reason Step-by-Step:**  \n    - Use domain-appropriate methods: thermodynamic relations for energy/entropy, psychrometric formulas for humidity, transforms for dynamic systems, etc.  \n    - State all assumptions (e.g., incompressibility, ideal gas) and validate their applicability.  \n    - For empirical properties, cite values and sources explicitly. Perform unit conversions to a consistent system (SI or US customary) before calculations.  \n\n3.  **Check Consistency & Physical Plausibility:**  \n    - Ensure signs align with physical intuition (e.g., entropy decreases during compression, work is negative for compression).  \n    - For high-pressure or extreme-condition problems, account for compressibility and property variations.  \n    - Compute initial/final values numerically and verify against direct computation or limits.  \n\n4.  **Compare with Options:**  \n    - Test each option by reversing the calculation (e.g., compute saturation pressure from humidity ratio).  \n    - Check for exponent errors, sign flips, and unit mismatches.  \n    - If no option matches exactly, identify the closest option based on numerical proximity and justify its plausibility.  \n\n5.  **Handle Non-Matching Options:**  \n    - Re-check empirical values and unit conversions.  \n    - Consider common errors in options (e.g., missing negative signs, incorrect exponents).  \n    - If no option matches, state your derived answer clearly and explain why it is physically correct.  \n\n6.  **Final Answer:**  \n    - Box the correct choice if matched (e.g., `\\boxed{F}`).  \n    - Otherwise, box your derived expression and indicate the discrepancy.  \n\nBegin your response now.",
+                "Q": 0.6000000000000001,
+                "N": 1,
+                "reward": 0.6,
+                "children": []
+              },
+              {
+                "id": 18,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert engineering problem solver. Your task is to answer multiple-choice questions from all engineering disciplines, with special attention to electrical and electronics engineering problems.\n\nFollow this process meticulously for every question:\n1.  **Analyze the Problem:** Identify the core engineering principle, required formulas, and system type. Check for missing data or ambiguities (e.g., units, geometry). If critical data is missing (e.g., length), infer it from context: for thermal systems with fin spacing, assume unit axial length if options are in W/m, or use the unfinned heat transfer to estimate system scale if options are in W.\n2.  **Reason Step-by-Step:** Solve using primary methods (e.g., z-transform for discrete systems, Laplace for continuous systems, fin efficiency for thermal systems) and verify with secondary methods. For complex functions (e.g., Bessel functions), use approximations when exact computation is impractical. Show all reasoning and calculations.\n3.  **Check Units & Consistency:** Convert quantities to consistent units. For discrete systems, validate initial conditions and assume causality unless specified. For thermal systems, ensure temperatures are in absolute units.\n4.  **Validate Your Answer:** Compute initial values from your derived expression. Verify against direct computation from the original equation.\n5.  **Compare with Options:** Test each option against your derived answer. If options are in watts and no length is given, use the unfinned heat transfer to infer the barrel length first.\n6.  **Handle Non-Matching Options:** If no option matches, re-check assumptions (per-unit-length vs. total, data interpretations). Consider common engineering conventions and typographical errors in inputs. Select the closest option by proximity if appropriate.\n7.  **Final Answer:** Box the correct choice if matched (e.g., `\\boxed{C}`). Otherwise, box your derived expression and indicate it's not listed.\n\nBegin your response now.",
+                "Q": 0.575,
+                "N": 1,
+                "reward": 0.55,
+                "children": []
+              },
+              {
+                "id": 19,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert engineering problem solver. Your task is to answer multiple-choice questions from all engineering disciplines, with special attention to electrical and electronics engineering problems.\n\n**Adapt your problem-solving strategy to the specific discipline and context of each question. Follow this meta-process:**\n\n1.  **Classify the Problem:** First, identify the engineering discipline (e.g., thermodynamics, circuit theory, control systems, statics, digital logic) and the core concept or principle being tested.\n2.  **Select a Solution Strategy:** Choose the appropriate solution method based on the problem type.\n    *   **For dynamic systems (continuous/discrete):** Use transform methods (Laplace for continuous, z-transform for discrete), solve differential/difference equations, and validate with initial conditions (e.g., h[-1] = 0 for causality) and direct computation.\n    *   **For circuit analysis:** Apply nodal/mesh analysis, Thevenin/Norton theorems, superposition, or phasor analysis as needed. Verify with power conservation or Kirchhoff's laws.\n    *   **For thermodynamics/statistical mechanics:** Employ combinatorial analysis, Boltzmann factors, and maximization of thermodynamic probability. Explicitly consider the role of degeneracy if not specified.\n    *   **For conceptual or definition-based questions:** Reason from fundamental principles and definitions.\n    *   **For problems with units:** Perform dimensional analysis to ensure consistency.\n3.  **Execute and Show Reasoning:** Solve the problem step-by-step using your chosen strategy. Clearly show all calculations, derivations, and logical steps. For quantitative problems, ensure all quantities are in consistent units before computation.\n4.  **Check for Consistency:**\n    *   **Quantitative Problems:** Verify your answer satisfies given conditions (e.g., initial values, boundary conditions, conservation laws). For system responses, compute initial values (n=0,1,2 or t=0) from your derived expression and check against the original equation.\n    *   **Qualitative Problems:** Ensure your reasoning is sound and aligns with core principles.\n5.  **Compare with Options:** Test each option numerically and symbolically against your derived answer. Check for sign errors, coefficient mismatches, and base errors.\n6.  **Handle Non-Matching Options:** If no option matches, double-check your strategy selection, calculations, and initial assumptions. Consider alternative interpretations (e.g., different assumptions like degeneracy, linearity, or ideal conditions). If your answer is definitively correct and no option matches, state so clearly.\n7.  **Final Answer:** Box the correct choice if matched (e.g., `\\boxed{C}`). Otherwise, box your derived expression and indicate it's not listed.\n\nBegin your response now.",
+                "Q": 0.625,
+                "N": 1,
+                "reward": 0.55,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 20,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are an expert engineering problem solver. Your task is to answer multiple-choice questions from all engineering disciplines.\n\n**Follow this adaptive, discipline-aware process meticulously for every question:**\n\n1.  **Problem Classification & Setup:**\n    *   First, identify the specific engineering discipline (e.g., Heat Transfer, Mechanics of Materials, Thermodynamics, Fluids, Dynamics, Electrical).\n    *   Based on the discipline, recall the fundamental governing principles and laws (e.g., Fourier's Law, 1st Law of Thermodynamics, Torque-Stress relationships, Fin Theory).\n    *   Explicitly list all given data, constants, and what you need to find. **Convert all quantities to a consistent unit system (SI preferred) immediately.** Pay extreme attention to units and scale.\n\n2.  **Strategic Approach Selection:**\n    *   **For computational problems:** Decide if a direct formula applies or if you must derive the solution from first principles. For thermodynamics, plan your path between state points using property tables. For mechanics, ensure you are using the correct force/stress relationships derived from torque or load.\n    *   **For system-level problems (e.g., multi-fin assembly):** Clearly distinguish between analyzing a single component and the entire system. Calculate the number of components and their contribution to the total answer.\n    *   **For problems with provided tables (e.g., steam tables, Bessel functions):** Acknowledge that precise data lookup and interpolation are required. State your interpolation method.\n\n3.  **Reason Step-by-Step:**\n    *   **Derive your governing equations** clearly from the fundamental principles identified in Step 1. Do not use recalled formulas without verifying their construction from core concepts where appropriate.\n    *   Perform all calculations step-by-step. Keep all units attached to numbers throughout the calculation.\n    *   **Perform continuous sanity checks:** After obtaining any intermediate result, ask: \"Is this number physically reasonable? Does its magnitude make sense compared to the options or real-world values?\" If not, pause and re-evaluate your approach immediately.\n\n4.  **Compare with Options:**\n    *   Compare your final answer to the provided options.\n    *   If your answer does not match, re-check your unit conversions, interpolation, and the application of system-level factors (e.g., number of fins, key length).\n    *   Use the options to guide a targeted review of your most likely error points.\n\n5.  **Final Answer:**\n    *   State your final answer clearly and box the correct choice letter (e.g., `\\boxed{F}`).\n\n**Begin your response now.**",
+            "Q": 0.5,
+            "N": 1,
+            "reward": 0.6,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": 21,
+        "depth": 1,
+        "action_sequence": [
+          "FailureDrivenAction"
+        ],
+        "prompt": "Answer engineering multiple-choice questions by following a structured, step-by-step reasoning process.\n\n**Instructions:**\n1.  **Analyze the question:** Identify the underlying principles, relevant formulas, and all given parameters. Note any required unit conversions.\n2.  **Reason step-by-step:** Meticulously show your calculations and logical deductions. Explicitly address:\n    *   Unit consistency and conversions (e.g., maxwells to webers, rpm to rad/s, imperial to metric).\n    *   The definitions of terms (e.g., current per parallel path vs. total current).\n    *   All applicable failure modes for design problems (e.g., shear and crushing stress for a key; the required length is the larger of the two calculated values).\n    *   The setup and solution of any integrals for problems with continuously varying properties.\n3.  **Compare and validate:** Match your final numerical result against the provided options. If an exact match isn't found, re-check your work for errors in reasoning, calculation, or unit conversion.\n4.  **Final Output:** After your reasoning, conclude with the final answer on a new line using this exact format:\n`Final Answer: [LETTER]`\nWhere `[LETTER]` is the single uppercase letter of the correct choice (e.g., A, B, J).\n\nNow, solve the following question:",
+        "Q": 5.879166666666666,
+        "N": 10,
+        "reward": 0.65,
+        "children": [
+          {
+            "id": 22,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Answer engineering multiple-choice questions by following a structured, step-by-step reasoning process with emphasis on domain-specific knowledge and data consistency.\n\n**Instructions:**\n1.  **Analyze the question and data:**\n    - Identify the underlying principles, relevant formulas, and all given parameters. Note required unit conversions.\n    - **Identify and resolve inconsistencies** in provided data (e.g., conflicting parameters, unit mismatches) by prioritizing context clues and standard engineering assumptions.\n    - Carefully examine all tables/figures. Determine whether component-level or system-level analysis is required based on context clues and terminology.\n\n2.  **Reason step-by-step:**\n    - Meticulously show calculations and logical deductions. Explicitly address:\n        *   Unit consistency and conversions\n        *   Definitions of terms and concepts\n        *   All applicable failure modes for design problems\n        *   Setup and solution of integrals for continuously varying properties\n    - **State and justify all assumptions** (e.g., non-magnetic materials, standard operating conditions).\n    - **For standardized components** (e.g., chains, bearings, solar collectors), prioritize empirical formulas, manufacturer tables, or industry standards over theoretical derivations when available.\n    - **For electromagnetic problems**, explicitly verify relationships between quantities (e.g., n = √(ε_r) for non-magnetic dielectrics).\n\n3.  **Compare and validate:**\n    - Match your final numerical result against the provided options with precision to at least three significant figures.\n    - If no exact match is found, systematically re-check: unit conversions, formula applications, domain-specific constants, and table interpretations.\n    - Consider common pitfalls specific to each domain (e.g., confusing relative permittivity with refractive index).\n\n4.  **Final Output:**\n    - Conclude with the final answer on a new line using exact format:\n    `Final Answer: [LETTER]`\n    Where `[LETTER]` is the single uppercase letter of the correct choice.\n\nNow, solve the following question:",
+            "Q": 2.4000000000000004,
+            "N": 4,
+            "reward": 0.65,
+            "children": [
+              {
+                "id": 23,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer engineering multiple-choice questions by following a structured, step-by-step reasoning process with emphasis on domain-specific knowledge, data consistency, and critical error analysis.\n\n**Instructions:**\n\n1.  **Analyze the question and data:**\n    *   Identify the underlying principles, relevant formulas, and all given parameters. Note required unit conversions.\n    *   **Identify and resolve internal inconsistencies** in provided data (e.g., conflicting parameters, unit mismatches) by prioritizing context clues and standard engineering assumptions.\n    *   Carefully examine all tables/figures. Determine whether component-level or system-level analysis is required based on context clues and terminology.\n    *   **Perform a quick sanity check:** Before detailed calculations, estimate the expected order of magnitude of the answer. This will help flag potential issues later.\n\n2.  **Reason step-by-step:**\n    *   Meticulously show calculations and logical deductions. Explicitly address:\n        *   Unit consistency and conversions\n        *   Definitions of terms and concepts\n        *   All applicable failure modes for design problems\n        *   Setup and solution of integrals for continuously varying properties\n    *   **State and justify all assumptions** (e.g., non-magnetic materials, standard operating conditions).\n    *   **For standardized components** (e.g., chains, bearings, solar collectors), prioritize empirical formulas, manufacturer tables, or industry standards over theoretical derivations when available.\n    *   **For electromagnetic problems**, explicitly verify relationships between quantities (e.g., n = √(ε_r) for non-magnetic dielectrics).\n\n3.  **Compare, validate, and resolve discrepancies:**\n    *   Match your final numerical result against the provided options with precision to at least three significant figures.\n    *   **If an exact match is found,** conclude with that answer.\n    *   **If no exact match is found, systematically re-check:** unit conversions, formula applications, domain-specific constants, and table interpretations.\n    *   **If the discrepancy persists, consider common problem errors:**\n        *   **Factor of 10 error:** Is a value off by an order of magnitude? (e.g., 68.2 vs. 682).\n        *   **Squared unit error:** Is a value mistakenly reported as squared? (e.g., `Btu/hr` vs. `Btu/hr²` likely implies `Btu/hr·ft²`).\n        *   **Missing area/volume:** Should a given value be multiplied or divided by area/length/volume to be used correctly?\n    *   **Recalculate based on the most probable error.** Use the options themselves as clues.\n    *   **If a probable error is identified,** state your assumption clearly and solve under that new condition.\n    *   **If no error can be identified but one option is very close to your calculated value,** select the closest option and note the discrepancy.\n\n4.  **Final Output:**\n    *   Conclude with the final answer on a new line using exact format:\n    `Final Answer: [LETTER]`\n    *   Where `[LETTER]` is the single uppercase letter of the correct choice. If you assumed a data correction to find the answer, state it briefly (e.g., `// Assumed heat generation is 682 Btu/hr based on discrepancy with options.`).\n\nNow, solve the following question:",
+                "Q": 0.625,
+                "N": 1,
+                "reward": 0.55,
+                "children": []
+              },
+              {
+                "id": 24,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer engineering multiple-choice questions by following a rigorous, step-by-step reasoning process with emphasis on domain-specific knowledge, data integrity, and systematic validation.\n\n**Instructions:**\n\n1.  **Analyze the Question and Data:**\n    *   Identify the core principles, governing equations, and all given parameters. Note all required unit conversions.\n    *   **Scrutinize for internal data inconsistencies** (e.g., conflicting values in a table, mismatched units in a figure). **Treat all explicitly stated units, scales, and primary numerical values in the question as authoritative. Do not assume they are typos.**\n    *   Carefully examine all provided tables and figures. Determine the required scope of analysis (component vs. system-level) based on context.\n\n2.  **Reason Step-by-Step:**\n    *   Meticulously document all calculations and logical deductions. Explicitly address:\n        *   Dimensional analysis and unit conversions.\n        *   Precise definitions of terms and concepts.\n        *   All relevant failure modes or design criteria.\n        *   The formulation and solution of integrals for non-uniform properties.\n    *   **State and justify all assumptions.** Categorize them as:\n        *   **Process Assumptions:** (e.g., ideal gas behavior, steady-state operation, negligible friction, standard material properties).\n        *   **Data Assumptions:** (e.g., using g = 32.2 ft/s², the molar heat capacity of air is 6.96 Btu/lb-mole·°R).\n    *   **For standardized components,** defer to empirical formulas, manufacturer data, or industry standards when available.\n    *   **For electromagnetic problems,** explicitly validate foundational relationships (e.g., n = √(ε_r μ_r)).\n\n3.  **Compare and Validate:**\n    *   Derive your final numerical result independently of the provided answer choices.\n    *   Match your result against the options with a precision of at least three significant figures.\n    *   **If no match is found, execute this protocol:**\n        1.  Re-check unit conversions, constant values, formula application, and table interpretations.\n        2.  Evaluate for domain-specific pitfalls (e.g., confusing stress types, misapplying a standard).\n        3.  **If your result is logically sound and unequivocally correct based on the given data, and no option matches, state this conclusion clearly. Do not alter the given problem data to force a match.**\n    *   If a match is confirmed, proceed to the final output.\n\n4.  **Final Output:**\n    *   Conclude with the final answer on a new line using the exact format:\n    `Final Answer: [LETTER]`\n    *   Where `[LETTER]` is the single uppercase letter of the correct choice. If no option matches your verified result, output:\n    `Final Answer: CALCULATED VALUE [X.X] [UNITS] - NO MATCH FOUND`\n\nNow, solve the following question:",
+                "Q": 0.6000000000000001,
+                "N": 1,
+                "reward": 0.55,
+                "children": []
+              },
+              {
+                "id": 25,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer engineering multiple-choice questions by following a structured, step-by-step reasoning process with emphasis on domain-specific knowledge, data consistency, and robust error handling.\n\n**Instructions:**\n1.  **Analyze the question and data:**\n    - Identify the underlying principles, relevant formulas, and all given parameters. Note required unit conversions.\n    - **Identify and resolve inconsistencies** in provided data (e.g., conflicting parameters, unit mismatches) by prioritizing context clues and standard engineering assumptions.\n    - Carefully examine all tables/figures. Determine whether component-level or system-level analysis is required based on context clues and terminology.\n    - **For discrete systems (e.g., difference equations), verify characteristic equations and poles. For symbolic answers, prioritize exact algebraic equivalence over numerical matching.**\n\n2.  **Reason step-by-step:**\n    - Meticulously show calculations and logical deductions. Explicitly address:\n        *   Unit consistency and conversions\n        *   Definitions of terms and concepts\n        *   All applicable failure modes for design problems\n        *   Setup and solution of integrals for continuously varying properties\n    - **State and justify all assumptions** (e.g., non-magnetic materials, standard operating conditions, causality for impulse responses).\n    - **For standardized components** (e.g., chains, bearings, solar collectors), prioritize empirical formulas, manufacturer tables, or industry standards over theoretical derivations when available.\n    - **For electromagnetic problems**, explicitly verify relationships between quantities (e.g., n = √(ε_r) for non-magnetic dielectrics).\n    - **For discrete-time systems**, compute initial values directly from equations to validate closed-form expressions.\n\n3.  **Compare and validate:**\n    - Match your final result against provided options with precision to at least three significant figures for numerical answers, or exact symbolic equivalence for algebraic expressions.\n    - If no exact match is found, systematically re-check: unit conversions, formula applications, domain-specific constants, and table interpretations.\n    - **Evaluate options for common errors** (e.g., sign errors, swapped exponents, missing factors). If an option is plausibly correct despite minor discrepancies, select it but flag the issue. If all options are invalid, derive and state the correct expression.\n    - Consider domain-specific pitfalls (e.g., confusing relative permittivity with refractive index, sign errors in partial fractions).\n\n4.  **Final Output:**\n    - Conclude with the final answer on a new line using exact format:\n    `Final Answer: [LETTER]`\n    Where `[LETTER]` is the single uppercase letter of the correct choice.\n    - **If no option is correct**, output:\n    `Final Answer: [CORRECT EXPRESSION] (no exact match)`\n\n**Common pitfalls:**\n- For difference equations: misidentification of poles, sign errors in partial fractions\n- For impulse responses: forgetting to apply u[n] for causality\n- For options: typos in coefficients or exponents (e.g., -1 instead of -2)\n\nNow, solve the following question:",
+                "Q": 0.575,
+                "N": 1,
+                "reward": 0.6,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 26,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Answer engineering multiple-choice questions by following a structured, step-by-step reasoning process with strict numerical discipline.\n\n**Instructions:**\n1.  **Analyze the question:** Identify the underlying principles, relevant formulas, and all given parameters. Note any required unit conversions. **Explicitly define your coordinate system, sign conventions, and physical assumptions to prevent ambiguity.**\n2.  **Reason step-by-step:** Meticulously show your calculations and logical deductions. Explicitly address:\n    *   Unit consistency and conversions (e.g., maxwells to webers, rpm to rad/s, imperial to metric).\n    *   The definitions of terms (e.g., current per parallel path vs. total current).\n    *   All applicable failure modes for design problems (e.g., shear and crushing stress for a key; the required length is the larger of the two calculated values).\n    *   The setup and solution of any integrals for problems with continuously varying properties.\n    *   **CRITICAL: Derive a final, simplified symbolic expression for the answer before substituting any numerical values.**\n    *   **CRITICAL: When substituting values, use high-precision constants (e.g., π = 3.141592653589793, e = 1.60217662 × 10⁻¹⁹ C, m_e = 9.1093837 × 10⁻³¹ kg). Avoid all intermediate rounding. Carry out calculations with full precision.**\n3.  **Compare and validate:** Match your final numerical result against the provided options.\n    *   **If an exact match is found,** proceed to the final answer.\n    *   **If an exact match isn't found, this indicates an error.** Re-check your work in this order:\n        1.  Re-verify all numerical calculations using high-precision values, ensuring no intermediate rounding occurred.\n        2.  Re-verify unit conversions.\n        3.  Re-verify the symbolic derivation and sign conventions.\n    *   **Do not accept a \"close\" answer. The match must be exact.**\n4.  **Final Output:** After your reasoning, conclude with the final answer on a new line using this exact format:\n`Final Answer: [LETTER]`\nWhere `[LETTER]` is the single uppercase letter of the correct choice (e.g., A, B, J).\n\nNow, solve the following question:",
+            "Q": 0.55,
+            "N": 1,
+            "reward": 0.65,
+            "children": []
+          },
+          {
+            "id": 27,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Answer engineering multiple-choice questions by following a structured, step-by-step reasoning process that accounts for potential ambiguities in physical properties and standard values.\n\n**Instructions:**\n0.  **Prepare and Strategize:** Before calculating, scan the question and options. Note the order of magnitude. Identify any key ungiven properties (e.g., diffusion coefficients, material properties, saturation pressures). Be aware that standard values may vary across references; the answer choices provide context for the expected precision and value selection.\n1.  **Analyze the question:** Identify the underlying principles, relevant formulas, and all given parameters. Note any required unit conversions.\n2.  **Reason step-by-step:** Meticulously show your calculations and logical deductions. Explicitly address:\n    *   Unit consistency and conversions (e.g., maxwells to webers, rpm to rad/s, imperial to metric).\n    *   The definitions of terms (e.g., current per parallel path vs. total current).\n    *   All applicable failure modes for design problems (e.g., shear and crushing stress for a key; the required length is the larger of the two calculated values).\n    *   The setup and solution of any integrals for problems with continuously varying properties.\n    *   **Assumptions for ambiguous properties:** Clearly state the source or justification for any assumed standard value (e.g., \"Using a standard diffusion coefficient of D_AB = 0.85 ft²/hr...\").\n3.  **Compare and validate:** Match your final numerical result against the provided options.\n    *   If an exact or very close match is found, proceed.\n    *   If a large discrepancy exists (e.g., order of magnitude), re-check for fundamental errors in reasoning, formula selection, or major unit conversions.\n    *   If a small discrepancy exists (e.g., factor of 1.5-2), re-evaluate your assumptions for ambiguous properties. Consider common rounded values from textbooks; the closest option to your calculated order of magnitude is often correct.\n4.  **Final Output:** After your reasoning, conclude with the final answer on a new line using this exact format:\n`Final Answer: [LETTER]`\nWhere `[LETTER]` is the single uppercase letter of the correct choice (e.g., A, B, J).\n\nNow, solve the following question:",
+            "Q": 2.316666666666667,
+            "N": 4,
+            "reward": 0.6,
+            "children": [
+              {
+                "id": 28,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer engineering multiple-choice questions by following a structured, step-by-step reasoning process that emphasizes physical consistency, contextual awareness, and systematic validation.\n\n**Instructions:**\n0.  **Prepare and Strategize:** Before calculating, scan the question and all answer choices. Note the expected order of magnitude and precision. Identify any key ungiven properties (e.g., material properties, standard values). Use the answer choices to infer context; they provide critical guidance on which standard values and approximations are expected.\n1.  **Analyze the question:** Identify the underlying principles, relevant formulas, and all given parameters. Define the system precisely, including geometry, boundary conditions, and sign conventions. Note all required unit conversions and perform them immediately.\n2.  **Reason step-by-step:** Meticulously show your calculations and logical deductions. Explicitly address:\n    *   Unit consistency and conversions (convert to base SI units where possible to minimize errors).\n    *   The definitions of terms and assumptions about the system.\n    *   All applicable failure modes or design constraints.\n    *   The setup and solution of any integrals.\n    *   **Assumptions for ambiguous properties:** Clearly state the source or justification for any assumed standard value. If your result does not match the options, prioritize common textbook approximations over strict handbook values.\n3.  **Compare and validate - The Sanity Check:**\n    *   **Physical Plausibility Check:** Before comparing to options, ask: \"Does this number make physical sense?\" Evaluate the order of magnitude. If the result violates a fundamental law (e.g., conservation, impossibly large values), you have made a fundamental error. Immediately re-check your approach.\n    *   **Reconcile with Options:**\n        *   If an exact or very close match is found, proceed.\n        *   If a large discrepancy exists (>>10%), re-check for fundamental errors in reasoning, formula selection, or major unit conversions. Consider if the problem's premise leads to a physical impossibility (e.g., fixed volume violation) and seek an alternative interpretation.\n        *   If a small discrepancy exists (~1-10%), re-evaluate your assumptions for ambiguous properties. The closest option to your calculated order of magnitude is often correct.\n    *   **Internal Consistency:** For multi-part questions, ensure the answers are internally consistent (e.g., `Δu = q - w`, `q_rev = TΔs` in thermodynamics). Use this as a golden cross-check.\n4.  **Final Output:** After your reasoning, conclude with the final answer on a new line using this exact format:\n`Final Answer: [LETTER]`\nWhere `[LETTER]` is the single uppercase letter of the correct choice (e.g., A, B, J).\n\nNow, solve the following question:",
+                "Q": 0.55,
+                "N": 1,
+                "reward": 0.6,
+                "children": []
+              },
+              {
+                "id": 29,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer engineering multiple-choice questions by following a structured, step-by-step reasoning process that accounts for potential ambiguities in physical properties, standard values, and statistical treatments.\n\n**Instructions:**\n0.  **Prepare and Strategize:** Before calculating, scan the question and options. Note the order of magnitude. Identify any key ungiven properties (e.g., diffusion coefficients, material properties, saturation pressures). For statistical mechanics, determine particle distinguishability and entropy units. Check for degeneracy in energy levels. Be aware that standard values may vary across references; the answer choices provide context for the expected precision and value selection.\n1.  **Analyze the question:** Identify the underlying principles, relevant formulas, and all given parameters. Note any required unit conversions. For statistical mechanics, identify the correct statistics (Maxwell-Boltzmann, Bose-Einstein, or Fermi-Dirac) and interpret \"eu\" (either as erg/K with \\(k_B = 1.38 \\times 10^{-16}\\) or as natural units \\(S = \\ln \\Omega\\) based on context).\n2.  **Reason step-by-step:** Meticulously show your calculations and logical deductions. Explicitly address:\n    *   Unit consistency and conversions (e.g., maxwells to webers, rpm to rad/s, imperial to metric).\n    *   The definitions of terms (e.g., current per parallel path vs. total current).\n    *   All applicable failure modes for design problems (e.g., shear and crushing stress for a key; the required length is the larger of the two calculated values).\n    *   The setup and solution of any integrals for problems with continuously varying properties.\n    *   **Assumptions for ambiguous properties:** Clearly state the source or justification for any assumed standard value (e.g., \"Using a standard diffusion coefficient of D_AB = 0.85 ft²/hr...\").\n    *   **For statistical mechanics:** If enumerating distributions, systematically find all non-negative integer solutions to \\(\\sum n_i = N\\) and \\(\\sum n_i \\epsilon_i = E\\). For combinatorial counts, specify the formula used (e.g., \\(\\Omega = \\frac{N!}{\\prod n_i!}\\) for distinguishable particles, or stars and bars for indistinguishable particles if applicable).\n3.  **Compare and validate:** Match your final numerical result against the provided options.\n    *   If an exact or very close match is found, proceed.\n    *   If a large discrepancy exists (e.g., order of magnitude), re-check for fundamental errors in reasoning, formula selection, major unit conversions, or incorrect statistical treatment. Consider alternative statistics or degeneracy.\n    *   If a small discrepancy exists (e.g., factor of 1.5-2), re-evaluate your assumptions for ambiguous properties. Consider common rounded values from textbooks; the closest option to your calculated order of magnitude is often correct.\n4.  **Final Output:** After your reasoning, conclude with the final answer on a new line using this exact format:\n`Final Answer: [LETTER]`\nWhere `[LETTER]` is the single uppercase letter of the correct choice (e.g., A, B, J).\n\nNow, solve the following question:",
+                "Q": 0.6000000000000001,
+                "N": 1,
+                "reward": 0.6,
+                "children": []
+              },
+              {
+                "id": 30,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer engineering multiple-choice questions by following a structured, step-by-step reasoning process that accounts for potential ambiguities in physical properties, standard values, and design intent.\n\n**Instructions:**\n0.  **Prepare and Strategize:** Before calculating, scan the question and options. Note the order of magnitude. Identify any key ungiven properties (e.g., diffusion coefficients, material properties). Be aware that standard values may vary across references; the answer choices provide context for the expected precision and value selection.\n0.5 **Clarify the Objective:** Determine the exact expectation. Is the problem asking for the minimum value that satisfies a constraint, the value that causes a specified effect, or a standard design size? If the constraint is a maximum (e.g., \"must not exceed\"), the intended answer is often the smallest value that meets it. However, some contexts expect a calculation that results in the effect being equal to the constraint value.\n1.  **Analyze the question:** Identify the underlying principles, relevant formulas, and all given parameters. Consider the context (e.g., fluid type, system type) to select the most appropriate formula (e.g., Darcy-Weisbach for general fluids, Hazen-Williams for water flow in pipes, Manning's for open channels). Note any required unit conversions.\n2.  **Reason step-by-step:** Meticulously show your calculations and logical deductions. Explicitly address:\n    *   Unit consistency and conversions (e.g., maxwells to webers, rpm to rad/s, imperial to metric).\n    *   The definitions of terms (e.g., current per parallel path vs. total current).\n    *   All applicable failure modes for design problems (e.g., shear and crushing stress for a key; the required length is the larger of the two calculated values).\n    *   The setup and solution of any integrals for problems with continuously varying properties.\n    *   **Initial algebraic solution:** Before iterating, attempt to solve the problem algebraically if possible, stating any necessary assumptions (e.g., assuming laminar flow or a smooth pipe).\n    *   **Alternative methods:** If the problem context suggests it, set up the solution using standard empirical equations.\n    *   **Assumptions for ambiguous properties:** Clearly state the source or justification for any assumed standard value (e.g., \"Using a standard diffusion coefficient of D_AB = 0.85 ft²/hr...\") and briefly note how a different value would affect the result.\n3.  **Compare and validate:** Match your final numerical result against the provided options.\n    *   If an exact or very close match (within 1-2%) is found, proceed.\n    *   If a large discrepancy exists (e.g., order of magnitude), re-check for fundamental errors in reasoning, formula selection, or major unit conversions.\n    *   If a small discrepancy exists (e.g., factor of 1.5-2), re-evaluate your assumptions for ambiguous properties and design intent. Consider common rounded values from textbooks.\n3.5 **Resolve Ambiguity:** If multiple approaches are valid, prioritize the answer that:\n    a) Most closely matches the order of magnitude of the options.\n    b) Is most common in standard textbooks for the context.\n    c) Results in an effect closest to the stated constraint value (e.g., head loss ≈ 4.8 ft, not 4.1 ft).\n4.  **Final Output:** After your reasoning, conclude with the final answer on a new line using this exact format:\n`Final Answer: [LETTER]`\nWhere `[LETTER]` is the single uppercase letter of the correct choice (e.g., A, B, J).\n\nNow, solve the following question:",
+                "Q": 0.6000000000000001,
+                "N": 1,
+                "reward": 0.65,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,30 @@
+🔍 Task: epistemic_reasoning
+✅ Best Prompt Template:
+
+
+✅ Best Prompt:
+You are a natural language inference (NLI) system. Your task is to judge the relationship between a Premise and a Hypothesis.
+
+**Guidelines:**
+- Always assume the **Premise is true**.
+- An **entailment** means that based on the information in the Premise, a person would **necessarily and reasonably** conclude the Hypothesis is true. **You must use common-sense reasoning and world knowledge.**
+- **Crucially: Do not invent far-fetched or hyper-skeptical scenarios to avoid entailment. Base your reasoning on the most natural and likely interpretation of the statements.**
+- A **non-entailment** means the Hypothesis **could plausibly be false** even if the Premise is true. **If you can imagine a realistic, everyday situation where the Premise is true and the Hypothesis is false, it is non-entailment.**
+
+**Specific Rules for Beliefs and Verbs:**
+- **If a person believes/knows/suspects that someone else has learned, realized, knows, or remembers a fact, you can infer that they also believe/suspect that fact itself.** This is a pragmatic necessity for coherent communication.
+- **Pay attention to verbs that entail truth:** Verbs like "learns," "knows," "realizes," and "remembers" imply that the information in their clause is true. For example, "X learns that P" means P is a fact.
+
+**Analysis Format:**
+1.  **Premise:** [Insert Premise]
+2.  **Hypothesis:** [Insert Hypothesis]
+3.  **Reasoning:** Explain step-by-step whether the Hypothesis follows from the Premise. **First, state the most natural interpretation. Then, check if a realistic alternative exists.**
+4.  **Final Answer:** Clearly state your one-word judgment: `entailment` or `non-entailment`.
+
+Now, analyze the following:
+**Premise:** [Premise]
+**Hypothesis:** [Hypothesis]
+
+📊 SA Test Accuracy: 0.888
+
+⏱️ Time Elapsed: 209 min 14 sec (12554.91 seconds)

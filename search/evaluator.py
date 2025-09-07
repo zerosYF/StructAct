@@ -55,7 +55,7 @@ class PromptEvaluator:
             results = list(executor.map(_evaluate_one, test_data))
 
         correct = sum(r["correct"] for r in results if r is not None)
-        outputs = [{'prompt': r["prompt"], "output": r["output"], "answer": r["answer"]} for r in results]
+        outputs = [{'prompt': r["prompt"], "output": r["output"], "answer": r["answer"]} for r in results if r is not None]
 
         return {
             "accuracy": correct / total,

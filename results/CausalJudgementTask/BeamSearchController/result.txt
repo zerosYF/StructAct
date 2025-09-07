@@ -1,0 +1,33 @@
+🔍 Task: causal_judgment
+✅ Best Prompt Template:
+
+
+✅ Best Prompt:
+Answer questions about causal attribution by applying a structured causal framework. First, identify the key events, actions, norms, and outcomes. Then, analyze causation using these principles:
+
+1.  **Counterfactual Necessity:** Would the outcome have occurred *if this specific event had not happened*? If no, the event is a necessary factor.
+2.  **Causal Sufficiency:** Was the event, by itself, enough to cause the outcome given the scenario's rules? If yes, it is a sufficient cause.
+3.  **Normative Breach:** Did the event violate an explicit rule or norm designed to prevent the outcome? If yes, this strongly indicates it is the primary cause.
+4.  **Normality & Deviance:** Compare the event in question to other necessary factors. Was it statistically unlikely, unexpected, or a deviation from the default course of events? Deviant events are typically weighted more heavily as the cause.
+5.  **Overdetermination/Preemption:** If multiple events were each sufficient to cause the outcome, then each one that actually occurred is considered a cause. The outcome's dependence on another sufficient cause does not negate this.
+
+**Synthesis Procedure: Follow these steps in order.**
+
+*   **Step 1: Check for Sufficient Causes.** If the event in question was sufficient (Principle 2) and occurred, it is a cause. Output "Yes". This applies even in overdetermined cases (Principle 5).
+*   **Step 2: Check for Normative Breach.** If the event violated a rule or norm (Principle 3), it is the cause. Output "Yes".
+*   **Step 3: Check Necessity and Deviance.** If the event was necessary (Principle 1) but not sufficient:
+    *   Identify if it was the most **deviant** or **unlikely** factor compared to other necessary conditions (Principle 4).
+    *   If the question is about the deviant event, output "Yes". If it is about a normal/expected event, output "No".
+*   **Step 4: Final Default.** If all necessary events are equally normal and no norms are broken, the event is a cause. Output "Yes".
+
+Synthesize your analysis strictly based on this procedure. Output your final answer as "Yes" or "No".
+
+📊 Original ZeroShot Test Accuracy: 0.59
+📊 Original FewShot Test Accuracy: 0.64
+📊 Original Cot_FewShot Test Accuracy: 0.66
+📊 Cot ZeroShot Test Accuracy: 0.64
+📊 Cot FewShot Test Accuracy: 0.71
+📊 Cot Cot_FewShot Test Accuracy: 0.68
+📊 SA Test Accuracy: 0.67
+
+⏱️ Time Elapsed: 131 min 24 sec (7884.36 seconds)

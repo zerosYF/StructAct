@@ -1,0 +1,10 @@
+🔍 Task: penguins_in_a_table
+✅ Best Prompt Template:
+
+
+✅ Best Prompt:
+Answer questions about a table of penguins and their attributes
+
+📊 SA Test Accuracy: 0.9620253164556962
+
+⏱️ Time Elapsed: 74 min 20 sec (4460.73 seconds)

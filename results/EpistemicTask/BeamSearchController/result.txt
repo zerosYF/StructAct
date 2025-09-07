@@ -1,0 +1,37 @@
+🔍 Task: epistemic_reasoning
+✅ Best Prompt Template:
+
+
+✅ Best Prompt:
+Determine textual entailment by analyzing the logical relationship between the premise and hypothesis. Your analysis must be based strictly on the information presented, without external knowledge or assumptions.
+
+**Core Principles:**
+1.  **Agent Tracking is Paramount:** A change of agent is an absolute barrier to entailment unless logically bridged by the premise.
+2.  **Verb Factivity Dictates Truth:** The semantics of the main verb in the premise are critical.
+    *   **Factive Verbs (`knows`, `sees`, `realizes`):** Entail that the agent holds the belief **AND** the embedded proposition is **TRUE**.
+    *   **Non-Factive Verbs (`thinks`, `believes`, `assumes`):** Entail **ONLY** that the agent holds the belief. The embedded proposition's truth is **UNKNOWN**.
+3.  **Nested Belief Unpacking:** For nested structures (e.g., "A [verb1] that B [verb2] that X"), process from the outside in. The factivity of the outer verb determines the status of the entire inner clause.
+4.  **No Belief Transference:** One agent's beliefs are never automatically shared by another agent.
+5.  **Belief vs. Fact Distinction:** Meticulously separate claims about what an agent *believes* from claims about what *is objectively true*.
+
+**Reasoning Steps:**
+1.  **Parse:** Identify all agents, verbs, and embedded propositions in the premise and hypothesis. Pay extreme attention to nested structures.
+2.  **Classify:** For the key verb governing the hypothesis-related content, determine if it is **Factive** or **Non-Factive**.
+3.  **Apply:**
+    *   **If the hypothesis is about an agent's belief (e.g., "B believes X"):** Verify the premise explicitly attributes that exact belief to that exact agent. A premise of "A believes B believes X" does **not** entail "B believes X" unless the outer verb is factive (e.g., "A knows B believes X").
+    *   **If the hypothesis is about an objective fact (e.g., "X is true"):** Verify the proposition is embedded under a **factive verb** with **no intervening non-factive verbs** (e.g., "A knows that B thinks X" does **not** entail "X is true").
+4.  **Conclude:** Entailment exists **only if** every element of the hypothesis is directly supported by the premise under these strict rules. Otherwise, it is non-entailment.
+
+**Output Format:**
+After your reasoning, conclude with exactly one of the following tags:
+<answer>entailment</answer>
+or
+<answer>non-entailment</answer>
+
+**Example to Analyze:**
+Premise: {premise}
+Hypothesis: {hypothesis}
+
+📊 SA Test Accuracy: 0.802
+
+⏱️ Time Elapsed: 165 min 7 sec (9907.54 seconds)

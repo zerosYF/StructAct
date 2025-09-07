@@ -1,0 +1,447 @@
+{
+  "config": {
+    "mcts_iters": 10,
+    "rollout_length": 4,
+    "depth_threshold": 5,
+    "width_threshold": 3
+  },
+  "search_stats": {
+    "total_nodes": 31,
+    "total_Q_values": 31
+  },
+  "best_node": {
+    "action_sequence": [
+      "SuccessDrivenAction",
+      "FailureDrivenAction"
+    ],
+    "prompt": "Name the geometric shape from its SVG path by following these steps precisely:\n\n1.  **Parse Path Data:** Extract all drawing commands (M, L, A, Z, etc.) and their parameters. The initial `M` command defines the start point. Ignore any subsequent `M` (moveto) commands for vertex counting.\n2.  **Check Closure:** The path is closed if it ends with a `Z` command or an `L` command whose coordinates are identical (within a small tolerance) to the initial `M` point.\n3.  **Count Sides and Vertices:**\n    *   **Sides:** The number of sides is equal to the number of line-drawing (`L`) commands. A closing `Z` command does **not** count as a side.\n    *   **Vertices:**\n        *   Create a list of all points from the initial `M` and all subsequent `L` commands.\n        *   If the last point's coordinates are identical to the first point's (within tolerance), remove this duplicate closing point.\n        *   The count of the remaining points is the number of **unique vertices**.\n4.  **Classify the Shape:**\n    *   **Open Path:** If the path is not closed and has exactly 2 unique vertices → `line`.\n    *   **Closed Path with Straight Lines (No Arcs):**\n        *   3 vertices → `triangle`\n        *   4 vertices → Proceed to Step 5.\n        *   5 vertices → `pentagon`\n        *   6 vertices → `hexagon`\n        *   7 vertices → `heptagon`\n        *   8 vertices → `octagon`\n    *   **Closed Path with Arcs (A commands):**\n        *   **Single Arc:** If the path consists of one `A` command that returns to the start point → `circle` (if rx equals ry) or `ellipse` (if rx != ry).\n        *   **Sector:** If the path is `M [center] L [point1] A ... L [center] Z`, or equivalent, forming an arc connected to a center point by two lines → `sector`.\n        *   **Multiple Arcs:** If multiple arcs with equal radii form a full loop → `circle`.\n5.  **Refine Quadrilaterals (4 vertices):** For a closed shape with 4 unique vertices and only straight lines:\n    *   Calculate the distances between all consecutive vertices (side lengths).\n    *   **Kite:** If two distinct pairs of adjacent sides are equal (e.g., (d1==d2 and d3==d4) or (d2==d3 and d4==d1)) → `kite`.\n    *   **Rectangle:** If all four interior angles are approximately 90 degrees (check by calculating dot products of consecutive side vectors) → `rectangle`.\n    *   If neither condition is met, it is a general quadrilateral. (Note: Based on the provided options, `kite` is often the default assumption for a 4-sided shape that is not a rectangle).\n6.  **Final Selection:** Match the deduced shape to the provided options. The count of unique vertices is definitive for polygons. Eliminate options that contradict the properties found (e.g., an option requiring curves if only `L` commands are present).\n\nOutput only the name of the shape.",
+    "depth": 2,
+    "Q": 0.8777777777777778,
+    "N": 1
+  },
+  "search_tree": {
+    "id": 0,
+    "depth": 0,
+    "action_sequence": [],
+    "prompt": "Name geometric shapes from their SVG paths",
+    "Q": 26.705555555555552,
+    "N": 30,
+    "reward": 0.8666666666666667,
+    "children": [
+      {
+        "id": 1,
+        "depth": 1,
+        "action_sequence": [
+          "SuccessDrivenAction"
+        ],
+        "prompt": "Name the geometric shape from its SVG path by rigorously analyzing the path commands.\n\nFollow this reasoning process:\n1.  Parse the `d` attribute into individual commands (M, L, A, Z).\n2.  Track the drawn path, listing all vertices and segments (lines or arcs) in order.\n3.  Determine if the path is closed (ends at its start point, often with a Z command).\n4.  **For Arcs (A):** Note the radii (rx, ry). If rx = ry, the arc is circular; if not, it is elliptical. Use the flags to determine the arc's sweep and size.\n5.  **For Polygons:** Count the number of straight-line segments (L commands) that form a closed loop to identify the shape (e.g., 3 sides = triangle, 5 = pentagon).\n6.  **For Curved Shapes:** Identify circles (closed path of circular arcs), ellipses (closed path of elliptical arcs), or sectors (a center point connected by lines to arc endpoints; confirm by checking equal distances from the center).\n7.  Compare the reconstructed shape's properties to the options to select the most specific and accurate match.",
+        "Q": 8.841666666666669,
+        "N": 10,
+        "reward": 0.9,
+        "children": [
+          {
+            "id": 2,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Name the geometric shape from its SVG path by rigorously analyzing the path commands.\n\nFollow this reasoning process:\n1.  Parse the `d` attribute into individual commands (M, L, A, Z).\n2.  Track the drawn path, listing all vertices and segments (lines or arcs) in order.\n3.  Determine if the path is closed (ends at its start point, often with a Z command).\n4.  **For Arcs (A):** Note the radii (rx, ry). If rx = ry, the arc is circular; if not, it is elliptical. Use the flags to determine the arc's sweep and size.\n5.  **For Polygons:** Count the number of straight-line segments (L commands) that form a closed loop to identify the shape (e.g., 3 sides = triangle, 5 = pentagon).\n6.  **For Curved Shapes:** Identify circles (closed path of circular arcs), ellipses (closed path of elliptical arcs), or sectors (a center point connected by lines to arc endpoints; confirm by checking equal distances from the center).\n7.  Compare the reconstructed shape's properties to the options to select the most specific and accurate match.",
+            "Q": 0.8555555555555556,
+            "N": 1,
+            "reward": 0.8333333333333334,
+            "children": []
+          },
+          {
+            "id": 3,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Name the geometric shape from its SVG path by rigorously analyzing the path commands.\n\nFollow this reasoning process:\n1.  Parse the `d` attribute into individual commands (M, L, A, Z).\n2.  Track the drawn path, listing all vertices and segments (lines or arcs) in order.\n3.  Determine if the path is closed (ends at its start point, often with a Z command).\n4.  **For Arcs (A):** Note the radii (rx, ry). If rx = ry, the arc is circular; if not, it is elliptical. Use the flags to determine the arc's sweep and size.\n5.  **For Polygons:** Count the number of straight-line segments (L commands) that form a closed loop to identify the shape (e.g., 3 sides = triangle, 5 = pentagon).\n6.  **For Curved Shapes:** Identify circles (closed path of circular arcs), ellipses (closed path of elliptical arcs), or sectors (a center point connected by lines to arc endpoints; confirm by checking equal distances from the center).\n7.  Compare the reconstructed shape's properties to the options to select the most specific and accurate match.",
+            "Q": 3.6333333333333333,
+            "N": 4,
+            "reward": 0.9333333333333333,
+            "children": [
+              {
+                "id": 4,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Name the geometric shape from its SVG path by rigorously analyzing the path commands.\n\nFollow this reasoning process:\n1.  Parse the `d` attribute into individual commands (M, L, A, Z).\n2.  Track the drawn path, listing all vertices and segments (lines or arcs) in order.\n3.  Determine if the path is closed (ends at its start point, often with a Z command).\n4.  **For Arcs (A):** Note the radii (rx, ry). If rx = ry, the arc is circular; if not, it is elliptical. Use the flags to determine the arc's sweep and size.\n5.  **For Polygons:** Count the number of straight-line segments (L commands) that form a closed loop to identify the shape (e.g., 3 sides = triangle, 5 = pentagon).\n6.  **For Curved Shapes:** Identify circles (closed path of circular arcs), ellipses (closed path of elliptical arcs), or sectors (a center point connected by lines to arc endpoints; confirm by checking equal distances from the center).\n7.  Compare the reconstructed shape's properties to the options to select the most specific and accurate match.",
+                "Q": 0.9,
+                "N": 1,
+                "reward": 0.8666666666666667,
+                "children": []
+              },
+              {
+                "id": 5,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Name the geometric shape from its SVG path by rigorously analyzing the path commands and their geometric properties.\n\nFollow this structured reasoning process:\n\n1.  **Parse & Normalize Path:** Break the `d` attribute into individual commands (M, L, H, V, A, Z). Track the current point and compile a list of all vertices. Ignore redundant points (e.g., consecutive 'M' commands to the same location). Note if the path is explicitly closed with a 'Z' command or implicitly closed if the final point is within ±0.01 units of the start point.\n\n2.  **Categorize by Command Type:**\n    *   If the path contains **only straight-line commands (L, H, V)** and/or moves (M), analyze it as a polygon or polyline.\n    *   If the path contains **arc commands (A)**, analyze the arcs per step 5.\n\n3.  **For Polygons (Straight-line segments):**\n    *   List all unique vertices in the order they are connected.\n    *   Count the number of unique vertices (N) to determine the number of sides for a closed path.\n    *   For a closed path, common identifications are: 3 sides = triangle, 4 = quadrilateral, 5 = pentagon, 6 = hexagon, 8 = octagon.\n    *   For an open path (not closed), the shape is a **line** or polyline.\n\n4.  **For Quadrilaterals (N=4), perform a detailed geometric analysis:**\n    *   **Use a tolerance (ε) of 0.1** for all comparisons (distances, angles, parallelism) to account for floating-point precision.\n    *   Calculate vectors for each side.\n    *   Check for parallel sides (vectors are scalar multiples within tolerance).\n    *   Check for perpendicular sides (dot product ≈ 0 within tolerance).\n    *   Check for equal side lengths (within tolerance).\n    *   **Apply the shape hierarchy to find the most specific match:**\n        *   **Square:** All sides equal, all angles 90°.\n        *   **Rectangle:** All angles 90°.\n        *   **Rhombus:** All sides equal.\n        *   **Parallelogram:** Opposite sides parallel.\n        *   **Kite:** Two distinct pairs of adjacent sides equal.\n        *   **Trapezoid:** At least one pair of parallel sides.\n        *   **General Quadrilateral.**\n\n5.  **For Arcs (A commands):**\n    *   Note the radii (rx, ry). If |rx - ry| < ε, treat the arc as circular; if not, it is elliptical.\n    *   Use the flags (large-arc, sweep) to determine the arc's characteristics.\n    *   Identify circles (closed path of identical circular arcs), ellipses (closed path of identical elliptical arcs), or sectors (two radii connected to arc endpoints; confirm by checking equal distances from a central point).\n\n6.  **Synthesize Intent:** After the low-level analysis, synthesize the result. Ask: \"Given the path commands and calculated properties, what is the simplest and most likely intended shape?\" This helps overcome minor coordinate imperfections and identify the correct high-level shape.\n\n7.  **Match to Options:** Compare your final, most specific shape identification to the provided options.",
+                "Q": 0.9,
+                "N": 1,
+                "reward": 0.9,
+                "children": []
+              },
+              {
+                "id": 6,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Name the geometric shape from its SVG path by rigorously analyzing the path commands.\n\nFollow this reasoning process:\n\n1.  **Parse and Simplify:** Parse the `d` attribute into individual commands. Ignore any redundant `M` (move) commands that restart at the previous endpoint. Treat the entire path as defining a single shape.\n2.  **Reconstruct the Path:** List all unique vertices in the order they are drawn, connecting consecutive points with segments (lines `L` or arcs `A`). If the final vertex is within ±0.1 of the first vertex, the path is closed. A `Z` command also closes the path.\n3.  **Categorize the Shape:**\n    *   If the path contains any arc (`A`) commands, analyze for circles (closed path of circular arcs with rx=ry), ellipses (closed path of elliptical arcs), or sectors (a center point connected by lines to arc endpoints; confirm by checking equal distances from the center).\n    *   If the path consists only of straight lines (`L`, `M`, `Z`), count the number of sides to identify the polygon.\n4.  **For Polygons:**\n    *   **3 sides:** Triangle.\n    *   **4 sides:** Quadrilateral. **Perform these checks:**\n        1.  Calculate vectors for each side.\n        2.  Check for parallel sides (vectors are scalar multiples within ±0.1).\n        3.  Check for perpendicular sides (dot product absolute value < 0.5 is zero).\n        4.  Check side lengths (lengths within ±0.1 are equal).\n        5.  **Apply Decision Tree:**\n            *   All angles 90° → **Rectangle** (or **Square** if all sides equal).\n            *   Two pairs of parallel sides → **Parallelogram** (if not a rectangle; if not an option, choose trapezoid).\n            *   Exactly one pair of parallel sides → **Trapezoid**.\n            *   Two distinct pairs of adjacent equal sides → **Kite**.\n            *   Else → **Quadrilateral**.\n    *   **5 sides:** Pentagon.\n    *   **6 sides:** Hexagon.\n    *   **7 sides:** Heptagon.\n    *   **8 sides:** Octagon.\n5.  **Select the Answer:** Compare the identified shape to the provided options. Choose the most specific and accurate name available.",
+                "Q": 0.9666666666666667,
+                "N": 1,
+                "reward": 0.9,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 7,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Name the geometric shape from its SVG path by rigorously analyzing the path commands.\n\nFollow this reasoning process:\n1.  Parse the `d` attribute into individual commands (M, L, A, Z).\n2.  Track the drawn path, listing all vertices and segments (lines or arcs) in order.\n3.  Determine if the path is closed (ends at its start point, often with a Z command).\n4.  **For Arcs (A):** Note the radii (rx, ry). If rx = ry, the arc is circular; if not, it is elliptical. Use the flags to determine the arc's sweep and size.\n5.  **For Polygons:** Count the number of straight-line segments (L commands) that form a closed loop to identify the shape (e.g., 3 sides = triangle, 5 = pentagon).\n6.  **For Curved Shapes:** Identify circles (closed path of circular arcs), ellipses (closed path of elliptical arcs), or sectors (a center point connected by lines to arc endpoints; confirm by checking equal distances from the center).\n7.  Compare the reconstructed shape's properties to the options to select the most specific and accurate match.",
+            "Q": 3.511111111111111,
+            "N": 4,
+            "reward": 0.8,
+            "children": [
+              {
+                "id": 8,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "Name the geometric shape from its SVG path by rigorously analyzing the path commands.\n\nFollow this reasoning process:\n\n1.  **Parse Commands**: Break the `d` attribute into individual commands (M, L, A, Z). Treat sequential `M` commands as a continuous path if they connect end-to-end.\n2.  **Track Path & Check Closure**: List all vertices and segments in order. The path is closed if the final point equals the start point, regardless of a Z command.\n3.  **Analyze Arcs (A)**:\n    - If rx = ry, the arc is circular; if not, elliptical.\n    - Use flags to determine sweep direction and compute the center. Two 180° arcs with the same center/radius and opposite sweeps form a circle.\n4.  **Identify Polygons**: For a closed loop of straight lines (L), count the distinct vertices to determine the number of sides (e.g., 3=triangle, 4=quadrilateral). For quadrilaterals, check properties (e.g., parallel sides, right angles) only if needed to distinguish options.\n5.  **Identify Curved Shapes**:\n    - Closed path of circular arcs → circle.\n    - Closed path of elliptical arcs → ellipse.\n    - Sector: requires two radial lines (L) from a center to arc endpoints, with equal distances.\n6.  **Select Match**: Compare the reconstructed shape's properties to the options to choose the most specific and accurate name.\n\nKey Invariants:\n- Closure is defined by the start and end points coinciding.\n- Redundant `M` commands do not break a continuous path.\n- Always compute arc geometry from parameters and flags.\n- Count polygon sides precisely from the closed vertex loop.",
+                "Q": 0.8666666666666667,
+                "N": 1,
+                "reward": 0.8666666666666667,
+                "children": []
+              },
+              {
+                "id": 9,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Name the geometric shape from its SVG path by rigorously analyzing the path commands and the intent behind them.\n\nFollow this reasoning process:\n\n1.  **Parse & Normalize:** Break the `d` attribute into commands (M, L, H, V, A, C, S, Q, T, Z). Treat consecutive subpaths as a single shape if they connect seamlessly (the end point of one is the start point of the next, within a tolerance of `0.01` units). A path is closed if it ends with `Z` or if its final point is coincident with its start point (within `0.01` units).\n2.  **Categorize by Command Type:**\n    *   If the path contains any `A` (arc) commands, analyze for circles (rx = ry, closed loop), ellipses (rx != ry, closed loop), or sectors (lines connected to an arc).\n    *   If the path contains only straight-line commands (L, H, V) and is closed, proceed to polygon analysis.\n3.  **Analyze Polygon Geometry:**\n    *   List all unique vertices in their drawing order.\n    *   **Account for rounding:** Treat coordinate differences of less than `0.01` as zero. Calculate vectors and side lengths using this tolerance.\n    *   **Check for parallelism:** Two vectors are parallel if one is a scalar multiple of the other (considering the tolerance).\n    *   **Check for perpendicularity:** The dot product of two vectors is effectively zero if its absolute value is less than `0.1`.\n4.  **Pattern Recognition & Intent:** Before deep calculation, check for common patterns:\n    *   Two long, clearly parallel segments connected by two short, parallel segments strongly indicates a **rectangle**.\n    *   A fourth vertex very close to a third may be a drawing artifact; the intended shape might be a triangle.\n5.  **Map to Options Strategically:**\n    *   Identify the most specific geometric name for the shape (e.g., square, rectangle, parallelogram, trapezoid, quadrilateral).\n    *   If the most specific name is not an option, choose the most specific available option that is correct (e.g., a parallelogram is a type of trapezoid).\n    *   **Prefer specific over general:** Choose \"rectangle\" over \"trapezoid\" if the criteria are met, even with slight rounding.\n\n**Critical Guidance:** Your goal is to identify the intended shape, not just the literal path. SVG coordinates are often rounded; use the `0.01` tolerance to overcome precision errors and infer the designer's intent.",
+                "Q": 0.9,
+                "N": 1,
+                "reward": 0.9333333333333333,
+                "children": []
+              },
+              {
+                "id": 10,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Name the geometric shape from its SVG path by rigorously analyzing the path commands and geometric properties, using explicit tolerance-based checks to handle floating-point precision.\n\nFollow this reasoning process:\n1.  **Parse and Normalize Path:** Parse the `d` attribute into individual commands (M, L, H, V, A, Z). Treat multiple M commands as defining a single continuous path if the end point of one segment is the start point of the next. Ignore redundant vertices (duplicate coordinates).\n2.  **List Vertices and Segments:** Track all unique vertices in order. Classify segments as lines (from L, H, V) or arcs (from A).\n3.  **Check Closure:** The path is closed if the final vertex equals the initial vertex (within coordinate tolerance ±0.01) OR if it ends with a Z command.\n4.  **For Arcs (A):** Note rx and ry. If |rx - ry| < 0.01, the arc is circular; else, elliptical. Use flags to determine sweep direction and size.\n5.  **Classify Shape:**\n    - **If not closed:** Output \"line\".\n    - **If closed and only line segments:**\n        - Let n = number of unique vertices.\n        - If n=3: Output \"triangle\".\n        - If n=4: Perform quadrilateral checks (use tolerance ±0.05 for length comparisons, ±0.5 for dot products):\n            - Calculate all side lengths (d1-d4) and diagonal lengths.\n            - **Rectangle:** Check if all four angles are 90° (dot product of adjacent sides < 0.5 at all vertices). If true, output \"rectangle\".\n            - **Kite:** Check if two distinct pairs of adjacent sides are equal (d1=d2 and d3=d4, or d2=d3 and d4=d1). If true, output \"kite\".\n            - **Trapezoid:** Check if at least one pair of opposite sides is parallel (slopes equal within tolerance). If true, output \"trapezoid\".\n            - Else, output \"quadrilateral\" (if not an option, choose closest match).\n        - If n=5: Output \"pentagon\".\n        - If n=6: Output \"hexagon\".\n        - If n=7: Output \"heptagon\".\n        - If n=8: Output \"octagon\".\n    - **If closed and contains arcs:**\n        - **Circle:** Path consists of 4 circular arcs with 90° sweeps and equal radii.\n        - **Ellipse:** Path consists of 4 elliptical arcs with 90° sweeps.\n        - **Sector:** Path has two lines connected to a single circular arc, with lines of equal length (radius).\n6.  **Select Answer:** Map the result to the most specific option available. Assume coordinates imply perfect shapes and use tolerances to account for floating-point imprecision.",
+                "Q": 0.8666666666666667,
+                "N": 1,
+                "reward": 0.8333333333333334,
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 11,
+        "depth": 1,
+        "action_sequence": [
+          "FailureDrivenAction"
+        ],
+        "prompt": "You are an expert geometric shape classifier. Your task is to analyze an SVG path and identify the shape it draws from a given list of options.\n\n**Instructions:**\n1.  **Parse the Path:** List all the points from the `M` (moveto) and `L` (lineto) commands. Ignore `Z` (closepath) as it does not add a new vertex.\n2.  **Identify Unique Vertices:** Create a list of unique coordinate pairs. If the path ends at the starting point (either explicitly with a final `L` or implicitly with a `Z`), consider the shape closed and do NOT count the starting point again. The number of unique vertices determines the polygon's base type (e.g., 5 unique vertices -> pentagon).\n3.  **Analyze Geometric Properties:** For any polygon, you MUST analyze its properties before finalizing your answer. Calculate:\n    - **Side Lengths:** Use the distance formula between consecutive vertices.\n    - **Angles:** Check for right angles (90°) by seeing if the dot product of adjacent side vectors is zero (or very close to zero, allowing for floating-point error).\n    - **Parallel Sides:** Check if direction vectors of opposite sides are scalar multiples.\n4.  **Match to Options:** Compare your findings to the provided options. A shape must meet all defining criteria (e.g., a rectangle must have 4 sides, four 90° angles, and two pairs of parallel sides of equal length; a kite must have two distinct pairs of adjacent equal sides). Do not be fooled by the total number of points listed; count only the unique vertices that define the polygon's corners.\n\n**Question:** This SVG path element <path d=\"PATH\"/> draws a\nOptions: [OPTIONS]",
+        "Q": 8.922222222222222,
+        "N": 10,
+        "reward": 0.8666666666666667,
+        "children": [
+          {
+            "id": 12,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are an expert geometric shape classifier. Your task is to analyze an SVG path and identify the shape it draws from a given list of options.\n\n**Instructions:**\n1.  **Parse the Path:** Extract all coordinate pairs from `M` (moveto) and `L` (lineto) commands. Ignore `Z` (closepath). If multiple `M` commands form a continuous path (e.g., `M` followed by `L` without breaking the sequence), reconstruct the full connected vertex list for a single polygon.\n2.  **Identify Unique Vertices:** Create a list of unique coordinate pairs. If the path closes (explicitly with a final `L` or implicitly with `Z`), exclude the duplicate starting point. The number of unique vertices determines the base polygon type (e.g., 5 unique vertices -> pentagon).\n3.  **Analyze Geometric Properties (MANDATORY):** For any polygon, you MUST calculate:\n    - **Side Lengths:** Use the distance formula between consecutive vertices. Use a relative tolerance of 0.1% for equality.\n    - **Angles:** Check for right angles (90°) by calculating the dot product of adjacent side vectors. Use a tolerance of |dot| < 0.001.\n    - **Parallel Sides:** Check if direction vectors of opposite sides are scalar multiples (within 0.1% tolerance).\n4.  **Match to Options:** A shape must meet ALL defining criteria for a specific type. For example:\n    - **Rectangle:** 4 vertices, four right angles, two pairs of parallel sides of equal length.\n    - **Kite:** 4 vertices, two distinct pairs of adjacent equal sides.\n    - **Regular Polygon:** All sides and angles equal.\n    If no specific shape matches, default to the base polygon type (e.g., heptagon for 7 vertices).\n\n**Question:** This SVG path element <path d=\"PATH\"/> draws a\nOptions: [OPTIONS]\n\nOutput your final answer as: `<answer>shape</answer>`",
+            "Q": 0.8666666666666667,
+            "N": 1,
+            "reward": 0.9,
+            "children": []
+          },
+          {
+            "id": 13,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are an expert geometric shape classifier. Your task is to analyze an SVG path and identify the shape it draws from a given list of options.\n\n**Instructions:**\n1.  **Normalize the Path:** First, preprocess the path data for consistent analysis.\n    - Treat the entire path as defining a single shape. Convert all lowercase commands (e.g., `m`, `l`, `z`) to uppercase (`M`, `L`, `Z`) for consistency.\n    - **Ignore intermediate `M` (moveto) commands.** The first `M` command defines the start point. All subsequent `M` commands should be treated as implicit `L` (lineto) commands, continuing the path from the previous point.\n    - If a `Z` (closepath) is present, it draws a line to the initial point of the current subpath. Add this final point to your vertex list if it's not already the current point.\n2.  **Extract Vertices:** List all points from the normalized path commands in the order they are drawn. Remove any consecutive duplicate points (allowing for floating-point precision of ~0.01 units). The final list of unique, ordered points defines the polygon's vertices. The count of these vertices determines the base polygon type.\n3.  **Analyze Geometric Properties:** For the polygon defined by the vertices, calculate:\n    - **Side Lengths:** Compute the Euclidean distance between consecutive vertices (including from the last vertex back to the first). Consider lengths equal if they differ by less than ~0.05 units.\n    - **Angles:** Compute the dot product of vectors from each vertex (e.g., for vertex B, vectors BA and BC). A dot product magnitude < 0.5 indicates an approximate right angle (90°).\n    - **Parallel Sides:** Check if direction vectors of opposite sides are scalar multiples (within a tolerance).\n4.  **Match to Options:** Use the vertex count as a primary filter. A shape must possess the correct number of vertices to be a candidate for a polygon type (e.g., 4 vertices for a quadrilateral like a kite or rectangle). Then, verify all defining properties of the candidate shape against your geometric analysis.\n    - **e.g., a rectangle requires 4 vertices, four right angles, and two pairs of equal-length, parallel sides.**\n    - **e.g., a kite requires 4 vertices and two distinct pairs of adjacent sides of equal length.**\n    - If the vertex count does not match an option, that option is invalid.\n\n**Question:** This SVG path element <path d=\"PATH\"/> draws a\nOptions: [OPTIONS]\n\n**Think step by step. First, normalize the path and list the final vertices. Then, count the vertices. Finally, analyze the properties to match against the options.**",
+            "Q": 3.5444444444444443,
+            "N": 4,
+            "reward": 0.9666666666666667,
+            "children": [
+              {
+                "id": 14,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert geometric shape classifier. Your task is to analyze an SVG path and identify the shape it draws from a given list of options.\n\n**Instructions:**\nFollow this decision hierarchy strictly:\n\n1.  **Normalize & Preprocess:**\n    - Convert all commands to uppercase (e.g., `m` → `M`).\n    - **Critical: Count the unique `M` (moveto) commands.**\n        - If >1 `M`: The path is discontinuous. It can only be a \"line\" (if exactly 2 points exist) or invalidate polygon options.\n        - If 1 `M`: Proceed. Treat any subsequent `M` as an implicit `L` (lineto).\n\n2.  **Determine Base Type from Vertex Count (`V`):**\n    - Extract all unique points (tolerance: 0.01 units for duplicates) in drawing order. Include the point from a `Z` (closepath) if it closes the shape.\n    - **`V = 2`:** Candidate for **line**.\n    - **`V = 3`:** Candidate for **triangle**.\n    - **`V = 4`:** Candidate for a **quadrilateral** (rectangle, kite, trapezoid).\n    - **`V = 5/6/7/8`:** Candidate for **pentagon/hexagon/heptagon/octagon**.\n    - The path is a **circle** or **sector** **only if it contains arc commands (`A`).** If no arcs exist, eliminate these options immediately.\n\n3.  **Targeted Geometric Analysis (Only if required to distinguish options with the same `V`):**\n    - **For Quadrilaterals (`V=4`):**\n        - Calculate side lengths (use relative tolerance ~1% for equality).\n        - Calculate angles via dot product (|dot| < 0.5 suggests ~90°).\n        - **Rectangle:** Requires 4 right angles AND two pairs of equal, parallel sides.\n        - **Kite:** Requires two distinct pairs of adjacent equal sides.\n        - **Trapezoid:** Requires at least one pair of parallel sides.\n    - For other polygons, check regularity (equal sides/angles) only if options demand it.\n\n4.  **Match to Options:**\n    - First, eliminate options whose vertex count does not match `V`.\n    - Second, eliminate options invalidated by path structure (e.g., no arcs → not a circle).\n    - Finally, use specific properties to distinguish the remaining candidates.\n\n**Question:** This SVG path element <path d=\"PATH\"/> draws a\nOptions: [OPTIONS]\n\n**Think step by step. Follow the hierarchy: 1) Normalize, 2) Count Vertices, 3) Perform analysis only if necessary. Conclude your response with: \"Therefore, the shape is a [SHAPE].\"**",
+                "Q": 0.8666666666666667,
+                "N": 1,
+                "reward": 0.8666666666666667,
+                "children": []
+              },
+              {
+                "id": 15,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert geometric shape classifier. Your task is to analyze an SVG path and identify the shape it draws from a given list of options.\n\n**Instructions:**\n1.  **Normalize the Path:** Convert all commands to uppercase. Treat all intermediate `M` commands as implicit `L` commands. Handle `Z` by adding the initial point if needed. If the path ends at the start point, treat it as closed.\n2.  **Extract Vertices:** List all points from normalized commands in order. Remove consecutive duplicate points (within 0.01 units). The final list defines the polygon's vertices.\n3.  **Check for Curved Paths:** If the path contains `A` (arc) commands:\n    - If `rx = ry` (within tolerance), it is circular; else elliptical.\n    - If composed of arcs returning to start, it's a full circle (360°) or sector (if partial). A sector requires two straight lines (radii) and one arc.\n4.  **For Polygons (≥3 vertices):**\n    - **Count Vertices:** This is the primary filter. The count must match the polygon type.\n    - **Compute Side Lengths:** Euclidean distances between consecutive vertices (including closure). Equal if within 0.05 units.\n    - **Compute Angles:** At each vertex, compute dot product of vectors to adjacent vertices. Magnitude < 0.5 indicates a right angle (~90°).\n    - **Check Parallelism:** For opposite sides, check if direction vectors are scalar multiples (within tolerance).\n5.  **Match to Options:** \n    - For polygons: use vertex count first, then verify defining properties (e.g., rectangle requires 4 vertices, right angles, and parallel opposite sides).\n    - For curved paths: choose between circle, ellipse, or sector.\n    - For 2 vertices and no closure: line.\n\n**Question:** This SVG path element <path d=\"PATH\"/> draws a\nOptions: [OPTIONS]\n\n**Think step by step. First, normalize the path and list the final vertices. Then, count the vertices. Finally, analyze the properties to match against the options.**",
+                "Q": 0.9,
+                "N": 1,
+                "reward": 0.9,
+                "children": []
+              },
+              {
+                "id": 16,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert geometric shape classifier. Your task is to analyze an SVG path and identify the shape it draws from a given list of options.\n\n**Definitions:**\n-   `tolerance = 0.05` (Use this value for all equality and proximity checks).\n\n**Instructions:**\n1.  **Normalize the Path:** Preprocess the path data for consistent analysis.\n    -   Convert all relative, lowercase commands (e.g., `m`, `l`, `z`) to absolute, uppercase (`M`, `L`, `Z`).\n    -   **Ignore intermediate `M` (moveto) commands.** Treat all `M` commands after the first as implicit `L` (lineto) commands, continuing the path from the previous point.\n    -   If a `Z` (closepath) is present, it draws a line to the initial point. **Ensure the path is closed. Do not add a new vertex for the closing point; the vertex list must begin and end with the same point conceptually, but for counting, only list the unique vertices in order.**\n\n2.  **Extract Vertices:** Parse the normalized path to list all unique points (vertices) in the order they are drawn.\n    -   **Remove consecutive duplicate points** (points where the distance between them is < `tolerance`).\n    -   **Crucially, if the final vertex is a duplicate of the starting vertex (distance < `tolerance`), do not count it as a separate vertex.** The number of vertices (`N`) is the count of this finalized list.\n\n3.  **Primary Filter - Vertex Count:** Check the value of `N`.\n    -   If `N` does not match the vertex count of any option (e.g., `N=5` but \"pentagon\" is not an option), you can **immediately conclude the answer is not that shape**.\n    -   If `N` matches one or more options, proceed to analyze geometric properties.\n\n4.  **Analyze Geometric Properties (Only if needed based on vertex count):**\n    -   **For polygons (triangle, quadrilateral, pentagon, etc.):**\n        -   **Side Lengths:** Compute the Euclidean distance between consecutive vertices (including from the last vertex back to the first). Consider lengths equal if the absolute difference is < `tolerance`.\n        -   **Angles:** For each vertex, compute the vectors to its previous and next neighbor. Use the dot product to find the angle. A dot product magnitude < 0.5 indicates an approximate right angle (90°).\n        -   **Parallel Sides:** Check if direction vectors of opposite sides are scalar multiples (within a tolerance of `tolerance`).\n    -   **For a Circle:** Check if all vertices are approximately equidistant from a common center point (the centroid). The standard deviation of the distances should be very low (< `tolerance`).\n    -   **For a Line:** Check if all vertices are colinear (e.g., the area of the triangle formed by any three points is nearly zero).\n\n5.  **Match to Options:**\n    -   Use the analysis from Step 3 and 4 to match against the defining properties of the candidate shapes.\n    -   **Choose the most specific term that matches.** (e.g., A shape that meets the criteria for both \"square\" and \"rectangle\" should be identified as a \"square\" if it is an option).\n    -   **Example Checks:**\n        -   **Rectangle:** `N=4`, four right angles, two pairs of equal-length sides.\n        -   **Square:** `N=4`, four right angles, all four sides equal length.\n        -   **Kite:** `N=4`, two distinct pairs of adjacent sides of equal length.\n        -   **Circle:** All points ~equal distance from center.\n        -   **Hexagon:** `N=6`. (Then check for regularity if necessary).\n\n**Question:** This SVG path element `<path d=\"PATH\"/>` draws a\nOptions: [OPTIONS]\n\n**Think step by step. Your final answer must be a single word from the provided options.**\n1.  Normalize the path.\n2.  List the final, unique vertices and count them (`N`).\n3.  State which options are eliminated based on `N`.\n4.  **If required,** analyze geometric properties to distinguish between the remaining options.\n5.  Conclude with the correct shape.",
+                "Q": 0.8666666666666667,
+                "N": 1,
+                "reward": 0.8666666666666667,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 17,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are an expert geometric shape classifier. Your task is to analyze an SVG path and identify the shape it draws from a given list of options.\n\n**Instructions:**\n1.  **Parse the Path:** List all the points from the `M` (moveto) and `L` (lineto) commands. Ignore `Z` (closepath) as it does not add a new vertex.\n2.  **Identify Unique Vertices:** Create a list of unique coordinate pairs. If the path ends at the starting point (either explicitly with a final `L` or implicitly with a `Z`), consider the shape closed and do NOT count the starting point again. The number of unique vertices determines the polygon's base type (e.g., 5 unique vertices -> pentagon).\n3.  **Analyze Geometric Properties:** For any polygon, you MUST analyze its properties before finalizing your answer. Calculate:\n    - **Side Lengths:** Use the distance formula between consecutive vertices.\n    - **Angles:** Check for right angles (90°) by seeing if the dot product of adjacent side vectors is zero (or very close to zero, allowing for floating-point error).\n    - **Parallel Sides:** Check if direction vectors of opposite sides are scalar multiples.\n4.  **Match to Options:** Compare your findings to the provided options. A shape must meet all defining criteria (e.g., a rectangle must have 4 sides, four 90° angles, and two pairs of parallel sides of equal length; a kite must have two distinct pairs of adjacent equal sides). Do not be fooled by the total number of points listed; count only the unique vertices that define the polygon's corners.\n\n**Question:** This SVG path element <path d=\"PATH\"/> draws a\nOptions: [OPTIONS]",
+            "Q": 3.5944444444444446,
+            "N": 4,
+            "reward": 0.9333333333333333,
+            "children": [
+              {
+                "id": 18,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert geometric shape classifier. Your task is to analyze an SVG path and identify the shape it draws from a given list of options.\n\n**Instructions:**\n1.  **Parse the Path:** List all the points from the `M` (moveto) and `L` (lineto) commands. Ignore `Z` (closepath) as it does not add a new vertex.\n2.  **Identify Unique Vertices:** Create a list of unique coordinate pairs. If the path ends at the starting point (either explicitly with a final `L` or implicitly with a `Z`), consider the shape closed and do NOT count the starting point again. The number of unique vertices determines the polygon's base type (e.g., 5 unique vertices -> pentagon).\n3.  **Analyze Geometric Properties:** For any polygon, you MUST analyze its properties before finalizing your answer. Calculate:\n    - **Side Lengths:** Use the distance formula between consecutive vertices.\n    - **Angles:** Check for right angles (90°) by seeing if the dot product of adjacent side vectors is zero (or very close to zero, allowing for floating-point error).\n    - **Parallel Sides:** Check if direction vectors of opposite sides are scalar multiples.\n4.  **Match to Options:** Compare your findings to the provided options. A shape must meet all defining criteria (e.g., a rectangle must have 4 sides, four 90° angles, and two pairs of parallel sides of equal length; a kite must have two distinct pairs of adjacent equal sides). Do not be fooled by the total number of points listed; count only the unique vertices that define the polygon's corners.\n\n**Question:** This SVG path element <path d=\"PATH\"/> draws a\nOptions: [OPTIONS]",
+                "Q": 0.8833333333333333,
+                "N": 1,
+                "reward": 0.8333333333333334,
+                "children": []
+              },
+              {
+                "id": 19,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert geometric shape classifier. Your task is to analyze an SVG path and identify the shape it draws from a given list of options.\n\n**Instructions:**\n**1.  Path Normalization and Vertex Extraction:**\n    *   Process all path commands (`M`, `L`, `Z`) **in the exact order they appear** to reconstruct the complete path trajectory.\n    *   For each `M` (moveto) or `L` (lineto) command, add the specified point to a sequential list.\n    *   For a `Z` (closepath) command, explicitly add the starting point of the **current subpath** (the point from the last `M` command) to the list to close the shape.\n    *   This master list represents the full path sequence, including any intermediate points.\n\n**2.  Identify the Closed Polygon:**\n    *   A valid polygon is formed only if the path is closed. This occurs if:\n        a) The path ends with an explicit `Z` command, OR\n        b) The final point in the sequence is identical to the first point of the current subpath (within a tolerance of 0.001 units).\n    *   If closed, extract the unique vertices **in the order they are visited** along the perimeter. Remove the final duplicate point if it matches the start point. The count of these unique, ordered vertices determines the base polygon type.\n\n**3.  Geometric Analysis (For Closed Polygons):**\n    *   **Calculate Side Lengths:** Compute the Euclidean distance between consecutive vertices (V1→V2, V2→V3, ..., Vn→V1).\n    *   **Check for Right Angles:** For each vertex, calculate the dot product of the two vectors formed by its adjacent sides. A dot product with an absolute value **less than 0.001** indicates a right angle (90°).\n    *   **Check Parallel Sides:** For candidate pairs of sides, check if their direction vectors are scalar multiples (i.e., their cross product is zero, with |cross product| < 0.001).\n    *   **Check Equal Lengths:** Compare lengths of sides that should be equal using a relative tolerance: `abs(a - b) / ((a+b)/2) < 0.001`.\n\n**4.  Match to Options:**\n    *   Compare your findings to the provided options. A shape must meet **all** defining criteria.\n    *   **Key Classifications:**\n        *   **Rectangle:** 4 vertices, four right angles, two pairs of parallel sides.\n        *   **Kite (Quadrilateral):** 4 vertices, two distinct pairs of adjacent sides of equal length.\n        *   **Trapezoid:** 4 vertices, at least one pair of parallel sides.\n    *   If the path is not closed, the shape is a **line**.\n\n**Question:** This SVG path element <path d=\"PATH\"/> draws a\nOptions: [OPTIONS]",
+                "Q": 0.9166666666666667,
+                "N": 1,
+                "reward": 0.9,
+                "children": []
+              },
+              {
+                "id": 20,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert geometric shape classifier. Your task is to analyze an SVG path and identify the shape it draws from a given list of options.\n\n**Instructions:**\n\n1.  **Parse the Path:**\n    *   Extract all coordinate points from `M` (moveto) and `L` (lineto) commands, in the order they are drawn.\n    *   Ignore the `Z` (closepath) command. If the path ends with `Z`, it forms a closed shape by connecting back to the initial point; do not add a new vertex for this.\n\n2.  **Identify Unique Vertices:**\n    *   Create a list of unique coordinate pairs. If the last point is identical to the first point (explicitly via `L` or implicitly via `Z`), consider the shape closed and **omit the duplicate** starting point from the unique vertices list.\n    *   The count of these unique vertices determines the base polygon type (e.g., 4 vertices -> quadrilateral).\n\n3.  **Define Comparison Tolerance:**\n    *   **CRITICAL:** Due to floating-point precision, you must use a tolerance value of **`0.1`** for all comparisons.\n    *   Two lengths are considered **equal** if the absolute difference between them is less than `0.1`.\n    *   An angle is considered a **right angle (90°)** if the absolute value of the dot product of the adjacent side vectors is less than `0.1`.\n    *   Two vectors are considered **parallel** if the absolute difference between their normalized directional components is less than `0.1`.\n\n4.  **Analyze Geometric Properties (Hierarchical Analysis):**\n    *   **Calculate Side Lengths:** Use the distance formula between consecutive vertices (from the unique list, connecting the last vertex back to the first).\n    *   For quadrilaterals, proceed with this logical classification flow:\n        1.  **Check for Parallelism:** Are both pairs of opposite sides parallel? -> It is a **parallelogram**.\n            *   **Check Angles:** Does it have four right angles? -> It is a **rectangle**.\n            *   **Check Side Equality:** Are all four sides equal? -> It is a **rhombus**.\n        2.  **Check for Trapezoid:** Is exactly one pair of opposite sides parallel? -> It is a **trapezoid**.\n        3.  **Check for Kite:** Are there two distinct pairs of adjacent sides that are equal? -> It is a **kite**.\n    *   For other polygons (pentagon, hexagon, etc.), confirm the number of sides matches the option.\n\n5.  **Match to Options:**\n    *   Compare your hierarchical classification to the provided options.\n    *   Select the option that matches all defining criteria.\n    *   If no option fits perfectly, output the most specific classification you can determine (e.g., \"irregular quadrilateral\").\n    *   Your final output should be a single word from the options list.\n\n**Question:** This SVG path element <path d=\"PATH\"/> draws a\nOptions: [OPTIONS]",
+                "Q": 0.9166666666666667,
+                "N": 1,
+                "reward": 0.9,
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 21,
+        "depth": 1,
+        "action_sequence": [
+          "SuccessDrivenAction"
+        ],
+        "prompt": "Name the geometric shape from its SVG path by following these steps:\n\n1. **Parse Commands**: Break down the `d` attribute into individual commands (M, L, A, Z, etc.) and list their parameters.\n2. **Check Closure**: Determine if the path is closed (ends at the starting point via L or Z) or open.\n3. **For Straight Lines (L commands)**:\n   - If open with 2 distinct points, it is a line.\n   - If closed, count distinct vertices: 3 → triangle, 4 → quadrilateral (e.g., rectangle), more → polygon (e.g., pentagon, hexagon).\n4. **For Arcs (A commands)**:\n   - Check if radii (rx, ry) are equal (circular arc) or unequal (elliptical arc).\n   - Analyze flags (large-arc, sweep) and endpoints.\n   - If a single arc returns to start → circle (equal radii) or ellipse (unequal radii).\n   - If arcs combine with symmetric endpoints and equal radii → circle.\n   - If an arc is connected to a center via lines → sector.\n5. **Use Geometric Constraints**:\n   - Compute chord length between points; if chord = 2 * radius, it may be a semicircle or part of a circle.\n   - Prefer common shapes (e.g., circle, triangle) over rare ones.\n6. **Match to Options**: Eliminate implausible choices (e.g., no curves for polygons, no straight lines for circles) and select the correct shape.\n\nOutput only the name of the shape.",
+        "Q": 8.941666666666666,
+        "N": 10,
+        "reward": 0.9,
+        "children": [
+          {
+            "id": 22,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Name the geometric shape from its SVG path by following these steps meticulously:\n\n1.  **Parse and Extract Vertices:**\n    *   Break down the `d` attribute into individual commands (M, L, H, V, Z, A, etc.).\n    *   Extract the coordinates from every command that defines a point (e.g., the parameters for M, L, A; the implied point for H, V; the initial point for Z).\n    *   **Create a list of all points the path visits in order.** Then, remove any consecutive duplicate points. If the path is closed (either by a `Z` command or by the last point equaling the first), ensure the starting point is not listed again at the end. The final list contains the **unique vertices** of the shape.\n\n2.  **Determine Closure:**\n    *   The path is **closed** if it ends with a `Z` command or if the Euclidean distance between its first and last point is negligible (less than 0.1). Otherwise, it is **open**.\n\n3.  **Analyze Command Types:**\n    *   **If the path contains ANY 'A' (arc) commands:** The shape involves curves. Proceed to Step 4.\n    *   **If the path contains ONLY straight-line commands (M, L, H, V, Z):** The shape is a polygon or polyline. Proceed to Step 5.\n\n4.  **For Paths with Arcs (Curved Shapes):**\n    *   **Circle:** A single arc command that returns to its start point with equal rx and ry radii.\n    *   **Ellipse:** A single arc command that returns to its start point with unequal rx and ry radii.\n    *   **Sector:** Two straight lines (L commands) connected by an arc (A command), forming a \"pie slice\" shape.\n    *   If multiple arcs are present, analyze their parameters and connectivity to identify the shape.\n\n5.  **For Paths with Only Straight Lines:**\n    *   **If Open:**\n        *   2 distinct vertices → **line**.\n        *   More than 2 vertices → **polyline** (if not an option, choose \"line\").\n    *   **If Closed:**\n        *   Let `N` be the final count of **unique vertices** from Step 1.\n        *   The base shape is an `N`-gon. **Now, check for specific properties to find a more precise match from the options:**\n            *   **Kite (N=4):** Check if two distinct pairs of adjacent sides have equal lengths. Calculate the distances between vertices.\n            *   **Rectangle (N=4):** Check if all four interior angles are approximately 90 degrees (calculate dot products of consecutive vectors) OR if opposite sides are parallel and diagonals are equal.\n            *   If no specific properties are identified, the shape is a general polygon (e.g., pentagon, hexagon).\n\n6.  **Final Validation and Selection:**\n    *   **Eliminate implausible options** (e.g., a shape with arcs cannot be a polygon; a shape with only lines cannot be a circle).\n    *   **Your final answer must be one of the provided options.** Choose the most specific and accurate term available. For example, if you have a quadrilateral that is a rectangle, and \"rectangle\" is an option, output \"rectangle\", not \"quadrilateral\" or \"pentagon\".\n    *   **Re-check the vertex count.** This is a common source of error. Confirm your list of unique vertices is correct.\n\nOutput only the name of the shape in lowercase.",
+            "Q": 3.616666666666667,
+            "N": 4,
+            "reward": 0.9333333333333333,
+            "children": [
+              {
+                "id": 23,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Name the geometric shape from its SVG path by following these steps meticulously:\n\n1.  **Parse and Extract Vertices:**\n    *   Break down the `d` attribute into individual commands (M, L, H, V, Z, A, etc.).\n    *   Extract the coordinates from every command that defines a point (e.g., the parameters for M, L, A; the implied point for H, V; the initial point for Z).\n    *   **Create a list of all points the path visits in order.** Then, remove any consecutive duplicate points. If the path is closed (either by a `Z` command or by the last point equaling the first), ensure the starting point is not listed again at the end. The final list contains the **unique vertices** of the shape.\n\n2.  **Determine Closure:**\n    *   The path is **closed** if it ends with a `Z` command or if the Euclidean distance between its first and last point is negligible (less than 0.1). Otherwise, it is **open**.\n\n3.  **Analyze Command Types:**\n    *   **If the path contains ANY 'A' (arc) commands:** The shape involves curves. Proceed to Step 4.\n    *   **If the path contains ONLY straight-line commands (M, L, H, V, Z):** The shape is a polygon or polyline. Proceed to Step 5.\n\n4.  **For Paths with Arcs (Curved Shapes):**\n    *   **Circle:** A single arc command that returns to its start point with equal rx and ry radii.\n    *   **Ellipse:** A single arc command that returns to its start point with unequal rx and ry radii.\n    *   **Sector:** Two straight lines (L commands) connected by an arc (A command), forming a \"pie slice\" shape.\n    *   If multiple arcs are present, analyze their parameters and connectivity to identify the shape.\n\n5.  **For Paths with Only Straight Lines:**\n    *   **If Open:**\n        *   2 distinct vertices → **line**.\n        *   More than 2 vertices → **polyline** (if not an option, choose \"line\").\n    *   **If Closed:**\n        *   Let `N` be the final count of **unique vertices** from Step 1.\n        *   The base shape is an `N`-gon. **Now, check for specific properties to find a more precise match from the options:**\n            *   **Kite (N=4):** Check if two distinct pairs of adjacent sides have equal lengths. Calculate the distances between vertices.\n            *   **Rectangle (N=4):** Check if all four interior angles are approximately 90 degrees (calculate dot products of consecutive vectors) OR if opposite sides are parallel and diagonals are equal.\n            *   If no specific properties are identified, the shape is a general polygon (e.g., pentagon, hexagon).\n\n6.  **Final Validation and Selection:**\n    *   **Eliminate implausible options** (e.g., a shape with arcs cannot be a polygon; a shape with only lines cannot be a circle).\n    *   **Your final answer must be one of the provided options.** Choose the most specific and accurate term available. For example, if you have a quadrilateral that is a rectangle, and \"rectangle\" is an option, output \"rectangle\", not \"quadrilateral\" or \"pentagon\".\n    *   **Re-check the vertex count.** This is a common source of error. Confirm your list of unique vertices is correct.\n\nOutput only the name of the shape in lowercase.",
+                "Q": 0.9166666666666667,
+                "N": 1,
+                "reward": 0.9,
+                "children": []
+              },
+              {
+                "id": 24,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Name the geometric shape from its SVG path by following these steps meticulously:\n\n1.  **Parse and Extract Vertices:**\n    *   Break down the `d` attribute into individual commands (M, L, H, V, Z, A, etc.).\n    *   Extract the coordinates from every command that defines a point (e.g., the parameters for M, L, A; the implied point for H, V; the initial point for Z).\n    *   **Create a list of all points the path visits in order.** Then, remove any consecutive duplicate points. If the path is closed (either by a `Z` command or by the last point equaling the first), ensure the starting point is not listed again at the end. The final list contains the **unique vertices** of the shape.\n\n2.  **Determine Closure:**\n    *   The path is **closed** if it ends with a `Z` command or if the Euclidean distance between its first and last point is negligible (less than 0.1). Otherwise, it is **open**.\n\n3.  **Analyze Command Types:**\n    *   **If the path contains ANY 'A' (arc) commands:** The shape involves curves. Proceed to Step 4.\n    *   **If the path contains ONLY straight-line commands (M, L, H, V, Z):** The shape is a polygon or polyline. Proceed to Step 5.\n\n4.  **For Paths with Arcs (Curved Shapes):**\n    *   **Circle:** A single arc command that returns to its start point with equal rx and ry radii.\n    *   **Ellipse:** A single arc command that returns to its start point with unequal rx and ry radii.\n    *   **Sector:** Two straight lines (L commands) connected by an arc (A command), forming a \"pie slice\" shape.\n    *   If multiple arcs are present, analyze their parameters and connectivity to identify the shape.\n\n5.  **For Paths with Only Straight Lines:**\n    *   **If Open:**\n        *   2 distinct vertices → **line**.\n        *   More than 2 vertices → **polyline** (if not an option, choose \"line\").\n    *   **If Closed:**\n        *   Let `N` be the final count of **unique vertices** from Step 1.\n        *   The base shape is an `N`-gon. **Now, check for specific properties to find a more precise match from the options:**\n            *   **Kite (N=4):** Check if two distinct pairs of adjacent sides have equal lengths. Calculate the distances between vertices.\n            *   **Rectangle (N=4):** Check if all four interior angles are approximately 90 degrees (calculate dot products of consecutive vectors) OR if opposite sides are parallel and diagonals are equal.\n            *   If no specific properties are identified, the shape is a general polygon (e.g., pentagon, hexagon).\n\n6.  **Final Validation and Selection:**\n    *   **Eliminate implausible options** (e.g., a shape with arcs cannot be a polygon; a shape with only lines cannot be a circle).\n    *   **Your final answer must be one of the provided options.** Choose the most specific and accurate term available. For example, if you have a quadrilateral that is a rectangle, and \"rectangle\" is an option, output \"rectangle\", not \"quadrilateral\" or \"pentagon\".\n    *   **Re-check the vertex count.** This is a common source of error. Confirm your list of unique vertices is correct.\n\nOutput only the name of the shape in lowercase.",
+                "Q": 0.9,
+                "N": 1,
+                "reward": 0.8666666666666667,
+                "children": []
+              },
+              {
+                "id": 25,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Name the geometric shape from its SVG path by following these steps meticulously. Your final answer must be the most specific shape available in the provided options.\n\n1.  **Parse and Extract Vertices:**\n    *   Break down the `d` attribute into individual commands (M, L, H, V, Z, A, etc.).\n    *   Extract the coordinates from every command that defines a point (e.g., the parameters for M, L; the implied point for H, V; the initial point for Z). For 'A' commands, extract the endpoint coordinates but note the presence of the arc.\n    *   Create a sequential list of all points the path visits. Remove any consecutive duplicate points. If the path is closed (either by a `Z` command or because the Euclidean distance between its first and last point is less than 0.1), ensure the starting point is not listed again at the end. The final list contains the **unique vertices** of the shape.\n\n2.  **Determine Closure:**\n    *   The path is **closed** if it ends with a `Z` command or if the distance between its first and last point is negligible (< 0.1). Otherwise, it is **open**.\n\n3.  **Analyze Command Types:**\n    *   **If the path contains ANY 'A' (arc) commands:** The shape involves curves. Proceed to Step 4.\n    *   **If the path contains ONLY straight-line commands (M, L, H, V, Z):** The shape is a polygon or polyline. Proceed to Step 5.\n\n4.  **For Paths with Arcs (Curved Shapes):**\n    *   **Circle:** A path with a single arc command that forms a closed loop with equal rx and ry radii.\n    *   **Ellipse:** A path with a single arc command that forms a closed loop with unequal rx and ry radii.\n    *   **Sector:** Two straight lines (L commands) connected by an arc (A command), forming a \"pie slice\" shape.\n    *   If multiple arcs are present, analyze their parameters and connectivity to identify the shape.\n\n5.  **For Paths with Only Straight Lines:**\n    *   **If Open:**\n        *   2 distinct vertices → **line**.\n        *   More than 2 vertices → **polyline**.\n    *   **If Closed:**\n        *   Let `N` be the final count of **unique vertices**.\n        *   The base shape is an `N`-gon. **Now, check for specific properties to find the most precise match from the options. Perform these checks in order:**\n            *   **For N=4 (Quadrilaterals):**\n                1.  Calculate vectors for all four sides.\n                2.  **Check for Parallel Sides:** Calculate the cross product of vectors for opposite sides. If the result is approximately zero (absolute value < 0.1) for both pairs, the sides are parallel.\n                3.  **Check for Right Angles:** Calculate the dot product of vectors for consecutive sides. If the result is approximately zero (absolute value < 0.1) for all four corners, the angle is 90°.\n                4.  **Check for Equal Lengths:** Calculate the Euclidean distance for all sides.\n                5.  **Now, classify based on the options provided:**\n                    *   If **all four angles are 90°** → The shape is a **rectangle**. (If all sides are also equal, it is a square, but choose 'rectangle' if 'square' is not an option).\n                    *   Else, if **two pairs of opposite sides are parallel** → The shape is a **parallelogram**. If 'parallelogram' is not an option, check if 'trapezoid' is.\n                    *   Else, if **at least one pair of sides is parallel** → The shape is a **trapezoid**.\n                    *   Else, if **two distinct pairs of adjacent sides are equal** → The shape is a **kite**.\n                    *   If none of the above apply, it is a general **quadrilateral**.\n            *   **For N=3:** The shape is a **triangle**. (Check side lengths for isosceles/equilateral if those are options).\n            *   **For N=5,6,7,8:** The shape is a **pentagon, hexagon, heptagon, or octagon** respectively.\n\n6.  **Final Validation and Selection:**\n    *   **Eliminate implausible options** (e.g., a shape with arcs cannot be a polygon; a shape with only lines cannot be a circle).\n    *   **Re-check the vertex count.** This is a common source of error.\n    *   **Your final answer must be one of the provided options.** Choose the most specific and accurate term available. For example, output \"rectangle\", not \"quadrilateral\" or \"trapezoid\" if all conditions for a rectangle are met.\n\nOutput only the name of the shape in lowercase.",
+                "Q": 0.9,
+                "N": 1,
+                "reward": 0.8333333333333334,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 26,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Name the geometric shape from its SVG path by following these steps precisely:\n\n1.  **Parse Path Data:** Extract all drawing commands (M, L, A, Z, etc.) and their parameters. The initial `M` command defines the start point. Ignore any subsequent `M` (moveto) commands for vertex counting.\n2.  **Check Closure:** The path is closed if it ends with a `Z` command or an `L` command whose coordinates are identical (within a small tolerance) to the initial `M` point.\n3.  **Count Sides and Vertices:**\n    *   **Sides:** The number of sides is equal to the number of line-drawing (`L`) commands. A closing `Z` command does **not** count as a side.\n    *   **Vertices:**\n        *   Create a list of all points from the initial `M` and all subsequent `L` commands.\n        *   If the last point's coordinates are identical to the first point's (within tolerance), remove this duplicate closing point.\n        *   The count of the remaining points is the number of **unique vertices**.\n4.  **Classify the Shape:**\n    *   **Open Path:** If the path is not closed and has exactly 2 unique vertices → `line`.\n    *   **Closed Path with Straight Lines (No Arcs):**\n        *   3 vertices → `triangle`\n        *   4 vertices → Proceed to Step 5.\n        *   5 vertices → `pentagon`\n        *   6 vertices → `hexagon`\n        *   7 vertices → `heptagon`\n        *   8 vertices → `octagon`\n    *   **Closed Path with Arcs (A commands):**\n        *   **Single Arc:** If the path consists of one `A` command that returns to the start point → `circle` (if rx equals ry) or `ellipse` (if rx != ry).\n        *   **Sector:** If the path is `M [center] L [point1] A ... L [center] Z`, or equivalent, forming an arc connected to a center point by two lines → `sector`.\n        *   **Multiple Arcs:** If multiple arcs with equal radii form a full loop → `circle`.\n5.  **Refine Quadrilaterals (4 vertices):** For a closed shape with 4 unique vertices and only straight lines:\n    *   Calculate the distances between all consecutive vertices (side lengths).\n    *   **Kite:** If two distinct pairs of adjacent sides are equal (e.g., (d1==d2 and d3==d4) or (d2==d3 and d4==d1)) → `kite`.\n    *   **Rectangle:** If all four interior angles are approximately 90 degrees (check by calculating dot products of consecutive side vectors) → `rectangle`.\n    *   If neither condition is met, it is a general quadrilateral. (Note: Based on the provided options, `kite` is often the default assumption for a 4-sided shape that is not a rectangle).\n6.  **Final Selection:** Match the deduced shape to the provided options. The count of unique vertices is definitive for polygons. Eliminate options that contradict the properties found (e.g., an option requiring curves if only `L` commands are present).\n\nOutput only the name of the shape.",
+            "Q": 0.8777777777777778,
+            "N": 1,
+            "reward": 0.9666666666666667,
+            "children": []
+          },
+          {
+            "id": 27,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Name the geometric shape from its SVG path by following these steps:\n\n1. **Parse Commands**: Break down the `d` attribute into individual commands (M, L, A, Z, etc.) and list their parameters.\n2. **Preprocess Points**: Remove duplicate points (within 0.01 tolerance) and ignore the closing point if it repeats the start point (only count distinct vertices).\n3. **Check Closure**: The path is closed if it ends with `Z` or if the last point is approximately equal to the first point (within 0.01).\n4. **Handle Subpaths**: If multiple `M` commands exist, treat the path as a single continuous shape if endpoints connect. Otherwise, focus on the largest closed subpath.\n5. **For Straight Lines (L commands)**:\n   - If open with 2 distinct points → line.\n   - If closed, count distinct vertices:\n        - 3 → triangle\n        - 4 → quadrilateral (proceed to step 5a)\n        - 5 → pentagon\n        - 6 → hexagon\n        - 7 → heptagon\n        - 8 → octagon\n        - more → polygon\n   - For quadrilaterals:\n        a. Check side vectors for parallelism (within 0.01 tolerance for cross product):\n            - Two pairs parallel → parallelogram\n            - One pair parallel → trapezoid\n            - No pairs parallel → general quadrilateral\n        b. Check angles (dot product within 0.1 of 0 for perpendicularity):\n            - All angles ≈90° → rectangle (if not all sides equal) or square (if all sides equal)\n        c. Check side lengths (within 0.01 tolerance):\n            - Two pairs adjacent sides equal → kite\n            - All sides equal but not all angles 90° → rhombus\n6. **For Arcs (A commands)**:\n   - Check if radii (rx, ry) are approximately equal (within 0.01) → circular arc, else → elliptical arc.\n   - If a single arc returns to start → circle (equal radii) or ellipse (unequal radii).\n   - If arcs combine with symmetric endpoints and equal radii → circle.\n   - If an arc is connected to a center via lines → sector.\n7. **Use Geometric Constraints**:\n   - Use tolerance (0.01) for all comparisons of coordinates, lengths, and angles.\n   - Prefer common shapes (e.g., circle, triangle, rectangle) when approximate conditions are met.\n8. **Match to Options**: Eliminate implausible choices (e.g., no curves for polygons, no straight lines for circles) and select the correct shape. If the exact shape isn't listed, choose the closest match.\n\nOutput only the name of the shape.",
+            "Q": 3.5555555555555554,
+            "N": 4,
+            "reward": 0.8666666666666667,
+            "children": [
+              {
+                "id": 28,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Name the geometric shape from its SVG path by following these steps:\n\n1. **Parse Commands**: Break down the `d` attribute into individual commands (M, L, A, Z, etc.) and list their parameters.\n2. **Preprocess Points**: Remove duplicate points (within 0.01 tolerance) and ignore the closing point if it repeats the start point (only count distinct vertices).\n3. **Check Closure**: The path is closed if it ends with `Z` or if the last point is approximately equal to the first point (within 0.01).\n4. **Handle Subpaths**: If multiple `M` commands exist, treat the path as a single continuous shape if endpoints connect. Otherwise, focus on the largest closed subpath.\n5. **For Straight Lines (L commands)**:\n   - If open with 2 distinct points → line.\n   - If closed, count distinct vertices:\n        - 3 → triangle\n        - 4 → quadrilateral (proceed to step 5a)\n        - 5 → pentagon\n        - 6 → hexagon\n        - 7 → heptagon\n        - 8 → octagon\n        - more → polygon\n   - For quadrilaterals:\n        a. Check side vectors for parallelism (within 0.01 tolerance for cross product):\n            - Two pairs parallel → parallelogram\n            - One pair parallel → trapezoid\n            - No pairs parallel → general quadrilateral\n        b. Check angles (dot product within 0.1 of 0 for perpendicularity):\n            - All angles ≈90° → rectangle (if not all sides equal) or square (if all sides equal)\n        c. Check side lengths (within 0.01 tolerance):\n            - Two pairs adjacent sides equal → kite\n            - All sides equal but not all angles 90° → rhombus\n6. **For Arcs (A commands)**:\n   - Check if radii (rx, ry) are approximately equal (within 0.01) → circular arc, else → elliptical arc.\n   - If a single arc returns to start → circle (equal radii) or ellipse (unequal radii).\n   - If arcs combine with symmetric endpoints and equal radii → circle.\n   - If an arc is connected to a center via lines → sector.\n7. **Use Geometric Constraints**:\n   - Use tolerance (0.01) for all comparisons of coordinates, lengths, and angles.\n   - Prefer common shapes (e.g., circle, triangle, rectangle) when approximate conditions are met.\n8. **Match to Options**: Eliminate implausible choices (e.g., no curves for polygons, no straight lines for circles) and select the correct shape. If the exact shape isn't listed, choose the closest match.\n\nOutput only the name of the shape.",
+                "Q": 0.8666666666666667,
+                "N": 1,
+                "reward": 0.9333333333333333,
+                "children": []
+              },
+              {
+                "id": 29,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Name the geometric shape from its SVG path by following these steps:\n\n1. **Parse Commands**: Break down the `d` attribute into individual commands (M, L, A, Z, etc.) and list their parameters.\n2. **Preprocess Points**: Remove duplicate points (within Euclidean distance tolerance 0.01) and ignore the closing point if it repeats the start point (only count distinct vertices). Combine subpaths if they are connected end-to-end (within tolerance).\n3. **Check Closure**: The path is closed if it ends with `Z` or if the last point is approximately equal to the first point (within 0.01 distance).\n4. **Handle Subpaths**: If multiple `M` commands exist, treat as a single shape if endpoints connect. Otherwise, consider the largest closed subpath.\n5. **For Straight Lines (L commands)**:\n   - If open with 2 distinct points → line.\n   - If closed, count distinct vertices:\n        - 3 → triangle\n        - 4 → quadrilateral (proceed to step 5a)\n        - 5 → pentagon\n        - 6 → hexagon\n        - 7 → heptagon\n        - 8 → octagon\n        - more → polygon\n   - For quadrilaterals:\n        a. Check for rectangle/square first:\n            - Compute side vectors between consecutive vertices\n            - Check adjacent sides for perpendicularity: |u·v|/(|u||v|) < 0.01\n            - If all angles ≈90°, check side lengths with relative tolerance 0.01:\n                - All sides equal → square\n                - Not all sides equal → rectangle\n        b. If not rectangle, check parallelism of opposite sides using |u×v|/(|u||v|) < 0.01:\n            - Two pairs parallel → parallelogram\n            - One pair parallel → trapezoid\n            - No pairs parallel → general quadrilateral\n        c. Check for kite: two pairs of adjacent sides equal (relative tolerance 0.01)\n        d. If parallelogram, check for rhombus (all sides equal)\n6. **For Arcs (A commands)**:\n   - Check if radii (rx, ry) are approximately equal (relative tolerance 0.01) → circular arc, else → elliptical arc\n   - If a single arc returns to start → circle (equal radii) or ellipse (unequal radii)\n   - If arcs combine with symmetric endpoints and equal radii → circle\n   - If an arc is connected to a center via lines → sector\n7. **Use Geometric Constraints**:\n   - Use relative tolerance (0.01) for all comparisons of coordinates, lengths, and angles\n   - Normalize vector operations to account for magnitude differences\n   - Prefer common shapes (e.g., circle, triangle, rectangle) when approximate conditions are met\n8. **Match to Options**: Eliminate implausible choices and select the correct shape. If the exact shape isn't listed, choose the closest match based on geometric properties.\n\nOutput only the name of the shape.",
+                "Q": 0.8833333333333333,
+                "N": 1,
+                "reward": 0.8666666666666667,
+                "children": []
+              },
+              {
+                "id": 30,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Name the geometric shape from its SVG path by following these steps:\n\n1. **Parse Commands**: Break down the `d` attribute into individual commands (M, L, A, Z, etc.) and list their parameters.\n2. **Preprocess Points**: Remove duplicate points (within 0.01 tolerance) and ignore the closing point if it repeats the start point (only count distinct vertices).\n3. **Check Closure**: The path is closed if it ends with `Z` or if the last point is approximately equal to the first point (within 0.01).\n4. **Handle Subpaths**: If multiple `M` commands exist, merge subpaths if the endpoint of one is the start point of another (within tolerance). Otherwise, treat as separate shapes and focus on the largest closed subpath.\n5. **For Straight Lines (L commands)**:\n   - If open with 2 distinct points → line.\n   - If closed, count distinct vertices:\n        - 3 → triangle\n        - 4 → quadrilateral (proceed to step 5a)\n        - 5 → pentagon\n        - 6 → hexagon\n        - 7 → heptagon\n        - 8 → octagon\n        - more → polygon\n   - For quadrilaterals:\n        a. Check side vectors for parallelism (compute normalized cross product: |u × v| / (|u||v|) < 0.01):\n            - Two pairs parallel → parallelogram\n            - One pair parallel → trapezoid\n            - No pairs parallel → general quadrilateral\n        b. Check angles (compute normalized dot product: |u · v| / (|u||v|) < 0.01 for perpendicularity):\n            - All angles ≈90° → rectangle (if not all sides equal) or square (if all sides equal)\n        c. Check side lengths (within 0.01 tolerance):\n            - Two pairs adjacent sides equal → kite\n            - All sides equal but not all angles 90° → rhombus\n6. **For Arcs (A commands)**:\n   - Check if radii (rx, ry) are approximately equal (within 0.01) → circular arc, else → elliptical arc.\n   - If a single arc returns to start → circle (equal radii) or ellipse (unequal radii).\n   - If arcs combine with symmetric endpoints and equal radii → circle.\n   - If an arc is connected to a center via lines → sector.\n7. **Use Geometric Constraints**:\n   - Use tolerance (0.01) for all normalized comparisons (angles, parallelism) and coordinate/length comparisons.\n   - Prefer common shapes (e.g., circle, triangle, rectangle) when approximate conditions are met.\n8. **Match to Options**: Eliminate implausible choices (e.g., no curves for polygons, no straight lines for circles). If the exact shape isn't listed, choose the closest match based on properties (e.g., parallelogram with right angles → rectangle; one pair parallel → trapezoid). Always output one of the provided options.\n\nOutput only the name of the shape.",
+                "Q": 0.8833333333333333,
+                "N": 1,
+                "reward": 0.9333333333333333,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

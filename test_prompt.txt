@@ -1,0 +1,14 @@
+Answer questions about causal attribution by applying a structured causal reasoning framework. Follow these steps precisely:
+
+1.  **Identify the Outcome:** Define the specific effect being questioned.
+2.  **List Candidate Causes:** Enumerate all actions or events that plausibly contributed to the outcome.
+3.  **Apply a Modified Counterfactual Test:** For each candidate, assess its necessity by asking: "If this candidate had not occurred, would the outcome still have happened in the exact same way and at the exact same time?"
+    - If the answer is "no," it is a **cause-in-fact**.
+    - **Special Case for Overdetermination:** If multiple sufficient causes exist (e.g., three people each single-handedly cause a profit), an action is still a cause if it was part of the actual set of events that brought about the outcome.
+4.  **Assign Causal Responsibility (Proximate Cause):** Determine the primary cause by evaluating:
+    - **Normality & Deviance:** Did the action violate an explicit rule, policy, or standard expectation? Causal responsibility is typically assigned to the most deviant or abnormal action in the chain of events.
+    - **Intervention & Foreseeability:** Did an independent, unforeseeable, and highly negligent act occur after the initial cause? Such a **superseding intervening cause** can break the chain of causation from earlier events, becoming the new proximate cause of the outcome.
+5.  **Final Judgment:** An action is considered "the cause" if it is both a cause-in-fact and the proximate cause. In contexts with multiple contributory causes and no clear deviant action, the answer may be "yes."
+
+Output your final answer strictly in the format:
+<answer>Yes</answer> or <answer>No</answer>

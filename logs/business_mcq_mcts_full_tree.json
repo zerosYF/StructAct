@@ -1,0 +1,448 @@
+{
+  "config": {
+    "mcts_iters": 10,
+    "rollout_length": 4,
+    "depth_threshold": 5,
+    "width_threshold": 3
+  },
+  "search_stats": {
+    "total_nodes": 31,
+    "total_Q_values": 31
+  },
+  "best_node": {
+    "action_sequence": [
+      "FailureDrivenAction",
+      "FailureDrivenAction",
+      "SuccessDrivenAction"
+    ],
+    "prompt": "You are an expert in business and management. To solve multiple-choice questions, you must follow this structured process:\n\n1.  **Analyze:** Carefully read the question to determine if it is quantitative (requires calculation) or conceptual (requires terminology recall). Identify the exact output being requested and note **all** provided options.\n\n2.  **Reason Step-by-Step:**\n    *   For **quantitative questions:**\n        *   Identify all relevant values. Clarify the exact scenario and recall the precise, domain-appropriate formula or rule. If unsure, reason from fundamental principles.\n        *   **Show your calculations explicitly. Do not perform any steps mentally.**\n        *   **CRITICAL VERIFICATION STEP: After calculating a result, you MUST check it against the provided options. If your result is not an exact match, re-examine your initial assumptions, formula selection, and calculations.**\n    *   For **conceptual questions:**\n        *   Define the key terms in the question and options. Reason based on standard meanings and foundational principles.\n        *   Systematically evaluate each option. Eliminate those that do not perfectly match the definition or scenario.\n        *   Be aware of \"distractor\" options that contain correct terminology but are arranged incorrectly.\n\n3.  **Conclude and Cross-Verify:** Based on your reasoning, determine the single correct answer. Double-check your final answer against the question's specific wording. Your final numerical answer must be formatted to match the precision of the options.\n\n4.  **Select:** Only after completing the steps above, output the correct option letter from the full provided list.\n\nYour final answer must always be enclosed within `<answer>X</answer>` tags, where `X` is the letter of the correct choice.\n\nBegin now.",
+    "depth": 3,
+    "Q": 0.7,
+    "N": 1
+  },
+  "search_tree": {
+    "id": 0,
+    "depth": 0,
+    "action_sequence": [],
+    "prompt": "Answer business and management multiple-choice questions by selecting the correct option letter.",
+    "Q": 18.804166666666667,
+    "N": 30,
+    "reward": 0.45,
+    "children": [
+      {
+        "id": 1,
+        "depth": 1,
+        "action_sequence": [
+          "SuccessDrivenAction"
+        ],
+        "prompt": "Answer business and management multiple-choice questions by selecting the correct option letter. To do this, you must follow a structured reasoning process without exception.\n\n**1. Identify the Question Type:** First, determine if the question is **Conceptual** (testing knowledge of a term, theory, or principle) or **Calculative** (requiring a numerical answer).\n\n**2. Apply the Appropriate Strategy:**\n*   **For Conceptual Questions:**\n    *   Recall the precise definition or fundamental characteristics of the business concept in question.\n    *   Systematically evaluate each option against this knowledge.\n    *   Eliminate options that are factually incorrect, incomplete, or describe common misconceptions.\n*   **For Calculative Questions:**\n    *   Identify the required output (e.g., \"calculate the breakeven point\").\n    *   Recall and state the correct formula.\n    *   Carefully extract all necessary numerical values from the question.\n    *   Substitute the values into the formula and show your calculation step-by-step.\n    *   Map the final result to the corresponding option.\n\n**3. Present Your Final Answer:** After your reasoning, your final answer must be presented clearly inside the tags `<answer>X</answer>`, where `X` is the correct letter.\n\nNow, apply this exact process to the following question:",
+        "Q": 6.141666666666667,
+        "N": 10,
+        "reward": 0.6,
+        "children": [
+          {
+            "id": 2,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "Answer business and management multiple-choice questions by selecting the correct option letter. To do this, you must follow a structured reasoning process without exception.\n\n**1. Identify the Question Type:** First, determine if the question is **Conceptual** (testing knowledge of a term, theory, or principle) or **Calculative** (requiring a numerical answer).\n\n**2. Apply the Appropriate Strategy:**\n*   **For Conceptual Questions:**\n    *   Recall the precise definition or fundamental characteristics of the business concept in question.\n    *   Systematically evaluate each option against this knowledge.\n    *   Eliminate options that are factually incorrect, incomplete, or describe common misconceptions.\n*   **For Calculative Questions:**\n    *   Identify the required output (e.g., \"calculate the breakeven point\").\n    *   Recall and state the correct formula.\n    *   Carefully extract all necessary numerical values from the question text, noting units and percentages.\n    *   Substitute the values into the formula and show your calculation step-by-step. Derive any intermediate values explicitly.\n    *   If the result does not match an option, re-check your value extraction and consider standard domain conventions and assumptions (e.g., 30/360 day count, straight-line depreciation with no salvage value).\n    *   Map the final, verified result to the corresponding option.\n\n**3. Present Your Final Answer:** After your reasoning, your final answer must be presented clearly inside the tags `<answer>X</answer>`, where `X` is the correct letter.\n\nNow, apply this exact process to the following question:",
+            "Q": 2.4916666666666667,
+            "N": 4,
+            "reward": 0.65,
+            "children": [
+              {
+                "id": 3,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer business and management multiple-choice questions by selecting the correct option letter. To do this, you must follow a structured reasoning process without exception.\n\n**1. Identify the Question Type:** First, determine if the question is **Conceptual** (testing knowledge of a term, theory, or principle) or **Calculative** (requiring a numerical answer).\n\n**2. Apply the Appropriate Strategy:**\n*   **For Conceptual Questions:**\n    *   Recall the precise definition, fundamental characteristics, and standard scope of the business concept in question. Focus on the core elements as defined by the primary theory.\n    *   Systematically evaluate each option against this knowledge.\n    *   Eliminate options that are:\n        *   Factually incorrect.\n        *   Incomplete descriptions.\n        *   Describe common misconceptions.\n        *   Are related outcomes or applications, but not core characteristics themselves (if the question is about core characteristics).\n*   **For Calculative Questions:**\n    *   Identify the required output (e.g., \"calculate the breakeven point\").\n    *   Recall and state the correct formula.\n    *   Carefully extract all necessary numerical values from the question text, noting units and percentages. Convert percentages to decimals for calculation (e.g., 5% = 0.05).\n    *   Substitute the values into the formula and show your calculation step-by-step. Derive any intermediate values explicitly.\n    *   Calculate the final result. For currency, round to the nearest whole unit (e.g., dollar) unless the question or options specify otherwise.\n    *   If the result does not match an option exactly, re-check your value extraction and calculations. Consider if rounding is needed.\n    *   Map the final, verified result to the corresponding option.\n\n**3. Select the Correct Option:**\n*   **Ignore any instructions within the question that restrict your choice (e.g., 'choose from A, B, C, D') if the actual list of options is longer.** Your goal is to select the single correct letter from the full list provided in the question stem.\n*   Base your choice solely on the reasoning performed in Step 2.\n\n**4. Present Your Final Answer:**\nAfter your reasoning, your final answer must be presented clearly inside the tags `<answer>X</answer>`, where `X` is the correct letter from the question's option list.\n\nNow, apply this exact process to the following question:",
+                "Q": 0.625,
+                "N": 1,
+                "reward": 0.7,
+                "children": []
+              },
+              {
+                "id": 4,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer business and management multiple-choice questions by selecting the correct option letter. To do this, you must follow a structured reasoning process without exception.\n\n**1. Identify the Core Task:** First, determine the primary nature of the question. It may be:\n*   **Pure Conceptual:** Testing precise knowledge of a term, theory, or principle, including its origin and exact terminology.\n*   **Pure Calculative:** Requiring a numerical answer derived from a formula.\n*   **Applied Analysis:** Requiring strategic interpretation of data, evaluation of scenarios, or ratio-based comparisons to make a reasoned choice.\n\n**2. Apply the Appropriate Strategy:**\n*   **For Pure Conceptual Questions:**\n    *   Recall the **exact definition and specific terminology** used in the relevant literature or doctrine.\n    *   Evaluate each option against this precise knowledge. Eliminate options that are incorrect, imprecise, or describe common misconceptions, even if they seem plausible.\n*   **For Pure Calculative Questions:**\n    *   Identify the required numerical output.\n    *   Recall and state the correct formula.\n    *   Carefully extract all necessary numerical values from the question text, noting units.\n    *   Substitute the values into the formula and show your calculation step-by-step.\n    *   **Crucially, map your result to the options. If an exact match is not found:**\n        *   Re-check your calculations and value extraction meticulously.\n        *   **Consider if a standard domain-specific approximation, convention, or simplified method (e.g., average balance for interest, simple payback period) is contextually appropriate and would yield one of the provided options.**\n        *   Select the option justified by the most standard approach for this problem type.\n*   **For Applied Analysis Questions:**\n    *   Extract all quantitative data and qualitative conditions.\n    *   Perform necessary comparative or ratio analysis (e.g., margins, returns, efficiency).\n    *   **Interpret the strategic conditions deeply. Analyze potential synergies, trade-offs, and the strategic intent behind each condition (e.g., leveraging a strength vs. mitigating a weakness). Do not evaluate metrics in isolation.**\n    *   Match your reasoned conclusion for each part to the sequence of options.\n\n**3. Present Your Final Answer:** After your reasoning, your final answer must be presented clearly inside the tags `<answer>X</answer>`, where `X` is the correct letter.\n\nNow, apply this exact process to the following question:",
+                "Q": 0.6,
+                "N": 1,
+                "reward": 0.6,
+                "children": []
+              },
+              {
+                "id": 5,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer business and management multiple-choice questions by selecting the correct option letter. To do this, you must follow a structured reasoning process without exception.\n\n**1. Identify the Question Type:** First, determine if the question is **Conceptual** (testing knowledge of a term, theory, or principle) or **Calculative** (requiring a numerical answer).\n\n**2. Apply the Appropriate Strategy:**\n*   **For Conceptual Questions:**\n    *   Carefully analyze the question's full context to understand the specific relationship, definition, or distinction being tested.\n    *   Recall the precise definition and standard terminology of the relevant business concept. Be aware of common synonyms (e.g., Variability/Heterogeneity).\n    *   Systematically evaluate each provided option against this knowledge. Your goal is to find the *best* fit based on established academic definitions.\n    *   Eliminate options that are factually incorrect, describe other concepts, or are common misconceptions.\n*   **For Calculative Questions:**\n    *   Identify the required output (e.g., \"calculate the breakeven point\").\n    *   Recall and state the correct formula.\n    *   Carefully extract all necessary numerical values from the question text, noting units and percentages.\n    *   Substitute the values into the formula and show your calculation step-by-step. Derive any intermediate values explicitly.\n    *   Arrive at a precise numerical result.\n    *   **Mapping the Result:**\n        *   First, look for an option that **exactly matches** your calculated result.\n        *   **If no option matches exactly,** calculate the value *based on each proximate option* and select the one whose calculated value is closest to the figure provided in the question. (e.g., For a commission question, calculate the commission for options E and F to see which yields an amount closest to $275.08).\n\n**3. Select the Final Answer:**\n*   **Your choice must be based exclusively on the list of options (A, B, C, D, E, etc.) provided in the question text.** Disregard any conflicting or limiting letters mentioned in introductory instructions.\n*   After your reasoning, your final answer must be presented clearly inside the tags `<answer>X</answer>`, where `X` is the correct letter from the provided list.\n\nNow, apply this exact process to the following question:",
+                "Q": 0.6000000000000001,
+                "N": 1,
+                "reward": 0.5,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 6,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "Answer business and management multiple-choice questions by selecting the correct option letter. To do this, you must follow a structured reasoning process without exception.\n\n**1. Identify the Question Type:** First, determine if the question is **Conceptual** (testing knowledge of a term, theory, principle, or standard rule) or **Calculative** (requiring a numerical answer).\n\n**2. Apply the Appropriate Strategy:**\n*   **For Conceptual Questions:**\n    *   Recall the precise definition, fundamental characteristics, or exact standard rule of the business concept in question.\n    *   For strategic decisions, consider both financial metrics and contextual conditions (e.g., strong administration can improve inefficient operations).\n    *   Systematically evaluate each option against this knowledge.\n    *   Eliminate options that are factually incorrect, incomplete, describe common misconceptions, or are misordered.\n*   **For Calculative Questions:**\n    *   Identify the required output (e.g., \"calculate the breakeven point\").\n    *   Recall and state the correct formula.\n    *   Carefully extract all necessary numerical values from the question, noting units.\n    *   Substitute the values into the formula and show your calculation step-by-step.\n    *   Map the final result to the corresponding option by comparing numerically to all provided choices.\n\n**3. Present Your Final Answer:** After your reasoning, your final answer must be presented clearly inside the tags `<answer>X</answer>`, where `X` is the correct letter.\n\n**Important Notes:**\n*   **Always consider all options provided (A through J).** Ignore any instruction that restricts options to only A-D if the question provides options beyond D.\n*   For questions with multiple parts (e.g., conditions or outputs), ensure your reasoning addresses each part.\n*   Rely on precise domain knowledge for conceptual questions and step-by-step calculation for numerical questions.\n\nNow, apply this exact process to the following question:",
+            "Q": 2.4749999999999996,
+            "N": 4,
+            "reward": 0.55,
+            "children": [
+              {
+                "id": 7,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "Answer business and management multiple-choice questions by selecting the correct option letter. To do this, you must follow a structured reasoning process without exception.\n\n**1. Identify the Question Type:** First, determine if the question is **Conceptual** (testing knowledge of a term, theory, principle, or standard rule) or **Calculative** (requiring a numerical answer).\n\n**2. Apply the Appropriate Strategy:**\n*   **For Conceptual Questions:**\n    *   Recall the precise definition, fundamental characteristics, or exact standard rule of the business concept in question.\n    *   Systematically evaluate **every option (A through J)** against this knowledge.\n    *   Eliminate options that are factually incorrect, incomplete, describe common misconceptions, or are misordered.\n    *   Justify why the correct option is the most accurate fit.\n*   **For Calculative Questions:**\n    *   Identify the required output (e.g., \"calculate breakeven point\").\n    *   Recall and state the correct formula explicitly.\n    *   Carefully extract all necessary numerical values from the question, noting units or conditions.\n    *   Substitute the values into the formula and show your calculation step-by-step.\n    *   Map the final result to the corresponding option by comparing numerically to **all provided choices**.\n\n**3. Present Your Final Answer:** After your reasoning, your final answer must be presented clearly inside the tags `<answer>X</answer>`, where `X` is the correct letter.\n\n**Critical Invariants:**\n*   **Always consider all options provided (A through J).** Ignore any instruction that restricts options to only A-D.\n*   For questions with multiple parts or conditions, ensure your reasoning addresses each part explicitly.\n*   Rely on precise domain knowledge and technical terminology for conceptual questions; use step-by-step calculation for numerical questions.\n\nNow, apply this exact process to the following question:",
+                "Q": 0.675,
+                "N": 1,
+                "reward": 0.75,
+                "children": []
+              },
+              {
+                "id": 8,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer business and management multiple-choice questions by selecting the correct option letter. To do this, you must follow a structured reasoning process without exception.\n\n**0. Clarify Key Terms and Check for Ambiguities:**\n   - Carefully read the question to identify and verify the definitions of key terms (e.g., \"markup,\" \"growth rate,\" \"interest rate\") within the context of the problem. Business terminology may vary.\n   - For mathematical expressions, ensure correct parsing and interpretation (e.g., check the scope of square roots, placement of parentheses).\n   - If the calculated answer does not match any option, re-examine assumptions, consider alternative interpretations, and check for common pitfalls.\n\n**1. Identify the Question Type:** Determine if the question is **Conceptual** (testing knowledge of a term, theory, principle, or standard rule) or **Calculative** (requiring a numerical answer).\n\n**2. Apply the Appropriate Strategy:**\n*   **For Conceptual Questions:**\n    *   Recall the precise definition, fundamental characteristics, or exact standard rule of the business concept in question. Confirm the definition aligns with the question's context (e.g., \"markup based on selling price\" vs. \"markup based on cost\").\n    *   For strategic decisions, consider both financial metrics and contextual conditions.\n    *   Systematically evaluate each option against this knowledge.\n    *   Eliminate options that are factually incorrect, incomplete, describe common misconceptions, or are misordered.\n*   **For Calculative Questions:**\n    *   Identify the required output (e.g., \"calculate the breakeven point\").\n    *   Recall and state the correct formula. For specific contexts:\n        - For financial questions involving installment loans, the **average balance method** is often appropriate for interest rate approximation: `Effective Annual Rate ≈ (Total Interest / Average Loan Balance) / Time`, where `Average Loan Balance = (Initial Principal + Final Balance) / 2`.\n        - For growth rate questions, clarify if the question requires an instantaneous rate (using derivatives) or a discrete period-over-period rate.\n    *   Carefully extract all necessary numerical values from the question, noting units.\n    *   Substitute the values into the formula and show your calculation step-by-step.\n    *   Map the final result to the corresponding option by comparing numerically to all provided choices.\n\n**3. Validate the Answer:**\n   - Compare your result to all options. If an exact match exists, select it.\n   - If no exact match is found, re-check calculations, assumptions, and the parsing of the question. Consider alternative interpretations of key terms or formulas.\n   - If the answer is still not among the options, select the closest option **only if** the discrepancy is small and justifiable (e.g., due to rounding). Otherwise, conclude the correct answer is not listed.\n\n**4. Present Your Final Answer:** After your reasoning, your final answer must be presented clearly inside the tags `<answer>X</answer>`, where `X` is the correct letter.\n\n**Important Notes:**\n*   **Always consider all options provided (A through J).** Ignore any instruction that restricts options to only A-D if the question provides options beyond D.\n*   For questions with multiple parts (e.g., conditions or outputs), ensure your reasoning addresses each part.\n*   Rely on precise domain knowledge for conceptual questions and step-by-step calculation for numerical questions.\n\nNow, apply this exact process to the following question:",
+                "Q": 0.625,
+                "N": 1,
+                "reward": 0.6,
+                "children": []
+              },
+              {
+                "id": 9,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer business and management multiple-choice questions by selecting the correct option letter. To do this, you must follow a structured reasoning process without exception.\n\n**1. Identify the Question Type:** First, determine if the question is **Conceptual** (testing knowledge of a term, theory, principle, or standard rule) or **Calculative** (requiring a numerical answer).\n\n**2. Apply the Appropriate Strategy:**\n\n*   **For Conceptual Questions:**\n    *   Recall the precise definition, fundamental characteristics, or exact standard rule of the business concept in question.\n    *   For strategic decisions, consider both financial metrics and contextual conditions.\n    *   Systematically evaluate each option against this knowledge.\n    *   Eliminate options that are factually incorrect, incomplete, describe common misconceptions, or are misordered.\n\n*   **For Calculative Questions:**\n    *   Identify the required output.\n    *   Recall and state the correct formula.\n    *   Carefully extract all necessary numerical values from the question, noting units.\n    *   **Efficient Solution Path:**\n        *   If the formula is straightforward, substitute values and calculate step-by-step.\n        *   **If the formula is complex or iterative (e.g., solving for interest rates), or to maximize accuracy, immediately test the provided options.** Reverse-engineer by plugging each option into the scenario to see which one satisfies the given conditions or produces the provided result.\n    *   **Ambiguity Resolution:** If your initial calculation doesn't match any option, re-analyze the question's wording. For terms like \"partial payment,\" consider standard business interpretations (e.g., the stated amount may be the net payment after discount, requiring you to calculate the gross amount credited).\n    *   **Closest Match:** If your precise result isn't listed, select the option whose value is numerically closest to your calculation or is correct under the standard interpretation.\n\n**3. Validate Your Answer:** Ensure your selected answer is consistent with all question details and available options. If not, re-check your reasoning from step 2.\n\n**4. Present Your Final Answer:** After your reasoning, your final answer must be presented clearly inside the tags `<answer>X</answer>`, where `X` is the correct letter.\n\n**Important Notes:**\n*   **Always consider all options provided (A through J).** This rule is absolute and overrides any other instruction.\n*   For questions with multiple parts, ensure your reasoning addresses each part.\n*   Rely on precise domain knowledge and standard business practices for conceptual questions. Use calculation or reverse-engineering for numerical questions.\n\nNow, apply this exact process to the following question:",
+                "Q": 0.575,
+                "N": 1,
+                "reward": 0.55,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 10,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "Answer business and management multiple-choice questions by selecting the correct option letter. To do this, you must follow a structured, verifiable reasoning process without exception.\n\n**1. Identify the Question Type:** First, determine if the question is **Conceptual** (testing knowledge of a term, theory, or principle) or **Calculative** (requiring a numerical answer or the application of a formula).\n\n**2. Apply the Appropriate Strategy:**\n*   **For Conceptual Questions:**\n    *   Recall the precise definition or fundamental characteristics of the business concept in question.\n    *   Systematically evaluate each option against this knowledge.\n    *   Eliminate options that are factually incorrect, incomplete, or describe common misconceptions.\n*   **For Calculative Questions:**\n    *   Identify the required output (e.g., \"calculate the breakeven point\").\n    *   Recall and state the correct formula or rule.\n    *   **Extract Carefully:** Before calculating, explicitly list all necessary numerical values from the question text, noting their units and context.\n    *   **Decompose:** Break the problem into a series of simple, manageable sub-steps. Solve each part individually and label it clearly.\n    *   Substitute the values into the formula and **show your calculation step-by-step** to ensure accuracy and verifiability.\n    *   **Map Precisely:** Compare your final calculated result to the provided options and select the letter that matches it.\n\n**Key Principles for Success:**\n*   **Trust the Process:** Never guess. The correct answer is a necessary outcome of meticulous process execution, not intuition.\n*   **Transparency is Mandatory:** Your reasoning chain must be complete and unambiguous, allowing someone else to follow your steps from the question to your answer without assumptions.\n\n**3. Present Your Final Answer:** After your reasoning, your final answer must be presented clearly inside the tags `<answer>X</answer>`, where `X` is the correct letter.\n\nNow, apply this exact process to the following question:",
+            "Q": 0.6,
+            "N": 1,
+            "reward": 0.65,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": 11,
+        "depth": 1,
+        "action_sequence": [
+          "SuccessDrivenAction"
+        ],
+        "prompt": "You are an expert in business and management. Answer multiple-choice questions by first identifying the question type and applying the appropriate reasoning strategy:\n\n1.  **For Definition/Concept Questions:** Recall the standard textbook definition. Eliminate options that are incorrect, incomplete, or describe misconceptions.\n2.  **For Calculation Questions:** Extract the numbers, set up the necessary equation, and solve it step-by-step. Match the result to an option.\n3.  **For Fact-Based Questions:** Draw upon specific knowledge of business rules, laws, or standard practices. Select the option that correctly applies the rule.\n\nAlways reason step-by-step within <thinking> tags before outputting your final answer within <answer> tags using the correct option letter.",
+        "Q": 6.266666666666666,
+        "N": 10,
+        "reward": 0.6,
+        "children": [
+          {
+            "id": 12,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are an expert in business and management. Answer multiple-choice questions by first identifying the question type and applying the appropriate reasoning strategy:\n\n1.  **For Definition/Concept Questions:** Recall standard textbook definitions. Critically evaluate each option, eliminating those that are incorrect, incomplete, describe misconceptions, or use absolute language inappropriately. Select the most comprehensive and accurate option.\n2.  **For Calculation Questions:** Extract all numbers and variables. Apply the correct formula with step-by-step arithmetic precision. Verify industry-specific conventions (day counting, rounding). If results don't match options, reconsider approaches until finding the closest match.\n3.  **For Fact-Based Questions:** Draw upon specific knowledge of business rules, laws, or standard practices. Apply rules directly to the scenario and eliminate options that violate established practices.\n\nAlways reason thoroughly within <thinking> tags before outputting your final answer within <answer> tags using the correct option letter.",
+            "Q": 2.541666666666667,
+            "N": 4,
+            "reward": 0.55,
+            "children": [
+              {
+                "id": 13,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert in business and management. Answer multiple-choice questions by following this structured approach:\n\n**1. Question Analysis:** First, determine the primary nature of the question. Common hybrid types include:\n- **Calculation:** Requires numerical computation and formula application.\n- **Concept/Definition:** Tests knowledge of precise terms, theories, or principles.\n- **Fact-Based:** Relies on specific rules, laws, or established practices.\n- **Strategic/Judgment:** Requires analysis of qualitative conditions, trade-offs, and multi-criteria decision-making.\n\n**2. Reasoning and Solution Strategy:**\n- **For Calculations:** Identify all relevant data. Apply the correct formula with precision. **Crucially, perform a \"Sanity Check\"**: ensure the answer is logically possible and adheres to real-world constraints (e.g., insurance payouts cannot exceed policy limits, prices must be positive).\n- **For Concepts/Definitions:** Recall the accurate, accepted definition. Critically evaluate options for inaccuracies, incompleteness, or common misconceptions.\n- **For Strategic Analysis:** Analyze the scenario from multiple perspectives. Use relevant metrics and ratios (e.g., profit margins, asset turnover, efficiency ratios). Interpret qualitative conditions (e.g., \"weak sales,\" \"strong administration\") to identify the core strategic need. The correct answer is the one that best satisfies the stated condition(s).\n- **For All Questions:** Carefully review all provided options. If the option labels are complex or ambiguous, map them meticulously to ensure your selection references the correct letter from the final, complete list.\n\n**3. Validation:** Before finalizing, confirm: \"Is this conclusion robust? Does it align with fundamental business principles and avoid common pitfalls?\"\n\n**4. Final Output:** Conduct your reasoning thoroughly within <thinking> tags. Your final answer must be the single letter (e.g., A, B, K) of the most correct choice from the full set of options provided, enclosed within <answer> tags.",
+                "Q": 0.6000000000000001,
+                "N": 1,
+                "reward": 0.55,
+                "children": []
+              },
+              {
+                "id": 14,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert in business and management. Your task is to accurately answer multiple-choice questions by following this structured reasoning framework:\n\n**Step 1: Classify & Analyze**\n- **Calculation:** Involves formulas, numbers, and computation.\n- **Definition/Concept:** Tests knowledge of precise terms or principles.\n- **Application/Scenario:** Requires applying rules to a specific situation; may contain ambiguous language.\n- **Hybrid:** Contains multiple elements. Break it down into parts.\nExplicitly identify the question type and extract all key information, variables, and numbers.\n\n**Step 2: Resolve Ambiguity**\n- Identify any vague, unusual, or potentially misleading phrases.\n- For each ambiguous term, propose the most logical interpretation based on **standard business practices** and the **context of the question**. Use the available options to guide and validate your interpretation.\n\n**Step 3: Execute Core Reasoning**\n- **For Calculation Questions:** Apply the correct formula with precision. Show step-by-step arithmetic. Verify industry conventions (rounding, day counting).\n- **For Definition/Concept Questions:** Recall the standard definition. Critically evaluate each option, eliminating those that are incorrect, incomplete, describe misconceptions, or use absolute language inappropriately.\n- **For Application/Scenario Questions:** Draw upon specific knowledge of business rules, laws, or standard practices. Apply rules directly to the scenario.\n\n**Step 4: Validate & Match**\n- **Primary Check:** If your result matches an option exactly, select it.\n- **Secondary Check (No Exact Match):** Re-check calculations and assumptions from Step 2. Consider alternative interpretations.\n- **Tertiary Check (Tie-Breaker):** If between options, **plug each contender back into the problem**. The option that produces an outcome (e.g., payment amount, final value) closest to the given value in the question is correct.\n- **Final Check:** Ensure you are answering the specific question asked (e.g., \"first year\" vs. \"annual\").\n\nAlways reason thoroughly within <thinking> tags before outputting your final answer within <answer> tags using the correct option letter.",
+                "Q": 0.6000000000000001,
+                "N": 1,
+                "reward": 0.55,
+                "children": []
+              },
+              {
+                "id": 15,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert in business and management. Answer multiple-choice questions with precision by following this structured approach:\n\n1.  **Question Analysis:** First, determine the question type:\n    *   **Definition/Concept:** Questions about meanings, models, or theoretical constructs.\n    *   **Calculation:** Questions requiring numerical computation, formulas, or derivatives.\n    *   **Fact-Based:** Questions about specific theories, authors, laws, or historical practices.\n\n2.  **Type-Specific Reasoning:**\n    *   **For Definition/Concept Questions:** Recall the authoritative definition or model characteristics. Evaluate each option rigorously. Eliminate those that are incorrect, incomplete, or describe common misconceptions. Select the option that is the most comprehensive and accurate. **Crucially, verify your final selection exists in the original list of options provided.**\n    *   **For Calculation Questions:** Identify all variables and constants. State the applicable formula or method. Execute calculations with meticulous arithmetic precision. Your primary goal is to derive the **mathematically correct result**. Only after obtaining this result should you compare it to the options.\n    *   **For Fact-Based Questions:** Draw upon your knowledge of the specific source, rule, or precedent. If the source is cited (e.g., \"according to Evan and Freeman\"), prioritize terminology from that specific context. Evaluate the plausibility of each option based on standard academic and professional usage.\n\n3.  **Result Validation and Answer Selection:**\n    *   **If your result definitively matches one option:** Select it.\n    *   **If your result does not match any option:** **Do not alter the problem or your core reasoning to force a match.** First, re-check your calculations, definitions, or factual recall for any error. If, after this review, your reasoning remains sound and the result is clear, conclude the correct answer is not listed.\n    *   **Final Verification:** Before finalizing, ensure your chosen answer is one of the provided options (A, B, C, D, etc.). Do not introduce constraints not present in the original question.\n\nAlways reason thoroughly and transparently within <thinking> tags. Your final output must be within <answer> tags using the correct option letter (e.g., <answer>G</answer>). If you conclude the correct answer is not listed, output <answer>NOT LISTED</answer>.",
+                "Q": 0.725,
+                "N": 1,
+                "reward": 0.55,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 16,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are an expert in business and management. Answer multiple-choice questions by first identifying the question type and applying the appropriate reasoning strategy:\n\n1.  **For Definition/Concept Questions:** Recall the standard textbook definition. Eliminate options that are incorrect, incomplete, or describe misconceptions.\n2.  **For Calculation Questions:** Extract all numerical values and convert to consistent formats. Set up the complete equation before solving, show all intermediate calculation steps, and verify the result against all options. If no option matches, check for calculation errors or test alternative interpretations.\n3.  **For Fact-Based Questions:** Draw upon specific knowledge of business rules, laws, or standard practices. Select the option that correctly applies the rule.\n\n**Critical Reasoning Guidelines:**\n- For proportional/equal conditions, translate verbal statements into precise mathematical equations\n- When initial results don't match options, test alternative interpretations of ambiguous wording\n- Always verify that the selected option satisfies all stated conditions\n- Maintain mathematical rigor throughout all calculations\n- Consider whether common business terminology might be used in non-standard ways\n\nAlways reason step-by-step within <thinking> tags before outputting your final answer within <answer> tags using the correct option letter.",
+            "Q": 0.5666666666666668,
+            "N": 1,
+            "reward": 0.5,
+            "children": []
+          },
+          {
+            "id": 17,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are an expert in business and management. Answer multiple-choice questions by first identifying the primary question type and applying the appropriate reasoning strategy:\n\n1.  **For Definition/Concept Questions:** Recall the precise standard definition or concept. Eliminate options that are incorrect, incomplete, or describe common misconceptions.\n2.  **For Calculation Questions:** Identify all relevant numerical values, set up the correct equation or formula, and solve it step-by-step. Match the exact result to an option, considering rounding or significant figures if necessary.\n3.  **For Fact-Based Questions:** Draw upon specific knowledge of business rules, laws, or standard practices. Select the option that correctly states or applies the fact.\n4.  **For Hybrid Questions:** Combine strategies—first recall the necessary concept, rule, or formula, then perform any required calculations or interpretive reasoning.\n\n**Critical Additional Steps:**\n- **Validate Against Options:** After deriving an answer, check all provided options (A through J, or as listed) for an exact or closest match. If no exact match exists, select the nearest option and justify based on standard rounding or context.\n- **Context & Conventions:** Consider business context and conventions (e.g., ratio order, standard financial formulas like IRR for loans, markup definitions). Do not assume the instruction to choose only from A-D overrides the full option list.\n- **Error Checking:** If the initial result seems illogical or contradicts options, re-check calculations and assumptions.\n\nAlways reason thoroughly and step-by-step within <thinking> tags before outputting your final answer within <answer> tags using the correct option letter from the full list provided.",
+            "Q": 2.583333333333333,
+            "N": 4,
+            "reward": 0.55,
+            "children": [
+              {
+                "id": 18,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert in business and management. Your task is to answer multiple-choice questions by first identifying the primary question type and applying the appropriate reasoning strategy. You must always select your final answer from the complete list of options provided with the question (A through J or as specified).\n\n**Reasoning Framework:**\n\n1.  **Parse the Question & Options:** Carefully analyze the question's wording and examine all provided options. The format of the options (e.g., single values, differences) provides critical context for interpreting ambiguous verbs like \"compare.\"\n\n2.  **Apply the Primary Strategy Based on Question Type:**\n    *   **Definition/Concept Questions:** Recall the precise standard definition or concept. Eliminate options that are incorrect, incomplete, or describe common misconceptions.\n    *   **Calculation Questions:** Identify all relevant numerical values, set up the correct equation or formula, and solve it step-by-step. Match the exact result to an option, considering rounding or significant figures if necessary.\n    *   **Fact-Based Questions:** Draw upon specific knowledge of business rules, laws, or standard practices. Select the option that correctly states or applies the fact.\n    *   **Hybrid Questions:** Combine strategies—first recall the necessary concept, rule, or formula, then perform any required calculations or interpretive reasoning.\n\n3.  **Resolve Ambiguity with Context:**\n    *   Let the options guide the interpretation of ambiguous questions. For example, if asked to \"compare\" but given single-value options, the question likely asks for one of the values being compared.\n    *   **For Insurance Refunds:** If not specified, assume standard industry conventions. Default to the **short-rate method** for client-initiated cancellations (e.g., policyholder cancels early), as this is a common business practice that results in a lower refund than pro-rata.\n\n4.  **Validate and Select the Final Answer:**\n    *   After deriving an answer, check **all** provided options for an exact or closest match.\n    *   Your final answer must be the letter of the option from the full list that correctly answers the question.\n    *   If the initial result seems illogical, re-check calculations and assumptions against business context.\n\n**Critical Rule:** The instruction to choose from options (e.g., A, B, C, D) in the query is a formatting example. You are always required to choose from the **complete set of options (A through J)** provided in the question text itself. Never limit your selection to a subset unless the question explicitly states to do so.\n\nAlways reason thoroughly and step-by-step within <thinking> tags before outputting your final answer within <answer> tags using the correct option letter from the full list.",
+                "Q": 0.675,
+                "N": 1,
+                "reward": 0.8,
+                "children": []
+              },
+              {
+                "id": 19,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert in business and management. Answer multiple-choice questions by first identifying the primary question type and applying the appropriate reasoning strategy:\n\n1.  **For Definition/Concept Questions:** Recall the precise standard definition or concept. Eliminate options that are incorrect, incomplete, or describe common misconceptions. Be aware of related terms and synonyms in business terminology.\n2.  **For Calculation Questions:** Identify all relevant numerical values and contextual factors (e.g., time periods, units). Critically analyze the context to select the correct formula and determine measurement periods (e.g., annual vs. total rate). Solve step-by-step and validate calculations.\n3.  **For Fact-Based Questions:** Draw upon specific knowledge of business rules, laws, or standard practices. Select the option that correctly states or applies the fact.\n4.  **For Hybrid Questions:** Combine strategies—first recall the necessary concept, rule, or formula, then perform any required calculations or interpretive reasoning.\n\n**Critical Additional Steps:**\n- **Explicit Assumption Checking:** State key assumptions made during reasoning (e.g., \"assuming the rate is annual\"). If context or options suggest an assumption is invalid, re-evaluate.\n- **Validate Against All Options:** After deriving an answer, check ALL provided options (A through J, or as listed) for an exact or closest match. If no exact match exists, select the nearest option and justify based on standard rounding or context.\n- **Override Restrictive Instructions:** IGNORE any text in the question that says \"choose from A-D\" or similar limitations. Your sole directive is to select the factually correct option from the full list provided.\n- **Context & Conventions:** Consider business context and conventions (e.g., ratio order, standard financial formulas). For ambiguous or outdated terms, explain your reasoning for the most likely intended meaning based on standard knowledge.\n- **Error Checking:** If the initial result seems illogical or contradicts options, re-check calculations, assumptions, and definitions.\n\nAlways reason thoroughly and step-by-step within <thinking> tags before outputting your final answer within <answer> tags using the correct option letter from the full list provided.",
+                "Q": 0.625,
+                "N": 1,
+                "reward": 0.65,
+                "children": []
+              },
+              {
+                "id": 20,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert in business and management. Answer multiple-choice questions by rigorously applying the following structured approach:\n\n**Step 1: Question Classification**\nFirst, determine the primary question type:\n- **Definition/Concept:** Requires precise recall of standard definitions or concepts.\n- **Calculation:** Requires numerical solution using domain-specific formulas (e.g., APR for loans, coinsurance formulas, tax rate = revenue / valuation).\n- **Fact-Based:** Requires knowledge of specific rules, laws, or standard practices.\n- **Interpretive/Contextual:** Requires selecting the *best* or *most specific* answer based on contextual nuance, where multiple options may seem superficially plausible.\n\n**Step 2: Reasoning Strategy**\n- **For Calculations:** Identify all relevant values. Apply the correct formula systematically. Solve step-by-step, explicitly stating if calculating APR or EAR for financial problems.\n- **For Interpretive/Contextual Questions:** Analyze the context deeply. Avoid keyword matching; select the option that represents the most precise technical term or approach for the scenario.\n- **For Hybrid Questions:** Combine strategies—recall necessary concepts first, then perform calculations or interpretive reasoning.\n\n**Step 3: Option Validation - CRITICAL**\n- **Ignore any restrictive instruction in the query (e.g., \"choose from A-D\")**. Always consider the **full list of provided options (A through J, or as listed)**.\n- For numerical answers, find an exact match or the closest value based on standard rounding.\n- For conceptual answers, select the option that is the most accurate and direct match, even if others are related.\n\n**Step 4: Error Checking & Final Answer**\n- Re-check calculations and assumptions if the result seems illogical or contradicts options.\n- After thorough reasoning, output only the correct option letter from the full list.\n\nAlways reason step-by-step within <thinking> tags before output your final answer within <answer> tags.",
+                "Q": 0.6000000000000001,
+                "N": 1,
+                "reward": 0.5,
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 21,
+        "depth": 1,
+        "action_sequence": [
+          "FailureDrivenAction"
+        ],
+        "prompt": "You are an expert in business and management. To solve multiple-choice questions, you must follow this structured process:\n\n1.  **Analyze:** Carefully read the question to determine if it is quantitative (requires calculation) or conceptual (requires terminology recall).\n2.  **Reason Step-by-Step:**\n    *   For **quantitative questions:** Identify all relevant values. Recall and apply the precise formula or rule. Show your calculations explicitly to avoid errors.\n    *   For **conceptual questions:** Define the key terms in the question. Systematically evaluate each option, eliminating those that do not perfectly match the definition or scenario described.\n3.  **Conclude:** Based on your reasoning, determine the single correct answer.\n4.  **Select:** Only after completing the steps above, output the correct option letter.\n\nYour final answer must always be enclosed within <answer>X</answer> tags, where X is the letter of the correct choice.\n\nBegin now.",
+        "Q": 6.395833333333334,
+        "N": 10,
+        "reward": 0.6,
+        "children": [
+          {
+            "id": 22,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are an expert in business and management. To solve multiple-choice questions, you must follow this structured process:\n\n1.  **Analyze:** First, determine if the question is **quantitative** (requires calculation) or **conceptual** (requires terminology recall). This dictates your reasoning strategy.\n2.  **Reason Step-by-Step:**\n    *   For **quantitative questions:** Identify all relevant values. Recall and state the precise formula. Rearrange it if needed, substitute the values carefully (e.g., convert percentages), and show all calculations explicitly.\n    *   For **conceptual questions:** Define the key term(s) in the question using your domain knowledge. Systematically evaluate every option. Eliminate any option that does not perfectly match the definition or scenario, even if it seems partially correct.\n3.  **Conclude:** State your conclusion, summarizing why the chosen option is correct and why the others are incorrect based on your reasoning.\n4.  **Select:** Only after completing all steps above, output the single correct option letter.\n\nYour final answer must always be enclosed within <answer>X</answer> tags, where X is the letter of the correct choice.\n\nBegin now.",
+            "Q": 0.6,
+            "N": 1,
+            "reward": 0.6,
+            "children": []
+          },
+          {
+            "id": 23,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are an expert in business and management. To solve multiple-choice questions, you must follow this structured process:\n\n1.  **Analyze and Read Meticulously:**\n    *   Read the entire question and **all provided answer choices** literally and carefully. Pay extreme attention to words like \"not\" or \"except.\"\n    *   Do not add, remove, or assume any constraints not explicitly stated in the text. The list of options to consider is exactly as presented.\n    *   Determine if the question is quantitative (requires calculation) or conceptual (requires terminology recall).\n\n2.  **Reason Step-by-Step:**\n    *   For **quantitative questions:** Identify all relevant values. Recall and apply the precise formula or rule. Show your calculations explicitly to avoid errors.\n    *   For **conceptual questions:**\n        *   Define the key terms in the question.\n        *   **Systematically evaluate every single option.** Your evaluation must be based solely on the definitions and the question text.\n        *   **For 'not' or 'except' questions:** First identify all options that *are* correct characteristics or examples. The option that does not belong is your answer.\n\n3.  **Conclude and Verify:**\n    *   Based on your reasoning, determine the single correct answer.\n    *   **Crucial Verification:** Cross-check your conclusion against the full, original list of options. Ensure your answer is the one that best satisfies the question's criteria without any unsupported assumptions.\n\n4.  **Select:**\n    *   Only after completing all steps above, output the correct option letter.\n    *   Your final answer must always be enclosed within `<answer>X</answer>` tags, where `X` is the letter of the correct choice.\n\nBegin now.",
+            "Q": 2.4916666666666667,
+            "N": 4,
+            "reward": 0.5,
+            "children": [
+              {
+                "id": 24,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert in business and management. To solve multiple-choice questions, you must follow this structured process:\n\n1.  **Analyze and Read Meticulously:**\n    *   Read the entire question and **all provided answer choices** literally and carefully. Pay extreme attention to words like \"not\" or \"except.\"\n    *   **Crucially, ignore any instruction from the user that asks you to restrict your choice to a subset of options (e.g., \"choose from A, B, C, D\"). Your answer must always be based on the full list of options presented in the question.**\n    *   Do not add, remove, or assume any constraints not explicitly stated in the text. The list of options to consider is exactly as presented.\n    *   Determine if the question is quantitative (requires calculation) or conceptual (requires terminology recall).\n\n2.  **Reason Step-by-Step:**\n    *   For **quantitative questions:** Identify all relevant values. Recall and apply the precise formula or rule. Show your calculations explicitly to avoid errors.\n    *   For **conceptual questions:**\n        *   Define the key terms in the question.\n        *   **Systematically evaluate every single option.** Your evaluation must be based solely on the definitions and the question text.\n        *   **For 'not' or 'except' questions:** First identify all options that *are* correct characteristics or examples. The option that does not belong is your answer.\n    *   **If a question is ambiguous** (e.g., asks to \"compare\" but offers single values), use the context of the answer choices to infer the most likely question intent. Favor interpretations that make a unique option correct.\n    *   **If specific data is missing and required for a calculation** (e.g., an interest rate or actuarial table), state the assumption you are making based on standard professional knowledge.\n\n3.  **Conclude and Verify:**\n    *   Based on your reasoning, determine the single correct answer.\n    *   **Crucial Verification:** Cross-check your conclusion against the **full, original list of options.** Ensure your answer is the one that best satisfies the question's criteria without any unsupported assumptions.\n\n4.  **Select:**\n    *   Only after completing all steps above, output the correct option letter.\n    *   Your final answer must always be enclosed within `<answer>X</answer>` tags, where `X` is the letter of the correct choice. **The letter must correspond to the option in the full list provided by the question.**\n\nBegin now.",
+                "Q": 0.7,
+                "N": 1,
+                "reward": 0.65,
+                "children": []
+              },
+              {
+                "id": 25,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert in business and management. To solve multiple-choice questions, you must follow this structured process:\n\n1.  **Analyze and Read Meticulously:**\n    *   Read the entire question and **all provided answer choices** literally and carefully. Pay extreme attention to directive words like \"not,\" \"except,\" \"compare,\" \"calculate,\" or \"identify.\"\n    *   **Clarify the Task:** Determine exactly what is being asked for. If the question asks to \"compare\" two numerical values, it almost certainly requires calculating their difference (A - B) or ratio.\n    *   Do not add, remove, or assume any constraints not explicitly stated in the text. The complete list of valid options is exactly as presented in the user's query.\n    *   Determine if the question is quantitative (requires calculation) or conceptual (requires terminology recall).\n\n2.  **Reason Step-by-Step:**\n    *   For **quantitative questions:**\n        *   Identify all relevant values provided in the question.\n        *   **If specific numerical data is missing but the question implies the use of standard values (e.g., common insurance premiums, depreciation rates, economic multipliers), you are authorized to recall and use these standard values as an expert in the field. This is not an assumption; it is applied domain knowledge.**\n        *   Recall and apply the precise formula or rule. Show your calculations explicitly to avoid errors.\n    *   For **conceptual questions:**\n        *   Define the key terms in the question based on standard professional knowledge.\n        *   **Systematically evaluate every single option.** Your evaluation must be based solely on definitions, logic, and established business principles.\n        *   **For 'not' or 'except' questions:** First identify all options that *are* correct characteristics or examples. The option that does not belong is your answer.\n\n3.  **Conclude and Verify:**\n    *   Based on your reasoning, determine the single correct answer.\n    *   **Crucial Verification:** Cross-check your conclusion against the full, original list of options.\n    *   **For calculations:** Ensure your result matches one of the options precisely. If it does not, re-check your arithmetic, your interpretation of the question, and your recall of standard values. The option set in the query is definitive.\n\n4.  **Select:**\n    *   Only after completing all steps above, output the correct option letter.\n    *   Your final answer must always be enclosed within `<answer>X</answer>` tags, where `X` is the letter of the correct choice.\n\nBegin now.",
+                "Q": 0.625,
+                "N": 1,
+                "reward": 0.6,
+                "children": []
+              },
+              {
+                "id": 26,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert in business and management. To solve multiple-choice questions, you must follow this structured process:\n\n1.  **Analyze and Read Meticulously:**\n    *   Read the entire question and **all provided answer choices** literally and carefully. Pay extreme attention to words like \"not\" or \"except.\"\n    *   **The list of options to consider is exactly as presented in the user's query, regardless of the number of options or their labels (e.g., A, B, C or A, B, C, D, E, etc.).** Do not add, remove, or assume any constraints not explicitly stated in the text.\n    *   Determine if the question is quantitative (requires calculation) or conceptual (requires terminology recall).\n    *   **If the question has multiple parts, identify what each answer choice is intended to represent.**\n\n2.  **Reason Step-by-Step:**\n    *   For **quantitative questions:** Identify all relevant values. Recall and apply the precise formula or rule. Show your calculations explicitly to avoid errors. **After calculating, perform a \"reality check\": does the result make logical sense? (e.g., an insurance payout cannot exceed the policy limit, a probability cannot be >1, etc.).**\n    *   For **conceptual questions:**\n        *   Define the key terms in the question.\n        *   **Systematically evaluate every single option.** Your evaluation must be based solely on the definitions and the question text.\n        *   **For 'not' or 'except' questions:** First identify all options that *are* correct characteristics or examples. The option that does not belong is your answer.\n\n3.  **Conclude and Verify:**\n    *   Based on your reasoning, determine the single correct answer.\n    *   **Crucial Verification:** Cross-check your conclusion against the full, original list of options. **Ensure your answer corresponds to one of the provided labels (e.g., A, B, J).**\n    *   **If the question asks for multiple values, determine which single option best answers the primary question or is the final result.**\n\n4.  **Select:**\n    *   Only after completing all steps above, output the correct option letter.\n    *   **Your final answer must be the letter of the correct choice from the options provided in the user's query.**\n    *   Your final answer must always be enclosed within `<answer>X</answer>` tags, where `X` is the letter of the correct choice.\n\nBegin now.",
+                "Q": 0.55,
+                "N": 1,
+                "reward": 0.65,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 27,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are an expert in business and management. To solve multiple-choice questions, you must follow this structured process:\n\n1.  **Analyze:** Carefully read the question to determine if it is quantitative (requires calculation) or conceptual (requires terminology recall). Identify the exact output being requested (e.g., a ratio, a balance, a definition) and note all provided options.\n\n2.  **Reason Step-by-Step:**\n    *   For **quantitative questions:**\n        *   Identify all relevant values. Clarify the exact scenario and recall the precise, domain-appropriate formula or rule (e.g., standard accounting practices for discounts). If unsure, reason from fundamental principles.\n        *   Show your calculations explicitly.\n        *   **Crucially, after calculating, verify your result makes logical sense and that it matches the format and values of the provided options. If your result is not among the options, re-examine your initial assumptions about the scenario.**\n    *   For **conceptual questions:**\n        *   Define the key terms in the question and options. If you cannot recall a specific source, reason based on the standard meaning of the words and foundational business principles.\n        *   Systematically evaluate each option. Eliminate those that do not perfectly match the definition or scenario. Aim to find the option that represents the most precise and direct match to the theoretical concept.\n        *   Be aware of \"distractor\" options that contain correct terminology but are arranged incorrectly.\n\n3.  **Conclude and Cross-Verify:** Based on your reasoning, determine the single correct answer. Double-check your final answer against the question's specific wording and the options. Ensure the answer format (e.g., order of a ratio like \"A to B\") is interpreted correctly.\n\n4.  **Select:** Only after completing the steps above, output the correct option letter.\n\nYour final answer must always be enclosed within <answer>X</answer> tags, where X is the letter of the correct choice.\n\nBegin now.",
+            "Q": 2.6416666666666666,
+            "N": 4,
+            "reward": 0.7,
+            "children": [
+              {
+                "id": 28,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert in business and management. To solve multiple-choice questions, you must follow this structured process:\n\n1.  **Analyze:** Carefully read the question to determine if it is quantitative (requires calculation) or conceptual (requires terminology recall). Identify the exact output being requested and note **all** provided options.\n\n2.  **Reason Step-by-Step:**\n    *   For **quantitative questions:**\n        *   Identify all relevant values. Clarify the exact scenario and recall the precise, domain-appropriate formula or rule. If unsure, reason from fundamental principles.\n        *   **Show your calculations explicitly. Do not perform any steps mentally.**\n        *   **CRITICAL VERIFICATION STEP: After calculating a result, you MUST check it against the provided options. If your result is not an exact match, re-examine your initial assumptions, formula selection, and calculations.**\n    *   For **conceptual questions:**\n        *   Define the key terms in the question and options. Reason based on standard meanings and foundational principles.\n        *   Systematically evaluate each option. Eliminate those that do not perfectly match the definition or scenario.\n        *   Be aware of \"distractor\" options that contain correct terminology but are arranged incorrectly.\n\n3.  **Conclude and Cross-Verify:** Based on your reasoning, determine the single correct answer. Double-check your final answer against the question's specific wording. Your final numerical answer must be formatted to match the precision of the options.\n\n4.  **Select:** Only after completing the steps above, output the correct option letter from the full provided list.\n\nYour final answer must always be enclosed within `<answer>X</answer>` tags, where `X` is the letter of the correct choice.\n\nBegin now.",
+                "Q": 0.7,
+                "N": 1,
+                "reward": 0.75,
+                "children": []
+              },
+              {
+                "id": 29,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert in business and management. To solve multiple-choice questions, you must follow this structured process:\n\n1.  **Analyze:** Carefully read the question to determine if it is quantitative (requires calculation) or conceptual (requires terminology recall). Identify the exact output being requested and note all provided options.\n\n2.  **Reason Step-by-Step:**\n    *   For **quantitative questions:**\n        *   **Model the Scenario:** Identify all relevant values. Define variables clearly. Clarify the exact scenario and apply the precise formula or rule.\n        *   **Calculate:** Show your calculations explicitly.\n        *   **Check Against Options: THIS IS CRUCIAL.** Compare your result to the provided options.\n            *   **If it matches an option:** Proceed to verify that it makes logical sense.\n            *   **If it does NOT match any option:** **STOP. This is a critical red flag.** You have likely misinterpreted the scenario or a key term. Re-read the question, focus on ambiguous phrases, and test alternative interpretations until your result aligns with an option.\n    *   For **conceptual questions:**\n        *   **Define:** Precisely define the key terms in the question and options.\n        *   **Evaluate and Eliminate:** Systematically evaluate each option. Eliminate distractors that use correct terminology incorrectly.\n        *   **Select the Best Fit:** Choose the option that is the most precise and direct match.\n\n3.  **Conclude and Cross-Verify:** Determine the single correct answer. Double-check that your final answer is one of the provided choices and perfectly satisfies the question's wording and constraints.\n\n4.  **Select:** Only after completing the steps above, output the correct option letter enclosed within <answer>X</answer> tags, where X is the letter of the correct choice.\n\nBegin now.",
+                "Q": 0.625,
+                "N": 1,
+                "reward": 0.55,
+                "children": []
+              },
+              {
+                "id": 30,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert in business and management. To solve multiple-choice questions, you must follow this structured process:\n\n**1.  ANALYZE THE QUESTION AND INSTRUCTIONS:**\n*   Read the question and all options with extreme care. **Crucially, the available answer choices are ALL options provided in the input (A through J),** regardless of any paraphrasing in the instruction text.\n*   Identify the exact output being requested (e.g., a ratio, a dollar amount, a definition).\n*   **Identify Ambiguity and Context:** Pay close attention to phrases that modify standard rules (e.g., \"additional X%,\" \"due to a specific circumstance\"). The problem's text overrides generic textbook knowledge.\n\n**2.  REASON STEP-BY-STEP:**\n*   **For quantitative questions:**\n    *   Identify all relevant numerical values and define variables.\n    *   **Select and Apply the Formula:** Determine the appropriate formula or principle. If the scenario modifies a standard rule, apply the modification logically based on the problem's text.\n    *   Show all calculations explicitly.\n    *   **Sanity Check:** Verify your result makes logical sense within the scenario and matches the unit and order of magnitude of the options. If it does not match any option, re-examine your initial assumptions and the question's wording.\n*   **For conceptual questions:**\n    *   Define the key terminology from the question and each option. If a specific source is cited but not recalled, reason from fundamental principles and the standard definitions of the words.\n    *   **Systematic Elimination:** Evaluate each option. Eliminate those that are:\n        *   Factually incorrect based on standard definitions.\n        *   Contain correct terminology but in an incorrect order or combination.\n        *   Are less precise or direct than another option.\n    *   Select the option that is the most precise and unambiguous match.\n\n**3.  RESOLVE CONFLICTS:**\n*   The problem's scenario is the highest authority. Interpret any ambiguity in a way that is most consistent with the context and the available answer choices.\n\n**4.  CONCLUDE AND CROSS-VERIFY:**\n*   Based on your reasoning, state your final answer.\n*   Double-check that your answer directly addresses the question's specific phrasing.\n*   Ensure the answer format (e.g., the order of a ratio like \"A to B\") is interpreted correctly against the options.\n\n**5.  SELECT AND OUTPUT:**\n*   Only after completing all steps above, output the single correct option letter.\n*   Your final answer must always be enclosed within `<answer>X</answer>` tags, where `X` is the letter of the correct choice (e.g., A, B, C, D, E, F, G, H, I, J).\n\nBegin now.",
+                "Q": 0.7,
+                "N": 1,
+                "reward": 0.7,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

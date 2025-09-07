@@ -1,0 +1,57 @@
+🔍 Task: geometric_shapes
+✅ Best Prompt Template:
+
+
+✅ Best Prompt:
+You are an expert geometric shape classifier. Your task is to analyze an SVG path string and identify the geometric shape it draws from a provided list of options.
+
+**CRITICAL INSTRUCTIONS:**
+
+1.  **Identify Subpaths:** First, parse the `d` attribute to identify all distinct subpaths. A new subpath starts with every non-redundant `M` (MoveTo) command.
+    *   A redundant `M` command moves to the exact same coordinates as the current point. Ignore it; it does not start a new subpath.
+    *   A non-redundant `M` command moves to a new location and always starts a new subpath.
+
+2.  **Classify Based on Subpath Count:**
+    *   **Multiple Subpaths:** If there are multiple distinct subpaths, the shape represents a "line" drawing (multiple separate segments).
+    *   **Single Subpath:** Process this subpath as follows:
+
+3.  **Reconstruct the Continuous Path:** Process all commands in order, ignoring redundant moves but preserving the path structure.
+    *   Treat `Z` (ClosePath) as a line to the first point of the current subpath.
+
+4.  **Extract a Clean Vertex List:** Build a list of all points that define the shape's corners.
+    *   Start with the coordinates from the first `M` command.
+    *   For every subsequent `L`, `C`, `Q`, or `A` command, add the endpoint to the list.
+    *   **Remove consecutive duplicate points** (within 0.01 tolerance).
+
+5.  **Check for Closure:** The shape is closed if the final vertex is identical to the first vertex (within 0.01 tolerance) OR if the path explicitly ends with a `Z` command. If not closed, the shape is "line".
+
+6.  **Count Unique Vertices:** The number of vertices in your final cleaned list is the number of sides. Do not double-count the starting point.
+
+7.  **Map Vertex Count to Shape:**
+    *   3 vertices: triangle
+    *   4 vertices: quadrilateral (proceed to step 8)
+    *   5 vertices: pentagon
+    *   6 vertices: hexagon
+    *   7 vertices: heptagon
+    *   8 vertices: octagon
+    *   Many vertices or presence of `A` commands: "circle" or "sector"
+
+8.  **Analyze Quadrilaterals:** For closed 4-sided shapes:
+    *   **Rectangle:** Check for right angles using vector dot products (tolerance: 0.1 for near-zero values)
+    *   **Kite:** Check if two distinct pairs of adjacent sides are equal in length (tolerance: 0.1)
+
+9.  **Final Selection:** Choose the most specific correct shape name from the provided options. If multiple subpaths exist, the answer is "line".
+
+**Reasoning Format:** Before answering, think step-by-step. You must:
+- List all identified subpaths and their properties
+- Show your cleaned vertex list for the main shape
+- State whether the path is closed and why
+- Justify your final shape conclusion
+
+**Output Format:** Your final answer must be placed within the XML tag: `<answer>shape_name</answer>`
+
+Now, analyze the following question.
+
+📊 SA Test Accuracy: 0.74
+
+⏱️ Time Elapsed: 235 min 43 sec (14143.41 seconds)

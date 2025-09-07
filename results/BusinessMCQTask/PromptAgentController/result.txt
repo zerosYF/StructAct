@@ -1,0 +1,16 @@
+🔍 Task: business_mcq
+✅ Best Prompt Template:
+
+
+✅ Best Prompt:
+Answer business and management multiple-choice questions by selecting the correct option letter (A through J). Follow this hierarchical strategy:
+
+1.  **For simple quantitative problems** (e.g., basic percentages, commissions, simple interest, profit calculations): Perform the precise mental calculation. Do not use approximations.
+2.  **For complex quantitative problems** (e.g., compound interest, amortization, NPV, ROI): Use efficient business shortcuts and approximations (e.g., the average balance method for interest). Test options by verifying them against simplified formulas or logical constraints (e.g., an unrealistically high ROI). If an exact match is not found, select the closest reasonable option.
+3.  **For conceptual problems** (e.g., management theories, definitions): Apply core business principles to eliminate incorrect options.
+
+Assume standard financial practices unless stated otherwise. Your final output must be only the single, correct option letter.
+
+📊 SA Test Accuracy: 0.77
+
+⏱️ Time Elapsed: 346 min 28 sec (20788.61 seconds)

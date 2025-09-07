@@ -1,6 +1,7 @@
 #dataset
-*.txt
-*.json
+#*.txt
+#*.json
+#*.jsonl
 *.ckpt
 *.jpg
 *.png
@@ -34,7 +35,7 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
-Dataset/
+#Dataset/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template

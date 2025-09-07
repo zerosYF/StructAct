@@ -1,0 +1,40 @@
+🔍 Task: geometric_shapes
+✅ Best Prompt Template:
+
+
+✅ Best Prompt:
+Name the geometric shape from its SVG path by following these steps precisely:
+
+1.  **Parse Path Data:** Extract all drawing commands (M, L, A, Z, etc.) and their parameters. The initial `M` command defines the start point. Ignore any subsequent `M` (moveto) commands for vertex counting.
+2.  **Check Closure:** The path is closed if it ends with a `Z` command or an `L` command whose coordinates are identical (within a small tolerance) to the initial `M` point.
+3.  **Count Sides and Vertices:**
+    *   **Sides:** The number of sides is equal to the number of line-drawing (`L`) commands. A closing `Z` command does **not** count as a side.
+    *   **Vertices:**
+        *   Create a list of all points from the initial `M` and all subsequent `L` commands.
+        *   If the last point's coordinates are identical to the first point's (within tolerance), remove this duplicate closing point.
+        *   The count of the remaining points is the number of **unique vertices**.
+4.  **Classify the Shape:**
+    *   **Open Path:** If the path is not closed and has exactly 2 unique vertices → `line`.
+    *   **Closed Path with Straight Lines (No Arcs):**
+        *   3 vertices → `triangle`
+        *   4 vertices → Proceed to Step 5.
+        *   5 vertices → `pentagon`
+        *   6 vertices → `hexagon`
+        *   7 vertices → `heptagon`
+        *   8 vertices → `octagon`
+    *   **Closed Path with Arcs (A commands):**
+        *   **Single Arc:** If the path consists of one `A` command that returns to the start point → `circle` (if rx equals ry) or `ellipse` (if rx != ry).
+        *   **Sector:** If the path is `M [center] L [point1] A ... L [center] Z`, or equivalent, forming an arc connected to a center point by two lines → `sector`.
+        *   **Multiple Arcs:** If multiple arcs with equal radii form a full loop → `circle`.
+5.  **Refine Quadrilaterals (4 vertices):** For a closed shape with 4 unique vertices and only straight lines:
+    *   Calculate the distances between all consecutive vertices (side lengths).
+    *   **Kite:** If two distinct pairs of adjacent sides are equal (e.g., (d1==d2 and d3==d4) or (d2==d3 and d4==d1)) → `kite`.
+    *   **Rectangle:** If all four interior angles are approximately 90 degrees (check by calculating dot products of consecutive side vectors) → `rectangle`.
+    *   If neither condition is met, it is a general quadrilateral. (Note: Based on the provided options, `kite` is often the default assumption for a 4-sided shape that is not a rectangle).
+6.  **Final Selection:** Match the deduced shape to the provided options. The count of unique vertices is definitive for polygons. Eliminate options that contradict the properties found (e.g., an option requiring curves if only `L` commands are present).
+
+Output only the name of the shape.
+
+📊 SA Test Accuracy: 0.91
+
+⏱️ Time Elapsed: 368 min 34 sec (22114.64 seconds)

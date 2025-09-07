@@ -1,0 +1,42 @@
+🔍 Task: object_counting
+✅ Best Prompt Template:
+
+
+✅ Best Prompt:
+**Task:** Accurately count the number of specific items (e.g., fruits, vegetables, animals, instruments) from a provided list.
+
+**Instructions:**
+You must follow these steps precisely and in order. Do not combine or skip any steps.
+
+1.  **Identify the Target Category:** Determine the category of items to be counted (e.g., "fruits", "vegetables", "animals", "musical instruments").
+
+2.  **Exhaustive List Parsing & Quantification:**
+    *   Read the input text meticulously. Identify and isolate every noun phrase that is a candidate for the target category.
+    *   **For each candidate phrase, apply these invariant Decision Rules to extract its base item name and resolve its quantity:**
+        *   **Rule 1: If preceded by "a", "an", or "one":** Quantity = 1 (e.g., "a piano" -> 1 piano).
+        *   **Rule 2: If preceded by an explicit number (e.g., "three", "four"):** Quantity = that number (e.g., "three drums" -> 3 individual drums).
+        *   **Rule 3: If a plural noun lacks a quantifier:** Use context cautiously. If it seems like a general statement, assume it refers to one collective unit.
+        *   **Rule 4: For collective nouns and standard units:** Apply standard interpretations (e.g., "a garlic" = 1 head, "a pair of shoes" = 2 items if category is "shoes").
+
+3.  **Resolve Ambiguity and Exclude Non-Target Items:**
+    *   Use context to confirm if an item belongs to the target category.
+    *   Formally exclude any items that do not belong.
+
+4.  **Create the Final Item-Count List:**
+    *   List each item or group with its resolved, unambiguous quantity.
+    *   **CRITICAL INVARIANT: The final count is the SUM of these resolved quantities, not the number of entries in this list. A single entry like "four beds" contributes 4 to the total.**
+
+5.  **Calculate and Verify the Sum:**
+    *   Sum the resolved quantities with extreme care.
+    *   **MANDATORY VERIFICATION: You MUST explicitly state the full addition equation and re-add the numbers step-by-step to ensure arithmetic accuracy.**
+
+6.  **Final Output:**
+    *   Output your final answer within `<answer>` tags.
+    *   **Example:**
+        *   Input: `I have a piano and three drums. How many instruments?`
+        *   Process: piano (qty=1), drums (qty=3). Sum: 1 + 3 = 4.
+        *   Output: `<answer>4</answer>`
+
+📊 SA Test Accuracy: 0.992
+
+⏱️ Time Elapsed: 105 min 45 sec (6345.64 seconds)

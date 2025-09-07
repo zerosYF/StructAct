@@ -1,0 +1,447 @@
+{
+  "config": {
+    "mcts_iters": 10,
+    "rollout_length": 4,
+    "depth_threshold": 5,
+    "width_threshold": 3
+  },
+  "search_stats": {
+    "total_nodes": 31,
+    "total_Q_values": 31
+  },
+  "best_node": {
+    "action_sequence": [
+      "FailureDrivenAction",
+      "SuccessDrivenAction"
+    ],
+    "prompt": "You are an expert at precise counting and enumeration. Your task is to count specific objects of a requested category within a statement.\n\n**Instructions:**\n1.  **Identify and Extract:** Read the input carefully. Identify every distinct mention of an object, paying close attention to commas and conjunctions like \"and\" to separate items.\n2.  **Parse Quantities:** For each distinct mention, extract the exact quantity.\n    - Explicit numbers (e.g., \"three cows\") → stated number.\n    - Singular articles (e.g., \"a bear\", \"an apple\") → quantity 1.\n    - Collective nouns (e.g., \"a pack of dogs,\" \"a bunch of grapes\") → treat as 1 single item.\n3.  **Category Filtering:** Verify which extracted objects belong to the requested category. Explicitly exclude and justify the exclusion of any non-matching items.\n4.  **List and Sum:** Create a bulleted list of each distinct, category-appropriate mention with its parsed quantity. Then, sum all the quantities to get the final answer.\n5.  **Output Format:** First, reason step-by-step following the instructions above. Then, box your final answer as `<answer>N</answer>`.\n\n**Example:**\nInput: \"I have a bear, two rabbits, and a cat. How many animals?\"\nOutput:\nLet's list each distinct mention and its quantity:\n- \"a bear\" -> Quantity: 1 (animal)\n- \"two rabbits\" -> Quantity: 2 (animal)\n- \"a cat\" -> Quantity: 1 (animal)\nSum: 1 + 2 + 1 = 4\n<answer>4</answer>",
+    "depth": 2,
+    "Q": 3.783333333333333,
+    "N": 4
+  },
+  "search_tree": {
+    "id": 0,
+    "depth": 0,
+    "action_sequence": [],
+    "prompt": "Questions that involve enumerating objects of different types and asking the model to count them",
+    "Q": 28.418055555555544,
+    "N": 30,
+    "reward": 0.95,
+    "children": [
+      {
+        "id": 1,
+        "depth": 1,
+        "action_sequence": [
+          "SuccessDrivenAction"
+        ],
+        "prompt": "You are an expert at solving counting problems. Follow this precise, step-by-step reasoning process to ensure an accurate answer.\n\n1.  **Explicit Itemization:** Parse the input and list every mentioned object along with its quantity. Convert all quantities to digits (e.g., \"a\" → 1, \"two\" → 2).\n2.  **Context-Aware Categorization:** Identify which of these items belong to the category specified in the question (e.g., \"objects,\" \"vegetables\").\n3.  **Summation of Quantities:** Add up **only** the quantities of the items that belong to the target category. The final count is always this sum, never the number of phrases or words.\n\nPresent your reasoning clearly before giving the final answer.\n\n**Response Template:**\n```\nStep 1: List all items.\n- [Item 1]: [Quantity]\n- [Item 2]: [Quantity]\n- ...\n\nStep 2: Identify items that are [Category from question].\n- [Relevant Item 1]: [Quantity]\n- [Relevant Item 2]: [Quantity]\n- ...\n\nStep 3: Sum the quantities of the relevant items.\n[Quantity 1] + [Quantity 2] + ... = [Total]\n\n<answer>[Total]</answer>\nFinal Answer: [Total]\n```\n\n**Now, solve the following problem:**\n[Insert Question Here]",
+        "Q": 9.47222222222222,
+        "N": 10,
+        "reward": 0.95,
+        "children": [
+          {
+            "id": 2,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are an expert at solving counting problems. Follow this precise, step-by-step reasoning process to ensure an accurate answer. Adhere strictly to these rules:\n\n1.  **Extract and Quantify:** List every mentioned object and its quantity. Convert all quantifiers to digits (e.g., \"a\" → 1, \"two\" → 2).\n2.  **Categorize Rigorously:** Identify which items belong to the target category specified in the question. An item's mention does not imply category membership; use common-sense knowledge.\n3.  **Sum Quantities, Not Phrases:** The final count is the sum of the quantities of the relevant category items. It is never the count of words or phrases.\n\n**Response Template:**\n```\nStep 1: List all items.\n- [Item 1]: [Quantity]\n- [Item 2]: [Quantity]\n- ...\n\nStep 2: Identify items that are [Category from question].\n- [Relevant Item 1]: [Quantity]\n- [Relevant Item 2]: [Quantity]\n- ...\n\nStep 3: Sum the quantities of the relevant items.\n[Quantity 1] + [Quantity 2] + ... = [Total]\n\n<answer>[Total]</answer>\nFinal Answer: [Total]\n```\n\n**Now, solve the following problem:**\n[Insert Question Here]",
+            "Q": 3.8194444444444446,
+            "N": 4,
+            "reward": 0.9333333333333333,
+            "children": [
+              {
+                "id": 3,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert at solving counting problems. Follow this precise, step-by-step reasoning process to ensure an accurate answer. Adhere strictly to these rules:\n\n1.  **Exhaustive Extraction:** List every mentioned object exactly as stated, normalizing to singular form (e.g., \"couches\" → \"couch\", \"heads of broccoli\" → \"head of broccoli\"). Convert all quantifiers to digits (e.g., \"a\" → 1, \"two\" → 2). Do not combine or split items; treat each distinct noun phrase as a separate entry.\n2.  **Strict Categorization:** For each item, determine if it belongs to the target category using common-sense knowledge (e.g., \"stove\" is not an animal; \"garlic\" is a vegetable). An item's mention does not imply category membership.\n3.  **Sum Quantities, Not Items:** The final count is the sum of the quantities of the relevant category items. It is never the count of words, phrases, or distinct items.\n\n**Response Template:**\n```\nStep 1: List all items.\n- [Item 1]: [Quantity]\n- [Item 2]: [Quantity]\n- ...\n\nStep 2: Identify items that are [Category from question]. For each item, explicitly state inclusion or exclusion with a reason.\n- [Relevant Item 1]: [Quantity] (reason for inclusion)\n- [Excluded Item 1]: [Quantity] (reason for exclusion)\n- ...\n\nStep 3: Sum the quantities of the relevant items.\n[Quantity 1] + [Quantity 2] + ... = [Total]\n\n<answer>[Total]</answer>\nFinal Answer: [Total]\n```\n\n**Now, solve the following problem:**\n[Insert Question Here]",
+                "Q": 0.95,
+                "N": 1,
+                "reward": 0.95,
+                "children": []
+              },
+              {
+                "id": 4,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert at solving counting problems. Follow this precise, step-by-step reasoning process to ensure an accurate answer. Adhere strictly to these rules:\n\n1.  **Parse and Normalize:** Break the input into all noun phrases with their quantities. **Critically, normalize each phrase** by identifying the core countable object, especially when measure words are used (e.g., \"head of\", \"stalk of\", \"bunch of\", \"pair of\"). The quantity applies to this core object.\n    *   **Example:** \"a head of broccoli\" → 1 broccoli. \"two stalks of celery\" → 2 celery.\n    *   For simple nouns, proceed normally (e.g., \"a car\" → 1 car, \"three dogs\" → 3 dogs).\n\n2.  **List Quantified Items:** Create a list from the normalized phrases. Every core object and its digit-based quantity must be listed.\n\n3.  **Categorize Rigorously:** Identify which items from the normalized list belong to the target category specified in the question. Use common-sense knowledge for categorization.\n\n4.  **Sum Quantities:** The final count is the sum of the quantities of the relevant category items.\n\n**Response Template:**\n```\nStep 1: Parse and normalize all noun phrases.\n- [Normalized Core Object 1]: [Quantity]\n- [Normalized Core Object 2]: [Quantity]\n- ...\n\nStep 2: Identify items that are [Category from question].\n- [Relevant Normalized Item 1]: [Quantity]\n- [Relevant Normalized Item 2]: [Quantity]\n- ...\n\nStep 3: Sum the quantities of the relevant items.\n[Quantity 1] + [Quantity 2] + ... = [Total]\n\n<answer>[Total]</answer>\nFinal Answer: [Total]\n```\n\n**Now, solve the following problem:**\n[Insert Question Here]",
+                "Q": 0.9583333333333333,
+                "N": 1,
+                "reward": 0.95,
+                "children": []
+              },
+              {
+                "id": 5,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert at solving counting problems. Your goal is to count individual entities, not groups. Follow this precise, step-by-step reasoning process to ensure an accurate answer. Adhere strictly to these rules:\n\n1.  **Enumerate All Entities:** Translate the entire input into a list of every single, distinct, countable entity. For any phrase with a quantifier (e.g., \"five mice\", \"three violins\"), you must list that many individual items. This is the most critical step.\n    *   Example: \"five mice\" becomes 5 separate \"mouse\" entities. \"a violin\" becomes 1 \"violin\" entity. \"three violins\" becomes 3 separate \"violin\" entities.\n\n2.  **Categorize Rigorously:** Identify which of these enumerated entities belong to the target category specified in the question. Use common-sense knowledge. An item's mention does not automatically imply category membership. Disqualify any entities not in the category.\n\n3.  **Count Relevant Entities:** The final count is the total number of entities in the list from Step 2. It is never the count of words or phrases, nor the sum of group quantities.\n\n**Response Template:**\n\n```\nStep 1: Enumerate all individual entities.\n- [Entity 1]\n- [Entity 2]\n- [Entity 3]\n- ... (List every single item. This list must reflect the total number of things to count.)\n\nStep 2: Identify entities that are [Category from question].\n- [Relevant Entity 1]\n- [Relevant Entity 2]\n- ... (List only the entities from Step 1 that fit the category.)\n\nStep 3: Count the number of relevant entities.\nTotal count = [Number of items in the list from Step 2]\n\n<answer>[Total]</answer>\nFinal Answer: [Total]\n```\n\n**Now, solve the following problem:**\n[Insert Question Here]",
+                "Q": 0.9666666666666667,
+                "N": 1,
+                "reward": 0.9666666666666667,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 6,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are an expert at solving object counting problems. Follow this precise, step-by-step reasoning process to ensure an accurate answer.\n\n**Reasoning Steps:**\n\n1.  **Complete Itemization:** Parse the input text meticulously. List every mentioned object and its quantity.\n    *   Convert all quantities to digits (e.g., \"a\" or \"an\" → 1, \"two\" → 2).\n    *   If a quantity is not explicitly stated for an object, assume it is **1**.\n    *   Treat compound nouns (e.g., \"box of chocolates\") as a single item.\n\n2.  **Precise Categorization:** Identify which items belong to the category specified in the question.\n    *   Use common sense to determine category membership (e.g., a plum is a fruit, a frog is an animal).\n    *   Explicitly note if an item is excluded and why.\n\n3.  **Summation of Quantities:** Add up **only** the quantities of the items that belong to the target category. The final count is always this sum, never the number of different item types.\n\n**Response Template:**\n```\nStep 1: List all items.\n- [Item 1]: [Quantity]\n- [Item 2]: [Quantity]\n- ...\n\nStep 2: Identify items that are [Category from question].\n- [Relevant Item 1]: [Quantity] (e.g., \"is an animal\")\n- [Relevant Item 2]: [Quantity]\n- ...\n(Exclude: [Item X] is not a [Category].)\n\nStep 3: Sum the quantities of the relevant items.\n[Quantity 1] + [Quantity 2] + ... = [Total]\n\n<answer>[Total]</answer>\nFinal Answer: [Total]\n```\n\n**Now, solve the following problem:**\n[Insert Question Here]",
+            "Q": 3.7638888888888893,
+            "N": 4,
+            "reward": 0.9666666666666667,
+            "children": [
+              {
+                "id": 7,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert at solving object counting problems. Follow this precise, step-by-step reasoning process to ensure an accurate answer.\n\n**Reasoning Steps:**\n\n1.  **Complete Itemization:** Parse the input text meticulously. List **every** mentioned object and its quantity.\n    *   **Convert all quantities to digits:** \"a\" or \"an\" → 1, \"two\" → 2.\n    *   **Invariant:** If a quantity is not explicitly stated, assume it is **1**.\n    *   **Decision Rule:** Treat compound nouns (e.g., \"box of chocolates\", \"lettuce heads\") as a **single item**. Do not break them down.\n\n2.  **Precise Categorization:** Identify which items belong to the category specified in the question.\n    *   **Core Strategy:** Use common sense and real-world knowledge to determine category membership (e.g., a plum is a fruit, a frog is an animal, a trumpet is a musical instrument).\n    *   **Explicit Justification:** For each item, explicitly state why it is included or excluded. If an item does **not** belong to the category, you must state the reason (e.g., \"Exclude: [Item X] is not a [Category].\"). If all items belong, note \"no exclusions.\"\n\n3.  **Summation of Quantities:** Add up **only** the quantities of the items that belong to the target category.\n    *   **Crucial Invariant:** The final count is always the **sum of the quantities**, never the number of different item types.\n\n**Response Template:**\n```\nStep 1: List all items.\n- [Item 1]: [Quantity]\n- [Item 2]: [Quantity]\n- ...\n\nStep 2: Identify items that are [Category from question].\n- [Relevant Item 1]: [Quantity] (e.g., \"is an animal\")\n- [Relevant Item 2]: [Quantity]\n- ...\n(Exclude: [Item X] is not a [Category]. / No exclusions.)\n\nStep 3: Sum the quantities of the relevant items.\n[Quantity 1] + [Quantity 2] + ... = [Total]\n\n<answer>[Total]</answer>\nFinal Answer: [Total]\n```\n\n**Now, solve the following problem:**\n[Insert Question Here]",
+                "Q": 0.9416666666666667,
+                "N": 1,
+                "reward": 0.9333333333333333,
+                "children": []
+              },
+              {
+                "id": 8,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert at solving object counting problems. Follow this precise, step-by-step reasoning process to ensure an accurate answer.\n\n**Reasoning Steps:**\n\n1.  **Complete Itemization:** Parse the input text meticulously. List every mentioned object and its quantity.\n    *   **Invariant:** Convert all quantities to digits (e.g., \"a\" or \"an\" → 1, \"two\" → 2, \"a pair of\" → 2).\n    *   **Invariant:** If a quantity is not explicitly stated, assume it is **1**.\n    *   **Rule:** Treat compound nouns (e.g., \"box of chocolates\", \"head of lettuce\") as a single countable item.\n\n2.  **Precise Categorization:** Identify which items belong to the category specified in the question.\n    *   **Rule:** Use common sense and real-world knowledge for categorization (e.g., a plum is a fruit, a frog is an animal).\n    *   **Rule:** Explicitly note if an item is excluded and why (e.g., \"toy car is not a real animal\").\n\n3.  **Summation of Quantities:** Add up **only** the quantities of the items that belong to the target category.\n    *   **Critical Invariant:** The final count is always this sum, **never** the number of different item types.\n\n**Response Template:**\n```\nStep 1: List all items.\n- [Item 1]: [Quantity]\n- [Item 2]: [Quantity]\n- ...\n\nStep 2: Identify items that are [Category from question].\n- [Relevant Item 1]: [Quantity] (e.g., \"is a fruit\")\n- [Relevant Item 2]: [Quantity]\n- ...\n(Exclude: [Item X] is not a [Category] because [reason].)\n\nStep 3: Sum the quantities of the relevant items.\n[Quantity 1] + [Quantity 2] + ... = [Total]\n\n<answer>[Total]</answer>\nFinal Answer: [Total]\n```\n\n**Now, solve the following problem:**\n[Insert Question Here]",
+                "Q": 0.9333333333333333,
+                "N": 1,
+                "reward": 0.9666666666666667,
+                "children": []
+              },
+              {
+                "id": 9,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert at solving object counting problems. Follow this precise, step-by-step reasoning process to ensure an accurate answer. Your goal is to count the total number of discrete object instances that belong to a category.\n\n**Reasoning Steps:**\n\n1.  **Parse and Quantify:**\n    *   Read the input text meticulously. Identify every noun phrase that represents an object.\n    *   For each noun phrase, determine its quantity. Convert all quantities to digits (e.g., \"a\" or \"an\" → 1, \"two\" → 2, \"a pair of\" → 2).\n    *   If a plural noun (e.g., \"oranges\") is given without a quantifier, assume the quantity is **1**. (e.g., \"I have oranges\" means 1 orange). If a singular noun is used, it is always 1.\n\n2.  **Disaggregate Quantities into Discrete Items:**\n    *   This is the most critical step. A listed quantity tells you how many discrete instances there are of that object.\n    *   Example: \"four oranges\" means 4 discrete orange objects. \"a banana\" means 1 discrete banana object.\n    *   **Exception:** Treat true compound nouns (e.g., \"box of chocolates\", \"deck of cards\") as a **single discrete item**. The contents inside (\"chocolates\", \"cards\") are not to be counted separately unless the question is specifically about them.\n\n3.  **Precise Categorization:** Identify which discrete items from Step 2 belong to the category specified in the question.\n    *   Use common sense for categorization (e.g., a plum is a fruit, a frog is an animal, a clarinet is an instrument).\n    *   Explicitly note if an item is excluded and why.\n\n4.  **Count Relevant Discrete Items:** The final count is the total number of discrete item instances that belong to the target category. Simply add them up.\n\n**Response Template:**\n```\nStep 1: Parse and list all noun phrases with their quantities.\n- \"[noun phrase A]\": [Quantity]\n- \"[noun phrase B]\": [Quantity]\n- ...\n\nStep 2: Disaggregate into discrete items.\n- [Quantity A] x [object A] → [Quantity A] discrete items (e.g., 4 x orange → 4 oranges)\n- [Quantity B] x [object B] → [Quantity B] discrete items\n- ...\n\nStep 3: Identify discrete items that are [Category from question].\n- [Discrete Object 1] (is a [Category])\n- [Discrete Object 2] (is a [Category])\n- ... [and so on for every single instance]\n(Exclude: [Discrete Object X] is not a [Category].)\n\nStep 4: Count the relevant discrete items.\nTotal count = [Number of relevant discrete items]\n\n<answer>[Total count]</answer>\nFinal Answer: [Total count]\n```\n\n**Now, solve the following problem:**\n[Insert Question Here]",
+                "Q": 0.95,
+                "N": 1,
+                "reward": 0.9666666666666667,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 10,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are an expert at solving contextual counting problems. Follow this precise, step-by-step reasoning process to ensure an accurate answer.\n\n1.  **Precise Itemization:** Parse the input and list every distinct countable instance mentioned.\n    *   Treat compound nouns (e.g., \"head of broccoli\", \"stalk of celery\") as a single, countable item.\n    *   Convert all quantifiers to digits (e.g., \"a\"/\"an\" → 1, \"two\" → 2, \"three\" → 3).\n    *   The quantity for an item is the number explicitly associated with its instance in the text (e.g., \"two garlics\" means the item 'garlic' has a quantity of 2).\n\n2.  **Contextual Categorization:** Identify which of these items belong to the category specified in the question (e.g., \"fruits,\" \"vegetables\").\n    *   For food items, use common culinary definitions (e.g., a tomato is a vegetable for this purpose). Briefly reason about any potentially ambiguous items.\n\n3.  **Robust Summation:** Add up **only** the quantities of the items that belong to the target category.\n    *   First, list the quantities to be summed as a visual checklist.\n    *   Then, perform the addition in a single, careful step to minimize arithmetic errors.\n\nPresent your reasoning clearly before giving the final answer.\n\n**Response Template:**\n```\nStep 1: List all items and their quantities.\n- [Item 1]: [Quantity]\n- [Item 2]: [Quantity]\n- ...\n\nStep 2: Identify items that are [Category from question].\n- [Relevant Item 1]: [Quantity] ([Brief reasoning if ambiguous])\n- [Relevant Item 2]: [Quantity]\n- ...\nRelevant Items: [Item 1, Item 2, ...]\n\nStep 3: Sum the quantities of the relevant items.\nQuantities to add: [Q1], [Q2], [Q3], ...\n[Q1] + [Q2] + [Q3] + ... = [Total]\n\n<answer>[Total]</answer>\nFinal Answer: [Total]\n```\n\n**Now, solve the following problem:**\n[Insert Question Here]",
+            "Q": 0.9388888888888888,
+            "N": 1,
+            "reward": 0.9333333333333333,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": 11,
+        "depth": 1,
+        "action_sequence": [
+          "FailureDrivenAction"
+        ],
+        "prompt": "You are an expert at precise counting and enumeration. Your task is to count specific objects described in a statement.\n\n**Instructions:**\n1.  **Identify and Extract:** Carefully read the input. Identify every distinct mention of an object that matches the category asked about (e.g., animals, instruments, vegetables). Pay close attention to commas and conjunctions like \"and\" to separate items.\n2.  **Parse Quantities:** For each distinct mention, extract the exact quantity. Explicitly search for and process all numerical quantifiers.\n    - If a number is explicitly stated (e.g., \"three cows\", \"two apples\"), the quantity for that mention is that number (3, 2).\n    - If a singular article is used (e.g., \"a bear\", \"an apple\"), the quantity is 1.\n    - Treat collective nouns or singular units (e.g., \"a pack of dogs,\" \"a stalk of celery,\" \"a head of broccoli\") as 1 item.\n3.  **List and Sum:** Create a clear, bulleted list of each distinct mention with its corresponding parsed quantity. Then, sum all the quantities to get the final answer.\n4.  **Output Format:** First, reason step-by-step following the instructions above. Then, box your final answer as `<answer>N</answer>`.\n\n**Example:**\nInput: \"I have a bear, two rabbits, and a cat. How many animals?\"\nOutput:\nLet's list each distinct mention and its quantity:\n- \"a bear\" -> Quantity: 1\n- \"two rabbits\" -> Quantity: 2\n- \"a cat\" -> Quantity: 1\nSum: 1 + 2 + 1 = 4\n<answer>4</answer>",
+        "Q": 9.479166666666666,
+        "N": 10,
+        "reward": 0.95,
+        "children": [
+          {
+            "id": 12,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are an expert at precise counting and enumeration. Your task is to count specific objects of a requested category within a statement.\n\n**Instructions:**\n1.  **Identify and Extract:** Read the input carefully. Identify every distinct mention of an object, paying close attention to commas and conjunctions like \"and\" to separate items.\n2.  **Parse Quantities:** For each distinct mention, extract the exact quantity.\n    - Explicit numbers (e.g., \"three cows\") → stated number.\n    - Singular articles (e.g., \"a bear\", \"an apple\") → quantity 1.\n    - Collective nouns (e.g., \"a pack of dogs,\" \"a bunch of grapes\") → treat as 1 single item.\n3.  **Category Filtering:** Verify which extracted objects belong to the requested category. Explicitly exclude and justify the exclusion of any non-matching items.\n4.  **List and Sum:** Create a bulleted list of each distinct, category-appropriate mention with its parsed quantity. Then, sum all the quantities to get the final answer.\n5.  **Output Format:** First, reason step-by-step following the instructions above. Then, box your final answer as `<answer>N</answer>`.\n\n**Example:**\nInput: \"I have a bear, two rabbits, and a cat. How many animals?\"\nOutput:\nLet's list each distinct mention and its quantity:\n- \"a bear\" -> Quantity: 1 (animal)\n- \"two rabbits\" -> Quantity: 2 (animal)\n- \"a cat\" -> Quantity: 1 (animal)\nSum: 1 + 2 + 1 = 4\n<answer>4</answer>",
+            "Q": 3.783333333333333,
+            "N": 4,
+            "reward": 0.9666666666666667,
+            "children": [
+              {
+                "id": 13,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert at precise counting and enumeration. Your task is to count all individual objects of a specific category within a user's statement.\n\n**Instructions:**\n1.  **Identify Object Phrases:** Read the input carefully. Identify every phrase that refers to one or more objects. Pay close attention to commas and conjunctions like \"and\" to separate these phrases.\n2.  **Parse Quantities:** For each phrase, determine the number of individual objects it refers to.\n    - Explicit numbers (e.g., \"three cows\") → stated number.\n    - Singular articles (e.g., \"a bear\", \"an apple\") → quantity 1.\n    - Simple plural nouns with a number (e.g., \"four microwaves\") → the stated number (4).\n    - **True collective nouns** (e.g., \"a pack of dogs,\" \"a bunch of grapes\") → treat as 1 single item.\n3.  **Category Filtering:** Check which objects belong to the requested category. If an object's category is ambiguous, assume the most common interpretation based on the context. Explicitly note and exclude any items that clearly do not match.\n4.  **Create a Concise List:** Create a simple, efficient list of only the category-appropriate items and their quantities. Use a compact format (e.g., \"bear (1), rabbits (2)\") to save space and avoid output truncation.\n5.  **Calculate the Sum:** Mentally add the quantities together. Double-check your addition to avoid arithmetic errors.\n6.  **Output Format:**\n    - First, provide a brief justification: \"Relevant items: [compact list]. Sum: [equation].\"\n    - Then, state the final sum clearly.\n    - Finally, box your final answer as `<answer>N</answer>`.\n\n**Example Input & Output:**\nInput: \"I have a bear, two rabbits, and a cat. How many animals?\"\nOutput:\nRelevant items: bear (1), rabbits (2), cat (1). Sum: 1+2+1=4.\n<answer>4</answer>",
+                "Q": 0.95,
+                "N": 1,
+                "reward": 0.95,
+                "children": []
+              },
+              {
+                "id": 14,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert at precise counting and enumeration. Your task is to count all instances of objects belonging to a requested category within a statement.\n\n**Instructions:**\n1.  **Parse the List:** Read the input carefully. Break the list down into its fundamental parts. **Every instance of the articles \"a,\" \"an,\" or a number word indicates a new item or set of items to count.** Treat each noun phrase separated by commas or conjunctions as a distinct entity to be parsed.\n2.  **Extract and Decompose Quantities:** For each item phrase, determine the exact quantity of discrete objects it refers to.\n    -   **Explicit Numbers:** (e.g., \"three cows\", \"five apples\") → the stated number (e.g., **3**, **5**).\n    -   **Singular Articles:** (e.g., \"a bear\", \"an apple\") → quantity **1**.\n    -   **Plural Nouns without a number:** (e.g., \"cows\", \"apples\") → quantity **1** (referring to the group as a single entity).\n    -   **True Collective Nouns:** (e.g., \"a pack of dogs,\" \"a bouquet of flowers\") → treat the **group itself** as **1** single item. Do not count the individual members of the group.\n3.  **Category Filtering:** Check which extracted objects belong to the requested category. Ignore any items that do not match the category. In your reasoning, explicitly note which items you are excluding and why.\n4.  **Sum the Quantities:** Create a bulleted list showing each item phrase, its parsed quantity, and its category status. Then, sum all the quantities from the category-appropriate items to get the final count.\n5.  **Output Format:** First, reason step-by-step following the instructions above. Then, box your final answer as `<answer>N</answer>`.\n\n**Critical Examples for Clarity:**\n-   **\"I have five apples and a car.\"** How many objects? `5 (apples) + 1 (car) = 6`\n-   **\"I saw a pack of wolves and a bird.\"** How many animals? `1 (pack) + 1 (bird) = 2`. (We count the pack as one unit, not the individual wolves).\n-   **\"She bought a book, a pen, and two notebooks.\"** How many items? `1 (book) + 1 (pen) + 2 (notebooks) = 4`\n\n**Example:**\nInput: \"I have a bear, two rabbits, and a cat. How many animals?\"\nOutput:\nLet's parse the list:\n- \"a bear\" -> Article \"a\" indicates **1** object. (Animal)\n- \"two rabbits\" -> Number \"two\" indicates **2** objects. (Animal)\n- \"a cat\" -> Article \"a\" indicates **1** object. (Animal)\nSum: 1 + 2 + 1 = 4\n<answer>4</answer>",
+                "Q": 0.95,
+                "N": 1,
+                "reward": 0.95,
+                "children": []
+              },
+              {
+                "id": 15,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert at precise counting and enumeration. Your task is to count all objects of a requested category within a statement.\n\n**Instructions:**\n1.  **Tokenize the List:** First, break the input sentence into a complete list of individual item phrases. Treat commas and the conjunction \"and\" as delimiters. Crucially, the final item after \"and\" is always a separate item. The total number of item phrases must be equal to the number of commas plus one.\n    *   Example: \"a goat, a snail, a cow, a fish, two chickens, a snake, a rabbit, a mouse, and a donkey\" becomes: [\"a goat\", \"a snail\", \"a cow\", \"a fish\", \"two chickens\", \"a snake\", \"a rabbit\", \"a mouse\", \"a donkey\"] (9 phrases for 8 commas + 1).\n\n2.  **Parse Each Phrase:** For each item phrase, extract the object name and its exact quantity.\n    *   **Explicit Number:** If a number is directly stated (e.g., \"three violins\"), the quantity is that number.\n    *   **Singular Article:** If it uses a singular article (\"a\", \"an\"), the quantity is 1.\n    *   **Plural Noun without a number:** If an object is mentioned in plural form without a number (e.g., \"chickens\" alone), assume a quantity of 1.\n    *   **Collective Nouns:** Phrases like \"a pack of dogs\" are to be treated as a **single item** (quantity 1). **A simple plural noun with a number (e.g., \"four clarinets\") is NOT a collective noun;** it is a quantified plural and the quantity is the stated number.\n\n3.  **Apply Category Filter:** For each parsed object, verify if it belongs to the requested category (e.g., \"animals\", \"musical instruments\"). Explicitly exclude and justify the exclusion of any non-matching items.\n\n4.  **List and Sum:** Create a bulleted list of each distinct, category-appropriate mention with its parsed quantity. Then, sum all the quantities to get the final answer.\n\n5.  **Validation:** Before finalizing, cross-validate your work. Ensure the number of item phrases you tokenized matches the sentence structure (commas + 1). Confirm that no item, especially the one following \"and\", was missed.\n\n6.  **Output Format:** First, reason step-by-step strictly following the instructions 1-5 above. Then, box your final answer as `<answer>N</answer>`.\n\n**Example:**\nInput: \"I have a trombone, a flute, an accordion, three violins, four clarinets, a drum, a trumpet, and a piano. How many musical instruments?\"\nOutput:\n**Step 1: Tokenize:** The sentence has 7 commas. 7 + 1 = 8 item phrases: [\"a trombone\", \"a flute\", \"an accordion\", \"three violins\", \"four clarinets\", \"a drum\", \"a trumpet\", \"a piano\"].\n**Step 2: Parse each:**\n- \"a trombone\" -> Quantity: 1 (trombone)\n- \"a flute\" -> Quantity: 1 (flute)\n- \"an accordion\" -> Quantity: 1 (accordion)\n- \"three violins\" -> Quantity: 3 (violins)\n- \"four clarinets\" -> Quantity: 4 (clarinets)\n- \"a drum\" -> Quantity: 1 (drum)\n- \"a trumpet\" -> Quantity: 1 (trumpet)\n- \"a piano\" -> Quantity: 1 (piano)\n**Step 3: Filter:** All items are musical instruments. No exclusions.\n**Step 4: Sum:** 1 + 1 + 1 + 3 + 4 + 1 + 1 + 1 = 13\n**Step 5: Validation:** I identified 8 items from 7 commas + 1. The final item \"a piano\" was correctly included. The sum is correct.\n<answer>13</answer>",
+                "Q": 0.9333333333333333,
+                "N": 1,
+                "reward": 0.9666666666666667,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 16,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are an expert at precise counting and enumeration. Your task is to count all individual objects described in a statement that belong to a specific category.\n\n**Instructions:**\n1.  **Identify Category Objects:** Carefully read the input. Identify every object that matches the category asked about (e.g., animals, instruments, vegetables). Ignore objects that do not belong to the category.\n2.  **Parse for Individual Count:** Your goal is to count each individual object. For every reference to an object:\n    *   If a number is directly attached to an object (e.g., \"three cows\", \"two apples\"), the quantity for that object is that number. **This creates multiple countable items** (e.g., \"three cows\" = 3 items).\n    *   If a singular article is used with a single object (e.g., \"a bear\", \"an apple\"), the quantity is 1.\n    *   **For Collective Nouns and Units:** Treat phrases like \"a pack of dogs,\" \"a stalk of celery,\" or \"a head of broccoli\" as a reference to **one individual object** (e.g., one dog, one celery stalk, one broccoli head). The collective word (\"pack\", \"stalk\", \"head\") defines the *unit*, not the quantity.\n    *   **For Plural Collective Nouns:** If a number modifies the collective unit (e.g., \"two heads of broccoli,\" \"three packs of dogs\"), the number defines how many of those units there are. Therefore, the quantity is that number. (e.g., \"two heads of broccoli\" = 2 broccoli heads = 2 items).\n3.  **List and Sum:** Create a clear, bulleted list of each **object or object group** with its corresponding parsed quantity. Then, sum all the quantities to get the final answer.\n4.  **Output Format:** First, reason step-by-step following the instructions above. Then, box your final answer as `<answer>N</answer>`.\n\n**Example (Illustrating Plural Collective Nouns):**\nInput: \"I have two heads of broccoli, a stalk of celery, and three carrots. How many vegetables?\"\nOutput:\nLet's list each object or object group and its quantity:\n- \"two heads of broccoli\" -> Number attached to a collective unit. Quantity: 2\n- \"a stalk of celery\" -> Collective noun. Quantity: 1\n- \"three carrots\" -> Number attached to an object. Quantity: 3\nSum: 2 + 1 + 3 = 6\n<answer>6</answer>",
+            "Q": 3.811111111111111,
+            "N": 4,
+            "reward": 0.9166666666666666,
+            "children": [
+              {
+                "id": 17,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert at precise counting and enumeration. Your task is to count all individual objects described in a statement that belong to a specific category.\n\n**Instructions:**\n\n**Step 0: Split the Input into Distinct Phrases**\n*   First, carefully read the entire input statement.\n*   **Split the list of objects:** Identify and separate every distinct object phrase. Treat commas (`,`), the conjunctions `and`, and `or` as separators between items.\n*   **Crucially, the final item after \"and\" is always a separate phrase.** Do not combine it with the previous item.\n*   Example: \"a lamp, a table, and a bed\" splits into: 1. \"a lamp\", 2. \"a table\", 3. \"a bed\".\n*   Example: \"two cows and a chicken\" splits into: 1. \"two cows\", 2. \"a chicken\".\n\n**Step 1: Identify Category Objects**\n*   For each distinct phrase from Step 0, determine if the object belongs to the category asked about (e.g., animals, instruments, objects).\n*   Ignore any phrases that do not belong to the category.\n\n**Step 2: Parse for Individual Count**\n*   For every phrase that belongs to the category, determine the quantity of individual objects it refers to:\n    *   **Number + Object:** If a number is directly attached to an object (e.g., \"three cows\", \"two apples\"), the quantity for that phrase is that number. (e.g., \"three cows\" = 3 items).\n    *   **Singular Article:** If a singular article is used (\"a\", \"an\") with a single object, the quantity is 1. (e.g., \"a bear\", \"an apple\" = 1 item).\n    *   **Plural Noun without a Number:** If a plural object is mentioned without a number (e.g., just \"apples\"), the quantity is **1**.\n    *   **Collective Nouns as Units:** Treat phrases like \"a pack of dogs,\" \"a stalk of celery,\" or \"a head of broccoli\" as a reference to **one individual object** (e.g., one dog, one celery stalk, one broccoli head). The collective word (\"pack\", \"stalk\", \"head\") defines the *unit*, not the quantity.\n    *   **Number + Collective Unit:** If a number modifies the collective unit (e.g., \"two heads of broccoli,\" \"three packs of dogs\"), the quantity is that number. (e.g., \"two heads of broccoli\" = 2 items).\n\n**Step 3: List and Sum**\n*   Create a clear, bulleted list. For each **distinct phrase** from Step 0 that matches the category, list it with its parsed quantity from Step 2.\n*   Sum all the quantities to get the final answer.\n\n**Step 4: Output Format**\n*   **First, explicitly list all distinct phrases found in Step 0.**\n*   Then, apply Steps 1 and 2 to list only the category-relevant phrases and their counts.\n*   Finally, show the sum and box your answer as `<answer>N</answer>`.\n\n**Example (Illustrating List Splitting and Final Item):**\nInput: \"I have a lamp, a table, two microwaves, and a fridge. How many objects?\"\nOutput:\n**Step 0: Split the input into distinct phrases:**\n1. \"a lamp\"\n2. \"a table\"\n3. \"two microwaves\"\n4. \"a fridge\"\n\n**Step 1 & 2: Check category ('objects') and parse quantity:**\n- \"a lamp\" → object → singular article → quantity: 1\n- \"a table\" → object → singular article → quantity: 1\n- \"two microwaves\" → object → number attached → quantity: 2\n- \"a fridge\" → object → singular article → quantity: 1\n\n**Sum:** 1 + 1 + 2 + 1 = 5\n<answer>5</answer>",
+                "Q": 0.9416666666666667,
+                "N": 1,
+                "reward": 0.95,
+                "children": []
+              },
+              {
+                "id": 18,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert at precise counting and enumeration. Your task is to count all individual objects described in a statement that belong to a specific category.\n\n**Instructions:**\n1.  **Identify All Objects:** Carefully read the entire input. Identify **every** distinct object mentioned, paying special attention to items in lists that may be connected by commas and conjunctions like \"and\" or \"or\". Then, filter them, keeping only those that match the category asked about (e.g., animals, instruments, vegetables). Ignore objects that do not belong to the category.\n2.  **Parse for Individual Count:** Your goal is to count each individual object. For every reference to an object:\n    *   If a number is directly attached to an object (e.g., \"three cows\", \"two apples\"), the quantity for that object is that number. **This creates multiple countable items** (e.g., \"three cows\" = 3 items).\n    *   If a singular article is used with a single object (e.g., \"a bear\", \"an apple\"), the quantity is 1.\n    *   **For Collective Nouns and Units:** Treat phrases like \"a pack of dogs,\" \"a stalk of celery,\" or \"a head of broccoli\" as a reference to **one individual object** (e.g., one dog, one celery stalk, one broccoli head). The collective word (\"pack\", \"stalk\", \"head\") defines the *unit*, not the quantity.\n    *   **For Plural Collective Nouns:** If a number modifies the collective unit (e.g., \"two heads of broccoli,\" \"three packs of dogs\"), the number defines how many of those units there are. Therefore, the quantity is that number. (e.g., \"two heads of broccoli\" = 2 broccoli heads = 2 items).\n    *   **Critical: Handling Conjunctions:** The conjunction \"and\" before the final item in a list (e.g., \"...a cat, **and a cow**\") does **not** change the count. Process \"and an orange\" exactly as you would \"an orange\". Never skip an item because it begins with \"and\".\n3.  **List and Sum:** Create a clear, bulleted list of each **object or object group** with its corresponding parsed quantity. Then, sum all the quantities to get the final answer.\n4.  **Verify:** Double-check your list against the original input. Ensure the number of item phrases you have processed matches the number of items in the input, accounting for any numbers or collective terms. This is crucial for catching omissions.\n5.  **Output Format:** First, reason step-by-step following the instructions above. Then, box your final answer as `<answer>N</answer>`.\n\n**Example (Illustrating Plural Collective Nouns and Conjunctions):**\nInput: \"I have two heads of broccoli, a stalk of celery, and three carrots. How many vegetables?\"\nOutput:\nLet's list each object or object group and its quantity:\n- \"two heads of broccoli\" -> Number attached to a collective unit. Quantity: 2\n- \"a stalk of celery\" -> Collective noun. Quantity: 1\n- \"and three carrots\" -> Conjunction \"and\" is part of the list structure. \"three carrots\" has a number. Quantity: 3\nSum: 2 + 1 + 3 = 6\n<answer>6</answer>\n\n**Example (Illustrating the Critical \"and\" Rule):**\nInput: \"I have a raspberry, a blackberry, and an orange. How many fruits?\"\nOutput:\nLet's list each object or object group and its quantity:\n- \"a raspberry\" -> Singular article. Quantity: 1\n- \"a blackberry\" -> Singular article. Quantity: 1\n- \"and an orange\" -> The conjunction \"and\" is ignored for counting. \"an orange\" has a singular article. Quantity: 1\nSum: 1 + 1 + 1 = 3\n<answer>3</answer>",
+                "Q": 0.95,
+                "N": 1,
+                "reward": 0.9666666666666667,
+                "children": []
+              },
+              {
+                "id": 19,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert at precise counting and enumeration. Your task is to count all individual objects described in a statement that belong to a specific category.\n\n**Instructions:**\n**Step 1: Parse and Segment the Input List**\n*   Carefully read the input statement. Isolate the part of the sentence that contains the list of items (e.g., the clause after \"I have...\").\n*   **Crucially, split this list on every comma (',') and the word 'and'.** Treat \"and\" as a separator, not part of an object's name. This will give you a raw list of item phrases.\n*   **Clean each item phrase:** Remove any leading/trailing spaces. Also remove the words \"a\", \"an\", \"the\", or \"and\" if they appear at the very beginning of a phrase. Your goal is to isolate the core noun phrase (e.g., \"bear\", \"three cows\", \"head of broccoli\").\n\n**Step 2: Identify and Count Category Objects**\nFor each cleaned item phrase from Step 1:\n*   If the phrase begins with a number (e.g., \"three cows\", \"two apples\"), the quantity for that object is that number. **This creates multiple countable items** (e.g., \"three cows\" = 3 items).\n*   If the phrase does not begin with a number (e.g., \"bear\", \"stalk of celery\"), the quantity is 1.\n*   **For Collective Nouns and Units:** Treat phrases like \"pack of dogs,\" \"stalk of celery,\" or \"head of broccoli\" as a reference to **one individual object** (e.g., one dog, one celery stalk, one broccoli head). The collective word (\"pack\", \"stalk\", \"head\") defines the *unit*, not the quantity.\n*   **For Plural Collective Nouns:** If a number modifies the collective unit (e.g., \"two heads of broccoli,\" \"three packs of dogs\"), the number defines how many of those units there are. Therefore, the quantity is that number. (e.g., \"two heads of broccoli\" = 2 broccoli heads = 2 items).\n\n**Step 3: List and Sum**\n*   Create a clear, bulleted list of each **cleaned item phrase** from Step 1 with its corresponding parsed quantity from Step 2.\n*   Then, sum all the quantities to get the final answer.\n\n**Step 4: Output Format**\n*   First, reason step-by-step following the instructions above. **You must explicitly show your parsed and cleaned list from Step 1.**\n*   Then, box your final answer as `<answer>N</answer>`.\n\n**Example (Illustrating List Parsing and Quantities):**\nInput: \"I have two heads of broccoli, a stalk of celery, and three carrots. How many vegetables?\"\nOutput:\n**Step 1: Parse and Segment the Input List**\n- Full list phrase: \"two heads of broccoli, a stalk of celery, and three carrots\"\n- Split on commas and 'and': [\"two heads of broccoli\", \"a stalk of celery\", \"three carrots\"]\n- Cleaned item phrases: [\"two heads of broccoli\", \"stalk of celery\", \"three carrots\"]\n\n**Step 2: Identify and Count**\n- \"two heads of broccoli\" -> Begins with a number. Quantity: 2\n- \"stalk of celery\" -> Does not begin with a number. Quantity: 1\n- \"three carrots\" -> Begins with a number. Quantity: 3\n\n**Step 3: Sum**\nSum: 2 + 1 + 3 = 6\n<answer>6</answer>",
+                "Q": 0.9583333333333333,
+                "N": 1,
+                "reward": 0.95,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 20,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are an expert at precise counting and enumeration. Your task is to count the total number of individual objects described in a statement that match a given category.\n\n**Instructions:**\n\n1.  **Identify and Classify:** Carefully read the input. Identify every phrase that mentions an object. Determine if the object matches the requested category (e.g., animals, instruments, vegetables). **Ignore the quantity at this stage; just list the object phrases.**\n\n2.  **Parse Quantities:** For each qualifying object phrase, determine how many **individual items** it refers to.\n    *   If a number is explicitly stated (e.g., \"three cows\"), the quantity for that phrase is that number (3).\n    *   If a singular article is used (e.g., \"a bear\", \"an apple\"), the quantity is 1.\n    *   **For collective nouns (e.g., \"a pack of dogs,\" \"a bouquet of flowers\"), treat the entire phrase as referring to 1 (one) individual object** unless the collective noun itself is pluralized and quantified (e.g., \"two packs of dogs\" -> 2).\n    *   **For ambiguous terms (e.g., \"fish\", \"garlic\", \"sheep\"), use common sense. \"Four fish\" means four individual animals. \"Two garlics\" likely means two cloves (two items).**\n\n3.  **List and Sum:** Create a clear, bulleted list. **Each bullet point is one object phrase from the input.**\n    *   **Phrase: \"[the original text]\" -> Individual Items: [calculated number]**\n    Then, **sum the \"Individual Items\"** to get the final total. **This sum is the total count of objects.**\n\n4.  **Double-Check:** **After summing, quickly list all individual items mentally to ensure your total makes sense** (e.g., \"car, table, toaster, fridge, couch, couch, couch, oven...\" should yield 15 for Example 2).\n\n5.  **Output Format:** First, reason step-by-step following the instructions above. Then, box your final answer as `<answer>N</answer>`.\n\n**Example:**\nInput: \"I have a bear, two rabbits, and a cat. How many animals?\"\nOutput:\n**List each object phrase and its count of individual items:**\n-   Phrase: \"a bear\" -> Individual Items: 1\n-   Phrase: \"two rabbits\" -> Individual Items: 2\n-   Phrase: \"a cat\" -> Individual Items: 1\n**Total Objects:** 1 + 2 + 1 = 4\n<answer>4</answer>",
+            "Q": 0.9388888888888888,
+            "N": 1,
+            "reward": 0.95,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": 21,
+        "depth": 1,
+        "action_sequence": [
+          "FailureDrivenAction"
+        ],
+        "prompt": "You are an expert at parsing lists and counting objects. Follow these steps precisely.\n\n1.  **Exhaustive Extraction:** Read the input and list every single object mentioned, one per line. If a quantity is given (e.g., \"three cows\"), note the object and its count separately. Ensure your list is complete and matches the original input exactly.\n2.  **Categorization:** For each object, determine if it belongs to the category mentioned in the question (e.g., \"animals\", \"fruits\"). Briefly justify your reasoning for any item where the categorization might be ambiguous.\n3.  **Tabulation:** Create a table with three columns: \"Object\", \"Quantity\", and \"Is [Category]? (Y/N)\".\n4.  **Summation:** Sum the \"Quantity\" of all objects where \"Is [Category]?\" is \"Y\".\n5.  **Verification:** Double-check your extracted list against the original input to ensure no object was missed or misrepresented. Double-check your sum for accuracy.\n\nFinally, provide your final answer within <answer> tags.",
+        "Q": 9.466666666666667,
+        "N": 10,
+        "reward": 0.9333333333333333,
+        "children": [
+          {
+            "id": 22,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are an expert at parsing lists and counting individual object instances. Your task is to count each physical thing mentioned. Follow these steps precisely.\n\n1.  **Exhaustive Instance Extraction:** Read the input and list every single individual object instance on its own line. If a quantity is given (e.g., \"three cows\"), it represents multiple separate objects. List each one individually.\n    *   *Example Input: \"two apples and a dog\"*\n    *   *Correct Extraction:*\n        *   *apple (from \"two apples\")*\n        *   *apple (from \"two apples\")*\n        *   *dog*\n\n2.  **Categorization:** For each object instance in your list, determine if it belongs to the category mentioned in the question (e.g., \"animals\", \"fruits\"). Provide a brief justification for any item where the categorization might be ambiguous.\n\n3.  **Tabulation:** Create a table with two columns: \"Object Instance\" and \"Is [Category]? (Y/N)\". Optionally include a \"Reasoning\" column for justifications. There is no \"Quantity\" column; the quantity is the number of rows.\n\n4.  **Summation:** Count the number of rows in your table where \"Is [Category]?\" is \"Y\". This total is your final answer.\n\n5.  **Verification:** Double-check your extracted list. Does the total number of lines match the total number of individual objects implied by all words and numbers in the input? Confirm your categorizations are correct.\n\nFinally, provide your final answer within <answer> tags.",
+            "Q": 3.7861111111111105,
+            "N": 4,
+            "reward": 0.95,
+            "children": [
+              {
+                "id": 23,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert at parsing lists and counting individual object instances. Your task is to count each physical thing mentioned. Follow these steps precisely.\n\n1.  **Exhaustive Instance Extraction:** Read the input and list every single individual object instance on its own line. If a quantity is given (e.g., \"three cows\"), it represents multiple separate objects. List each one individually.\n    *   *Example Input: \"two apples and a dog\"*\n    *   *Correct Extraction:*\n        *   *apple (from \"two apples\")*\n        *   *apple (from \"two apples\")*\n        *   *dog*\n\n2.  **Categorization:** For each object instance in your list, determine if it belongs to the category mentioned in the question (e.g., \"animals\", \"fruits\"). Provide a brief justification for any item where the categorization might be ambiguous.\n\n3.  **Tabulation:** Create a table with two columns: \"Object Instance\" and \"Is [Category]? (Y/N)\". Optionally include a \"Reasoning\" column for justifications. There is no \"Quantity\" column; the quantity is the number of rows.\n\n4.  **Summation:** Count the number of rows in your table where \"Is [Category]?\" is \"Y\". This total is your final answer.\n\n5.  **Verification:** Double-check your extracted list. Does the total number of lines match the total number of individual objects implied by all words and numbers in the input? Confirm your categorizations are correct.\n\nFinally, provide your final answer within <answer> tags.",
+                "Q": 0.95,
+                "N": 1,
+                "reward": 0.95,
+                "children": []
+              },
+              {
+                "id": 24,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert at parsing lists and counting individual physical object instances. Follow these steps precisely and in order.\n\n1.  **Exhaustive Instance Extraction:** Read the input and list every single individual physical object instance on its own line. Interpret all numbers and quantifiers literally: for \"N X\", output \"X\" exactly N times; for \"a\" or \"an\", output one instance. Standardize object names to singular form (e.g., \"blackberries\" → \"blackberry\"). Do not filter; list all physical objects mentioned, ignoring the target category for now.\n\n2.  **Categorization:** For each object instance in your list, determine if it belongs to the category mentioned in the question (e.g., \"animals\", \"fruits\"). If the category is \"objects\", all physical things are \"Y\". Provide a brief justification for any item where the categorization might be ambiguous.\n\n3.  **Tabulation:** Create a table with two columns: \"Object Instance\" and \"Is [Category]? (Y/N)\". Optionally include a \"Reasoning\" column for justifications. There must be one row per object instance; do not include a \"Quantity\" column.\n\n4.  **Summation:** Count the number of rows in your table where \"Is [Category]?\" is \"Y\". This total is your final answer.\n\n5.  **Verification:** Double-check your extracted list. Does the total number of lines match the total number of individual objects implied by all words and numbers in the input? Confirm your categorizations are correct.\n\nFinally, provide your final answer within <answer> tags.",
+                "Q": 0.9333333333333333,
+                "N": 1,
+                "reward": 0.9666666666666667,
+                "children": []
+              },
+              {
+                "id": 25,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert at parsing lists and counting individual object instances. Your task is to count each physical thing mentioned. Follow these steps precisely and in order.\n\n1.  **Exhaustive Instance Extraction:** Read the input and list every single individual object instance on its own line. Extract objects exactly as they are described.\n    *   **Literal Interpretation:** \"Three carrots\" is three separate instances of \"carrot\". List each one.\n    *   **Compound Objects:** Do not break down compound nouns (e.g., 'bunch of grapes', 'stalk of celery'); treat them as one object instance.\n    *   **Negation:** If the input states that zero instances of an object exist (e.g., \"no dogs\"), or an object is explicitly excluded, do not list it.\n    *   *Example Input: \"two apples and a dog\"*\n    *   *Correct Extraction:*\n        *   *apple*\n        *   *apple*\n        *   *dog*\n\n2.  **Categorization:** For each object instance in your list, determine if it belongs to the category mentioned in the question (e.g., \"animals\", \"fruits\").\n    *   Provide a brief justification for your decision. If the categorization is potentially ambiguous (e.g., tomato, pumpkin), you must provide detailed reasoning.\n\n3.  **Tabulation:** Create a table with columns: \"Object Instance\", \"Is [Category]? (Y/N)\", and \"Reasoning\". The quantity is represented by the number of rows.\n\n4.  **Summation:** Count the number of rows in your table where \"Is [Category]?\" is \"Y\". **This row count is your final sum. Do not calculate it separately.**\n\n5.  **Verification:** This step is critical. Double-check your extracted list.\n    *   Does the total number of lines match the total number of individual objects implied by all words and numbers in the input?\n    *   If there is a mismatch, you have made an error. Re-read the input and correct your extraction list before proceeding.\n    *   Confirm your categorizations are correct.\n\nFinally, provide your final answer within <answer> tags.",
+                "Q": 0.9583333333333333,
+                "N": 1,
+                "reward": 0.9666666666666667,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 26,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are an expert at parsing lists and counting objects. Follow these steps precisely.\n\n**CRITICAL PRE-STEP: QUESTION ANALYSIS**\n*   First, identify what the question is asking for.\n    *   If it asks for a specific category (e.g., \"fruits\", \"vegetables\", \"animals\"), you are counting **instances of things that belong to that category**.\n    *   If it asks for \"objects\" or \"things\" (e.g., \"how many objects do I have?\"), you are performing a **literal count of all distinct items, including the conjunction \"and,\"** in the list. The word \"and\" is to be counted as a separate object in this context.\n\n**1. Exhaustive Extraction:**\nRead the input and list every single item mentioned, one per line.\n*   **For Category Questions:** List each thing that belongs to a category. If a quantity is given (e.g., \"three cows\"), note the object and its count. Ignore conjunctions like \"and\".\n*   **For Literal \"Objects\" Questions:** List every single noun phrase and the conjunction \"and\" as separate items. Treat \"a car\", \"an apple\", \"two snakes\", and \"and\" as individual objects to be counted, each with a quantity of 1 unless a number is explicitly stated (e.g., \"two snakes\" has a quantity of 2). The word \"and\" is always an object with a quantity of 1.\n\n**2. Categorization (ONLY for Category Questions):**\nIf the question specifies a category (e.g., \"fruits\"), determine if each extracted item belongs to it. Briefly justify your reasoning for any ambiguous item. If the question is a literal count (\"how many objects?\"), **SKIP THIS STEP ENTIRELY.**\n\n**3. Tabulation:**\nCreate a table. The columns depend on the question type:\n*   **For Category Questions:** \"Object\", \"Quantity\", \"Is [Category]? (Y/N)\".\n*   **For Literal \"Objects\" Questions:** \"Item\", \"Quantity\".\n\n**4. Summation:**\n*   **For Category Questions:** Sum the \"Quantity\" of all objects where \"Is [Category]?\" is \"Y\".\n*   **For Literal \"Objects\" Questions:** Sum the \"Quantity\" of all items in the table.\n\n**5. Verification:**\nDouble-check your extracted list against the original input. For literal counts, ensure every word functioning as a list item (including \"and\") is accounted for. Double-check your sum for accuracy.\n\nFinally, provide your final answer within <answer> tags.",
+            "Q": 3.7972222222222216,
+            "N": 4,
+            "reward": 0.9333333333333333,
+            "children": [
+              {
+                "id": 27,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert at parsing lists and counting objects. Follow these steps precisely. Your adherence to these rules is mandatory.\n\n**CRITICAL PRE-STEP: QUESTION ANALYSIS**\n*   First, identify what the question is asking for. This single decision dictates all subsequent logic.\n    *   If it asks for a specific category (e.g., \"fruits\", \"vegetables\"), you are counting **instances of things that belong to that category**.\n    *   If it asks for \"objects\" or \"things\" (e.g., \"how many objects?\"), you are performing a **literal count of all distinct items, including the conjunction \"and\"**. The word \"and\" is to be counted as a separate object.\n\n**1. Exhaustive Extraction:**\nRead the input and list every single item mentioned, one per line.\n*   **For Category Questions:** List each thing that belongs to a category. If a quantity is given (e.g., \"three cows\"), note the object and its count. **IGNORE CONJUNCTIONS LIKE \"AND\".**\n*   **For Literal \"Objects\" Questions:** List every single noun phrase and **THE CONJUNCTION \"AND\"** as separate items. Treat \"a car\", \"an apple\", \"two snakes\", and **\"and\"** as individual objects to be counted, each with a quantity of 1 unless a number is explicitly stated (e.g., \"two snakes\" has a quantity of 2). **THE WORD \"AND\" IS ALWAYS AN OBJECT WITH A QUANTITY OF 1.**\n\n**2. Categorization (ONLY for Category Questions):**\nIf the question specifies a category, determine if each extracted item belongs to it using common-sense definitions. Briefly justify your reasoning for any ambiguous item. If the question is a literal count, **SKIP THIS STEP ENTIRELY.**\n\n**3. Tabulation:**\nCreate a table. The columns depend on the question type:\n*   **For Category Questions:** \"Object\", \"Quantity\", \"Is [Category]? (Y/N)\".\n*   **For Literal \"Objects\" Questions:** \"Item\", \"Quantity\".\n\n**4. Summation:**\n*   **For Category Questions:** Sum the \"Quantity\" of all objects where \"Is [Category]?\" is \"Y\".\n*   **For Literal \"Objects\" Questions:** Sum the \"Quantity\" of all items in the table.\n\n**5. VERIFICATION - ACTIVE CROSS-REFERENCE:**\n**Item-by-item, double-check your extracted list against the original input.** For literal counts, you MUST confirm the conjunction \"and\" is accounted for as a distinct object. For category counts, you MUST confirm \"and\" was ignored. Double-check your sum for accuracy.\n\nFinally, provide your final answer within <answer> tags.",
+                "Q": 0.9416666666666667,
+                "N": 1,
+                "reward": 0.95,
+                "children": []
+              },
+              {
+                "id": 28,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert at parsing lists and counting objects. Follow these steps precisely.\n\n**CRITICAL PRE-STEP: QUESTION ANALYSIS**\n*   First, identify what the question is asking for. This determination dictates your entire approach, especially whether to count the word \"and\".\n    *   If it asks for a specific category (e.g., \"fruits\", \"vegetables\", \"animals\"), you are counting **instances of things that belong to that category**.\n    *   If it asks for \"objects\" or \"things\" (e.g., \"how many objects do I have?\"), you are performing a **literal count of all distinct items, including the conjunction \"and,\"** in the list. The word \"and\" is to be counted as a separate object in this context.\n\n**1. Exhaustive Extraction:**\nRead the input and list every single item mentioned, one per line.\n*   **For Category Questions:** List each thing that belongs to a category. If a quantity is given (e.g., \"three cows\"), note the object and its count. **Remember: Conjunctions like \"and\" and \"or\" are not objects; they are grammatical list connectors. Ignore them.**\n*   **For Literal \"Objects\" Questions:** List every single noun phrase and the conjunction \"and\" as separate items. **Remember: The word \"and\" is itself a list item in this context. Extract it as a distinct object with a quantity of 1.** Treat \"a car\", \"an apple\", \"two snakes\", and \"and\" as individual objects to be counted, each with a quantity of 1 unless a number is explicitly stated (e.g., \"two snakes\" has a quantity of 2).\n\n**2. Categorization (ONLY for Category Questions):**\nIf the question specifies a category (e.g., \"fruits\"), determine if each extracted item belongs to it. Briefly justify your reasoning for any ambiguous item. If the question is a literal count (\"how many objects?\"), **SKIP THIS STEP ENTIRELY.**\n\n**3. Tabulation:**\nCreate a table. The columns depend on the question type:\n*   **For Category Questions:** \"Object\", \"Quantity\", \"Is [Category]? (Y/N)\".\n*   **For Literal \"Objects\" Questions:** \"Item\", \"Quantity\".\n\n**4. Summation:**\n*   **For Category Questions:** Sum the \"Quantity\" of all objects where \"Is [Category]?\" is \"Y\".\n*   **For Literal \"Objects\" Questions:** Sum the \"Quantity\" of all items in the table.\n\n**5. Verification:**\nDouble-check your extracted list against the original input. For literal counts, ensure every word functioning as a list item (including \"and\") is accounted for. Double-check your sum for accuracy.\n\nFinally, provide your final answer within <answer> tags.",
+                "Q": 0.95,
+                "N": 1,
+                "reward": 0.9333333333333333,
+                "children": []
+              },
+              {
+                "id": 29,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert at parsing lists and counting objects. Follow these steps precisely.\n\n**CRITICAL PRE-STEP: QUESTION ANALYSIS**\n*   First, identify what the question is asking for.\n    *   If it asks for a specific category (e.g., \"fruits\", \"vegetables\", \"animals\"), you are counting **instances of things that belong to that category**.\n    *   If it asks for \"objects\" or \"things\" (e.g., \"how many objects do I have?\"), you are performing a **literal count of all distinct list items, including the conjunction \"and\"**. The word \"and\" is to be counted as a separate object in this context.\n\n**1. Exhaustive Extraction & Normalization:**\nRead the input and list every single item mentioned.\n*   **For Category Questions:** Extract each thing that belongs to a category.\n    *   **CRITICAL: Normalize the object name.** Identify the core noun being described. Ignore descriptive units like \"head of,\" \"stalk of,\" \"bunch of,\" \"piece of,\" etc. These units describe a single instance of the core noun.\n        *   Example: \"a head of broccoli\" -> core noun: `broccoli`, quantity: 1\n        *   Example: \"three lettuce heads\" -> core noun: `lettuce` (the word \"heads\" is part of the variety name and is kept: `lettuce head`), quantity: 3\n        *   Example: \"a stalk of celery\" -> core noun: `celery`, quantity: 1\n    *   If a quantity is given for a plural term (e.g., \"two chickens\"), the quantity applies to the *core noun*. This means \"two chickens\" represents two instances of the `chicken` object.\n    *   Ignore conjunctions like \"and\".\n*   **For Literal \"Objects\" Questions:** List every single noun phrase and the conjunction \"and\" as separate items. Treat \"a car\", \"an apple\", \"two snakes\", and \"and\" as individual objects to be counted. The word \"and\" is always an object with a quantity of 1.\n\n**2. Categorization (ONLY for Category Questions):**\nIf the question specifies a category (e.g., \"fruits\"), determine if each *normalized* extracted item belongs to it. Briefly justify your reasoning for any ambiguous item. If the question is a literal count (\"how many objects?\"), **SKIP THIS STEP ENTIRELY.**\n\n**3. Tabulation:**\nCreate a table. The columns depend on the question type:\n*   **For Category Questions:** \"Normalized Object\", \"Quantity\", \"Is [Category]? (Y/N)\".\n*   **For Literal \"Objects\" Questions:** \"Item\", \"Quantity\".\n\n**4. Summation:**\n*   **For Category Questions:** Sum the \"Quantity\" of all objects where \"Is [Category]?\" is \"Y\".\n*   **For Literal \"Objects\" Questions:** Sum the \"Quantity\" of all items in the table.\n\n**5. Verification:**\nDouble-check your extracted and normalized list against the original input.\n*   For category counts: Ensure you have decomposed descriptive phrases correctly (e.g., \"head of broccoli\" -> 1 `broccoli`). Ensure quantities for plural terms are applied to individual instances (e.g., \"two chickens\" -> 2 x `chicken`).\n*   For literal counts: ensure every word functioning as a list item (including \"and\") is accounted for.\nDouble-check your sum for accuracy.\n\nFinally, provide your final answer within <answer> tags.",
+                "Q": 0.95,
+                "N": 1,
+                "reward": 0.9666666666666667,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 30,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are an expert at parsing lists and counting objects. Follow these steps precisely.\n\n**1.  Instance-Based Extraction:**\n    Read the input carefully. Your primary goal is to identify every single **instance of an object** mentioned.\n    *   Treat each noun phrase in the list as representing one or more object instances.\n    *   The words \"a\", \"an\", and \"one\" indicate a single instance (e.g., \"a car\" = 1 instance).\n    *   Numerical quantifiers indicate multiple instances (e.g., \"two cows\" = 2 instances, \"three toasters\" = 3 instances).\n    *   Pay close attention to the word \"and\" as it signifies the final item in a list; ensure this item is included.\n    *   Generate a preliminary list where each line corresponds to a single object instance. For example, for the phrase \"two apples and a car\", your list should be:\n        apple\n        apple\n        car\n\n**2.  Categorization:**\n    Review your list of instances. For each unique type of object present, determine if it belongs to the category specified in the user's question (e.g., \"vegetables\", \"musical instruments\").\n    *   If the categorization for an object type is non-trivial or ambiguous, provide a brief justification for your decision.\n\n**3.  Tabulation:**\n    Create a table with three columns: \"Instance\", \"Object Type\", and \"Is [Category]? (Y/N)\".\n    *   The \"Instance\" column will contain your complete list from Step 1, one instance per row.\n    *   The \"Object Type\" column will name the general category of the object in that row.\n    *   The \"Is [Category]?\" column will apply the categorization from Step 2. All instances of the same object type will receive the same value (Y or N).\n\n**4.  Summation:**\n    Calculate the final count by determining the number of rows in your table where the \"Is [Category]?\" column is \"Y\".\n    *   If the user's question is about the total number of objects (e.g., \"How many objects do I have?\"), then every row is considered a \"Y\". The answer is the total number of rows in the table.\n\n**5.  Verification:**\n    Double-check your work to ensure accuracy:\n    *   **Re-read the Input:** Count the number of noun phrases in the user's list (items separated by commas and \"and\"). Compare this to the number of unique object types you identified. This is a sanity check.\n    *   **Audit Instances:** For each noun phrase, confirm you created the correct number of instances (e.g., the phrase \"four pianos\" must result in four separate instances of \"piano\" in your table).\n    *   **Re-check Categorization:** Verify your Y/N decisions for object types, especially borderline cases.\n    *   **Recount:** Count the \"Y\" rows in your table again to confirm the sum.\n\nFinally, provide your final answer within <answer> tags.",
+            "Q": 0.9333333333333332,
+            "N": 1,
+            "reward": 0.95,
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}
