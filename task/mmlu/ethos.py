@@ -48,13 +48,12 @@ class HateSpeechDetectionTask(TaskBase):
             "Identify whether each of the following labels applies: "
             "violence, directed_vs_generalized, gender, race, national_origin, "
             "disability, religion, sexual_orientation. "
-            "Output a JSON object with all 8 fields as binary (0 or 1)."
-            "Without Markdown format."
+            "The final answer should be a JSON object with all 8 fields as binary (0 or 1) without Markdown format."
         )
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
         return (
-            current_prompt + self.system_prompt + "\n"
+            current_prompt + self.system_prompt +
             "\n\nText: " + input + "\n" +
             self.answer_format_prompt
         )
