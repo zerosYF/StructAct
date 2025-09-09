@@ -20,6 +20,8 @@ from task.mmlu.mmlu_engineering import EngineeringMCQTask
 from task.mmlu.med_qa import MedicalExamTask
 from task.mmlu.case_hold import LegalHoldingTask
 from task.mmlu.arc import PhysicsMCQTask
+from task.bbeh.causal_understanding import CausalUnderstandingTask 
+from task.bbeh.geometric_shapes import GeometricShapesTask as BGeometricShapesTask
 
 from search.config import SearchConfig
 from search.evaluator import PromptEvaluator
@@ -39,6 +41,8 @@ TASK_REGISTRY = {
     "MedicalExamTask": MedicalExamTask,
     "LegalHoldingTask": LegalHoldingTask,
     "PhysicsMCQTask": PhysicsMCQTask,
+    "CausalUnderstandingTask": CausalUnderstandingTask,
+    "BGeometricShapesTask": BGeometricShapesTask,
 }
 
 
