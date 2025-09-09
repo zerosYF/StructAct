@@ -17,14 +17,13 @@ from logger import logger
 import os
 import json
 
-class MCTSearchController(SearchController):
+class DualSearchController(SearchController):
     def __init__(self, 
                  evaluator: PromptEvaluator, 
                  config: SearchConfig, 
                  task: TaskBase):
         super().__init__(evaluator, config, task)
         self.actions: Set[OptimizeAction] = define_full_actions(task)
-        self.pool: DynamicSamplePool = DynamicSamplePool(max_size=1000, low=0.5, high=0.9)
 
     def search(self):
         init_prompt = self.task.origin_prompt
@@ -34,7 +33,11 @@ class MCTSearchController(SearchController):
         return "", optimized_prompt
     
     def _mcts_workflow(self, init_prompt: str):
-        self.pool.initialize(self.task.get_train_mcts(), self.evaluator, init_prompt)
+        if self.task.config.use_pool:
+            self.pool: DynamicSamplePool = DynamicSamplePool(max_size=1000, low=0.5, high=0.9)
+            self.pool.initialize(self.task.get_train_mcts(), self.evaluator, init_prompt)
+        else:
+            self.pool = None
         root_node = PromptNode(
                 action_set=self.actions,
                 action_seq=[],

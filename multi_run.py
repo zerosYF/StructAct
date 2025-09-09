@@ -20,7 +20,7 @@ from task.mmlu.mmlu_engineering import EngineeringMCQTask
 from task.mmlu.med_qa import MedicalExamTask
 from task.mmlu.case_hold import LegalHoldingTask
 
-from search.mct_search import MCTSearchController
+from search.dual_search import DualSearchController
 from search.beam_search import BeamSearchController
 from search.bline_search import PromptAgentController
 from search.config import SearchConfig
@@ -47,7 +47,7 @@ TASK_REGISTRY = {
 
 CONTROLLER_REGISTRY = {
     "PromptAgentController": PromptAgentController,
-    "MCTSearchController": MCTSearchController,
+    "DualSearchController": DualSearchController,
     "BeamSearchController": BeamSearchController,
 }
 
