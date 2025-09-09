@@ -16,7 +16,6 @@ class CausalJudgementTask(TaskBase):
         
         self.origin_prompt = data.get("description", "")
         self.name = data.get("name", "unknown_task")
-        self.system_prompt = "Answer the question based on the provided context."
 
         all_examples = []
         for ex in data["examples"]:
