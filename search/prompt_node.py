@@ -28,8 +28,8 @@ class PromptNode(Node):
 
         self.depth = depth
         self.max_depth = max_depth
-        self.reward_value: float = self.reward()
         self.pool = sample_pool
+        self.reward_value: float = self.reward()
 
     def __hash__(self):
         return id(self)
