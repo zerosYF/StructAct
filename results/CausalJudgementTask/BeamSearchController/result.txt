@@ -3,31 +3,86 @@
 
 
 ✅ Best Prompt:
-Answer questions about causal attribution by applying a structured causal framework. First, identify the key events, actions, norms, and outcomes. Then, analyze causation using these principles:
+Answer questions about causal attribution by carefully analyzing the scenario using the following framework. Pay close attention to the specific type of question being asked (e.g., "result cause", "intentionality") and apply the appropriate reasoning principles.
 
-1.  **Counterfactual Necessity:** Would the outcome have occurred *if this specific event had not happened*? If no, the event is a necessary factor.
-2.  **Causal Sufficiency:** Was the event, by itself, enough to cause the outcome given the scenario's rules? If yes, it is a sufficient cause.
-3.  **Normative Breach:** Did the event violate an explicit rule or norm designed to prevent the outcome? If yes, this strongly indicates it is the primary cause.
-4.  **Normality & Deviance:** Compare the event in question to other necessary factors. Was it statistically unlikely, unexpected, or a deviation from the default course of events? Deviant events are typically weighted more heavily as the cause.
-5.  **Overdetermination/Preemption:** If multiple events were each sufficient to cause the outcome, then each one that actually occurred is considered a cause. The outcome's dependence on another sufficient cause does not negate this.
+**Reasoning Framework:**
 
-**Synthesis Procedure: Follow these steps in order.**
+1.  **For questions about whether an action/event *caused* an outcome:**
+    *   **First, identify the causal mechanism:** State the explicit rule that governs the outcome.
+    *   **Apply the counterfactual test:** Would the outcome have occurred *in the same way* if the specific action had *not* happened? If no, it is a cause.
+    *   **If the counterfactual test suggests it is *not* a cause**, consider **actual causation**: Was the action part of the actual set of events that brought about the outcome? (Especially in cases of overdetermination with multiple *sufficient* causes that could each produce the outcome *on their own*).
+    *   **Consider normality and deviance:** An action that violates a norm, rule, or standard expectation is often attributed more causal power than a normal, expected action. Use this to reinforce a conclusion from the counterfactual test or to break a tie in ambiguous cases.
+        *   **CRITICAL: Distinguish between types of deviance:**
+            *   **Mechanical Deviance:** An action that breaks the standard operation of a system (e.g., logging in early and causing a software error). This is a very strong indicator for primary causation.
+            *   **Social/Role Deviance:** An action that violates a responsibility or rule (e.g., an employee not doing someone else's job). This is a weaker indicator. **Do not let social deviance override a clear counterfactual result where an omission was mechanically necessary.**
+        *   **Agent Knowledge:** If an agent was unaware of a rule (and thus their action was subjectively normal), this significantly reduces the tendency to attribute causation to them, even if their action was objectively deviant and mechanically causal.
+    *   **Determine the primary cause (if necessary):** If the counterfactual test identifies multiple necessary causes, determine which is the most salient. The primary cause is often:
+        *   The one that is **abnormal** or **deviant** (prioritizing mechanical over social deviance).
+        *   The one that required **agency** or **skill** (e.g., a rare dice roll) vs. chance (e.g., a coin flip).
+        *   The one that occurred **first** in the causal chain.
+        *   Use this to answer questions like "did X cause it?" when X is one of several causes.
+    *   **For omissions:** The failure to act can be a cause if the agent had both the *ability* and the *opportunity* to act in a way that would have prevented the outcome. However, the primary cause will often be the initial deviant event that created the situation requiring intervention.
 
-*   **Step 1: Check for Sufficient Causes.** If the event in question was sufficient (Principle 2) and occurred, it is a cause. Output "Yes". This applies even in overdetermined cases (Principle 5).
-*   **Step 2: Check for Normative Breach.** If the event violated a rule or norm (Principle 3), it is the cause. Output "Yes".
-*   **Step 3: Check Necessity and Deviance.** If the event was necessary (Principle 1) but not sufficient:
-    *   Identify if it was the most **deviant** or **unlikely** factor compared to other necessary conditions (Principle 4).
-    *   If the question is about the deviant event, output "Yes". If it is about a normal/expected event, output "No".
-*   **Step 4: Final Default.** If all necessary events are equally normal and no norms are broken, the event is a cause. Output "Yes".
+2.  **For questions about whether an action was *intentional*:**
+    *   **First, determine if the outcome was a *means* to the agent's goal or a *side effect*.** If it was a means (necessary for the goal), it is intentional. If it was a side effect, proceed.
+    *   For a *foreseen side effect*, apply the **Knobe Effect** with precision:
+        *   **Key Condition:** A harmful side effect is judged as intentional primarily when the agent has a *positive, accepting attitude* toward the negative outcome itself (e.g., "I need to harm X to achieve Y").
+        *   **Indifference vs. Acceptance:** Mere indifference ("I don't care if X happens") is weaker than active acceptance ("I will make X happen"). The former often leads to a judgment of "unintentional"; the latter, "intentional."
+        *   **Certainty Matters:** The more certain the foreseen outcome, the stronger the case for intentionality. A "possible" outcome is less likely to be intentional than a "certain" one.
 
-Synthesize your analysis strictly based on this procedure. Output your final answer as "Yes" or "No".
+**Key Decision Rules:**
+*   A clear "no" on the counterfactual test is a strong indicator of causation.
+*   Overdetermination only applies if multiple *sufficient* causes existed and were *actualized*.
+*   **Never let a judgment of deviance override a clear result from the counterfactual test.** This is paramount.
+*   Separate the factual question of causation from normative judgments about morality or blame.
 
-📊 Original ZeroShot Test Accuracy: 0.59
-📊 Original FewShot Test Accuracy: 0.64
-📊 Original Cot_FewShot Test Accuracy: 0.66
-📊 Cot ZeroShot Test Accuracy: 0.64
-📊 Cot FewShot Test Accuracy: 0.71
-📊 Cot Cot_FewShot Test Accuracy: 0.68
-📊 SA Test Accuracy: 0.67
+**Review the following examples to understand common reasoning errors and the correct approach:**
 
-⏱️ Time Elapsed: 131 min 24 sec (7884.36 seconds)
+**Example 1 (Error: Ignoring Actual Causation in Overdetermination)**
+- **Input:** ...Alex wins if dice > 2 OR spinner lands on green. He rolls a 12 (dice>2) and spinner lands on green. Did the spinner result cause the win?
+- **Incorrect Reasoning:** The win would have happened anyway without the spinner (counterfactual test fails), so no.
+- **Correct Reasoning:** The spinner landing on green was an actual, sufficient cause that occurred. In cases of overdetermination, all actualized sufficient causes are typically considered causal.
+- **Correct Answer:** Yes
+
+**Example 2 (Error: Over-applying the Knobe Effect)**
+- **Input:** ...A hunter sees bird-watchers near his target. He thinks, "The bullet could *possibly* hit them, but I don't care." He shoots, and the bullet hits a bird-watcher. Did he intentionally shoot the bird-watcher?
+- **Incorrect Reasoning:** The harm was a foreseen and harmful side effect. According to the Knobe Effect, it is intentional.
+- **Correct Reasoning:** The outcome was a side effect, not a means. The agent expressed indifference to a *possible* outcome, not active acceptance of a certain one. This is a weaker case for intentionality than the classic Knobe scenario.
+- **Correct Answer:** No
+
+**Example 3 (Error: Misapplying Normality/Deviance to an Omission)**
+- **Input:** ...Janet is responsible for oiling a machine but forgets. Kate, who is not responsible, notices the omission but does nothing. The machine breaks down. Did Kate not putting oil in the machine cause it to break down?
+- **Incorrect Reasoning:** Janet's failure was the deviant, sufficient cause. Kate's inaction was normal (not her job) and did not add causal power, so no.
+- **Correct Reasoning:** The counterfactual test is clear: if Kate had acted, the breakdown would have been avoided. Her omission was a necessary part of the causal chain. While Janet's failure was the initial, deviant event, Kate had both the ability and opportunity to prevent the outcome. Social role normality does not override this mechanical counterfactual result.
+- **Correct Answer:** Yes
+
+**Example 4 (Correct Application: Conjunctive Cause & Salience)**
+- **Input:** ...Alex wins only if dice > 11 AND coin = heads. He rolls a 12 and the coin comes up heads. Did Alex win because of the coin flip?
+- **Correct Reasoning:** Both events were necessary. However, the win was guaranteed by the rare and surprising dice roll (12). The coin flip was a common, random event. The question "because of" asks for the primary cause, which is the salient, abnormal event (the roll).
+- **Correct Answer:** No
+
+**Example 5 (Correct Application: Ignorance and Deviance)**
+- **Input:** ...A hedgehog, unaware of a new rule, takes the last pencil. A polar bear later finds none. Did the hedgehog cause the problem?
+- **Correct Reasoning:** The counterfactual test passes (if hedgehog hadn't acted, a pencil would remain). However, the hedgehog's action, while objectively deviant, was subjectively normal due to ignorance. Human causal judgment heavily weights knowledge; an ignorant agent is seldom seen as *the* cause of a problem created by a rule change they were unaware of. The primary cause is the situation (the new rule and the limited pencils), not the ignorant agent's action.
+- **Correct Answer:** No
+
+**Final Instruction:**
+Analyze the provided question using the framework above. Explicitly work through the steps:
+1) Identify the question type and the relevant mechanism.
+2) **For causality:** Apply the counterfactual test, check for overdetermination, then consider normality/deviance (specifying type and agent knowledge), then determine the primary cause if multiple necessary causes exist.
+3) **For intentionality:** Determine if the outcome was a *means* or a *side effect*. If a side effect, analyze the agent's attitude (acceptance/indifference) and the certainty of the outcome.
+After your analysis, output your final answer within the tags <answer>Yes</answer> or <answer>No</answer>.
+
+**For intentionality questions, you MUST explicitly state in your reasoning:**
+*   Whether the outcome was a *means* or a *side effect*.
+*   The agent's specific attitude (e.g., desire, acceptance, indifference).
+*   The certainty of the foreseen outcome (certain, likely, possible).
+
+**For causality questions involving omissions or multiple causes, you MUST explicitly state:**
+*   The result of the counterfactual test for the action/omission in question.
+*   The type of deviance involved (mechanical/social) and the agent's knowledge, if relevant.
+*   Your judgment on the primary cause, if applicable.
+
+📊 SA Test Accuracy: 0.53
+
+⏱️ Time Elapsed: 109 min 22 sec (6562.70 seconds)

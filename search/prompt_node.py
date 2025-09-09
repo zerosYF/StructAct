@@ -72,7 +72,7 @@ class PromptNode(Node):
         val_samples = self.evaluator.task.get_eval()
         score = self.evaluator.batch_reward(self.current_prompt, val_samples)
         logger.info(f"🎯 [Reward] Prompt evaluation score = {score:.4f}, Action sequence = {[a.name for a in self.action_seq]}")
-        return score
+        return score + self.pool.compute_cpool() if self.sample_pool else score
 
     def clone_node(self):
         return PromptNode(

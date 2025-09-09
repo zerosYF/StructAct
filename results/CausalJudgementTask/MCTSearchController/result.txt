@@ -3,27 +3,26 @@
 
 
 ✅ Best Prompt:
-Answer questions about causal attribution by systematically applying the principles of causal reasoning. For each scenario, follow these steps:
+You are an expert analyst in causal attribution and intentionality. Carefully reason through each question by following these steps:
 
-1.  **Identify the Specific Outcome:** Precisely define the result in question.
-2.  **List Necessary and Sufficient Conditions:** Determine if the outcome requires a conjunction (AND) of conditions or a disjunction (OR) of conditions.
-3.  **Analyze the Pre-existing State:** Identify any conditions that were already present and part of the normal background before the causal sequence began.
-4.  **Find the Abnormal Intervention:** The cause is the specific action or event that deviated from the normal, expected, or prescribed course. It is typically the last necessary condition for an AND-outcome or the first sufficient condition for an OR-outcome.
-5.  **Apply Core Principles:**
-    *   **The Deviation Principle:** Normal, routine, or necessary actions are not causal; the abnormal intervention is.
-    *   **The Pre-existing Condition Principle:** A state that was already true cannot be the cause of a new outcome.
-    *   **The Precise Counterfactual:** The outcome would not have occurred *when it did* if the causal action had not happened (holding normal conditions constant).
-    *   An omission is not causal unless there was a definitive duty to act and the action would have prevented the outcome.
-6.  **For Intent:** If asked, determine if the outcome was the agent's goal or a foreseen side effect.
+1.  **Identify the Effect:** Precisely define the specific outcome being asked about. Pay close attention to modifiers (e.g., "premature death," "because of") which refine the effect.
+2.  **Map the Conditions:** List all known factors, rules, and their logical relationships (e.g., Effect requires A AND B, or Effect occurs if A OR B).
+3.  **Apply Causal Tests:**
+    *   **Tailored Counterfactual Test:** For each factor, ask: "If this factor were absent or negated, would the specific effect (considering timing/manner) still have occurred?"
+    *   **Causal Structure Check:** Determine if the scenario involves:
+        - **Conjunction (AND):** The effect requires multiple factors. Each necessary factor is a cause.
+        - **Overdetermination (OR):** Multiple factors are individually sufficient. Each sufficient factor is a cause, even if not counterfactually necessary.
+    *   **Normative Deviance:** Identify if any action violated a rule. A deviant action is often the primary cause, but normative actions can still be causal factors.
+4.  **Analyze Intent (if applicable):** For questions about intention, determine if the agent knew a side effect was certain. If so, it is intentional.
+5.  **Synthesize:** An event is a cause if it was an actual and sufficient factor (in overdetermination) or a necessary component of a sufficient set (in conjunction). The "because of" question often points to the decisive factor—the one that introduced uncertainty or was the proximate trigger. Causation is distinct from blameworthiness; normative or unintentional actions can still be causes.
 
-Provide your final answer only after completing this analysis.
+**Key Principles from Examples:**
+- In conjunction, all necessary factors are causes. The decisive factor is often the uncertain one.
+- In overdetermination, all sufficient factors are causes. The proximate trigger is often the focus.
+- A deviant action may preempt a normative one, but normative actions can still be causal.
 
-📊 Original ZeroShot Test Accuracy: 0.61
-📊 Original FewShot Test Accuracy: 0.59
-📊 Original Cot_FewShot Test Accuracy: 0.61
-📊 Cot ZeroShot Test Accuracy: 0.67
-📊 Cot FewShot Test Accuracy: 0.61
-📊 Cot Cot_FewShot Test Accuracy: 0.66
-📊 SA Test Accuracy: 0.72
+Now, apply this framework rigorously to the new question. Conclude with your final answer within `<answer>Yes</answer>` or `<answer>No</answer>`.
 
-⏱️ Time Elapsed: 161 min 36 sec (9696.65 seconds)
+📊 SA Test Accuracy: 0.62
+
+⏱️ Time Elapsed: 141 min 22 sec (8482.14 seconds)

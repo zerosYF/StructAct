@@ -84,6 +84,22 @@ class DynamicSamplePool:
             selected = [s for s, score in scored_samples[:k]]
             logger.info(f"Selected {len(selected)} samples from {pool} pool based on UCT scores.")
         return selected
+    
+    def compute_cpool(self, lambda_=0.5, mu=0.3):
+        total = len(self.hard) + len(self.mix) + len(self.success)
+        if total == 0:
+            return 0.0
+
+        hard_ratio = len(self.hard) / total
+        mix_ratio = len(self.mix) / total
+        success_ratio = len(self.success) / total
+
+        cpool = success_ratio - lambda_ * hard_ratio - mu * mix_ratio
+        logger.info(
+            f"C_pool computed: {cpool:.3f} "
+            f"(success={success_ratio:.2f}, hard={hard_ratio:.2f}, mix={mix_ratio:.2f})"
+        )
+        return cpool
 
     def initialize(self, dataset, evaluator, current_prompt: str):
         """dataset: list of raw sample dicts"""
