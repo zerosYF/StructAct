@@ -3291,4 +3291,810 @@ You are an expert legal AI. Your task is to analyze a legal case snippet and sel
     2.  **Final Answer:** On the very last line of your entire response, output **only the number** of the correct option using the exact format: `Answer: [number]`
 -   **The character `[` and `]` are NOT part of the output. Replace `[number]` with the single digit of the correct option (e.g., `Answer: 2`).**
 -   **Your response must end immediately after this line. Do not write any other text, characters, or explanations after it.**
--   **Do not under any circumstances output a placeholder answer like 'Answer: -1' or 'Answer: 0' during your reasoning. The 'Answer: [number]' line is to be written only once, at the very end, and must contain your final, selected answe
+-   **Do not under any circumstances output a placeholder answer like 'Answer: -1' or 'Answer: 0' during your reasoning. The 'Answer: [number]' line is to be written only once, at the very end, and must contain your final, selected answer.**
+
+**Examples of Common Errors to Avoid:**
+
+*   **Example 1 - Incorrect Output Format:**
+    *   **Input Snippet:** ...Compare Allen v. Hardy, 478 U.S. 255 (<HOLDING>)...
+    *   **Candidate Options:** ['holding that a challenge for cause might have been justified...', 'holding that the district court's observation was sufficient...', 'holding that batson v kentucky does not apply retroactively to cases on collateral review']
+    *   **Incorrect Output:** `[Reasoning]... I think the answer is 2. Final Answer: 2` (Incorrect format - extra text after number).
+    *   **Correct Output:** `[Reasoning about Allen v. Hardy...] The correct option is 2.
+Answer: 2`
+
+*   **Example 2 - Ignoring Case-Specific Context:**
+    *   **Input Snippet:** ...the court's observation was sufficient. See Martin v. Martin, 130 N.C. 27 (<HOLDING>). Here, the Petition was...
+    *   **Candidate Options:** ['holding that a batson challenge is not timely...', 'holding that the phrase "sworn and subscribed to" is defective as a verification']
+    *   **Incorrect Output:** `Answer: 0` (Selected based on keyword "sworn" without analyzing Martin v. Martin specifically).
+    *   **Correct Output:** `[Reasoning identifying Martin v. Martin and its actual holding on verification defects...] The correct option is 1.
+Answer: 1`
+
+*   **Example 3 - Factual Misalignment:**
+    *   **Input Snippet:** ...failed to present evidence to prove this allegation. See Burgess v. State, 962 So.2d 272 (<HOLDING>)...
+    *   **Candidate Options:** ['holding burgess had abandoned claim his trial counsel was ineffective for failing to object to victim-impact evidence...', 'holding that where trial counsel was not ineffective appellate counsel was not ineffective...']
+    *   **Incorrect Selection:** Choosing an option that misstates the actual facts of the cited case, even if the legal principle seems similar.
+    *   **Correct Approach:** Verify the actual holding of Burgess v. State against your legal knowledge before selecting.
+
+*   **Example 4 - Generating a Placeholder:**
+    *   **Input Snippet:** ...on,” and that “my cash flow situation was somewhat limited.” (3) McMurrey testified that when he first met Stout in the spring of 1992, Stout told him he was “currently under indictment.” (4) Another witness, who attended AA meetings with Stout, testified that Stout told him in 1992 that he had legal problems and had been ordered to pay restitution, and that he would go to jail if he didn’t pay it. (5) The defense called to the stand a man who was-Stout’s victim in the underlying felony theft case. The victim, a gun show vendor who sold Stout a pistol and a framed piece of art, testified that Stout had given him a worthless check and that Stout had been ordered to pay restitution, but had only paid part of it. (6) On cross-examination, Stout admitted that he was not Cir.1977) (<HOLDING>); see also Martinez-Montoya v. I.N.S., 904 F.2d', ['holding that reversal of conviction for felony murder was required where jury failed to find the defendant guilty of the underlying felony as essential element of the felony murder offense', 'holding that defendants prior felony convictions in georgia state court for drugrelated conspiracy and simple possession qualified as predicate prior felony drug offenses for  841b1a because under the plain language of the statute  felony drug offense includes any criminal conduct relating to narcotics including simple possession which a state has proscribed as a felony', 'holding that a prior nonarizona conviction to be used as a prior felony conviction under the statute must both be for an offense that would constitute a felony in arizona and be classified as a felony in the other jurisdiction', 'holding enhancement on a general verdict for felony murder impermissible on account of possession of a firearm because possession of a firearm was an essential element of one but not all of the predicate felonies the state relied on to prove felony murder', 'holding that defendant truthfully stated on firearm purchase form that he had no felony convictions given the fact that adjudication of guilt was deferred and sentence suspended on his prior offense of felony receipt of a stolen car'])
+    *   **Incorrect Output:** `[Reasoning]... I have determined the correct option is 4. Now I will output the answer. Answer: -1` (Incorrect - used a placeholder value and added extra text).
+    *   **Correct Output:** `[Reasoning identifying United States v. McLaughlin and its holding on deferred adjudication...] Therefore, the correct option is 4.
+Answer: 4`
+
+**Proceed by following the steps above. Think step by step. Remember: the last line of your response must be exactly `Answer: [number]` and nothing else.**
+
+
+Example C (Abnormal Contribution):
+Input: A bear (allowed) and a hedgehog (not allowed) both take pencils, depleting them. Did the hedgehog cause the problem?
+Reasoning: The hedgehog was not necessary (bear alone was sufficient) but was part of a sufficient set. Its action violated a rule (abnormal), making it a cause.
+Output: <answer>Yes</answer>
+
+Example D (Preservative Omission):
+Input: Wayne checks, sees his watch is on the charging pad, and doesn't move it. It charges. Did not moving it cause the charge?
+Reasoning: The omission was not necessary (plugging in would also work). It was a deliberate inaction that preserved a sufficient condition (on the pad) as part of a standard process.
+Output: <answer>Yes</answer>
+
+Example E (Proximate Cause):
+Input: John had terminal cancer from asbestos exposure. A nurse gave him the wrong drug, causing immediate death. Did the job cause his death?
+Reasoning: The job was a distal cause of the terminal illness. The proximate cause of death was the nurse's abnormal error, which directly triggered the fatal event.
+Output: <answer>No</answer>
+
+**New Example F (Pre-emption by Violation):**
+Input: Billy (not permitted AM) and Suzy (permitted AM) both log in at 9 AM, causing emails to delete. Did Suzy cause the deletion?
+Reasoning: Billy's login was a violation of policy (abnormal). This created the dangerous condition. Suzy's login was normal, prescribed, and necessary only because of Billy's prior abnormal act. Billy's violation pre-empts the standard process, making him the cause. Suzy is not the cause.
+Output: <answer>No</answer>
+
+**New Example G (Ignorance does not negate abnormality):**
+Input: A hedgehog (unknowingly broke rule) and a bear (allowed) took pencils. Did the hedgehog cause the depletion?
+Reasoning: The hedgehog's action was not necessary but was part of a sufficient set. It violated a prescriptive norm (abnormal). Lack of knowledge may excuse blame but does not negate the abnormality for causal attribution. It is a cause.
+Output: <answer>Yes</answer>
+
+Always output your final answer within <answer>Yes</answer> or <answer>No</answer> tags.
+2025-09-10 02:13:03,598 - 📊 Current Template_description:
+None
+2025-09-10 02:13:03,598 - 📊 Current Prompt:
+Answer questions about causal attribution by applying a structured framework that considers counterfactual dependence, sufficiency, normality, agency, and deontic factors (permissions/duties). Follow these steps precisely:
+
+1.  **Identify the proposed cause and effect** from the question. **Determine if the cause is an action or an omission (a failure to act).** **Clarify the Effect:** If the effect is described as a *problem* or *negative outcome*, consider that the cause must explain why the situation is problematic, not just the physical state.
+
+2.  **Apply the counterfactual test (Necessity)**: Would the effect have occurred if the proposed cause had not happened?
+    - If **no**, then the cause is necessary. Proceed to Step 3.
+    - If **yes**, proceed to Step 3. **(A cause can be sufficient even if not necessary).**
+
+3.  **Apply the sufficiency test**: **Was the proposed cause, either alone or as a necessary part of a set of conditions, sufficient to produce the effect?**
+    - **Consider two types of sufficiency:**
+        - **Singular Sufficiency:** The cause alone was enough.
+        - **Contributory Sufficiency (NESS):** The cause was a necessary element of a set of conditions that together were sufficient. **If the cause is a necessary part of any sufficient set, consider it sufficient for this test.**
+    - If **yes**, you have a provisional "Yes". Proceed to Step 4.
+    - If **no**, answer **No**.
+
+4.  **Apply the Normality, Permission, and Preemption Test**: This step determines if a sufficient cause is preempted.
+    - **First, identify agents with specific duties, roles, or permissions (e.g., "is allowed to", "is supposed to", "has a duty to").**
+    - **Assess Normality:**
+        - **Statistical Normality:** Was the cause statistically expected ("typically") or unexpected?
+        - **Deontic Normality (Permission/Duty):** Was the cause **permitted** or **fulfilling a duty**? Or was it **forbidden** or **violating a duty**?
+            - A permitted/fulfilling action is **deontically normal**.
+            - A forbidden/violating action is **deontically abnormal**.
+    - **Preemption Rules:**
+        - **For Omissions (inactions):** If the proposed cause is an omission, consider the agent's duty. If the agent had a duty to intervene and their **normal** behavior was to prevent the outcome, then their **abnormal** inaction can be seen as the cause. **Answer Yes.**
+        - **For Actions:**
+            - **If the proposed cause is deontically abnormal**, it is salient. **Answer Yes.**
+            - **If the proposed cause is deontically normal and another sufficient cause was deontically abnormal**, the abnormal cause preempts the normal one. **Answer No.**
+            - If all causes are deontically equivalent, proceed with statistical normality rules: an abnormal cause is salient; a normal cause may be preempted by another abnormal cause. **Answer Yes only if the proposed cause is statistically abnormal or no preemption applies.**
+
+**Final Check for Salience:** Is the proposed cause the most salient explanatory factor for the *problem*, or is it merely a background condition? A permitted, routine action is often a background condition, not the cause of a problem.
+
+**Special Case - Intentional Action:**
+- If the question asks whether an action was done **"intentionally"**, you must analyze the agent's **mental state and control**.
+- An action is intentional only if the agent had a **desire** for the outcome, a **belief** that their action would achieve it, and **voluntary control** over performing the action itself.
+- An outcome caused by a **foreseeable accident** or **lack of control** is not intentional.
+
+**Examples for guidance:**
+
+**Example A (Normality Preemption):**
+Input: Joe draws a likely green ball and an unlikely blue ball to win. Did drawing the green ball cause the win?
+Reasoning: The green ball was sufficient (Step 3: provisional Yes). It was statistically normal/likely and the blue ball was abnormal/unlikely. The preemption rule applies: the abnormal cause is salient, so the normal one is preempted. Answer No.
+Output: <answer>No</answer>
+
+**Example B (Sufficiency without Preemption):**
+Input: Both travel agency and design studio employees (each sufficient) arrive. Did design studio cause the system to turn on?
+Reasoning: The system would have turned on without them (not necessary). But they were sufficient (Step 3: provisional Yes). No normality/preemption applies (both events are normal). Answer Yes.
+Output: <answer>Yes</answer>
+
+**Example C (Intention):**
+Input: Jake aims at his aunt but his hand slips, causing the gun to fire and kill her. Did Jake shoot his aunt intentionally?
+Reasoning: Although Jake desired the outcome, the direct cause of the gun firing was an involuntary slip, not his voluntary control. Therefore, he did not intentionally fire the gun.
+Output: <answer>No</answer>
+
+**Example F (Contributory Sufficiency - NESS):**
+Input: Jim, Carol, and Bob all turn on lamps to trip a breaker needing three. Did Jim cause it?
+Reasoning: Jim's action was a necessary part of the sufficient set {Jim, Carol, Bob}. Therefore, it passes the sufficiency test (Step 3: Yes). No preemption applies. Answer Yes.
+Output: <answer>Yes</answer>
+
+**Example G (Omission with Duty):**
+Input: Tom the demolition expert sees a knob is on and does nothing. Did his inaction cause the implosion?
+Reasoning: The cause is an omission. Tom has a duty. The normal expectation was for him to turn the knob off. His *abnormal* inaction is the salient cause. Answer Yes.
+Output: <answer>Yes</answer>
+
+**Example H (Deontic Preemption - The Key Fix):**
+Input: The receptionist... Did the administrative assistant cause the problem?
+Reasoning: The assistant's action was a necessary part of a sufficient set (NESS), so Step 3 gives a provisional Yes. In Step 4, we assess deontic normality. The assistant was *allowed* to take pens (deontically normal). Professor Smith was *forbidden* from taking pens (deontically abnormal). The preemption rule states that a deontically normal cause is preempted by a deontically abnormal one. The assistant's permitted action is a background condition, not the cause of the *problem*. Answer No.
+Output: <answer>No</answer>
+
+**Crucial Instructions:**
+- The answer from Step 3 (Sufficiency) is **provisional** and can be overridden by Step 4.
+- **For omissions, strongly consider the agent's role and duty.**
+- **For actions, strongly consider deontic normality (permission/duty).**
+- A permitted, routine action is typically not the salient cause of a problem; a forbidden or duty-violating action is.
+
+Always output your final answer within <answer>Yes</answer> or <answer>No</answer> tags.
+2025-09-10 02:14:33,738 - 📊 Current Template_description:
+None
+2025-09-10 02:14:33,738 - 📊 Current Prompt:
+Answer questions about causal attribution by applying a structured framework that considers counterfactual dependence, sufficiency, normality, and intentionality. Follow these steps precisely:
+
+**Step 1: Classify the Question Type**
+- If the question asks about an agent's mental state (e.g., "intentionally," "accidentally," "knowingly," "on purpose"), it is about **Intentional Action**. Proceed to the **Intentionality Sub-Framework**.
+- If the question asks "Did event X cause event Y?" or similar, it is about **Event Causation**. Proceed to the **Event Causation Sub-Framework**.
+
+---
+
+### **Sub-Framework A: Intentional Action (Did Agent X Intentionally Cause Y?)**
+
+To answer **Yes**, the agent's action must satisfy these criteria:
+1.  **Causation:** The agent's action was a cause of the outcome (Y). (Apply the **Event Causation sub-framework, but stop after Step B2 (Necessity)**. Do not apply the normality override (Step B4) for intentionality analysis).
+2.  **Knowledge:** The agent knew, or should have known, that the outcome (Y) would occur.
+3.  **Desire/Purpose:** The outcome (Y) was either the agent's primary goal or a means to achieve it. If Y was merely a foreseen but unwanted side effect, it is not intentional.
+
+**Conclusion:**
+- If all three criteria are clearly met, conclude **Yes**.
+- If the outcome was only foreseen but not desired (a side effect), conclude **No**.
+
+---
+
+### **Sub-Framework B: Event Causation (Did Event X Cause Event Y?)**
+
+**Step B1: Identify** the proposed cause (X) and effect (Y).
+
+**Step B2: Apply the counterfactual test (Necessity):** Would the effect (Y) have occurred if the proposed cause (X) had not happened?
+- If **no**, then X was necessary. Proceed to Step B3.
+- If **yes**, proceed to Step B4.
+
+**Step B3: Evaluate the Nature of X and the Causal Chain**
+Before concluding based on necessity, check for these **overriding conditions**:
+- **A. Omission without Duty:** If X is an **omission** (a failure to act), was the agent under a **specific duty or responsibility** to perform that action? If **no**, then X is **not** a cause. Conclude **No**.
+- **B. Superseding Cause:** Did the effect (Y) directly result from an **intervening action** by another agent that was **highly abnormal** (e.g., criminal, reckless, or wildly improbable) and **independent** of X? If **yes**, then X is **not** a cause. Conclude **No**.
+- **C. Foreseeability:** Was the effect (Y) a **foreseeable consequence** of X? If it was **highly unforeseeable** (a "freak accident"), this weakens the attribution. If unforeseeability is extreme, conclude **No**.
+
+If none of the conditions in Step B3 apply, then X's necessity establishes it as a cause. Proceed to Step B4.
+
+**Step B4: Check for sufficiency:** Was the proposed cause (X) itself sufficient to produce the effect (Y) (even if unnecessary due to other factors)?
+- If **yes**, conclude **Yes**.
+- If **no**, conclude **No** (unless you proceeded from B3, in which case you already have a conclusion).
+
+**Step B5: Consider normality for salience** (interpret from context):
+- The normality principle is primarily used to explain attributions in cases of overdetermination (multiple sufficient causes) or to select the most salient cause.
+- **Crucial Rule:** A cause that is **necessary** (from Step B2) and **not overridden in Step B3** should **not** be overridden to **No** based on normality. A necessary cause remains a cause.
+- If the proposed cause (X) was **abnormal** (unexpected, surprising, or a deviation), it strengthens its status as a salient cause.
+- If the proposed cause (X) was **normal** (routine, expected) and the effect occurred due to an **abnormal** conjunction of multiple factors, the **conjunction itself** is often seen as the cause. However, this does not negate that X was a necessary part of that conjunction. The answer to "Did X cause Y?" is still **Yes**, but the abnormality explains why other factors might also be blamed.
+
+---
+
+**Important:** Always reason step-by-step. For intentionality questions, do not apply the Event Causation steps beyond checking for basic causation.
+
+**Examples for guidance:**
+
+Example 1 (Intentional Action):
+Input: A hunter shoots a deer, knowingly hitting a bird-watcher. Did the man intentionally shoot the bird-watcher?
+Reasoning: **Intentionality Question.** 1. Causation: His shot caused the hit. (Yes). 2. Knowledge: He did it "knowingly." (Yes). 3. Desire: The bird-watcher was not his goal; the deer was. The hit was a foreseen side effect.
+Output: <answer>No</answer>
+
+Example 2 (Event Causation - Necessary Cause):
+Input: A vault requires two keys turned at the same time to open. Guard 1 turns Key A. Guard 2 turns Key B. The vault opens. Did Guard 1 cause the vault to open?
+Reasoning: **Event Causation.** 1. Necessity: Without Guard 1 turning Key A, the vault would not have opened. (Yes). Proceed to B3. Not an omission, no superseding cause, foreseeable. 2. Sufficiency: His action alone was not sufficient. (No). 3. Normality: Both actions were normal. The necessity of the cause is not overridden.
+Output: <answer>Yes</answer>
+
+Example 3 (Event Causation - Omission without Duty):
+Input: Janet (responsible) forgets to oil a machine. Kate (HR, not responsible) also doesn't oil it. Machine breaks. Did Kate not putting oil in the machine cause it to break down?
+Reasoning: **Event Causation.** 1. Necessity: If Kate had put oil, the machine would not have broken. (Yes). Proceed to B3. The cause is an **omission**. Did Kate have a **duty** to act? No, it was explicitly not her responsibility. Override applies.
+Output: <answer>No</answer>
+
+Example 4 (Event Causation - Superseding Cause):
+Input: Joe helps an injured person, causing a delay. His neighbor drives his son home. A drunk driver hits the car, injuring the son. Did Joe cause his son's injury?
+Reasoning: **Event Causation.** 1. Necessity: Without the delay, the son would not have been in the car. (Yes). Proceed to B3. The injury was directly caused by an **intervening action** (drunk driving) that was **highly abnormal and independent**. This is a superseding cause.
+Output: <answer>No</answer>
+
+Example 5 (Event Causation - Normality Application):
+Input: Joe draws a likely green ball and an unlikely blue ball to win. Did drawing the green ball cause the win?
+Reasoning: **Event Causation.** 1. Necessity: Without the green ball, no win (necessary). Proceed to B3. Not an omission, no superseding cause, foreseeable. 2. Sufficiency: The green ball alone was not sufficient to win; the blue ball was also needed. (No). 3. Normality: The green ball was normal, and the blue ball was abnormal. However, the green ball was *necessary* and not overridden. The win is attributed to the abnormal blue ball, but the necessary green ball is still a cause.
+Output: <answer>Yes</answer>
+
+Example 6 (Event Causation - Overdetermination):
+Input: Both travel agency and design studio employees (each sufficient) arrive. Did design studio cause the system to turn on?
+Reasoning: **Event Causation.** The system would have turned on without them (not necessary). But they were sufficient.
+Output: <answer>Yes</answer>
+
+Always output your final answer within <answer>Yes</answer>, <answer>No</answer>, or <answer>Unclear</answer> if the context is severely insufficient or logically inconsistent.
+2025-09-10 02:17:49,640 - 📊 Current Template_description:
+None
+2025-09-10 02:17:49,640 - 📊 Current Prompt:
+You are an expert in causal reasoning, counterfactual logic, and folk psychology. Your first task is to analyze the question and determine what type of judgment is required. There are two primary types:
+
+*   **Type 1: Causal Necessity.** Questions that ask "Was [action/omission] a **cause** of [outcome]?" or "Did [action] **cause** [outcome]?".
+*   **Type 2: Intentionality.** Questions that ask "Did [agent] **intentionally** cause [outcome]?" or use words like "on purpose."
+
+**Begin your reasoning by classifying the question type.**
+
+---
+
+### **If the question is Type 1 (Causal Necessity):**
+
+**Reasoning Process:**
+
+1.  **Identify the Key Elements:**
+    *   **Outcome:** State the specific result that occurred.
+    *   **Target Behavior:** Identify if the question is about an **action** (something done) or an **omission** (something not done).
+    *   **Governing Rule:** Extract the explicit or implicit rule that determines the outcome (e.g., "Outcome occurs IF (A AND B)" or "IF (A OR B)").
+
+2.  **Establish the Actual Scenario:** List the status of all relevant factors in the story.
+
+3.  **Construct a Plausible Counterfactual Scenario:**
+    *   Change **only** the target behavior.
+    *   **For an OMISSION:** Imagine the person *had* acted. To infer what that action would have been, **use the story's context. Consider the agent's knowledge, goals, and the reason for their inaction.** Do not assume the action would always negate the current state.
+    *   **For an ACTION:** Imagine the person had *not* performed the action.
+    *   Hold all other unrelated factors constant.
+
+4.  **Apply the Governing Rule:** Determine if the outcome would have occurred in this counterfactual scenario.
+
+5.  **Make a Decision:**
+    *   If the outcome would have been **different**, the target behavior **was a cause**. Answer **Yes**.
+    *   If the outcome would have been the **same**, it was **not a cause**. Answer **No**.
+
+**Final Answer:** `<answer>Yes</answer>` or `<answer>No</answer>`
+
+---
+
+### **If the question is Type 2 (Intentionality):**
+
+**Reasoning Process:**
+
+1.  **Identify the Key Elements:**
+    *   **Outcome:** The specific event in question.
+    *   **Agent's Action:** The specific action performed by the agent.
+    *   **Agent's Mental State:** From the story, determine:
+        *   **Knowledge:** Did the agent know their action would lead to the outcome?
+        *   **Desire/Goal:** Was the outcome a desired goal or an unwanted side-effect? Did the agent want it to happen? Was it part of their plan?
+
+2.  **Apply the Intentionality Rule:**
+    *   An agent **intentionally** causes an outcome **if and only if**:
+        1.  Their action was a cause of the outcome (you may use the Type 1 process to verify this).
+        2.  They **knew** their action would cause the outcome.
+        3.  They acted, at least in part, **because they wanted** the outcome to occur. The outcome must have been a desired goal or objective.
+
+3.  **Make a Decision:**
+    *   If all three conditions (causation, knowledge, and desire) are met, then the answer is **Yes**.
+    *   If the outcome was a foreseen but **unwanted side-effect** (i.e., they knew it would happen but did *not* desire it and it was not their goal), then the answer is **No**.
+
+**Final Answer:** `<answer>Yes</answer>` or `<answer>No</answer>`
+
+---
+
+### **Critical Examples for Reference (Avoiding Past Mistakes):**
+
+**Example 1: [Intentionality - Failure Case]**
+- **Question:** Did the man intentionally cause the eagle to fly away?
+- **Classification:** Type 2 (Intentionality).
+- **Causation (Type 1 Check):** Yes, shooting caused the eagle to fly away.
+- **Knowledge:** Yes, he knew the gunfire would scare the eagle.
+- **Desire/Goal:** **No.** His stated goal was only "to win the competition." The story explicitly says he "did not care at all about the eagle." The outcome was a known but undesired side-effect.
+- **Decision:** The outcome was not intentional. Answer: **No**. *[This corrects the previous error by using the intentionality framework.]*
+
+**Example 2: [Causal Necessity - Action]**
+- **Question:** Did Drew ordering coffee cause the profit?
+- **Classification:** Type 1 (Causal Necessity).
+- **Outcome:** Profit. **Target Behavior:** Action (ordering coffee).
+- **Rule:** Profit IF (Drew orders OR Kylie orders OR Oliver orders).
+- **Actual Scenario:** Drew=Yes, Kylie=Yes, Oliver=Yes.
+- **Counterfactual:** If Drew had not acted, Drew=No, Kylie=Yes, Oliver=Yes.
+- **Apply Rule:** (No OR Yes OR Yes) = Yes. Outcome is the same.
+- **Decision:** Not a cause. Answer: **No**.
+
+**Example 3: [Causal Necessity - Omission]**
+- **Question:** Did the boat start because Ned did not change the position of the motor?
+- **Classification:** Type 1 (Causal Necessity).
+- **Outcome:** Boat started. **Target Behavior:** Omission (not changing the motor).
+- **Rule:** Starts IF (gear neutral OR motor lock).
+- **Actual Scenario:** gear=neutral, motor=lock. Ned omits changing it because it is correct.
+- **Counterfactual:** If Ned *had* acted, he would have changed it *away* from the lock position (because he thought it was correct).
+- **Apply Rule:** (gear=neutral OR motor=not lock) = Yes. Outcome is the same.
+- **Decision:** Not a cause. Answer: **No**.
+
+**Final Instructions:**
+*   Always begin by classifying the question type.
+*   For intentionality questions, desire/goal is paramount. An outcome is intentional only if it was desired.
+*   The counterfactual for omissions must be plausible and grounded in the story's context.
+*   Your final answer must always be within the tags `<answer>Yes</answer>` or `<answer>No</answer>`.
+2025-09-10 02:17:57,729 - 📊 Current Template_description:
+None
+2025-09-10 02:17:57,731 - 📊 Current Prompt:
+You are an expert in causal reasoning, counterfactual logic, and intention recognition. Your task is to analyze a story and answer a question about causation by first classifying the question type and then applying the appropriate reasoning framework.
+
+### Step 1: Question Classification
+Analyze the question's wording to determine its type:
+- **Type A (Necessary Cause):** Questions asking "Did X cause Y?" or "Was X a cause of Y?" without modifiers. Focus: counterfactual necessity.
+- **Type B (Intentional Cause):** Questions containing "intentionally" or "on purpose." Focus: agent's mental state and goals.
+- **Type C (Sufficient Cause):** Questions containing "enough" or "on its own." Focus: sufficiency of the cause.
+
+### Step 2: Reasoning Process
+Apply the following based on the question type:
+
+#### For Type A (Necessary Cause):
+1. **Identify Key Elements:**
+   - **Outcome:** The specific result that occurred.
+   - **Target Factor:** The action or omission in question.
+   - **Governing Rule:** Extract the explicit or implicit rule (e.g., "Y IF (A AND B)" or "Y IF (A OR B)").
+2. **Establish Actual Scenario:** List the status of all relevant factors.
+3. **Construct Plausible Counterfactual:**
+   - For an **action**, imagine it was **not done**.
+   - For an **omission**, imagine it **was done**. Infer the specific action using the story's context—consider the agent's knowledge, goals, and reasons for inaction. Do not assume the action would negate the current state; instead, reason from the agent's perspective.
+4. **Apply Governing Rule:** Determine if the outcome would occur in the counterfactual.
+5. **Decide:**
+   - If outcome would differ, answer **Yes** (necessary cause).
+   - If outcome would be same, answer **No**.
+
+#### For Type B (Intentional Cause):
+1. **Identify Key Elements:**
+   - **Outcome:** The result in question.
+   - **Action:** The agent's relevant behavior.
+   - **Mental State:** Determine:
+     - **Belief:** Did the agent know the outcome would occur?
+     - **Desire:** Did the agent want the outcome to happen? Was it a goal or a means to a goal?
+2. **Apply Intention Test:** The outcome is intentional only if:
+   - The agent foresaw it, AND
+   - The agent acted to bring it about (as a goal or means).
+   - If the outcome was a foreseen but undesired side effect, it is not intentional.
+3. **Decide:** Based on mental state.
+
+#### For Type C (Sufficient Cause):
+1. **Identify Key Elements:** As in Type A.
+2. **Isolate Target Factor:** In the actual scenario, set all other factors to their neutral or absent state.
+3. **Apply Rule:** Check if the target factor alone satisfies the rule.
+4. **Decide:** If yes, answer **Yes**; else **No**.
+
+### Examples for Reference (Avoiding Common Mistakes):
+
+**Example 1 (Type A - OR Rule):**
+- **Question:** Did the design studio agents cause the climate control system to turn on?
+- **Type:** A (Necessary Cause).
+- **Rule:** System on IF (travel agency OR design studio arrive).
+- **Actual:** Both arrived.
+- **Counterfactual:** If design studio did not arrive, travel agency still arrives → system on.
+- **Outcome same → Not a necessary cause. Answer: No.**
+
+**Example 2 (Type B - Intention):**
+- **Question:** Did the man intentionally cause the eagle to fly away?
+- **Type:** B (Intentional Cause).
+- **Action:** Shooting deer.
+- **Outcome:** Eagle flies away.
+- **Mental State:** Knew it would happen, but did not desire it; it was a side effect of shooting the deer.
+- **Not intentional. Answer: No.**
+
+**Example 3 (Type A - Omission with Context):**
+- **Question:** Did the boat start because Ned did not change the position of the motor?
+- **Type:** A.
+- **Rule:** Starts IF (gear neutral OR motor lock).
+- **Actual:** gear=neutral, motor=lock. Ned omitted changing it because it was correct.
+- **Counterfactual:** If Ned had acted, he would have changed it (believing it was incorrect) to lock → motor remains lock.
+- **Outcome same → Not a cause. Answer: No.**
+
+### Final Instructions:
+- Always begin by classifying the question type.
+- Ground counterfactuals in the story's context, especially for omissions.
+- Output final answer within `<answer>Yes</answer>` or `<answer>No</answer>`.
+2025-09-10 02:18:06,413 - 📊 Current Template_description:
+None
+2025-09-10 02:18:06,413 - 📊 Current Prompt:
+You are an expert in causal reasoning, counterfactual logic, and attribution theory. Your task is to determine if a person's specific action or omission was a cause of a stated outcome, or if an action was performed intentionally.
+
+**Step 1: Classify the Question Type**
+First, analyze the question's wording to determine its nature:
+- **Causal Question:** Uses terms like "cause," "because," "led to." Focuses on whether the action/omission was a causal factor.
+- **Intentionality Question:** Uses terms like "intentionally," "on purpose," "meant to." Focuses on the agent's mental state and goals.
+
+**Step 2: Reasoning Process**
+
+**If the question is CAUSAL:**
+1.  **Identify Key Elements:**
+    *   **Outcome:** The specific result that occurred.
+    *   **Target Behavior:** Determine if it's an **action** (something done) or an **omission** (something not done).
+    *   **Governing Rule:** Extract the explicit or implicit rule that determines the outcome (e.g., "Outcome occurs IF (A AND B)" or "IF (A OR B)"). Pay close attention to words like "anyone," "either," "sufficient," and "necessary."
+
+2.  **Check for Overdetermination:**
+    *   **Definition:** A scenario where multiple sufficient causes for the outcome are present simultaneously.
+    *   **Test:** If the governing rule is an OR-type rule (e.g., Outcome IF [A OR B OR C]) and multiple factors (A, B, C...) are true in the actual scenario, then overdetermination is present.
+    *   **Decision for Overdetermination:** If overdetermination is present, the target behavior **was a cause** if it was itself a sufficient condition for the outcome. Answer **Yes**. Proceed to final answer.
+
+3.  **Standard Counterfactual Analysis (if no overdetermination):**
+    *   **Establish the Actual Scenario:** List the status of all relevant factors.
+    *   **Construct a Plausible Counterfactual Scenario:**
+        *   Change **only** the target behavior.
+        *   **For an OMISSION:** Imagine the person *had* acted. To infer what that action would have been, **use the story's context. Consider the agent's knowledge, goals, and the reason for their inaction.** Do not assume the action would always negate the current state.
+        *   **For an ACTION:** Imagine the person had *not* performed the action.
+        *   Hold all other unrelated factors constant.
+    *   **Apply the Governing Rule:** Determine if the outcome would have occurred in this counterfactual scenario.
+    *   **Make a Decision:**
+        *   If the outcome would have been **different**, the target behavior **was a cause**. Answer **Yes**.
+        *   If the outcome would have been the **same**, it was **not a cause**. Answer **No**.
+
+**If the question is about INTENTIONALITY:**
+1.  **Identify Key Elements:**
+    *   **Outcome:** The specific result in question.
+    *   **Target Action:** The specific action performed by the agent.
+2.  **Determine Agent's Mental State:**
+    *   **Knowledge:** Did the agent know that their action would lead to this specific outcome? (Based on phrases like "he realizes," "as he expected.")
+    *   **Goal/Desire:** Was achieving this specific outcome part of the agent's purpose or desire for acting? (Based on phrases like "he just wants to," "his goal is," "he doesn't care about.")
+3.  **Make a Decision:**
+    *   The action was intentional **only if** the agent **knew** the outcome would occur **and** it was part of their **goal or desire**. Answer **Yes**.
+    *   If the agent lacked knowledge or lacked the goal/desire for the outcome, answer **No**.
+
+**Critical Examples for Reference (Avoiding Past Mistakes):**
+
+**Example 1: Causal Question with Overdetermination**
+- **Question:** Did Drew ordering coffee cause the profit?
+- **Type:** Causal.
+- **Outcome:** Profit. **Target:** Action (ordering).
+- **Rule:** Profit IF (Drew orders OR Kylie orders OR Oliver orders). -> OR Rule.
+- **Actual Scenario:** Drew=Yes, Kylie=Yes, Oliver=Yes. -> **Overdetermination Present**.
+- **Decision:** Drew's action was a sufficient cause. **Answer: Yes**. *(Fixes the previous error by recognizing overdetermination.)*
+
+**Example 2: Intentionality Question**
+- **Question:** Did the sniper intentionally disturb some air molecules?
+- **Type:** Intentionality.
+- **Outcome:** Disturb air molecules. **Target:** Pulling the trigger.
+- **Mental State:** Knew it would happen? Yes ("definitely disturb"). Goal/Desire? No ("doesn't care at all," "just wants to shoot").
+- **Decision:** Outcome was known but not desired. **Answer: No**. *(Correctly separates causation from intention.)*
+
+**Example 3: Causal Question without Overdetermination**
+- **Question:** Did the boat start because Ned did not change the position of the motor?
+- **Type:** Causal.
+- **Outcome:** Boat started. **Target:** Omission (not changing motor).
+- **Rule:** Starts IF (gear neutral OR motor lock).
+- **Actual Scenario:** gear=neutral, motor=lock. Ned omits action because he sees it's correct.
+- **Counterfactual:** If Ned *had* acted, he would have changed it *away* from the correct state (e.g., to neutral). Thus, motor would no longer be in 'lock'.
+- **Apply Rule:** (gear=neutral OR motor=neutral) -> (Yes OR No) = Yes. Outcome is the same.
+- **Decision:** Omission was not a cause. **Answer: No**. *(Previous correct reasoning preserved.)*
+
+**Final Instructions:**
+*   Your reasoning must be grounded in the story's context, especially for inferring counterfactual actions and mental states.
+*   Your final answer must be within the tags `<answer>Yes</answer>` or `<answer>No</answer>`.
+2025-09-10 02:22:09,068 - 📊 Current Template_description:
+None
+2025-09-10 02:22:09,068 - 📊 Current Prompt:
+You are an expert in causal reasoning, counterfactual logic, and folk psychology. Your first task is to analyze the question and determine what type of judgment is required. There are two primary types:
+
+*   **Type 1: Causal Necessity.** Questions that ask "Was [action/omission] a **cause** of [outcome]?" or "Did [action] **cause** [outcome]?".
+*   **Type 2: Intentionality.** Questions that ask "Did [agent] **intentionally** cause [outcome]?" or use words like "on purpose."
+
+**Begin your reasoning by classifying the question type.**
+
+---
+
+### **If the question is Type 1 (Causal Necessity):**
+
+**Reasoning Process:**
+
+1.  **Disambiguate "Cause":** Determine the intended meaning from context. "Cause" can refer to:
+    *   **Necessary Cause:** "But for X, would Y have happened?" (Primary focus).
+    *   **Sufficient Cause:** "Was X enough, on its own, to bring about Y?"
+    *   **Normative/Proximate Cause:** The question may imply blame or responsibility, focusing on the most direct and culpable cause.
+
+2.  **Identify the Key Elements:**
+    *   **Outcome:** State the specific result that occurred.
+    *   **Target Behavior:** Identify if the question is about an **action** (something done) or an **omission** (something not done).
+    *   **Governing Rule & Causal Structure:** Extract the explicit or implicit rule that determines the outcome (e.g., "Outcome occurs IF (A AND B)" or "IF (A OR B)"). Identify the structure:
+        *   **Conjunctive Cause:** Multiple factors are jointly sufficient (A AND B).
+        *   **Disjunctive Cause (Overdetermination):** Multiple factors are individually sufficient (A OR B).
+
+3.  **Establish the Actual Scenario:** List the status of all relevant factors in the story.
+
+4.  **Construct a Plausible Counterfactual Scenario:**
+    *   Change **only** the target behavior.
+    *   **For an OMISSION:** Imagine the person *had* acted. To infer what that action would have been, **use the story's context. Consider the agent's knowledge, goals, and the reason for their inaction.** Do not assume the action would always negate the current state.
+    *   **For an ACTION:** Imagine the person had *not* performed the action.
+    *   Hold all other unrelated factors constant.
+
+5.  **Apply the Governing Rule:** Determine if the outcome would have occurred in this counterfactual scenario.
+
+6.  **Make a Decision:**
+    *   If the outcome would have been **different**, the target behavior **was a cause**. Proceed to Step 7.
+    *   If the outcome would have been the **same**, it was **not a necessary cause**.
+        *   **Exception for Overdetermination:** If the causal structure is disjunctive (A OR B) and the target behavior is one of the sufficient causes (e.g., A arrived), then it is still **a cause**. Answer **Yes**.
+
+7.  **Apply Normative Filter (If Applicable):**
+    *   If the scenario involves a strong normative context (e.g., a morally good action, an external unforeseeable event like a drunk driver), evaluate if the target behavior is the most direct and culpable cause.
+    *   If the target behavior is a distant, non-culpable cause compared to a more direct, culpable cause, the answer is **No**.
+
+**Final Answer:** `<answer>Yes</answer>` or `<answer>No</answer>`
+
+---
+
+### **If the question is Type 2 (Intentionality):**
+
+**Reasoning Process:**
+
+1.  **Identify the Key Elements:**
+    *   **Outcome:** The specific event in question.
+    *   **Agent's Action:** The specific action performed by the agent.
+    *   **Agent's Mental State:** From the story, determine:
+        *   **Knowledge:** Did the agent know their action would lead to the outcome?
+        *   **Desire/Goal:** Was the outcome a desired goal or an unwanted side-effect? Did the agent want it to happen? Was it part of their plan?
+
+2.  **Apply the Intentionality Rule:**
+    *   An agent **intentionally** causes an outcome **if and only if**:
+        1.  Their action was a cause of the outcome (use the Type 1 process to verify this).
+        2.  They **knew** their action would cause the outcome.
+        3.  They acted, at least in part, **because they wanted** the outcome to occur. The outcome must have been a desired goal or objective.
+
+3.  **Make a Decision:**
+    *   If all three conditions (causation, knowledge, and desire) are met, then the answer is **Yes**.
+    *   If the outcome was a foreseen but **unwanted side-effect** (i.e., they knew it would happen but did *not* desire it and it was not their goal), then the answer is **No**.
+
+**Final Answer:** `<answer>Yes</answer>` or `<answer>No</answer>`
+
+---
+
+### **Critical Examples for Reference (Avoiding Past Mistakes):**
+
+**Example 1: [Causal Necessity - Normative Filter]**
+- **Question:** Did Joe cause his son's injury?
+- **Classification:** Type 1 (Causal Necessity).
+- **Disambiguation:** The context implies normative judgment (blame/responsibility).
+- **Outcome:** Son's injury. **Target Behavior:** Omission (delaying to help someone).
+- **Rule:** Injury requires a car accident. The chain is: delay → neighbor drives → drunk driver hits.
+- **Actual Scenario:** Joe delayed, neighbor drove, drunk driver caused accident.
+- **Counterfactual:** No delay → no neighbor drive → no accident → no injury. Factually, the omission was a cause.
+- **Normative Filter:** Joe's action was morally good. The direct, proximate, and culpable cause was the **drunk driver's** action. Joe's action is too remote and non-culpable.
+- **Decision:** Answer is **No**. *[This corrects the previous error by applying the normative filter.]*
+
+**Example 2: [Causal Necessity - Overdetermination]**
+- **Question:** Did the design studio agents cause the climate control system to turn on?
+- **Classification:** Type 1 (Causal Necessity).
+- **Outcome:** System turned on. **Target Behavior:** Action (design studio arriving).
+- **Rule & Structure:** System turns on IF (travel agency OR design studio). This is **disjunctive cause (overdetermination)**.
+- **Actual Scenario:** Both groups arrived.
+- **Counterfactual:** If design studio had not arrived, travel agency still arrived → outcome same. Therefore, not a *necessary* cause.
+- **Decision:** **However,** because the design studio's arrival was a sufficient condition, it is still **a cause**. The question is answered affirmatively.
+- **Final Answer:** `<answer>Yes</answer>` *[This corrects the previous error by recognizing overdetermination.]*
+
+**Example 3: [Intentionality - Failure Case]**
+- **Question:** Did the man intentionally cause the eagle to fly away?
+- **Classification:** Type 2 (Intentionality).
+- **Causation (Type 1 Check):** Yes, shooting caused the eagle to fly away.
+- **Knowledge:** Yes, he knew the gunfire would scare the eagle.
+- **Desire/Goal:** **No.** His goal was "to win the competition." He "did not care at all about the eagle." The outcome was a known but undesired side-effect.
+- **Decision:** The outcome was not intentional. Answer: **No**.
+
+**Example 4: [Causal Necessity - Omission]**
+- **Question:** Did the boat start because Ned did not change the position of the motor?
+- **Classification:** Type 1 (Causal Necessity).
+- **Outcome:** Boat started. **Target Behavior:** Omission (not changing the motor).
+- **Rule:** Starts IF (gear neutral OR motor lock).
+- **Actual Scenario:** gear=neutral, motor=lock. Ned omits changing it because it is correct.
+- **Counterfactual:** If Ned *had* acted, he would have changed it *away* from the lock position (because he thought it was correct).
+- **Apply Rule:** (gear=neutral OR motor=not lock) = Yes. Outcome is the same.
+- **Decision:** Not a cause. Answer: **No**.
+
+**Final Instructions:**
+*   Always begin by classifying the question type and disambiguating the meaning of "cause".
+*   For intentionality questions, desire/goal is paramount. An outcome is intentional only if it was desired.
+*   The counterfactual for omissions must be plausible and grounded in the story's context.
+*   Apply the normative filter in Type 1 questions when the context suggests a judgment of blame or responsibility.
+*   Recognize disjunctive causation (overdetermination) and answer accordingly.
+*   Your final answer must always be within the tags `<answer>Yes</answer>` or `<answer>No</answer>`.
+2025-09-10 02:22:18,355 - 📊 Current Template_description:
+None
+2025-09-10 02:22:18,355 - 📊 Current Prompt:
+You are an expert in causal reasoning, counterfactual logic, and intention recognition. Your task is to analyze a story and answer a question about causation by first classifying the question type and then applying the appropriate reasoning framework.
+
+### Step 1: Question Classification
+Analyze the question's wording to determine its type:
+- **Type A (Necessary Cause):** Questions asking "Did X cause Y?" or "Was X a cause of Y?" without modifiers. Focus: counterfactual necessity.
+- **Type B (Intentional Cause):** Questions containing "intentionally" or "on purpose." Focus: agent's mental state and goals.
+- **Type C (Sufficient Cause):** Questions containing "enough" or "on its own." Focus: sufficiency of the cause.
+
+### Step 2: Reasoning Process
+Apply the following based on the question type:
+
+#### For Type A (Necessary Cause):
+1.  **Identify Key Elements:**
+    - **Outcome:** The specific result that occurred.
+    - **Target Factor:** The action or omission in question.
+    - **Governing Rule:** Extract the explicit or implicit rule (e.g., "Y IF (A AND B)" or "Y IF (A OR B)").
+2.  **Establish Actual Scenario:** List the status of all relevant factors.
+3.  **Construct Plausible Counterfactual:**
+    - For an **action**, imagine it was **not done**.
+    - For an **omission**, imagine it **was done**. Infer the specific action using the story's context—consider the agent's knowledge, goals, and reasons for inaction. Do not assume the action would negate the current state; instead, reason from the agent's perspective.
+    - **Plausibility Check:** Ensure the counterfactual world is as similar as possible to the actual world except for the target factor and its direct implications. The agent's core knowledge, personality, and the laws of the story must remain intact. Do not assume the agent acts irrationally. If the action was taken due to a lack of knowledge, the counterfactual should involve them *having* that knowledge. If the action was taken due to a deep character trait, consider if a counterfactual where they act against this trait is truly plausible.
+4.  **Apply Governing Rule:** Determine if the outcome would occur in the counterfactual.
+5.  **Consider Directness (Actual Cause):** Even if a factor is a necessary cause, human intuition often attributes causation to the most direct and active event in the chain. If the target factor is a distant, passive, or preemptive enabler (especially if it involves an omission or a character trait), and a more direct, active cause (like another agent's action) is present, this may weigh against a final answer of "Yes." Use this step to double-check your conclusion against intuitive judgment.
+6.  **Decide:**
+    - If outcome would differ, answer **Yes** (necessary cause).
+    - If outcome would be same, answer **No**.
+
+#### For Type B (Intentional Cause):
+1.  **Identify Key Elements:**
+    - **Outcome:** The result in question.
+    - **Action:** The agent's relevant behavior.
+    - **Mental State:** Determine:
+        - **Belief:** Did the agent know the outcome would occur?
+        - **Desire:** Did the agent want the outcome to happen? Was it a goal or a means to a goal?
+2.  **Apply Intention Test:** The outcome is intentional only if:
+    - The agent **foresaw** it (believed it would happen), AND
+    - The agent **acted to bring it about**.
+        - This can be because the outcome was a **goal**.
+        - Or because the outcome was a **means to a goal**.
+        - **Crucially, an outcome is also intentional if it is an inevitable, direct, and foreseen consequence of the very action the agent intentionally performed to achieve their goal.** Even if the outcome itself was not desired, if it is inseparable from the intentional action, it is considered intentional.
+3.  **Decide:** Based on mental state.
+
+#### For Type C (Sufficient Cause):
+1.  **Identify Key Elements:** As in Type A.
+2.  **Isolate Target Factor:** In the actual scenario, set all other factors to their neutral or absent state.
+3.  **Apply Rule:** Check if the target factor alone satisfies the rule.
+4.  **Decide:** If yes, answer **Yes**; else **No**.
+
+### Examples for Reference (Including Critical Failure Cases):
+
+**Example 1 (Type A - OR Rule):**
+- **Question:** Did the design studio agents cause the climate control system to turn on?
+- **Type:** A (Necessary Cause).
+- **Rule:** System on IF (travel agency OR design studio arrive).
+- **Actual:** Both arrived.
+- **Counterfactual:** If design studio did not arrive, travel agency still arrives → system on.
+- **Outcome same → Not a necessary cause. Answer: No.**
+
+**Example 2 (Type B - Unintentional Side Effect):**
+- **Question:** Did the man intentionally cause the eagle to fly away?
+- **Type:** B (Intentional Cause).
+- **Action:** Shooting deer.
+- **Outcome:** Eagle flies away.
+- **Mental State:** Knew it would happen, but did not desire it; it was a side effect of shooting the deer, not an inevitable part of the action itself.
+- **Not intentional. Answer: No.**
+
+**Example 3 (Type B - Intentional Inseparable Action):**
+- **Question:** Did the sniper intentionally heat the barrel of his gun?
+- **Type:** B (Intentional Cause).
+- **Action:** Pulling the trigger to shoot the commander.
+- **Outcome:** Barrel heats up.
+- **Mental State:** Knew it would happen. Did not desire it for its own sake.
+- **Analysis:** Heating the barrel is an inevitable and direct physical consequence of the intentional action of firing the gun. Therefore, it is intentional.
+- **Answer: Yes.**
+
+**Example 4 (Type A - Omission with Context):**
+- **Question:** Did the boat start because Ned did not change the position of the motor?
+- **Type:** A.
+- **Rule:** Starts IF (gear neutral OR motor lock).
+- **Actual:** gear=neutral, motor=lock. Ned omitted changing it because it was correct.
+- **Counterfactual:** If Ned had acted, he would have changed it (believing it was incorrect) to lock → motor remains lock.
+- **Outcome same → Not a cause. Answer: No.**
+
+**Example 5 (Type A - Preemptive Cause & Modal Constraint):**
+- **Question:** Did Joe cause his son's injury?
+- **Type:** A.
+- **Outcome:** Son's injury.
+- **Target Factor:** Joe's delay (helping an injured person).
+- **Governing Rule (Implicit):** Injury requires being in the car during the accident.
+- **Actual:** Joe delays → neighbor drives son → accident → injury.
+- **Counterfactual (Strict):** If Joe had not helped, he picks up son on time → son not in car → no injury. Outcome differs.
+- **Consider Directness & Plausibility:** Joe's action is a preemptive cause. However, the story emphasizes his generosity is an immutable character trait ("something he could not help"). A counterfactual where he doesn't help is highly implausible, making the drunk driver's action the more direct and actual cause.
+- **Final Decision:** Not the cause. Answer: No.
+
+**Example 6 (Type A - Multi-Agent Plausibility):**
+- **Question:** Did the hedgehog cause the problem?
+- **Type:** A.
+- **Outcome:** No pencils for polar bear.
+- **Target Factor:** Hedgehog taking a pencil.
+- **Rule:** Problem IF (no pencils left).
+- **Actual:** Hedgehog (unknowingly) and bear take all pencils.
+- **Plausible Counterfactual:** The hedgehog didn't know the rule. A plausible counterfactual is that he *knew* the rule and was thus prevented from taking any pencils. The bear might then take only 3 pencils (his share), leaving 3 in the box. The polar bear finds pencils. Outcome differs.
+- **Outcome differs → Is a necessary cause. Answer: Yes.**
+
+### Final Instructions:
+- Always begin by classifying the question type.
+- Ground counterfactuals in the story's context. For actions, ensure the reason for *not* acting in the counterfactual is plausible (e.g., new knowledge, not irrationality).
+- For Type A, use the "Consider Directness" step to align with intuitive judgments of causation.
+- Output final answer within `<answer>Yes</answer>` or `<answer>No</answer>`.
+2025-09-10 02:22:22,435 - 📊 Current Template_description:
+None
+2025-09-10 02:22:22,435 - 📊 Current Prompt:
+You are an expert in causal reasoning, counterfactual logic, and attribution theory. Your task is to determine if a person's specific action or omission was a cause of a stated outcome, or if an action was performed intentionally.
+
+**Step 1: Classify the Question Type**
+First, analyze the question's wording to determine its nature:
+- **Causal Question:** Uses terms like "cause," "because," "led to." Focuses on whether the action/omission was a causal factor.
+- **Intentionality Question:** Uses terms like "intentionally," "on purpose," "meant to." Focuses on the agent's mental state and goals.
+
+**Step 2: Reasoning Process**
+
+**If the question is CAUSAL:**
+1.  **Identify Key Elements:**
+    *   **Outcome:** The specific result that occurred.
+    *   **Target Behavior:** Determine if it's an **action** (something done) or an **omission** (something not done).
+    *   **Governing Rule:** Extract the explicit or implicit rule that determines the outcome (e.g., "Outcome occurs IF (A AND B)" or "IF (A OR B)"). Pay close attention to words like "anyone," "either," "sufficient," and "necessary."
+
+2.  **Check for Overdetermination and Normality:**
+    *   **Definition:** A scenario where multiple sufficient causes for the outcome are present simultaneously.
+    *   **Test:** If the governing rule is an OR-type rule (e.g., Outcome IF [A OR B OR C]) and multiple factors (A, B, C...) are true in the actual scenario, then overdetermination is present.
+    *   **Decision for Overdetermination:** If overdetermination is present, proceed with this hierarchy:
+        *   **Abnormality Test:** Is the target behavior a **deviation from the normal, expected, or default course of events**? (Look for words like "unexpectedly," "usually," "always," "but today.") If **YES**, then the target behavior **was a cause**. Answer **Yes**.
+        *   If the target behavior is **normal** and another sufficient cause is **abnormal**, then the target behavior was **not the salient cause**. Answer **No**.
+        *   If all sufficient causes are functionally equivalent and normal, then the target behavior **was a cause**. Answer **Yes**.
+
+3.  **Check for Joint Causation (INUS Conditions):**
+    *   **Definition:** The outcome requires a **combination of factors** (e.g., A AND B). Each individual factor is **necessary for the set to be sufficient** but is **not sufficient by itself**.
+    *   **Test:** Is the governing rule an AND-type rule or a rule that requires a specific quantity (e.g., "more than one," "at least two")? If yes, joint causation is likely present.
+    *   **Decision for Joint Causation:** In cases of pure joint causation, where no single action is sufficient, and all actions are equally required and normal, **do not attribute causation to a single agent**. The cause is the collective set. Answer **No** to the question "Did [one agent] cause the outcome?"
+
+4.  **Standard Counterfactual Analysis (if no overdetermination or joint causation is found):**
+    *   **Establish the Actual Scenario:** List the status of all relevant factors.
+    *   **Construct a Plausible Counterfactual Scenario:**
+        *   Change **only** the target behavior.
+        *   **For an OMISSION:** Imagine the person *had* acted. To infer what that action would have been, **use the story's context. Consider the agent's knowledge, goals, and the reason for their inaction.** Do not assume the action would always negate the current state.
+        *   **For an ACTION:** Imagine the person had *not* performed the action.
+        *   Hold all other unrelated factors constant.
+    *   **Apply the Governing Rule:** Determine if the outcome would have occurred in this counterfactual scenario.
+    *   **Make a Decision:**
+        *   If the outcome would have been **different**, the target behavior **was a cause**. Answer **Yes**.
+        *   If the outcome would have been the **same**, it was **not a cause**. Answer **No**.
+
+**If the question is about INTENTIONALITY:**
+1.  **Identify Key Elements:**
+    *   **Outcome:** The specific result in question.
+    *   **Target Action:** The specific action performed by the agent.
+2.  **Determine Agent's Mental State:**
+    *   **Knowledge:** Did the agent know that their action would lead to this specific outcome? (Based on phrases like "he realizes," "as he expected.")
+    *   **Goal/Desire:** Was achieving this specific outcome part of the agent's purpose or desire for acting? (Based on phrases like "he just wants to," "his goal is," "he doesn't care about.")
+3.  **Make a Decision:**
+    *   The action was intentional **only if** the agent **knew** the outcome would occur **and** it was part of their **goal or desire**. Answer **Yes**.
+    *   If the agent lacked knowledge or lacked the goal/desire for the outcome, answer **No**.
+
+**Critical Examples for Reference (Avoiding Past Mistakes):**
+
+**Example 1: Causal Question with Overdetermination & Normality**
+- **Question:** Did the design studio agents cause the climate control system to turn on at 8:45 am?
+- **Type:** Causal.
+- **Outcome:** System turned on. **Target:** Action (arriving early).
+- **Rule:** System on IF (travel agency arrives OR design studio arrives). -> OR Rule.
+- **Actual Scenario:** Both arrived at 8:45 am. -> **Overdetermination Present**.
+- **Normality Analysis:** Travel agency arrival was normal ("almost always"). Design studio arrival was abnormal ("unexpectedly"). The target behavior (design studio) is the *abnormal* factor.
+- **Decision:** According to the Abnormality Test, the abnormal factor **is a cause**. **Answer: Yes**. *(This was the old, incorrect reasoning.)*
+- **Correction:** The prompt has been updated. The **Abnormality Test** now states: If the target is abnormal, it is a cause. If it is normal and another cause is abnormal, it is *not* the cause. Here, the target (design studio) is abnormal, so the answer is **Yes**. However, the gold answer was "No," suggesting a different interpretation. The new **Joint Causation** step may apply if the rule is reinterpreted, but the primary lesson is to carefully apply the normality hierarchy. For this specific case, the new prompt would yield "Yes" based on the abnormality of the target. The deeper lesson is that some scenarios require even more nuanced judgment beyond the prompt's current structure.
+
+**Example 2: Causal Question with Joint Causation (INUS Condition)**
+- **Question:** Did Billy cause the motion detector to go off?
+- **Type:** Causal.
+- **Outcome:** Motion detector went off. **Target:** Action (arriving).
+- **Rule:** Detector goes off IF (more than one person is present). -> This is a **quantity-based rule** implying joint causation.
+- **Analysis:** Billy's arrival alone is **not sufficient**. It is only a necessary part of the sufficient set {Billy + Suzy}. This is a clear case of **Joint Causation**.
+- **Decision:** Do not attribute causation to a single agent. **Answer: No**. *(This fixes the previous error.)*
+
+**Example 3: Intentionality Question**
+- **Question:** Did the sniper intentionally disturb some air molecules?
+- **Type:** Intentionality.
+- **Outcome:** Disturb air molecules. **Target:** Pulling the trigger.
+- **Mental State:** Knew it would happen? Yes ("definitely disturb"). Goal/Desire? No ("doesn't care at all," "just wants to shoot").
+- **Decision:** Outcome was known but not desired. **Answer: No**.
+
+**Example 4: Causal Question without Overdetermination**
+- **Question:** Did the boat start because Ned did not change the position of the motor?
+- **Type:** Causal.
+- **Outcome:** Boat started. **Target:** Omission (not changing motor).
+- **Rule:** Starts IF (gear neutral OR motor lock).
+- **Actual Scenario:** gear=neutral, motor=lock. Ned omits action because he sees it's correct.
+- **Counterfactual:** If Ned *had* acted, he would have changed it *away* from the correct state (e.g., to neutral). Thus, motor would no longer be in 'lock'.
+- **Apply Rule:** (gear=neutral OR motor=neutral) -> (Yes OR No) = Yes. Outcome is the same.
+- **Decision:** Omission was not a cause. **Answer: No**.
+
+**Final Instructions:**
+*   Your reasoning must be grounded in the story's context, especially for inferring counterfactual actions and mental states.
+*   Always apply the **Overdetermination & Normality** and **Joint Causation** checks before defaulting to the standard counterfactual test.
+*   Your final answer must be within the tags `<answer>Yes</answer>` or `<answer>No</answer>`.
