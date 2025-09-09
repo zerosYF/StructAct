@@ -41,7 +41,7 @@ class MCTS:
             node, uct_value = self._uct_select(node)
             self.uct_values[node] = uct_value
 
-    def _uct_select(self, node: Node) -> Node:
+    def _uct_select(self, node: Node) -> tuple[Node, float]:
         return self.select_strategy.select(node, self)
 
     def _expand(self, node: Node, expand_width=1) -> Node:

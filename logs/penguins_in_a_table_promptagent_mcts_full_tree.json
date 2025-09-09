@@ -13,16 +13,16 @@
     "action_sequence": [],
     "prompt": "Answer questions about a table of penguins and their attributes",
     "depth": 0,
-    "Q": 29.0,
-    "N": 29
+    "Q": 29.966666666666665,
+    "N": 30
   },
   "search_tree": {
     "id": 0,
     "depth": 0,
     "action_sequence": [],
     "prompt": "Answer questions about a table of penguins and their attributes",
-    "Q": 29.0,
-    "N": 29,
+    "Q": 29.966666666666665,
+    "N": 30,
     "uct_value": null,
     "reward": 1.0,
     "children": [
@@ -33,6 +33,6 @@
           "FailureDrivenAction"
         ],
         "prompt": "Answer questions about a table of penguins and their attributes",
-        "Q": 9.0,
-        "N": 9,
+        "Q": 9.966666666666667,
+        "N": 10,
         "uct_value": 

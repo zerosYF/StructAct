@@ -23,7 +23,9 @@ class ClassicUCTStrategy(UCTStrategy):
             n_visits = mcts.N[n]
             return q / (n_visits + 1e-6) + self.exploration_weight * math.sqrt(log_N_parent / (n_visits + 1e-6))
         
-        return max(children, key=uct_value), uct_value
+        selected_node = max(children, key=uct_value)
+        
+        return selected_node, uct_value(selected_node)
 
 
 def get_select_strategy(config: SearchConfig, policy=None):
