@@ -67,7 +67,7 @@ class DefaultExpandStrategy(ExpandStrategy):
         if not actions:
             return None
 
-        failure_counts = np.array([a.failure_counter for a in actions])
+        failure_counts = np.array([a.sample_failure_counter for a in actions])
         usage_counts = np.array([a.usage_count for a in actions])
 
         logits = - (failure_counts + usage_counts) / temperature 
