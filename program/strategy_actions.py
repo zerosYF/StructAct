@@ -81,6 +81,10 @@ class FailureDrivenAction(OptimizeAction):
         )
         analysis = self.analyzer_model.api_call(evaluation)
 
+        trajectory_prompts_str = "\n".join(
+            [f"[Prompt {i+1}]: {p}" for i, p in enumerate(trajectory_prompts)]
+        )
+
         rewriting_input = (
             "I’m optimizing a prompt for a language model on a specific task.\n"
             
@@ -88,7 +92,7 @@ class FailureDrivenAction(OptimizeAction):
             f"My current prompt:\n {current_prompt}\n\n"
             f"This prompt leads to incorrect responses for the following examples:\n {wrong_examples}\n\n"
             f"Some analysis and suggestions for avoid wrong answers:\n {analysis}\n\n"
-            f"There are a list of former prompts evolve to the current prompt, and each prompt is modified from its former prompts:\n{trajectory_prompts}\n\n"
+            f"There are a list of former prompts evolve to the current prompt, and each prompt is modified from its former prompts:\n{trajectory_prompts_str}\n\n"
             
             "### Requirements for the new prompt: ### \n"
             "The new prompt should solve the current prompt's problems.\n"
@@ -195,6 +199,10 @@ class SuccessDrivenAction(OptimizeAction):
         )
         analysis = self.reasoning_model.api_call(evaluation)
 
+        trajectory_prompts_str = "\n".join(
+            [f"[Prompt {i+1}]: {p}" for i, p in enumerate(trajectory_prompts)]
+        )
+
         rewriting_input = (
             "I'm optimizing a prompt for a language model.\n"
 
@@ -202,7 +210,7 @@ class SuccessDrivenAction(OptimizeAction):
             f"My current prompt:\n{current_prompt}\n\n"
             f"Here are some successful examples where the model's prediction matches the correct answer:\n{success_examples}\n\n"
             f"The following strengths and reasoning strategies were identified from successful examples:\n{analysis}\n\n"
-            f"There are a list of former prompts evolve to the current prompt, and each prompt is modified from its former prompts:\n{trajectory_prompts}\n\n"
+            f"There are a list of former prompts evolve to the current prompt, and each prompt is modified from its former prompts:\n{trajectory_prompts_str}\n\n"
             
             "###  Requirements for the new prompt: ### \n"
             "The new prompt should consider the list of prompts and evolve based on the current prompt.\n"
