@@ -19,6 +19,7 @@ from task.mmlu.mmlu_business import BusinessMCQTask
 from task.mmlu.mmlu_engineering import EngineeringMCQTask
 from task.mmlu.med_qa import MedicalExamTask
 from task.mmlu.case_hold import LegalHoldingTask
+from task.mmlu.arc import PhysicsMCQTask
 
 from search.dual_search import DualSearchController
 from search.beam_search import BeamSearchController
@@ -42,6 +43,7 @@ TASK_REGISTRY = {
     "EngineeringMCQTask":EngineeringMCQTask,
     "MedicalExamTask": MedicalExamTask,
     "LegalHoldingTask": LegalHoldingTask,
+    "PhysicsMCQTask": PhysicsMCQTask,
 }
 
 

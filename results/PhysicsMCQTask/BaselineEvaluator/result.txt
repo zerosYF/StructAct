@@ -1,0 +1,9 @@
+🔍 Task: physics_mcq
+📊 Original ZeroShot Test Accuracy: 0.91
+📊 Original FewShot Test Accuracy: 0.935
+📊 Original Cot_FewShot Test Accuracy: 0.94
+📊 Cot ZeroShot Test Accuracy: 0.935
+📊 Cot FewShot Test Accuracy: 0.955
+📊 Cot Cot_FewShot Test Accuracy: 0.94
+
+⏱️ Time Elapsed: 13 min 32 sec (812.21 seconds)

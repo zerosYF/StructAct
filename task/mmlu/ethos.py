@@ -49,7 +49,7 @@ class HateSpeechDetectionTask(TaskBase):
                 "violence": 0 or 1,
                 "directed_vs_generalized": 0 or 1,
                 "gender": 0 or 1,
-                "rase": 0 or 1,
+                "race": 0 or 1,
                 "national_origin": 0 or 1,
                 "disability": 0 or 1,
                 "religion": 0 or 1,
@@ -87,6 +87,12 @@ class HateSpeechDetectionTask(TaskBase):
 
     def get_reward(self, output: str, target: Dict) -> float:
         pred = self._normalize_answer(output)
+        if pred is {}:
+            return None
+        logger.info(
+            f"[Reward Evaluation]\n"
+            f"  Model Output: {output}\n"
+        )
         logger.info(
                 f"[Reward Evaluation]\n"
                 f"  Model Answer: {pred}\n"
