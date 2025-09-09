@@ -1,9 +1,9 @@
 🔍 Task: geometric_shapes
-📊 Original ZeroShot Test Accuracy: 0.42
-📊 Original FewShot Test Accuracy: 0.485
-📊 Original Cot_FewShot Test Accuracy: 0.595
-📊 Cot ZeroShot Test Accuracy: 0.91
-📊 Cot FewShot Test Accuracy: 0.86
-📊 Cot Cot_FewShot Test Accuracy: 0.885
+📊 Original ZeroShot Test Accuracy: 0.43
+📊 Original FewShot Test Accuracy: 0.45
+📊 Original Cot_FewShot Test Accuracy: 0.45
+📊 Cot ZeroShot Test Accuracy: 0.895
+📊 Cot FewShot Test Accuracy: 0.865
+📊 Cot Cot_FewShot Test Accuracy: 0.845
 
-⏱️ Time Elapsed: 80 min 43 sec (4843.00 seconds)
+⏱️ Time Elapsed: 67 min 25 sec (4045.48 seconds)

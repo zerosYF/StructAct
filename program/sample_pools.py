@@ -1,10 +1,11 @@
 import random
 from collections import deque
 from logger import logger
+import math
 
 class PoolSample:
     def __init__(self, raw_sample:dict):
-        self.raw = raw_sample  # 原始 dict, 包含 question/answer/choices
+        self.raw = raw_sample  # question/answer/choices
         self.visits = 0
         self.corrects = 0
         self.reward = 0.0
@@ -22,7 +23,7 @@ class DynamicSamplePool:
         self.hard = []
         self.mix = []
         self.success = []
-        self.order = deque()  # 按加入顺序维护
+        self.order = deque() 
 
     def _evict_oldest(self):
         if not self.order:
@@ -33,15 +34,13 @@ class DynamicSamplePool:
         self.success = [s for s in self.success if s != old]
 
     def add_or_update(self, sample: PoolSample, is_correct):
-        # 更新统计
         sample.update(is_correct)
         logger.info(f"Sample updated: visits={sample.visits}, corrects={sample.corrects}, reward={sample.reward:.3f}")    
-        # 移除旧池
+        
         self.hard = [s for s in self.hard if s != sample]
         self.mix = [s for s in self.mix if s != sample]
         self.success = [s for s in self.success if s != sample]
 
-        # 根据 reward 放入新池
         r = sample.reward
         if r < self.low_threshold:
             self.hard.append(sample)
@@ -50,12 +49,21 @@ class DynamicSamplePool:
         else:
             self.mix.append(sample)
 
-        # 容量控制
         self.order.append(sample)
         while len(self.order) > self.max_size:
             self._evict_oldest()
         
         logger.info(f"Pool sizes: hard={len(self.hard)}, mix={len(self.mix)}, success={len(self.success)}")
+    
+    def _uct_score(self, sample: PoolSample, total_visits: int, pool_type:str, exploration_weight=1.0):
+        exploration_term = exploration_weight * math.sqrt(math.log(total_visits + 1) / (sample.visits + 1))
+        if pool_type == "hard":
+            score = - sample.reward + exploration_term
+        elif pool_type == "success":
+            score = sample.reward + exploration_term
+        else:  
+            score = sample.reward
+        return score
 
     def sample(self, pool="mixed", k=5):
         if pool == "hard":
@@ -67,22 +75,28 @@ class DynamicSamplePool:
         else:
             raise ValueError(f"Unknown pool: {pool}")
         logger.info(f"Sampling {k} from pool '{pool}' with {len(values)} available samples.")
-        return random.sample(values, min(k, len(values)))
+        if pool == "mixed":
+            selected = random.sample(values, min(k, len(values)))
+            logger.info(f"Selected {len(selected)} samples from mixed pool.")
+        else:
+            scored_samples = [(s, self._uct_score(s, sum(smp.visits for smp in values), pool)) for s in values]
+            scored_samples.sort(key=lambda x: x[1], reverse=True)
+            selected = [s for s, score in scored_samples[:k]]
+            logger.info(f"Selected {len(selected)} samples from {pool} pool based on UCT scores.")
+        return selected
 
     def initialize(self, dataset, evaluator, current_prompt: str):
         """dataset: list of raw sample dicts"""
         logger.info(f"Initializing sample pool with {len(dataset)} samples...")
 
-        # 一次性评估整个 dataset
         rewards = evaluator.batch_reward_n(current_prompt, dataset)  # list[float], 长度 = len(dataset)
 
         for raw, r in zip(dataset, rewards):
             s = PoolSample(raw)
             s.visits = 1
-            s.corrects = int(r)   # 正确样本: 1，错误样本: 0
-            s.reward = float(r)   # 和 corrects 相同，只是用 float 存储
+            s.corrects = int(r)   
+            s.reward = float(r)  
 
-            # 分类
             if s.reward < self.low_threshold:
                 self.hard.append(s)
             elif s.reward >= self.high_threshold:
@@ -90,7 +104,6 @@ class DynamicSamplePool:
             else:
                 self.mix.append(s)
 
-            # 顺序队列
             self.order.append(s)
             if len(self.order) > self.max_size:
                 self._evict_oldest()

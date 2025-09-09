@@ -1,9 +1,9 @@
 🔍 Task: engineering_mcq
-📊 Original ZeroShot Test Accuracy: 0.505
-📊 Original FewShot Test Accuracy: 0.51
-📊 Original Cot_FewShot Test Accuracy: 0.71
-📊 Cot ZeroShot Test Accuracy: 0.755
-📊 Cot FewShot Test Accuracy: 0.735
-📊 Cot Cot_FewShot Test Accuracy: 0.71
+📊 Original ZeroShot Test Accuracy: 0.485
+📊 Original FewShot Test Accuracy: 0.5
+📊 Original Cot_FewShot Test Accuracy: 0.46
+📊 Cot ZeroShot Test Accuracy: 0.72
+📊 Cot FewShot Test Accuracy: 0.725
+📊 Cot Cot_FewShot Test Accuracy: 0.745
 
-⏱️ Time Elapsed: 239 min 58 sec (14398.83 seconds)
+⏱️ Time Elapsed: 164 min 41 sec (9881.21 seconds)

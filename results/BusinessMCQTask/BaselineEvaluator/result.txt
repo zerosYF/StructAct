@@ -1,9 +1,9 @@
 🔍 Task: business_mcq
-📊 Original ZeroShot Test Accuracy: 0.445
-📊 Original FewShot Test Accuracy: 0.485
-📊 Original Cot_FewShot Test Accuracy: 0.445
-📊 Cot ZeroShot Test Accuracy: 0.81
-📊 Cot FewShot Test Accuracy: 0.825
-📊 Cot Cot_FewShot Test Accuracy: 0.84
+📊 Original ZeroShot Test Accuracy: 0.47
+📊 Original FewShot Test Accuracy: 0.47
+📊 Original Cot_FewShot Test Accuracy: 0.71
+📊 Cot ZeroShot Test Accuracy: 0.795
+📊 Cot FewShot Test Accuracy: 0.86
+📊 Cot Cot_FewShot Test Accuracy: 0.855
 
-⏱️ Time Elapsed: 79 min 41 sec (4781.22 seconds)
+⏱️ Time Elapsed: 72 min 22 sec (4342.76 seconds)
