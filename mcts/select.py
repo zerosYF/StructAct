@@ -23,39 +23,8 @@ class ClassicUCTStrategy(UCTStrategy):
             n_visits = mcts.N[n]
             return q / (n_visits + 1e-6) + self.exploration_weight * math.sqrt(log_N_parent / (n_visits + 1e-6))
         
-        return max(children, key=uct_value)
+        return max(children, key=uct_value), uct_value
 
-class PriorUCTStrategy(UCTStrategy):
-    def __init__(self, policy_controller, exploration_weight=1.0):
-        self.policy_controller = policy_controller
-        self.exploration_weight = exploration_weight
-
-    def select(self, node, mcts):
-        children = mcts.children.get(node, [])
-        if not children:
-            return None
-
-        # Visit count of the current node
-        log_N_parent = math.log(mcts.N.get(node, 1) + 1e-6)
-
-        # Placeholder for prior probabilities (can be replaced with actual policy output)
-        prior_probs = 1.0
-
-        def uct_value(child_node):
-            try:
-                action = child_node.action_seq[-1]
-                pi = prior_probs  # Replace with actual policy if available
-            except (ValueError, IndexError):
-                pi = 1.0 
-
-            q = mcts.Q.get(child_node, 0)
-            n = mcts.N.get(child_node, 0)
-            return q / (n + 1e-6) + self.exploration_weight * pi * math.sqrt(log_N_parent / (n + 1e-6))
-
-        return max(children, key=uct_value)
 
 def get_select_strategy(config: SearchConfig, policy=None):
-    if config.uct_idx == 0:
-        return ClassicUCTStrategy(config.exploration_weight)
-    else:
-        return PriorUCTStrategy(policy, config.exploration_weight)
+    return ClassicUCTStrategy(config.exploration_weight)

@@ -141,6 +141,7 @@ class DualSearchController(SearchController):
             "prompt": node.current_prompt,
             "Q": q_val,
             "N": n_val, 
+            "uct_value": mcts.uct_value.get(node, None),
             "reward": node.reward_value,
             "children": []
         }

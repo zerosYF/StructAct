@@ -38,7 +38,8 @@ class MCTS:
             children_count = len(self.children.get(node, []))
             if children_count == 0 or node.is_terminal():
                 return path
-            node = self._uct_select(node)
+            node, uct_value = self._uct_select(node)
+            self.uct_value[node] = uct_value
 
     def _uct_select(self, node: Node) -> Node:
         return self.select_strategy.select(node, self)
@@ -92,7 +93,6 @@ class MCTS:
                 try:
                     reward = future.result()
                     results.append((child, reward))
-                    print(f"###################################:{reward}")
                     logger.info(f"Rollout target {child} score: {reward:.2f}")
                 except Exception as e:
                     logger.error(f"⚠️ Error during rollout of {child}: {e}")

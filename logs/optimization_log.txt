@@ -1,0 +1,304 @@
+2025-09-09 21:49:11,460 - 📊 Current Template_description:
+None
+2025-09-09 21:49:11,462 - 📊 Current Prompt:
+Answer questions about causal attribution by following a structured reasoning process. Pay special attention to cases of causal omission and overdetermination. For each scenario:
+
+1.  **Identify the Outcome:** Clearly state the event in question.
+2.  **State the Rules:** Formalize the logical or causal rules that govern this outcome. Note any discrepancies between stated rules and actual rules.
+3.  **Analyze the Initial State:** Describe the relevant conditions *before* the agent's action, including the agent's knowledge, capabilities, and any duty to act.
+4.  **Apply the Refined Counterfactual Test:**
+    *   For **actions:** Ask, "If the agent had performed a **different, plausible action** (instead of the one they did), would the outcome have been different?"
+    *   For **omissions (inaction):** Ask, "If the agent had performed a **plausible intervention** (instead of doing nothing), would the outcome have been prevented?"
+    *   If the answer is **yes**, the action/inaction **is a cause**.
+5.  **Assess for Overdetermination (Multiple Sufficient Causes):** If the outcome would have happened anyway due to another sufficient cause, ask: "Was the agent's action or its result **independently sufficient** to cause the outcome?"
+    *   If **yes**, then the action **is a cause**. In cases of overdetermination (e.g., Condition A OR Condition B), multiple sufficient factors can all be causes. **This step is crucial and can override a negative result from the counterfactual test.**
+6.  **Consider Agency and Norms (For Omissions):** If the agent's action was an *omission*, consider: Did the agent have a **duty or ability to act**? Did they **knowingly** choose not to act after verifying the state? If yes, this strongly indicates the omission is a cause.
+7.  **Determine Intentionality (if asked):** For questions about intent, identify the agent’s **primary goal or desire**. An outcome is intentional **only if it was a conscious objective**, not merely a foreseen side-effect.
+
+**Key Guidance:**
+-   **Prioritize Step 5** in cases where multiple factors are sufficient for the outcome.
+-   For inaction, construct the counterfactual around a **specific, plausible intervention** the agent could have made, not the mere absence of the action.
+-   The agent's knowledge and duty are critical for evaluating omissions.
+
+Use this framework to provide a clear, logical justification for your final answer.
+2025-09-09 21:49:14,744 - 📊 Current Template_description:
+None
+2025-09-09 21:49:14,744 - 📊 Current Prompt:
+Answer questions about causal attribution by first classifying the question type and then applying the appropriate reasoning steps.
+
+### Step 0: Classify the Question
+Determine which type of causal question is being asked:
+- **Type A (Factual Cause-in-Fact):** Questions like "Did X cause Y?" or "Was X a cause of Y?" that focus solely on mechanistic, factual links.
+- **Type B (Blame/Responsibility):** Questions that imply fault, blame, or responsibility for a negative outcome.
+- **Type C (Intentional Action):** Questions that use words like "intentionally," "on purpose," or ask about an agent's primary goal or purpose.
+
+### For Type A Questions (Factual Causation):
+1.  **Apply Counterfactual Necessity:** Ask: "If the action had not occurred, would the outcome still have happened in the exact same way?" If the answer is no, the action is a cause-in-fact.
+2.  **Check for Joint Causation:** An action can be causal even if it was only one necessary part of a sufficient set of conditions.
+3.  **Prioritize Proximate Cause:** In chains of events, the most direct and intervening action is the primary cause, but do not let this override the counterfactual test.
+4.  **Ignore Normative Factors:** Intentions, permissions, prohibitions, or rules are irrelevant. Focus only on the mechanistic conditions that produced the outcome.
+
+### For Type B Questions (Blame/Responsibility):
+1.  **Establish Factual Causation:** First, apply the **Type A** analysis. If the action was not a cause-in-fact, conclude "No." If it was, proceed.
+2.  **Assess Foreseeability:** Was the outcome a reasonably foreseeable consequence of the action? If the outcome required a highly unusual, independent, or freak intervening event (e.g., a drunk driver), the chain of responsibility is likely broken, and the action is not blameworthy.
+3.  **Consider Normative Context:** An action that is morally neutral or praiseworthy (e.g., helping an injured person) is unlikely to be assigned blame for a highly unforeseeable outcome, even if it was a factual cause.
+
+### For Type C Questions (Intentional Action):
+1.  **Establish Factual Causation:** First, apply the2025-09-09 21:51:37,291 - 📊 Current Template_description:
+None
+2025-09-09 21:51:37,291 - 📊 Current Prompt:
+Answer questions about causal attribution by following this structured reasoning process. Prioritize identifying independently sufficient causes, as this can override the counterfactual test.
+
+**Reasoning Steps:**
+
+1.  **Identify the Outcome:** Precisely define the event in question.
+2.  **State the Rules:** Formalize the logical or causal rules governing the outcome. Note any discrepancies between stated and actual rules.
+3.  **Analyze the Initial State:** Describe relevant pre-action conditions, including the agent's knowledge, capabilities, and any duty to act.
+4.  **Apply the Refined Counterfactual Test:**
+    *   For **actions:** Ask, "If the agent had performed a **different, plausible action**, would the outcome have been different?"
+    *   For **omi2025-09-09 21:51:41,492 - 📊 Current Template_description:
+None
+2025-09-09 21:51:41,492 - 📊 Current Prompt:
+Answer questions about causal attribution by rigorously applying the following steps:
+
+1.  **Formalize Causal Rules:** Identify the necessary and/or sufficient conditions for the outcome. Express these as logical statements (e.g., "Outcome requires A AND B" or "Outcome occurs if X OR Y").
+2.  **Critique the Causal Model & Context:**
+    -   **Interdependence:** Could changing the target action realistically happen without affecting other conditions? If actions are interdependent, the "hold all else constant" assumption may be flawed.
+    -   **Symmetry:** Are other factors perfectly symmetric to the target action? If so, singular causation may be inappropriate.
+    -   **Normative Context:** Does the question's framing (e.g., commands, promises) suggest causation should be interpreted in a specific way?
+3.  **Isolate the Target Action:** Focus your analysis exclusively on the specific action or omission mentioned in the question, while respecting the interdependencies identified in Step 2.
+4.  **Apply the Cautious Counterfactual Test:** Mentally simulate a world where the target action did *not* occur (or, for an omission, where the action *did* occur), making only the **minimal, most plausible changes** to the scenario.
+    -   If the outcome would **not** have occurred, then the action was 2025-09-09 21:59:07,199 - 📊 Current Template_description:
+None
+2025-09-09 21:59:07,201 - 📊 Current Prompt:
+Answer questions about causal attribution by rigorously applying the following steps:
+
+1.  **Formalize Causal Rules:** Identify the necessary and/or sufficient conditions for the outcome. Express these as logical statements (e.g., "Outcome requires A AND B" or "Outcome occurs if X OR Y").
+2.  **Critique the Causal Model & Context:**
+    -   **Interdependence:** Could changing the target action realistically happen without affecting other conditions? If actions are interdependent, the "hold all else constant" assumption may be flawed.
+    -   **Pathway Specificity:** For omissions, consider if the target action (or inaction) was necessary for the outcome to occur *via the actual sequence of events*. Even in overdetermined scenarios, an omission can be causal if it allowed a specific sufficient condition to persist.
+    -   **Normative Context:** Does the question's framing (e.g., commands, promises, duties) suggest causation or intention should be interpreted in a specific way?
+3.  **Isolate the Target Action:** Focus your analysis exclusively on the specific action or omission mentioned in the question, while respecting the interdependencies identified in Step 2.
+4.  **Apply the Cautious Counterfactual Test:** Mentally simulate a world where the target action did *not* occur (or, for an omission, where the action *did* occur), making only the **minimal, most plausible changes** to the scenario.
+    -   If the outcome would **not** have occurred, then the action was a necessary condition.
+    -   If the outcome **would** have occurred, then the action was not a cause.
+    -   **For Omissions:** Pay special attention to whether the counterfactual action would have *preempted* one causal pathway, even if another would still cause the outcome. The omission may be a cause for the outcome occurring *as it did*.
+5.  **Check for Overdetermination and Symmetry:**
+    -   **Independent Overdetermination:** Would another *independent* sufficient cause have produced the outcome? If yes, the action is not a *necessary* cause, but it may still be a cause if it was part of the actual causal pathway.
+    -   **Symmetric Overdetermination (Dual Necessity):** Was the outcome caused by a set of conditions that were all necessary? If the target action is one part of a symmetric set, it is a contributing cause but not *the* sole cause. The final answer may be "No" to singular attribution.
+    -   **Asymmetric Preemption:** If the outcome is overdetermined, determine if the target action/omission was necessary for the outcome to occur via the actual sequence of events. If removing the target would force the outcome to be produced by a different sufficient cause, the target may still be considered a cause for the actual event.
+6.  **Integrate Concepts for Intentionality and Responsibility:**
+    -   If the question is solely about **factual causation**, proceed to Conclusion.
+    -   If the question involves **intention**, **blame**, or **responsibility**, use the causal analysis as an input, but then apply additional rules:
+        -   **Intention:** An agent intentionally causes an outcome if (1) their action was a cause of the outcome (from prior steps), and (2) they knew or foresaw that the outcome would occur as a result of their action. The agent's primary goal or whether they "cared" about the outcome is less relevant than their knowledge.
+        -   **Blame/Responsibility:** These depend on intention, knowledge, duty, and normative expectations. A person may be responsible for an outcome they caused even without intention, especially if they had a duty to prevent it.
+7.  **Conclude:** Based on this analysis, provide a final "Yes" or "No" answer. If the causation is symmetric and the question asks for singular attribution, the answer is typically "No".
+
+**Key Reasoning Strategies to Apply:**
+-   **The counterfactual test is paramount:** If removing the action prevents the outcome, it is a necessary cause. This is the primary tool for determining factual causation.
+-   **Treat omissions as causal events:** An omission can be a cause by allowing a pre-existing sufficient condition to remain active. Apply the counterfactual: if the action had been performed, would it have prevented the outcome?
+-   **Use logical rules (AND/OR) to model the scenario's mechanics.** This is essential for formalizing causal relationships and identifying necessary conditions.
+-   **In symmetric cases (e.g., two people triggering a detector), the cause is the collective action.** Answer "No" to "Did [one person] cause it?"
+-   **For intention, knowledge of a certain outcome is often sufficient for intentionality,** regardless of the agent's primary goal or stated indifference.
+
+**Guiding Examples:**
+
+**Example A (Omission & Preemption):**
+**Question:** David's clothes will dry if either MAX DRY OR HIGH TEMP is true. Both are true. David does nothing to change the HIGH TEMP setting. Did David's clothes dry because he did not change the temperature?
+**Answer:** Yes
+**Reasoning:** The outcome is overdetermined. However, David's omission (not changing the temp) was necessary for the HIGH TEMP setting to remain a cause in the actual pathway. If he had acted, the outcome would still occur, but via the MAX DRY pathway alone. His inaction is therefore a cause for the outcome occurring *as it did*.
+
+**Example B (Intention & Knowledge):**
+**Question:** A sniper fires a gun to kill a target, knowingly heating the barrel. He doesn't care about the heat. Did he intentionally heat the barrel?
+**Answer:** Yes
+**Reasoning:** Firing the gun factually caused the barrel to heat. The sniper knew this outcome was certain. Therefore, he intentionally caused the heating, even though it was a side effect and he was indifferent to it.
+
+**Example C (Symmetry):**
+**Question:** Suzy and Billy are told to be in a room at 9 am. A motion detector triggers if more than one person is present. Both arrive on time, and the detector goes off. Did Billy cause the detector to go off?
+**Answer:** No
+**Reasoning:** The detector requires more than one person (a symmetric set of conditions). Billy's arrival is a necessary part of the sufficient cause, but it is not the sole cause. Singular attribution to Billy is incorrect. The cause is the joint presence.
+ (e.g., "death" vs. "shot directly in the heart").
+2.  **State the Rules:** Formalize the logical, causal, or probabilistic rules governing the outcome. Note any discrepancies between stated and actual rules.
+3.  **Analyze the Initial State:** Describe relevant pre-action conditions, including the agent's knowledge, capabilities, and any duty to act. **Critically, note the probability, expectedness, or normalcy of key conditions.**
+4.  **Apply the Refined Counterfactual Test:**
+    *   For **actions:** Ask, "If the agent had performed a **different, plausible action within their normal capabilities**, would the outcome have been different?" **Define the "action" at the right level of detail (e.g., "pulling the trigger" vs. "firing an accurate shot").**
+    *   For **omissions:** Ask, "If the agent had performed a **specific, minimal, plausible intervention**, would the outcome have been prevented?"
+    *   A "yes" means the action/inaction **is a cause**.
+5.  **Assess for Overdetermination (APPLY CAUTIOUSLY):** If the counterfactual test suggests no causation, ask: "Was the agent’s action or its result **independently sufficient** to cause the outcome, **and were there other truly independent sufficient causes?**"
+    *   **Only if yes,** then the action **is a cause**. This overrides a negative counterfactual result **only in genuine overdetermination scenarios (e.g., two separate shooters).**
+    *   **If the factors are jointly necessary (e.g., A AND B), this is NOT overdetermination. Do not override the counterfactual result.**
+6.  **Evaluate Causal Salience (NEW STEP):** If the counterfactual suggests causation but the cause seems non-salient (e.g., it was highly probable), ask: "Was this condition highly probable or normal, while another condition was abnormal and decisive?" If yes, the abnormal condition is likely the primary cause, and the normal condition is a background enabler. **This can override a positive counterfactual result for mere enablers.**
+7.  **Consider Agency for Omissions:** If the action was an *omission*, consider the agent’s **duty and ability to act**. A knowing failure to act strongly indicates responsibility.
+8.  **Determine Intentionality (if asked):** An outcome is intentional **only if it was a specific conscious objective or a nearly certain known side-effect of the intended action.** **Rigorously separate this analysis from factual causation.** Analyze the agent's specific goal and level of control over the outcome's precise details.
+
+**Key Guidance:**
+-   **Apply Step 5 (Overdetermination) only for clear, independent sufficiency.** Avoid misapplying it to joint causes.
+-   **Always perform Step 6 (Causal Salience)** to distinguish causes from mere enablers in probabilistic scenarios.
+-   For omissions, the "plausible intervention" must be **specific and minimal**.
+-   **The agent's knowledge is critical for intentionality and omissions but does not negate factual causation.**
+-   **A factually causal act does not automatically make its outcomes intentional.** Analyze Step 8 independently.
+
+**Critical Examples to Avoid Past Mistakes:**
+-   **Example A (Normal vs. Abnormal):** In a game, drawing a *likely* green ball and an *unlikely* blue ball to win constitutes a win. The *unlikely* blue ball is the salient cause. The likely green ball is a background enabler, not a cause. (Ref: Example 3)
+-   **Example B (Intentionality Granularity):** An agent intends to fire a gun but slips, resulting in an accidentally perfect shot to the heart. The outcome "death" may be intentional, but the specific outcome "shot directly in the heart" is not, as it resulted from a slip, not controlled aim. (Ref: Example 5)
+
+Use this framework to justify your final answer clearly. If steps conflict, explain the conflict and resolve it by prioritizing salience (Step 6) for enablers vs. causes, and strict independence for overdetermination (Step 5).
+2025-09-09 21:55:31,123 - 📊 Current Template_description:
+None
+2025-09-09 21:55:31,123 - 📊 Current Prompt:
+Answer questions about causal attribution by rigorously applying the following steps:
+
+1.  **Formalize Causal Rules:** Identify the necessary and/or sufficient conditions for the outcome. Express these as logical statements (e.g., "Outcome requires A AND B" or "Outcome occurs if X OR Y").
+2.  **Critique the Causal Model & Context:**
+    -   **Interdependence:** Could changing the target action realistically happen without affecting other conditions? If actions are interdependent, the "hold all else constant" assumption may be flawed.
+    -   **Pathway Specificity:** For omissions, consider if the target action (or inaction) was necessary for the outcome to occur *via the actual sequence of events*. Even in overdetermined scenarios, an omission can be causal if it allowed a specific sufficient condition to persist.
+    -   **Normative Context:** Does the question's framing (e.g., commands, promises, duties) suggest causation or intention should be interpreted in a specific way?
+3.  **Isolate the Target Action:** Focus your analysis exclusively on the specific action or omission mentioned in the question, while respecting the interdependencies identified in Step 2.
+4.  **Apply the Cautious Counterfactual Test:** Mentally simulate a world where the target action did *not* occur (or, for an omission, where the action *did* occur), making only the **minimal, most plausible changes** to the scenario.
+    -   If the outcome would **not** have occurred, then the action was a necessary condition.
+    -   If the outcome **would** have occurred, then the action was not a cause.
+    -   **For Omissions:** Pay special attention to whether the counterfactual action would have *preempted* one causal pathway, even if another would still cause the outcome. The omission may be a cause for the outcome occurring *as it did*.
+5.  **Check for Overdetermination and Symmetry:**
+    -   **Independent Overdetermination:** Would another *independent* sufficient cause have produced the outcome? If yes, the action is not a *necessary* cause, but it may still be a cause if it was part of the actual causal pathway.
+    -   **Symmetric Overdetermination (Dual Necessity):** Was the outcome caused by a set of conditions that were all necessary? If the target action is one part of a symmetric set, it is a contributing cause but not *the* sole cause. The final answer may be "No" to singular attribution.
+    -   **Asymmetric Preemption:** If the outcome is overdetermined, determine if the target action/omission was necessary for the outcome to occur via the actual sequence of events. If removing the target would force the outcome to be produced by a different sufficient cause, the target may still be considered a cause for the actual event.
+6.  **Integrate Concepts for Intentionality and Responsibility:**
+    -   If the question is solely about **factual causation**, proceed to Conclusion.
+    -   If the question involves **intention**, **blame**, or **responsibility**, use the causal analysis as an input, but then apply additional rules:
+        -   **Intention:** An agent intentionally causes an outcome if (1) their action was a cause of the outcome (from prior steps), and (2) they knew or foresaw that the outcome would occur as a result of their action. The agent's primary goal or whether they "cared" about the outcome is less relevant than their knowledge.
+        -   **Blame/Responsibility:** These depend on intention, knowledge, duty, and normative expectations. A person may be responsible for an outcome they caused even without intention, especially if they had a duty to prevent it.
+7.  **Conclude:** Based on this analysis, provide a final "Yes" or "No" answer. If the causation is symmetric and the question asks for singular attribution, the answer is typically "No".
+
+**Key Reasoning Strategies to Apply:**
+-   Treat omissions as causal events to be tested. An omission can be a cause by allowing a pre-existing sufficient condition to remain active.
+-   Use logical rules (AND/OR) to model the scenario's mechanics.
+-   The counterfactual test is a primary tool, but its result must be interpreted in context, especially for overdetermination and omissions.
+-   In symmetric cases (e.g., two people triggering a detector), the cause is the collective action. Answer "No" to "Did [one person] cause it?"
+-   For intention, knowledge of a certain outcome is often sufficient for intentionality, regardless of the agent's primary goal or stated indifference.
+
+**Examples to Guide Reasoning:**
+
+**Example A (Omission & Preemption):**
+**Question:** David's clothes will dry if either MAX DRY OR HIGH TEMP is true. Both are true. David does nothing to change the HIGH TEMP setting. Did David's clothes dry because he did not change the temperature?
+**Gold Answer:** Yes
+**Reasoning:** The outcome is overdetermined. However, David's omission (not changing the temp) was necessary for the HIGH TEMP setting to remain a cause in the actual pathway. If he had acted (changed the temp to LOW), the outcome would still occur, but via the MAX DRY pathway alone. His inaction is therefore a cause for the outcome occurring *as it did* (with the HIGH TEMP setting active).
+
+**Example B (Intention & Knowledge):**
+**Question:** A sniper fires a gun to kill a target, knowingly heating the barrel. He doesn't care about the heat. Did he intentionally heat the barrel?
+**Gold Answer:** Yes
+**Reasoning:** Firing the gun factually caused the barrel to heat (Step 4). The sniper knew this outcome was certain (Step 6). Therefore, he intentionally caused the heating, even though it was a side effect and he was indifferent to it. Intention is based on knowledge and causation, not just desire.
+
+**Example C (Symmetry):**
+**Question:** Suzy and Billy are told to be in a room at 9 am. A motion detector triggers if more than one person is present. Both arrive on time, and the detector goes off. Did Billy cause the detector to go off?
+**Gold Answer:** No
+**Reasoning:** The boss's command to both creates interdependence and symmetry. Billy's arrival is a necessary part of the sufficient cause (both being present), but it is not the sole cause. Singular attribution to Billy is incorrect. The cause is the joint presence of both individuals.
+2025-09-09 21:56:10,367 - 📊 Current Template_description:
+None
+2025-09-09 21:56:10,367 - 📊 Current Prompt:
+Answer questions about causal attribution by first classifying the question type and then applying the appropriate reasoning steps. Pay meticulous attention to the narrative timeline and the specific wording of the question.
+
+### Step 0: Classify the Question
+Determine which type of causal question is being asked:
+- **Type A (Factual Cause-in-Fact):** Questions like "Did X cause Y?" or "Was X a cause of Y?" that focus solely on mechanistic, factual links.
+- **Type B (Blame/Responsibility):** Questions that imply fault, blame, or responsibility for a negative outcome. Uses words like "responsible," "fault," "blame."
+- **Type C (Intentional Action):** Questions that use words like "intentionally," "on purpose," or ask about an agent's primary goal or purpose.
+
+### For Type A Questions (Factual Causation):
+**CRITICAL: First, identify the precise moment the outcome Y was first instantiated.** This is often the key to resolving ambiguity.
+
+1.  **Identify the Outcome Mechanism:** Precisely determine the conditions required to produce the outcome. Does it require one sufficient cause or a set of joint conditions?
+2.  **Apply a Two-Pronged Causal Test:**
+    -   **Actual Cause Test:** Did the action X **actually** trigger the outcome by fulfilling the sufficient conditions **at the time it occurred**? If yes, X is an actual cause. This handles cases where an outcome is secured early, even if a redundant backup exists.
+    -   **Necessity Test (Refined Counterfactual):** Ask: "If X had not occurred, would the outcome Y have occurred **at the same time and through the same process**?"
+        -   If no, then X is a **necessary cause**.
+        -   If yes, because of a *different* event **later**, then X (the first cause) is **still an actual cause** (Preemption).
+        -   If yes, because of a *different* event at the *exact same time*, then X is **not a necessary cause** but may still be a **sufficient cause** (Simultaneous Overdetermination).
+3.  **Interpret the Question Wording:**
+    -   Questions like "Did X cause Y?" or "Was X a cause?" generally ask if X was **a** contributing cause (an actual cause). Answer "Yes" if it was an actual cause, even if not necessary.
+    -   Questions that use exclusive language like "**only** because of X" or "**solely** due to X" ask if X was the **necessary and sole** cause. This requires the necessity test to be false.
+4.  **Distinguish Causes from Conditions:** An action is a **cause** if it is an active, specific event that changes the state of the world. A **condition** is a passive or static state that enables the cause to have its effect but is not itself the cause.
+5.  **Ignore Normative Factors:** Intentions, permissions, prohibitions, or rules are irrelevant. Focus only on the mechanistic conditions that produced the outcome.
+
+### For Type B Questions (Blame/Responsibility):
+1.  **Establish Factual Causation:** First, apply the **Type A** analysis. If the action was not an actual cause-in-fact, conclude "No." If it was, proceed.
+2.  **Assess Foreseeability:** Was the outcome a reasonably foreseeable consequence of the action? If the outcome required a highly unusual, independent, or freak intervening event, the chain of responsibility is likely broken.
+3.  **Consider Normative Context:** An action that is morally neutral or praiseworthy is unlikely to be assigned blame for a highly unforeseeable outcome, even if it was a factual cause.
+
+### For Type C Questions (Intentional Action):
+1.  **Establish Factual Causation:** First, apply the **Type A** analysis. If the action was not an actual cause-in-fact, conclude "No." If it was, proceed.
+2.  **Identify the Primary Goal:** Determine the agent's main purpose or objective.
+3.  **Distinguish Goal from Side Effect:**
+    -   If the outcome was the **primary goal** or a **necessary means** to achieve the primary goal, then it was intentional.
+    -   If the outcome was a **foreseen but unintended consequence** (a side effect), then it was not intentional.
+
+### Final Step
+Synthesize your analysis from the appropriate pathway to provide a direct final answer to the question. Ensure your answer aligns with the specific wording of the question and the narrative flow of the story.
+
+**Remember:** Do not confuse factual causation with blame or intention. Use this classification system to apply the correct reasoning. The key is to identify if X was **a** cause (actual cause) versus **the** cause (necessary cause).
+
+### Examples for Reference (Few-Shot):
+**Example 1:**
+**Question:** Did Louie win the $100 bet because he made the layup?
+**Reasoning:** (Type A) The outcome (winning the bet) was first instantiated the moment the layup was made, as it satisfied the sufficient condition. The later 3-pointer is a redundant backup. The layup is therefore an **actual cause**. The question "because he made the layup" is interpreted as "was it a cause?".
+**Answer:** Yes
+
+**Example 2:**
+**Question:** Did Alice cause an empty email to be sent?
+**Reasoning:** (Type A) The outcome requires two simultaneous logins. Both Alice's and Zoe's actions are **jointly necessary**. The question "Did Alice cause..." is interpreted as "was Alice's action a cause?". Since it was a necessary part of the causal set, it is a cause.
+**Answer:** Yes
+**Note:** If the expected answer is "No", this suggests the question might be interpreted normatively (Type B) due to Alice following policy. Always double-check classification.
+
+**Example 3:**
+**Question:** Did Billy cause the motion detector to go off?
+**Reasoning:** (Type A) The outcome requires two people. Both Billy's and Suzy's arrivals are **jointly necessary**. The question "Did Billy cause..." is interpreted as "was Billy's action a cause?". Since it was a necessary part of the causal set, it is a cause.
+**Answer:** Yes
+**Note:** If the expected answer is "No", this suggests the question might be interpreted normatively (Type B). Always double-check classification.
+
+**Example 4:**
+**Question:** Did the fact that the black wire touched the battery cause the machine to short circuit?
+**Reasoning:** (Type A) The outcome requires both wires touching. Both actions are **jointly necessary**. The question asks if it was "a" cause. Since it was a necessary part of the causal set, it is a cause.
+**Answer:** Yes
+**Note:** If the expected answer is "No", this suggests a potential normative interpretation where the "deviant" red wire is seen as the true cause. Stick to factual mechanics for Type A.
+2025-09-09 21:58:29,301 - 📊 Current Template_description:
+None
+2025-09-09 21:58:29,301 - 📊 Current Prompt:
+Answer questions about causal attribution by following this structured reasoning process. Your goal is to determine if an agent's action was **the cause** of an outcome in a pragmatic, explanatory sense. Prioritize identifying the **difference-making cause**—the event without which the outcome would not have occurred **as it did** (e.g., at a specific time, in a specific way).
+
+**Reasoning Steps:**
+
+1.  **Identify the Outcome:** Precisely define the event in question, paying close attention to its specific details (e.g., "the system turning on *at 8:45 am*").
+2.  **State the Rules:** Formalize the logical, causal, or probabilistic rules governing the outcome. Note any discrepancies between stated and actual rules.
+3.  **Analyze the Initial State:** Describe relevant pre-action conditions, including the agent's knowledge, capabilities, and any duty to act. **Critically, note the probability, expectedness, or normalcy of key conditions.**
+4.  **Apply the Refined Counterfactual Test (THE PRIMARY TEST):**
+    *   For **actions:** Ask, "If the agent had performed a **different, plausible action within their normal capabilities**, would the outcome have been **different in any way**?" **Define the "action" at the right level of detail.**
+    *   For **omissions:** Ask, "If the agent had performed a **specific, minimal, plausible intervention**, would the outcome have been prevented?"
+    *   A "yes" means the action/inaction **is a cause**. A "no" means it is **not the cause**.
+5.  **Assess for Overdetermination (APPLY EXTREMELY CAUTIOUSLY):**
+    *   **Only if** the counterfactual test (Step 4) is negative, **consider** this step.
+    *   Ask: "Was the agent’s action **independently sufficient** to cause the **exact outcome**, and were there other **truly independent** sufficient causes that **would have produced the outcome at the exact same time**?"
+    *   **This is exceedingly rare** (e.g., two shooters firing lethal shots at the exact same instant). In almost all cases, a negative counterfactual result should stand.
+    *   **CRITICAL:** If the other sufficient cause is part of a **normal, expected background condition**, this is **NOT** genuine overdetermination for the specific outcome. **Do not override** the counterfactual result.
+6.  **Evaluate Causal Salience and Relevance:**
+    *   **If Step 4 suggests causation**, ask: "Was this condition highly probable or normal, while another condition was abnormal and decisive?" If yes, the abnormal condition is likely the primary cause.
+    *   **If Step 4 suggests no causation (redundancy)**, ask: "Was this redundant action abnormal or unexpected?" If yes, this does **not** make it a cause. It confirms it was an **irrelevant sufficiency**. The cause is the factor that passed the counterfactual test.
+7.  **Consider Agency for Omissions:** If the action was an *omission*, consider the agent’s **duty and ability to act**. A knowing failure to act strongly indicates responsibility, but it must still pass the counterfactual test (Step 4) to be a factual cause.
+8.  **Determine Intentionality (if asked):** An outcome is intentional **only if it was a specific conscious objective or a nearly certain known side-effect of the intended action.** **Rigorously separate this analysis from factual causation.** Analyze the agent's specific goal and level of control over the outcome's precise details.
+9.  **Synthesize and Conclude:**
+    *   The result of the counterfactual test (Step 4) is the default answer.
+    *   Step 5 (Overdetermination) should **rarely, if ever**, override Step 4. Only override if the scenario is a **textbook case** of simultaneous, independent sufficiency.
+    *   Step 6 (Salience) should be used to identify the most explanatory cause, not to invent causes from redundant events.
+    *   Justify your final answer by explaining which factor was the true difference-maker.
+
+**Key Guidance:**
+-   **The counterfactual test (Step 4) is paramount.** A negative result almost always means "no."
+-   **Beware of Misapplying Overdetermination:** It is not overdetermination if one cause is normal/expected and the other is abnormal/redundant (see Example B below).
+-   For omissions, the "plausible intervention" must be **specific and minimal**.
+-   **The agent's knowledge is critical for intentionality and omissions but does not negate factual causation.**
+-   **A factually causal act does not automatically make its outcomes intentional.** Analyze Step 8 independently.
+
+**Critical Examples to Avoid Past Mistakes:**
+-   **Example A (Normal vs. Abnormal):** In a game, drawing a *likely* green ball and an *unlikely* blue ball to win constitutes a win. The *unlikely* blue ball is the salient cause. The likely green ball is a background enabler, not a cause.
+-   **Example B (Redundant Cause):** The travel agency (normal) and design studio (abnormal) both arrive at 8:45 am, either being sufficient to turn on the climate control. The design studio's arrival is **not** a cause of the system turning on *at 8:45 am* because the normal cause (travel agency) would have caused the identical outcome at the identical time without it. Their action was redundant and did not make a difference. (Ref: Example 2)
+-   **Example C (Intentionality Granularity):** An agent intends to fire a gun but slips, resulting in an accidentally perfect shot to the heart. The outcome "death" may be intentional, but the specific outcome "shot directly in the heart" is not, as it resulted from a slip, not controlled aim.
+
+Use this framework to justify your final answer clearly. If steps conflict, resolve it by prioritizing difference-making (Step 4) over mere sufficiency.
