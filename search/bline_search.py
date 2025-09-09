@@ -94,10 +94,10 @@ class PromptAgentController(SearchController):
         }
 
         os.makedirs("logs", exist_ok=True)
-        with open(f"logs/{self.task.name}_mcts_full_tree.json", "w", encoding="utf-8") as f:
+        with open(f"logs/{self.task.name}_promptagent_mcts_full_tree.json", "w", encoding="utf-8") as f:
             json.dump(result_dict, f, indent=2, ensure_ascii=False)
 
-        logger.info("✅ Full MCTS tree has been saved to logs/mcts_full_tree.json")
+        logger.info("✅ Full MCTS tree has been saved to logs/promptagent_mcts_full_tree.json")
 
         return best_prompt
     

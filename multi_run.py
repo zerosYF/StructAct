@@ -22,7 +22,7 @@ from task.mmlu.case_hold import LegalHoldingTask
 
 from search.mct_search import MCTSearchController
 from search.beam_search import BeamSearchController
-from search.prompt_agent import PromptAgentController
+from search.bline_search import PromptAgentController
 from search.config import SearchConfig
 from search.evaluator import PromptEvaluator
 

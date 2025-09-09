@@ -34,13 +34,14 @@ class EngineeringMCQTask(TaskBase):
         self._split_data(all_examples)
 
         self.origin_prompt = "Answer electrical and electronics engineering multiple-choice questions."
-        self.system_prompt = (
-            "Choose the most accurate answer to the technical question below. "
-            "Only output the option letter (e.g., A, B, C), not the content."
-        )
+        self.answer_format_prompt = "At the end of your answer, please provide the final answer in the format <answer>A</answer>, where A is one of A, B, C, or D."
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
-        return current_prompt + f"\n\nQuestion: {input}\n" + self.system_prompt + self.answer_format_prompt
+        return (
+            current_prompt 
+            + f"\n\n{input}\n" 
+            + self.answer_format_prompt
+        )
     
     def extract_tuple(self, sample) -> tuple:
         return sample["question"], sample["answer"]
@@ -49,7 +50,7 @@ class EngineeringMCQTask(TaskBase):
         return "\n".join([f"{s['question']}\nAnswer: {s['answer']}" for s in samples])
 
     def format_question(self, question: str, options: List[str]) -> str:
-        return f"Question: {question}\n" + "\n".join([
+        return f"Question: {question}\n" + "Options:\n" +"\n".join([
             f"{chr(65 + i)}. {opt}" for i, opt in enumerate(options) if opt != "N/A"
         ])
 

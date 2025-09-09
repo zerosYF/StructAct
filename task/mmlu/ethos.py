@@ -9,7 +9,7 @@ class HateSpeechDetectionTask(TaskBase):
     def __init__(self, config):
         super().__init__(config)
         self.name = "multilabel_hatespeech"
-        path = "dataset/mmlu/ethos_ml.jsonl"  # 根据实际路径修改
+        path = "dataset/mmlu/ethos_ml.jsonl"  
 
         all_examples = []
         with open(path, "r", encoding="utf-8") as f:
@@ -43,17 +43,24 @@ class HateSpeechDetectionTask(TaskBase):
         self._split_data(all_examples)
 
         self.origin_prompt = "Classify text into multiple hate speech labels."
-        self.system_prompt = (
-            "The text may contain offensive or hateful language. Please analyze it, but do not repeat it."
-            "Identify whether each of the following labels applies: "
-            "violence, directed_vs_generalized, gender, race, national_origin, "
-            "disability, religion, sexual_orientation. "
-            "The final answer should be a JSON object with all 8 fields as binary (0 or 1) without Markdown format."
+        self.answer_format_prompt = (
+            """At the end show a JSON format with the following structure:
+            <answer>{
+                "violence": 0 or 1,
+                "directed_vs_generalized": 0 or 1,
+                "gender": 0 or 1,
+                "rase": 0 or 1,
+                "national_origin": 0 or 1,
+                "disability": 0 or 1,
+                "religion": 0 or 1,
+                "sexual_orientation": 0 or 1
+            }</answer>
+            """
         )
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
         return (
-            current_prompt + self.system_prompt +
+            current_prompt +
             "\n\nText: " + input + "\n" +
             self.answer_format_prompt
         )
@@ -63,7 +70,7 @@ class HateSpeechDetectionTask(TaskBase):
 
     def samples2text(self, samples: List[dict]) -> str:
         return "\n".join([
-            f"Text: {s['question']}\nLabels: {json.dumps(s['answer'])}"
+            f"Text: \n{s['question']}\nLabels: \n{json.dumps(s['answer'])}"
             for s in samples
         ])
 

@@ -34,13 +34,14 @@ class BusinessMCQTask(TaskBase):
         self._split_data(all_examples)
 
         self.origin_prompt = "Answer business and management multiple-choice questions by selecting the correct option letter."
-        self.system_prompt = (
-            "Choose the most appropriate option (A, B, C, D) for the question below. "
-            "Only output the option letter (e.g., A, B, C), not the content."
-        )
+        self.answer_format_prompt = "At the end of your response, please provide the answer in the format: <answer>A</answer>, where A is the letter of the correct option."
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
-        return  current_prompt + f"\n\nQuestion: {input}\n" + self.system_prompt + self.answer_format_prompt
+        return  (
+            current_prompt 
+            + f"\n\n{input}\n" 
+            + self.answer_format_prompt
+        )
 
     def extract_tuple(self, sample) -> tuple:
         return sample["question"], sample["answer"]
@@ -49,7 +50,7 @@ class BusinessMCQTask(TaskBase):
         return "\n".join([f"{s['question']}\nAnswer: {s['answer']}" for s in samples])
 
     def format_question(self, question: str, options: List[str]) -> str:
-        return f"Question: {question}\n" + "\n".join([f"{chr(65 + i)}. {opt}" for i, opt in enumerate(options)])
+        return f"Question: {question}\n" + "Options:\n" +"\n".join([f"{chr(65 + i)}. {opt}" for i, opt in enumerate(options)])
 
     def _normalize_answer(self, text: str) -> str:
         match = re.search(r"<answer>([\s\S]*?)</answer>", text, re.IGNORECASE)

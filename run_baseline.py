@@ -43,12 +43,12 @@ TASK_REGISTRY = {
 def evaluate_baselines(task: TaskBase, evaluator: PromptEvaluator):
     """计算任务的基础准确率（zero-shot / few-shot / cot 等）"""
     return {
-        "acc_origin_zs": evaluator.evaluate(task.get_test(), task.process_origin_prompt(fs=False, cot=False, fs_cot=False)),
-        "acc_origin_fs": evaluator.evaluate(task.get_test(), task.process_origin_prompt(fs=True, cot=False, fs_cot=False)),
-        "acc_origin_fs_": evaluator.evaluate(task.get_test(), task.process_origin_prompt(fs=True, cot=False, fs_cot=True)),
-        "acc_cot_zs": evaluator.evaluate(task.get_test(), task.process_origin_prompt(fs=False, cot=True, fs_cot=False)),
-        "acc_cot_fs": evaluator.evaluate(task.get_test(), task.process_origin_prompt(fs=True, cot=True, fs_cot=False)),
-        "acc_cot_fs_": evaluator.evaluate(task.get_test(), task.process_origin_prompt(fs=True, cot=True, fs_cot=True)),
+        "acc_origin_zs": evaluator.evaluate(task.get_test(), task.generate_default_prompt()),
+        "acc_origin_fs": evaluator.evaluate(task.get_test(), task.generate_fewshot_prompt()),
+        "acc_origin_fs_": evaluator.evaluate(task.get_test(), task.generate_cotfewshot_prompt()),
+        "acc_cot_zs": evaluator.evaluate(task.get_test(), task.generate_cot_format_prompt()),
+        "acc_cot_fs": evaluator.evaluate(task.get_test(), task.generate_fewshot_and_cot_format_prompt()),
+        "acc_cot_fs_": evaluator.evaluate(task.get_test(), task.generate_cotfewshot_and_cot_format_prompt()),
     }
 
 

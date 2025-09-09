@@ -45,7 +45,11 @@ class CausalJudgementTask(TaskBase):
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
         """Injects the input question into the current prompt for evaluation."""
-        return current_prompt + f"\n\n{input}\n" + self.answer_format_prompt
+        return (
+            current_prompt 
+            + f"\n\nInput:\n{input}\n" 
+            + self.answer_format_prompt
+        )
 
     def extract_tuple(self, sample) -> tuple:
         """Extracts question and answer tuple from a sample."""
@@ -53,7 +57,7 @@ class CausalJudgementTask(TaskBase):
 
     def samples2text(self, samples: List[dict]) -> str:
         """Converts a list of samples to a text block of Q&A pairs."""
-        return "\n".join([f"Input: {s['question']}\nOutput: {s['answer']}" for s in samples])
+        return "\n".join([f"Input: \n{s['question']}\nOutput: {s['answer']}" for s in samples])
     
     def _normalize_answer(self, text: str) -> str:
         """Normalize text by lowercasing, stripping, and removing punctuation."""
@@ -68,10 +72,6 @@ class CausalJudgementTask(TaskBase):
         """Calculates the reward based on model output and target answer."""
         norm_out = self._normalize_answer(output)
         norm_gold = self._normalize_answer(target)
-        # logger.info(
-        #         f"[Model Output]\n"
-        #         f" Model Answer: {output}\n"
-        #     )
         logger.info(
                 f"[Reward Evaluation]\n"
                 f"  Model Answer: {norm_out}\n"

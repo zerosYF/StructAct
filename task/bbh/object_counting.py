@@ -64,11 +64,14 @@ class ObjectCountingTask(TaskBase):
         self.val_mcts_size = 60
         self._split_data(all_examples)
 
-        self.system_prompt = "Answer the question based on the provided context."
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
         """Injects the input question into the current prompt for evaluation."""
-        return current_prompt + f"\n\n{input}\n" + self.answer_format_prompt
+        return (
+            current_prompt 
+            + f"\n\nInput:\n{input}\n" 
+            + self.answer_format_prompt
+        )
 
     def extract_tuple(self, sample) -> tuple:
         """Extracts question and answer tuple from a sample."""
@@ -76,7 +79,7 @@ class ObjectCountingTask(TaskBase):
 
     def samples2text(self, samples: List[dict]) -> str:
         """Converts a list of samples to a text block of Q&A pairs."""
-        return "\n".join([f"Input: {s['question']}\nOutput: {s['answer']}" for s in samples])
+        return "\n".join([f"Input: \n{s['question']}\nOutput: {s['answer']}" for s in samples])
     
     def _normalize_answer(self, text: str) -> str:
         """Normalize answer by lowercasing, stripping, converting number words to digits."""

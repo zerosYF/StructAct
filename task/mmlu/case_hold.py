@@ -15,15 +15,11 @@ class LegalHoldingTask(TaskBase):
         with open(path, "r", encoding="utf-8") as f:
             all_examples: List[Dict] = [json.loads(line) for line in f]
 
-        self.system_prompt = (
-            "You are a legal assistant. Based on the case context, "
-            "identify the correct <HOLDING> from the candidate holdings."
-        )
         self.origin_prompt = (
             "You are given a legal case snippet with a <HOLDING> placeholder. "
             "Choose the single correct holding from the candidate options. "
-            "Answer only with the index of the correct option, wrapped in <answer>...</answer>."
         )
+        self.answer_format_prompt = "At the end show the index of the correct option, wrapped in <answer>...</answer>."
 
         random.seed(config.shuffle_seed)
         random.shuffle(all_examples)
@@ -37,7 +33,6 @@ class LegalHoldingTask(TaskBase):
         logger.info(f"✅ [{self.name} Dataset] Number of samples: {len(all_examples)}")
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
-        """拼接 prompt + case + 选项"""
         case_text, options = input
         options_str = "\n".join([f"{i}. {opt}" for i, opt in enumerate(options)])
         return (
@@ -49,11 +44,10 @@ class LegalHoldingTask(TaskBase):
     def extract_tuple(self, sample: dict) -> tuple:
         case_text = sample["0"]
         options = [sample[str(i)] for i in range(1, 6) if str(i) in sample]
-        gold_idx = int(sample["11"])   # 正确答案的索引
+        gold_idx = int(sample["11"])   
         return (case_text, options), gold_idx
 
     def samples2text(self, samples: List[dict]) -> str:
-        """展示样例 (方便 few-shot)"""
         texts = []
         for s in samples:
             (case_text, options), gold_idx = self.extract_tuple(s)

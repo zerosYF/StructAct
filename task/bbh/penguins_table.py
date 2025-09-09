@@ -26,7 +26,7 @@ class PenguinsTableTask(TaskBase):
             gold = max(target_scores.items(), key=lambda x: x[1])[0]
             option_text = "\n".join([f"{k}" for k in target_scores.keys()])
             sample = {
-                "question": f"Question: {input_text}\nOptions:\n{option_text}",
+                "question": f"Question: \n{input_text}\nOptions:\n{option_text}",
                 "answer": gold
             }
             all_examples.append(sample)
@@ -49,7 +49,7 @@ class PenguinsTableTask(TaskBase):
         return (
             current_prompt + "\n"
             + self.task_prefix
-            + f"\n\n{input}\n"
+            + f"\n\nInput:\n{input}\n"
             + self.answer_format_prompt
         )
 
@@ -59,7 +59,7 @@ class PenguinsTableTask(TaskBase):
 
     def samples2text(self, samples: List[dict]) -> str:
         """Converts a list of samples to a text block of Q&A pairs."""
-        return "\n".join([f"Input: {s['question']}\nOutput: {s['answer']}" for s in samples])
+        return "\n".join([f"Input: \n{s['question']}\nOutput: {s['answer']}" for s in samples])
     
     def _normalize_answer(self, text: str) -> str:
         """Normalize by lowercasing and trimming whitespace."""

@@ -3,6 +3,7 @@ import random
 from typing import List, Dict
 from task.base_task import TaskBase
 from loguru import logger
+from decimal import Decimal, InvalidOperation
 import re
 
 class SimpleMathReasoningTask(TaskBase):
@@ -35,24 +36,30 @@ class SimpleMathReasoningTask(TaskBase):
         self._split_data(all_examples)
         
         self.origin_prompt = "Solve simple arithmetic word problems with numeric answers."
-        self.system_prompt = (
-            "Please solve the math word problem carefully and return only the final numeric answer."
-        )
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
-        return current_prompt + f"\n\n {input}\n" + self.answer_format_prompt
+        return (
+            current_prompt 
+            + f"\n\n Input:\n{input}\n" 
+            + self.answer_format_prompt
+        )
 
     def extract_tuple(self, sample) -> tuple:
         return sample["question"], sample["answer"]
 
     def samples2text(self, samples: List[dict]) -> str:
-        return "\n".join([f"Input: {s['question']}\nOutput: {s['answer']}" for s in samples])
+        return "\n".join([f"Input: \n{s['question']}\nOutput: {s['answer']}" for s in samples])
     
     def _normalize_answer(self, text):
         match = re.search(r"<answer>([\s\S]*?)</answer>", text, re.IGNORECASE)
         if match:
             text = match.group(1).strip()
-        return text.strip()
+        normalized_text = text.replace(",", "").strip()
+        try:
+            return Decimal(normalized_text)
+        except InvalidOperation:
+            logger.warning(f"[Normalization Error] Invalid number format: {text}")
+            return Decimal('NaN')
 
     def get_reward(self, output: str, target: str) -> float:
         output = self._normalize_answer(output)

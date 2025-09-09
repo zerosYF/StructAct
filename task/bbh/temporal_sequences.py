@@ -25,7 +25,7 @@ class TemporalSequencesTask(TaskBase):
             gold = max(target_scores.items(), key=lambda x: x[1])[0]
             option_text = "\n".join([f"{k}" for k in target_scores.keys()])
             sample = {
-                "question": f"Question: {input_text}\nOptions:\n{option_text}",
+                "question": f"Question: \n{input_text}\nOptions:\n{option_text}",
                 "answer": gold
             }
             all_examples.append(sample)
@@ -41,11 +41,14 @@ class TemporalSequencesTask(TaskBase):
         self.val_mcts_size = 60
         self._split_data(all_examples)
         
-        self.system_prompt = "Answer the question based on the provided context."
 
     def inject_final_input(self, current_prompt: str, input: str) -> str:
         """Injects the input question into the current prompt for evaluation."""
-        return current_prompt + f"\n\n{input}\n" + self.answer_format_prompt
+        return (
+            current_prompt 
+            + f"\n\nInput:\n{input}\n" 
+            + self.answer_format_prompt
+        )
 
     def extract_tuple(self, sample) -> tuple:
         """Extracts question and answer tuple from a sample."""
@@ -53,7 +56,7 @@ class TemporalSequencesTask(TaskBase):
 
     def samples2text(self, samples: List[dict]) -> str:
         """Converts a list of samples to a text block of Q&A pairs."""
-        return "\n".join([f"Input: {s['question']}\nOutput: {s['answer']}" for s in samples])
+        return "\n".join([f"Input: \n{s['question']}\nOutput: {s['answer']}" for s in samples])
     
     def _normalize_answer(self, text: str) -> str:
         match = re.search(r"<answer>([\s\S]*?)</answer>", text, re.IGNORECASE)

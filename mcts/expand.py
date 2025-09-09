@@ -63,17 +63,21 @@ class DefaultExpandStrategy(ExpandStrategy):
             return None
     
     def _weighted_random_choice(self, actions: list, temperature: float = 1.0):
-        """Softmax weighted random selection of a single action based on usage_count"""
+        """Softmax weighted random selection of a single action based on failure_counter and usage_count"""
         if not actions:
             return None
 
+        failure_counts = np.array([a.failure_counter for a in actions])
         usage_counts = np.array([a.usage_count for a in actions])
-        # Higher usage_count → lower probability; add 1 to avoid division by zero
-        logits = -usage_counts / temperature
+
+        logits = - (failure_counts + usage_counts) / temperature 
+        logits /= temperature  
+
         probs = np.exp(logits)
-        probs /= probs.sum()
+        probs /= probs.sum() 
 
         selected_index = np.random.choice(len(actions), p=probs)
+        
         return actions[selected_index]
 
 def get_expand_strategy(config:SearchConfig) -> ExpandStrategy:

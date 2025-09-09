@@ -34,8 +34,6 @@ class SearchConfig:
         self.choose_idx: int = 2               # Current chosen action index
         self.uct_idx: int = 0                  # Current UCT path index
 
-        self.use_sample_pool: bool = True
-
         # Model configuration
         # self.model_name: str = "zhiyan3"
         # self.api_key: str =  "zhiyan123" 
