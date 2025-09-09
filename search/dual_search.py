@@ -99,10 +99,13 @@ class DualSearchController(SearchController):
         }
 
         os.makedirs("logs", exist_ok=True)
-        with open(f"logs/{self.task.name}_dual_mcts_full_tree_{"with_pool" if self.pool else ""}.json", "w", encoding="utf-8") as f:
+        file_name = f"logs/{self.task.name}_dual_mcts_full_tree_without_pool.json"
+        if self.pool:
+            file_name = f"logs/{self.task.name}_dual_mcts_full_tree.json"
+        with open(file_name, "w", encoding="utf-8") as f:
             json.dump(result_dict, f, indent=2, ensure_ascii=False)
 
-        logger.info("✅ Full MCTS tree has been saved to logs/dual_mcts_full_tree.json")
+        logger.info(f"✅ Full MCTS tree has been saved to logs/{file_name}")
 
         return best_prompt
     
