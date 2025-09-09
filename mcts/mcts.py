@@ -19,7 +19,7 @@ class MCTS:
         self.Q = defaultdict(int)  # Historical reward of paths
         self.N = defaultdict(int)  # Number of times nodes have been explored
         self.children: dict[Node, list[Node]] = dict()  # Tree structure storage
-        self.uct_value:dict[Node, float] = dict()
+        self.uct_values:dict[Node, float] = dict()
         self.select_strategy = select_strategy
         self.expand_strategy = expand_strategy
         self.rollout_strategy = rollout_strategy
@@ -39,7 +39,7 @@ class MCTS:
             if children_count == 0 or node.is_terminal():
                 return path
             node, uct_value = self._uct_select(node)
-            self.uct_value[node] = uct_value
+            self.uct_values[node] = uct_value
 
     def _uct_select(self, node: Node) -> Node:
         return self.select_strategy.select(node, self)

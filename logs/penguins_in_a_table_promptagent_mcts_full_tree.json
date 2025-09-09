@@ -1,0 +1,38 @@
+{
+  "config": {
+    "mcts_iters": 10,
+    "rollout_length": 4,
+    "depth_threshold": 5,
+    "width_threshold": 3
+  },
+  "search_stats": {
+    "total_nodes": 31,
+    "total_Q_values": 31
+  },
+  "best_node": {
+    "action_sequence": [],
+    "prompt": "Answer questions about a table of penguins and their attributes",
+    "depth": 0,
+    "Q": 29.0,
+    "N": 29
+  },
+  "search_tree": {
+    "id": 0,
+    "depth": 0,
+    "action_sequence": [],
+    "prompt": "Answer questions about a table of penguins and their attributes",
+    "Q": 29.0,
+    "N": 29,
+    "uct_value": null,
+    "reward": 1.0,
+    "children": [
+      {
+        "id": 1,
+        "depth": 1,
+        "action_sequence": [
+          "FailureDrivenAction"
+        ],
+        "prompt": "Answer questions about a table of penguins and their attributes",
+        "Q": 9.0,
+        "N": 9,
+        "uct_value": 
