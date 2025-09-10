@@ -2172,3 +2172,113 @@ Question: Did the fertilization by Benni cause the plant to dry out? (Majority v
 <answer>No</answer>
 
 Now, apply this enhanced process to the following question:
+2025-09-11 00:17:55,444 - 📊 Current Template_description:
+None
+2025-09-11 00:17:55,444 - 📊 Current Prompt:
+You are an expert in causal reasoning and intuitive judgment. Carefully analyze the scenario and question, then provide your final answer. Follow these steps rigorously:
+
+1.  **Identify Key Elements:** Extract the specific action/event (or omission) in question and the outcome. Precisely define the specific outcome with its exact timing and mechanism. Avoid overly broad definitions (e.g., 'death' vs. 'death at time T from specific cause Z').
+2.  **Determine Question Type:**
+    - If asked about "necessary cause" or "but-for cause," apply the **counterfactual necessity test**: "If the action had NOT occurred, would the outcome still have happened?"
+    - If asked "did A cause B?" or "is A because of B?", identify if the action/omission was a meaningful part of the causal chain.
+    - If asked about "sufficient cause," apply the **counterfactual sufficiency test**: "In this world, given the background conditions, if this action occurs, does the outcome necessarily follow?" **Crucial Note:** A sufficient cause is sufficient *within the context of the scenario's background conditions*. It does not need to be a lone, magic bullet. For example, striking a match is sufficient to light it, even though it requires the background condition of oxygen.
+    - **Crucially, if the question involves an action/omission that creates or preserves a necessary condition,** recognize that people often see this as causal, especially for positive outcomes.
+3.  **Consider the Audience:**
+    - For **"a logician,"** use strict logical definitions and counterfactual reasoning. Focus on necessity and sufficiency.
+    - For **"the majority of people,"** simulate common intuitive reasoning by incorporating these principles:
+        a.  **Action-Omission Asymmetry:** People are generally more willing to attribute an outcome to an action than an omission. An omission is more likely to be seen as causal **only if** the person had a **clear duty to act**, the duty was **salient**, and they had the **knowledge and ability** to act.
+        b.  **The Knobe Effect:** People are more likely to judge that an agent *intentionally* caused a negative side effect than a positive one. However, if the agent's behavior was **norm-following** (e.g., not cheating, following rules), they are **less** likely to be seen as *blameworthy* or as having *intended* a negative outcome. **Important: This does not mean their action was not a physical cause.** Always separate judgments of intentionality/blame from judgments of physical causation. **Do not use the Knobe Effect to argue that an action was not a cause; use it only to assess intentionality and blame.**
+        c.  **Causal Selection (Primacy of Abnormality):** People identify the cause as the most **abnormal, unexpected, or deviant** factor in the situation. When multiple factors are necessary, the one that deviates from the default or expected course of events is selected as *the* cause. Normal, routine, or background conditions are typically not seen as causes, even if they are necessary. **This is often the single most important heuristic.**
+        d.  **Duty and Role:** Outcomes are strongly attributed to the failures of agents with a specific responsibility.
+        e.  **Causal Mechanism:** People identify causes by tracing the mechanism that produced the outcome. A factor is more likely to be seen as a cause if it is a **necessary part of a sufficient set** (an INUS condition) for the outcome.
+        f.  **Proximity and Preemption:** Intuitive causation favors **proximate** (close-in-time) causes over **distal** (remote) ones. A proximate cause that directly produces the outcome will typically **preempt** a distal cause in people's judgments. Avoid building long, speculative causal chains.
+        g.  **Hierarchy of Principles:** When principles conflict, use the following hierarchy as a guide for predicting the majority's *primary* causal selection:
+            i.  **Abnormality & Deviance:** The most abnormal, unexpected, or faulty event is typically selected as the cause.
+            ii. **Duty & Role:** A failure by an agent with a clear duty often trumps other factors.
+            iii. **Action vs. Omission:** Actions are favored over omissions as causes.
+            iv. **Proximity:** More proximate events are favored over distal ones.
+    - **Crucially, distinguish between causation and blame.** People may assign blame for an omission but may not see it as the primary cause.
+    - **Crucially, distinguish between causing an outcome and causing vulnerability to an outcome.** Making an outcome possible or more likely is often not sufficient for intuitive causal attribution to a specific outcome.
+4.  **Reason Step-by-Step:**
+    - **Perform a Precise Counterfactual:** Ask "For this specific outcome, if the specific action/omission had NOT occurred, would this specific outcome have happened?" Consider all preconditions. For omissions, apply the duty/knowledge/ability test.
+    - **Check for Causal Pre-emption:** Are there other potential causal pathways to the same outcome? If yes, does the action in question **pre-empt** (cut off and replace) that alternative pathway? If it does, it strengthens the case for it being a cause. If the outcome would have happened via the alternative pathway *anyway*, it weakens the case for necessity and sufficiency.
+    - **Apply the Abnormality Filter:** Even if the counterfactual holds, ask: 'Is this action/event the most abnormal or salient change that led to the outcome?' If it was a normal or background condition, people are unlikely to select it as the cause.
+    - **Check for Proximate Preemption:** Is there a more proximate, highly abnormal event that would be considered the cause instead? If yes, the prior event is likely not seen as the cause by the majority.
+    - In social contexts, apply the Knobe Effect to assess intentionality, not to negate physical causation.
+    - Use counterfactuals to simulate layperson thinking ("Would most people say 'if not for X, Y would not have happened'?").
+5.  **Sanity Check:** Review your reasoning.
+    - Is your conclusion for "the majority of people" aligned with the principles above?
+    - Are you conflating causation with blame or using overly logical reasoning?
+    - **Abnormality Trump Check:** Have I given enough weight to the Abnormality principle? Is the action/event I'm focusing on truly the most deviant and unexpected factor, or is it a normal action that only became relevant because of a prior abnormal event (e.g., a mistake by someone else)?
+    - **Check for Enablement:** Have I considered if the action/omission enabled the outcome by creating or preserving a necessary condition?
+    - **Check the Counterfactual Scope:** Is my counterfactual question specific to the exact outcome mentioned?
+    - **Chain Length Check:** Is my reasoning based on a long, indirect chain of events? If so, this is a red flag. The majority of people favor simpler, more direct causal explanations.
+    - **Vulnerability vs. Cause Check:** Am I arguing that X caused a *vulnerability* to outcome Y, or that it directly caused Y itself? Causing vulnerability is often not sufficient for intuitive causal attribution to a specific outcome.
+6.  **Final Answer:** Conclude with **<answer>Yes</answer>**, **<answer>No</answer>**, or **<answer>Ambiguous</answer>**.
+
+**Examples for Guidance (Including Common Mistakes to Avoid):**
+
+[Example 1: Logician - Correct]
+Question: Is adding Reagent X a necessary cause for the crystal to dissolve?
+Reasoning: A logician applies the counterfactual test. If X was not added, the condition for adding Y is never triggered, and the crystal would not dissolve.
+<answer>Yes</answer>
+
+[Example 2: People - Incorrect Reasoning, Corrected Below]
+Question: Did Janet not putting oil in the machine cause it to break down? (Majority view)
+*Incorrect Reasoning (to avoid):* "People blame those with duty, so they will say her omission caused it." This conflates blame with causation.
+*Corrected Reasoning:* Janet had a duty, but her failure was an omission. Due to **Action-Omission Asymmetry**, people are less likely to say her *inaction caused* the breakdown than if she had performed a damaging action. They will say it's her fault and she is responsible, but the cause is the *lack of oil*, not her omission. The most abnormal event is the machine breaking, not her routine forgetfulness.
+<answer>No</answer>
+
+[Example 3: People - Corrected for Enablement]
+Question: Did the motorboat start because Ned did not change the position of the motor? (Majority view)
+*Incorrect Reasoning (to avoid):* "Ned's inaction is an omission. He had no duty to change it, and it wasn't abnormal. The boat would have started anyway due to the neutral gear." (This misapplies the counterfactual; the gear was *not* in neutral).
+*Corrected Reasoning:* The outcome is the boat starting. The motor being in lock was a necessary condition. The gear was *not* in neutral. Ned's omission (not changing the motor) **preserved** this necessary condition. If he *had* changed it, the boat would *not* have started. People intuitively simulate this and see his inaction as enabling the outcome. It is causally salient because it was a deliberate choice to maintain a critical state.
+<answer>Yes</answer>
+
+[Example 4: People - Corrected for Physical Causation]
+Question: Did the fertilization by Alex cause the plant to dry out? (Majority view)
+*Incorrect Reasoning (to avoid):* "Alex's action was norm-following (Knobe Effect), and Benni's action was more abnormal. Therefore, Alex's action did not cause the drying." (This conflates blame/intentionality with physical causation).
+*Corrected Reasoning:* The specific outcome is the drying of plants where both chemicals were applied. Alex's action (applying A X200R) was a **necessary part of the causal mechanism** (INUS condition) for the drying in those specific beds. If he had not applied his fertilizer there, those plants would not have dried. The Knobe Effect makes people see Alex as less *blameworthy*, but it does not negate the physical causal role of his action. The majority will acknowledge his action was a cause.
+<answer>Yes</answer>
+
+[Example 5: People - Corrected for Abnormality & Proximity (Billy)]
+Question: Did Billy cause the bridge to collapse? (Majority view)
+*Incorrect Reasoning (to avoid):* "Billy's action was necessary for the collapse. The counterfactual holds: without him, no collapse. Therefore, he caused it." (This ignores the principle of abnormality and the normal, rule-following nature of his action).
+*Corrected Reasoning:*
+1.  **Key Elements:** Action: Billy driving on. Outcome: Bridge collapse at time T due to simultaneous weight of two trains.
+2.  **Counterfactual:** If Billy hadn't driven on, the collapse would not have occurred. This holds.
+3.  **Crucial Abnormality Check:** Billy's action was normal (following a green signal). The abnormal factors are (a) the bridge being weak and (b) both signals being green at the same time. The cause people will select is the **situation** (both trains arriving at once) or the **faulty bridge**, not the individual, rule-following action of either conductor.
+4.  Therefore, while Billy's action was physically necessary, it is not the abnormal, salient cause. The majority would say his action was not the cause; the fault lies with the system.
+<answer>No</answer>
+
+[Example 6: People - Corrected for Proximity & Specific Outcome (John)]
+Question: Did the plastic division's relocation cause John's premature death? (Majority view)
+*Incorrect Reasoning (to avoid):* "If the division hadn't relocated, John wouldn't have gotten cancer, so he might have survived the cardiac arrest. Therefore, the relocation caused his death." (This constructs a long, speculative chain and mistakes causing vulnerability for causing the specific outcome).
+*Corrected Reasoning:*
+1.  **Key Elements:** Action: Relocation decades ago. Outcome: John's premature death **specifically from cardiac arrest due to a medication error** at time T.
+2.  **Counterfactual:** This chain is long and speculative.
+3.  **Proximity Preemption Check:** The **proximate, highly abnormal, and specific cause** of John's death at this moment is the **nurse's medication error**. This preempts any distal cause in the intuitive judgment of most people.
+4.  **Specific Outcome Check:** The relocation caused his cancer, which caused his vulnerability. It did not cause the specific mechanism of his death (allergic shock). People would say he died **because of the nurse's mistake**, not because of the relocation. The relocation is a background condition, not the cause of this death.
+<answer>No</answer>
+
+[Example 7: Logician - Sufficiency Clarification (Alice & Bob)]
+Question: Alice pushes Bob. Therefore, Bob is hit by a truck. Bob dies. If Alice had not pushed Bob, Bob would have been hit by a bus, which would have killed him as well. Is Alice pushing Bob a sufficient cause for Bob's death? Reply based on the answer a logician would give.
+*Incorrect Reasoning (to avoid):* "The push required the presence of the truck. A sufficient cause must be enough on its own, without other conditions. Therefore, it is not sufficient." (This misdefines sufficiency by ignoring background conditions).
+*Corrected Reasoning:*
+1.  **Key Elements:** Action: Alice pushing Bob. Outcome: Bob's death from being hit by a truck at time T.
+2.  **Question Type:** Sufficient cause for a logician.
+3.  **Sufficiency Test (Correct Application):** A logician asks: "In the actual world, with its background conditions (including the presence of the truck), if Alice pushes Bob, does his death necessarily follow?" Yes, the push sets in motion a chain of events that, given the world's state, leads inevitably to Bob being in the truck's path and dying. The presence of the truck is a fixed background condition, not a variable. The bus is an **alternative pre-empted pathway**; its existence does not negate the sufficiency of the push *in the actual sequence of events*.
+4.  **Final Answer:** <answer>Yes</answer>
+
+[Example 8: People - Abnormality Trump (Gardeners)]
+Question: [The full Gardener scenario from Example 5]
+*Incorrect Reasoning (to avoid):* "Benni performed an action that was a necessary part of the causal mechanism. The Knobe Effect means people see him as causing the negative outcome. Therefore, yes." (This under-weights the overpowering force of the Abnormality principle).
+*Corrected Reasoning:*
+1.  **Key Elements:** Action: Benni applying fertilizer from the green can. Outcome: Drying of plants due to combined application of A X200R and B Y33R.
+2.  **Counterfactual:** If Benni had not applied from the green can, the plants would not have dried. This holds.
+3.  **Abnormality Trump Check:** Benni's action was **normal and rule-following**; he used the can he was explicitly told to use by Alex. The most **abnormal, unexpected, and deviant** factor is **Alex's miscommunication**. Benni's action is the *background* against which Alex's mistake stands out. According to the hierarchy of principles, Abnormality trumps physical proximity and action/omission.
+4.  **Duty Check:** Alex had the duty to communicate correctly. Benni had no duty to verify the contents of the can. The failure of duty lies with Alex.
+5.  **Conclusion for Majority:** The majority will identify **Alex's mistake** as the cause of the problem. They will say the plants dried *because Alex gave the wrong instructions*, not *because Benni fertilized them*. Benni's action is not seen as the salient cause.
+<answer>No</answer>
+
+Now, apply this enhanced process to the following question:
