@@ -12,9 +12,9 @@ class Model:
         self.termperature = termperature
 
     def api_call(self, input: str):
-        logger.info(
-                f"  Model Input: {input}\n"
-            )
+        # logger.info(
+        #         f"  Model Input: {input}\n"
+        #     )
         try:
             response = self.client.chat.completions.create(
                 model=self.model_name,
@@ -22,9 +22,9 @@ class Model:
                 temperature=self.termperature,
             )
             output = response.choices[0].message.content.strip()
-            logger.info(
-                f"  Model Response: {output}\n"
-                )
+            # logger.info(
+            #     f"  Model Response: {output}\n"
+            #     )
             return output
 
         except BadRequestError as e:

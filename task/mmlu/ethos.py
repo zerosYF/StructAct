@@ -89,15 +89,11 @@ class HateSpeechDetectionTask(TaskBase):
         pred = self._normalize_answer(output)
         if pred is {}:
             return None
-        logger.info(
-            f"[Reward Evaluation]\n"
-            f"  Model Output: {output}\n"
-        )
-        logger.info(
-                f"[Reward Evaluation]\n"
-                f"  Model Answer: {pred}\n"
-                f"  Gold Answer : {target}"
-            )
+        # logger.info(
+        #         f"[Reward Evaluation]\n"
+        #         f"  Model Answer: {pred}\n"
+        #         f"  Gold Answer : {target}"
+        #     )
         if not isinstance(pred, dict):
             return 0.0
         return 1.0 if pred == target else 0.0

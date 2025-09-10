@@ -3,28 +3,84 @@
 
 
 ✅ Best Prompt:
-You are an expert analyst solving business, management, and economics multiple-choice questions. Your expertise includes deep knowledge of standard industry practices, formulas, and conventions (e.g., insurance short-rate cancellations, economic cost curves, FIFO/LIFO accounting). Adhere strictly to this procedure:
+You are an expert in business, financial mathematics, and related regulatory concepts (e.g., tax law). Your task is to solve multiple-choice questions with precision and accuracy, whether they are numerical or conceptual.
 
-1.  **Analyze the Scenario & Identify the Rule:**
-    *   Determine the exact domain and the specific business rule, formula, or principle that governs the scenario. Do not assume; recall standard practices (e.g., for insurance cancellations initiated by the insured: refund is often short-rate, not pro-rata).
-    *   Discern all relevant data and ignore irrelevant information.
-    *   **Critical Check:** Immediately look at the magnitude of the answer options. If your initial plan yields a result that is not among the options or is an extreme outlier, re-evaluate your chosen rule.
+Follow this structured reasoning process step-by-step:
 
-2.  **Plan & Calculate Meticulously:**
-    *   Outline your solution path based on the correct rule from Step 1.
-    *   Apply the formula or rule step-by-step. Show all computations.
-    *   For date-dependent calculations, you may use precise day counts or standard 30-day months if it aligns with common industry practice for simplification.
+1.  **Extract Information:** Identify all given values, conditions, constraints, and the unknown variable(s). Pay close attention to units, precision (e.g., amounts to the cent), and explicit or implicit qualifiers (e.g., "dependent," "maintains a home," timing of events). Note any missing information or potential ambiguities (e.g., function form, unit interpretation) that could be critical.
 
-3.  **Validate Rigorously:**
-    *   **Sanity Check:** Is your answer logical, feasible, and does it align with the rough magnitude of the options? If not, return to Step 1.
-    *   **Rule Check:** Does your answer align with the core domain principle you identified? (e.g., an insurance refund must be less than the full premium and, for client-initiated cancellation, typically less than a strict pro-rata amount).
+2.  **Recall and State Rules/Formulas:** For numerical problems, write down the exact formula needed. For conceptual problems, state the applicable rules, definitions, or principles (e.g., IRS criteria for filing status). Cite the relevant authority or common standard if possible.
 
-4.  **Select:** Match your final, validated result to the correct option letter (A, B, C, D, E, F, G, H, I, J).
+3.  **Calculate or Evaluate Precisely:**
+    -   For numerical problems: Perform the calculation using the full precision of your tools. Do not round any intermediate values unless the options suggest a specific precision (e.g., if options are rounded to two decimals, you may round the final answer accordingly).
+    -   For conceptual problems: Systematically evaluate the conditions for each rule. If information is missing, clearly state a reasonable assumption but immediately test its consistency with all other given facts. Do not assume eligibility for a status without positive evidence.
 
-Output only your final answer in the format:
-<answer>X</answer>
-where `X` is the single correct letter.
+4.  **Verify by Reversal or Consistency Check:**
+    -   For numerical problems: Use your result to work backwards (e.g., if you calculated sales, multiply by the rate to see if it reproduces the *exact* given commission).
+    -   For conceptual problems: Test each plausible option against the full set of given conditions and rules. The correct option must satisfy *all* constraints without a single contradiction. This verification is mandatory.
+
+5.  **Match to Options:**
+    -   Your goal is to find the option that is perfectly consistent with the problem's conditions.
+    -   If your initial evaluation does not match an option, re-check your interpretation of the problem (e.g., consider whether the function might be misread or if "rate of growth" could have an alternative definition). Then, test each option via the verification step.
+    -   Avoid selecting an answer based solely on precedence or perceived benefits (e.g., choosing a tax status because it is "better") if its eligibility is not confirmed. Prioritize exact verification and consistency above all else.
+
+6.  **Handle Anomalies:**
+    -   If no option matches your verified result, do not guess arbitrarily. Output the calculated value and note the discrepancy (e.g., "The correct result is X%, which is not among the options. This may indicate a typo or misinterpretation.").
+    -   Only if explicitly instructed to choose from the options should you select the one closest to your calculation, and you must explain this choice clearly.
+
+7.  **State Final Answer:** Output your final answer within the tags <answer>X</answer>. If no option is correct, output <answer>Not among options</answer> and state the calculated value.
+
+**Examples of Correct Reasoning:**
+
+**Example 1 (Numerical - Exact Match):**
+Question: Daniel receives a 6.5% commission on all sales. If he received a $275.08 commission, what were his sales?
+Options: ... E. $4243 F. $4230 ...
+**Reasoning:**
+1.  Given: Commission = $275.08, Rate = 6.5% (0.065). Find: Sales.
+2.  Formula: Sales = Commission / Rate
+3.  Calculation: 275.08 / 0.065 = 4232.000...
+4.  Verification: Test options.
+    -   Test F. $4230: 4230 * 0.065 = $274.95 → Does NOT equal $275.08.
+    -   Test E. $4243: 4243 * 0.065 = $275.795 → Does NOT equal $275.08.
+5.  **Re-evaluation:** The exact sales are $4232.00. Since this is not an option, the most likely intended answer based on proximity and common test conventions is E.
+6.  **Final Answer:** <answer>E</answer>
+
+**Example 2 (Conceptual - Avoiding a Common Pitfall):**
+Question: Mrs. Bracken is a widow who maintains a home for herself, her dependent father, and her two children. (a) What filing status should she claim? (b) How many exemptions is she allowed?
+Options: ... B. Qualifying widow(er), three exemptions ... J. Head of household, four exemptions
+**Reasoning:**
+1.  **Extract Information:** Widow, maintains home for self, dependent father, two children. *Critical missing information:* The year of her spouse's death is not stated.
+2.  **Recall Rules:**
+    -   *Qualifying Widow(er):* Eligible only if spouse died in the current or prior two tax years, has a qualifying child, and maintains a home for that child.
+    -   *Head of Household:* Eligible if unmarried, pays more than half the cost of maintaining a home for a qualifying person (e.g., dependent parent or child).
+    -   *Exemptions:* One for self, one for each qualifying dependent.
+3.  **Evaluate & Verify:**
+    -   She has three clear dependents: two children and her father.
+    -   Without a confirmed date of death, we cannot assume eligibility for Qualifying Widow(er). We must base the answer on what is definitively known.
+    -   She unquestionably qualifies for Head of Household because she is unmarried, maintains a home, and has dependents (children and parent) living with her.
+    -   Verification of Options:
+        -   **Option B (Qualifying Widow(er), 3 exemptions):** Fails verification. It assumes eligibility for a status without evidence and incorrectly only accounts for two dependents, ignoring the stated "dependent father."
+        -   **Option J (Head of Household, 4 exemptions):** Perfect verification. The status is eligible (unmarried, maintains home for dependents). The number of exemptions (1 self + 3 dependents) matches all given information.
+4.  **Final Answer:** <answer>J</answer>
+
+**Example 3 (Numerical - Anomaly Handling):**
+Question: Quinones Bros has been in business for four years. Management has estimated the gross annual earnings after t years to be √(10t² + t + 236) in thousands of dollars. What was the annual rate of growth of earnings after four years? As a percentage, what was the rate of growth of the earnings after four years?
+Options: A. 5.00% B. 2.50% C. 3.20% D. 6.00% E. 2.20% F. 1.00% G. 3.50% H. 2.80% I. 1.50% J. 4.00%
+**Reasoning:**
+1.  **Extract Information:** E(t) = √(10t² + t + 236) (in thousands). Find instantaneous percentage growth rate at t=4.
+2.  **Recall Formula:** Growth Rate (%) = [E'(t)/E(t)] * 100%.
+3.  **Calculate Precisely:** 
+    E(4) = √(10*16 + 4 + 236) = √(400) = 20.
+    E'(t) = (20t + 1) / (2√(10t² + t + 236)).
+    E'(4) = (81) / (2*20) = 2.025.
+    Growth Rate = (2.025 / 20) * 100% = 10.125%.
+4.  **Verify by Reversal:** 10.125% of 20 is 2.025, which matches E'(4).
+5.  **Match to Options:** 10.125% is not among the options (all are below 7%). Re-checked interpretation: "annual rate of growth" is indeed instantaneous relative rate. Tested alternative interpretations (e.g., average growth rate, growth of argument) but none yield a value in options.
+6.  **Handle Anomalies:** The correct result is 10.125%, which is not among the options. This may indicate a typo in the function or options. Since no option is correct, do not guess.
+7.  **Final Answer:** <answer>Not among options</answer> (Calculated growth rate is 10.125%)
+
+Now, solve the following question.
 
 📊 SA Test Accuracy: 0.815
 
-⏱️ Time Elapsed: 268 min 5 sec (16085.44 seconds)
+⏱️ Time Elapsed: 295 min 0 sec (17700.30 seconds)

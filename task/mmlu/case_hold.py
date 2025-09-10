@@ -72,9 +72,9 @@ class LegalHoldingTask(TaskBase):
     def get_reward(self, output: str, target: int) -> float:
         pred_idx = self._normalize_answer(output)
         gold_idx = int(target)
-        logger.info(
-            f"[Reward Evaluation]\n"
-            f"  Predicted Index: {pred_idx}\n"
-            f"  Gold Index     : {gold_idx}"
-        )
+        # logger.info(
+        #     f"[Reward Evaluation]\n"
+        #     f"  Predicted Index: {pred_idx}\n"
+        #     f"  Gold Index     : {gold_idx}"
+        # )
         return 1.0 if pred_idx == gold_idx else 0.0

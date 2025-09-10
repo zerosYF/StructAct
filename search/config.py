@@ -12,13 +12,12 @@ class SearchConfig:
         self.exploration_weight: float = 2.5   # Exploration factor in UCT formula
         self.mcts_iter_num_max: int = 10         # Number of iterations in MCTS main loop
         self.mcts_iter_num_min: int = 0           # Minimum MCTS iterations
-        self.depth_threshold: int = 5          # Maximum search depth
+        self.max_depth_threshold: int = 5          # Maximum search depth
+        self.min_depth_threshold: int = 3
+
         self.width_threshold: int = 3          # Number of children per expanded node
         # Node expansion and rollout config
         self.batch_size: int = 5              # Batch size for training
-        self.rollout_length_max: int = 4           # Rollout path depth (fixed-length simulation)
-        self.rollout_early_stop_rounds: int = 3
-        self.rollout_early_stop_delta: float = 0.01
 
         # RNN Controller settings
         self.rnn_iter_num: int = 400        # Number of training iterations for RNN
@@ -32,7 +31,6 @@ class SearchConfig:
         # Debugging indicators (for tracing internal states)
         self.rollout_idx: int = 1              # Current rollout path index
         self.choose_idx: int = 2               # Current chosen action index
-        self.uct_idx: int = 0                  # Current UCT path index
 
         self.use_pool: bool = False            # Whether to use a sample pool for rollouts
 

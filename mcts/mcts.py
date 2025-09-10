@@ -1,9 +1,7 @@
-from collections import defaultdict
 from typing import Any
 from mcts.expand import ExpandStrategy
 from mcts.choose import ChooseStrategy
 from mcts.rollout import RolloutStrategy
-from mcts.select import UCTStrategy
 from logger import logger
 from mcts.node import Node
 from threading import Lock
@@ -11,98 +9,128 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 class MCTS:
     def __init__(self, 
-                 select_strategy: UCTStrategy = None,
+                 iter_num:int,
+                 expand_width:int, 
+                 exploration_weight:float,
+                 max_depth:int,
+                 min_depth:int,
+
                  expand_strategy: ExpandStrategy = None,
                  rollout_strategy: RolloutStrategy = None,
                  choose_strategy: ChooseStrategy = None, 
                 ):
-        self.Q = defaultdict(int)  # Historical reward of paths
-        self.N = defaultdict(int)  # Number of times nodes have been explored
-        self.children: dict[Node, list[Node]] = dict()  # Tree structure storage
-        self.uct_values:dict[Node, float] = dict()
-        self.select_strategy = select_strategy
+        self.iter_num = iter_num
+
+        self.global_highest_reward:float = 0.0
+        self.min_reward_threshold:float = 0.0
+
+        self.exploration_weight = exploration_weight
+        self.expand_width = expand_width
+        self.max_depth = max_depth
+        self.min_depth = min_depth
+
         self.expand_strategy = expand_strategy
         self.rollout_strategy = rollout_strategy
         self.choose_strategy = choose_strategy
         self.lock = Lock()
 
-    def _select(self, node: Node) -> list[Node]:
-        """
-        自顶向下走到一个可扩展的位置：
-        - 若 node 不在 self.children 中，返回路径（首次到达叶子，等待 expand）
-        - 否则，使用 UCT 继续向下选择
-        """
-        path: list['Node'] = []
-        while True:
-            path.append(node)
-            children_count = len(self.children.get(node, []))
-            if children_count == 0 or node.is_terminal():
-                return path
-            node, uct_value = self._uct_select(node)
-            self.uct_values[node] = uct_value
+    def _select(self, node: Node, exploration_weight=1.41) -> list[Node]:
+        while not node.is_leaf() and not self.is_terminal_node(node):
+            node = node.find_best_node(exploration_weight)
+        return node
 
-    def _uct_select(self, node: Node) -> tuple[Node, float]:
-        return self.select_strategy.select(node, self)
+    def expand(self, node: Node, expand_width=1) -> Node:
+        return self.expand_strategy.expand(node, expand_width, self)
 
-    def _expand(self, node: Node, expand_width=1) -> Node:
-        """
-        一次扩展多个 child，并返回列表。
-        """
-        children = self.expand_strategy.expand(node, self, expand_width)
-        if not children:
-            return []
+    def _rollout(self, node: Node):
+        return self.rollout_strategy.rollout(node, self.expand_width, self)
 
-        if node not in self.children:
-            self.children[node] = []
-
-        for child in children:
-            if child not in self.children[node]:
-                self.children[node].append(child)
-
-        return children
-
-    def _rollout(self, node: Node, length:int):
-        return self.rollout_strategy.rollout(node, length)
-
-    def _backpropagate(self, path:list[Node], reward):
+    def _backpropagate(self, expand_node:Node, final_node:Node):
         with self.lock:
-            for node in reversed(path):
-                self.N[node] += 1
-                self.Q[node] = node.q_value(self.Q[node], reward)
+            total_reward = 0.0
+            current = final_node
+            cum:bool = True
+            while current is not None:
+                current.update(total_reward)
+                if cum:
+                    if current == expand_node:
+                        cum = False
+                    total_reward += current.reward_value
+                current = current.parent
 
-    def do_iter(self, node: Node, expand_width:int, rollout_length:int):
-        logger.info("--------------Start Iteration----------------")
+
+    def do_iter(self, root: Node, iter_id:int):
+        logger.info(f"--------------Start Iteration:{iter_id}----------------")
         logger.info("Step 1: Performing Select")
-        path = self._select(node)
-        leaf = path[-1]
-        logger.info(f"Selected leaf node type: {leaf.type}")
+        selected_node:Node = self._select(root, self.exploration_weight)
+        logger.info(f"Selected leaf node type: {selected_node.type}")
         logger.info("Step 2: Performing Expand")
-        children = self._expand(leaf, expand_width)
-        rollout_targets = children if children else [leaf]
-        rollout_path = path.copy()
+        children = self.expand(selected_node, self.expand_width)
+        rollout_targets = children if children else [selected_node]
 
         results = []
-        # Step 3: 并行 rollout
+        logger.info("Step 3: Performing Rollout")
         with ThreadPoolExecutor(max_workers=len(rollout_targets)) as executor:
             future_to_child = {
-                executor.submit(self._rollout, child, rollout_length): child
+                executor.submit(self._rollout, child): child
                 for child in rollout_targets
             }
             for future in as_completed(future_to_child):
                 child = future_to_child[future]
                 try:
-                    reward = future.result()
-                    results.append((child, reward))
-                    logger.info(f"Rollout target {child} score: {reward:.2f}")
+                    final_node = future.result()
+                    results.append((child, final_node))
                 except Exception as e:
                     logger.error(f"⚠️ Error during rollout of {child}: {e}")
 
-        # Step 4: 串行回传，确保 lock
-        for child, reward in results:
-            self._backpropagate(rollout_path + [child], reward)
+        logger.info("Step 4: Performing Backpropagate")
+        for child, final_node in results:
+            self._backpropagate(child, final_node)
 
         logger.info("---------------End Iteration------------------")
 
     def choose(self, root: Node) -> Node:
-        return self.choose_strategy.choose(root, self)
+        return self.choose_strategy.choose(root)
+    
+    #########Rule################################################################################################################
+    
+    def is_terminal_node(self, node:Node):
+        return node.is_terminal or node.depth >= self.max_depth or self.is_terminal_with_min_threshold(node)
+    
+    def increase_threshold(self, threshold):
+        if threshold >= self.global_highest_reward:
+            self.global_highest_reward = threshold
+    
+    def should_early_stop(self, node:Node):
+        '''贪心早停'''
+        logger.info(f"[Early Stop] early_stop:{node.type}")
+        return node.reward_value > self.global_highest_reward and node.depth > self.min_depth
+    
+    def is_terminal_with_min_threshold(self, node: Node):
+        if node.parent is None:
+            min_threshold = self.min_reward_threshold
+        else:
+            min_threshold = (self.min_reward_threshold + node.parent.reward_value) / 2
+        return node.reward_value < min_threshold and node.depth > self.min_depth
+
+    ########Log####################################################################################################################
+    def serialize(self, root:Node):
+        best_node = self.choose(root)
+        init_id = 0
+        result_dict = {
+            "config": {
+                "mcts_iters": self.iter_num,
+                "depth_threshold": self.max_depth,
+                "width_threshold": self.expand_width,
+            },
+            "best_node": {
+                "action_sequence": [a.name for a in best_node.action_seq],
+                "prompt": best_node.current_prompt,
+                "depth": best_node.depth,
+                "Q": best_node.Q,
+                "N": best_node.N,
+            },
+            "search_tree": root.serialize(init_id)
+        }
+        return result_dict
         

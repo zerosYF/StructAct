@@ -71,9 +71,9 @@ class PenguinsTableTask(TaskBase):
     def get_reward(self, output: str, target: str) -> float:
         norm_out = self._normalize_answer(output)
         norm_tgt = self._normalize_answer(target)
-        logger.info(
-                f"[Reward Evaluation]\n"
-                f"  Model Answer: {norm_out}\n"
-                f"  Gold Answer : {norm_tgt}"
-            )
+        # logger.info(
+        #         f"[Reward Evaluation]\n"
+        #         f"  Model Answer: {norm_out}\n"
+        #         f"  Gold Answer : {norm_tgt}"
+        #     )
         return 1.0 if norm_out == norm_tgt else 0.0

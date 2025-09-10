@@ -3,18 +3,8 @@
 
 
 ✅ Best Prompt:
-Solve the following grade-school math problem. Use precise numeric reasoning and show your step-by-step calculations.
+Solve the math problem and output only the final answer as a number.
 
-**CRITICAL FORMATTING INSTRUCTIONS:**
-1.  **Final Answer:** After your reasoning, provide your final answer within <answer> tags.
-2.  **Numbers:** Present whole numbers without decimals (e.g., `113`). Simplify fractions to their lowest terms (e.g., `3/4`).
-3.  **Time:**
-    *   If the answer is a *time of day*, express it in the format `H:MM AM/PM` (e.g., `2:30 PM`).
-    *   If the problem asks for an *hour of the day* (e.g., "what hour"), provide just the number (e.g., `2`).
-4.  **Units:** Include units (like kg, km, $) in your answer **only if** they are explicitly mentioned in the problem's question.
+📊 SA Test Accuracy: 0.956
 
-Ensure your reasoning is complete and leads clearly to your final answer.
-
-📊 SA Test Accuracy: 0.896
-
-⏱️ Time Elapsed: 271 min 4 sec (16264.69 seconds)
+⏱️ Time Elapsed: 165 min 9 sec (9909.14 seconds)

@@ -1,0 +1,583 @@
+{
+  "config": {
+    "mcts_iters": 10,
+    "depth_threshold": 5,
+    "width_threshold": 3
+  },
+  "best_node": {
+    "action_sequence": [],
+    "prompt": "Answer the question carefully based on medical knowledge.",
+    "depth": 0,
+    "Q": 22.749999999999993,
+    "N": 12
+  },
+  "search_tree": {
+    "id": 0,
+    "depth": 0,
+    "action_sequence": [],
+    "prompt": "Answer the question carefully based on medical knowledge.",
+    "Q": 22.749999999999993,
+    "N": 12,
+    "uct_value": 0.0,
+    "reward": 0.95,
+    "children": [
+      {
+        "id": 1,
+        "depth": 1,
+        "action_sequence": [
+          "SuccessDrivenAction"
+        ],
+        "prompt": "You are a medical expert. Answer the question by carefully applying clinical reasoning. Follow these steps:\n\n1.  **Summarize:** Identify key findings, demographics, and critical data.\n2.  **Diagnose:** Generate a differential diagnosis based on classic presentations and syndromes.\n3.  **Evaluate:** Systematically analyze each option. Rule out incorrect answers with specific reasons.\n4.  **Conclude:** Justify the single best answer.\n\n**Key Decision Rules (Always Apply):**\n*   **Emergencies:** In life-threatening situations where consent cannot be obtained, proceed under the doctrine of implied consent. Do not delay treatment.\n*   **ABGs:** A normal HCO₃⁻ with acidemia (low pH) and hypercapnia (high PaCO₂) indicates an **acute respiratory acidosis**.\n*   **Triads:** Recognize pathognomonic presentations (e.g., Gait instability + Urinary incontinence + Cognitive decline = Normal Pressure Hydrocephalus; Unresponsiveness + Bradypnea + Miosis = Opioid overdose).\n*   **Pediatrics:** Night terrors occur in **non-REM sleep** and feature amnesia.\n\n**Output your final answer within <answer>X</answer> tags.**",
+        "Q": 5.65,
+        "N": 3,
+        "uct_value": 1.887274224091692,
+        "reward": 0.9,
+        "children": [
+          {
+            "id": 2,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are a medical expert. Answer the question by carefully applying clinical reasoning. Follow these steps:\n\n1.  **Summarize:** Identify key findings, demographics, and critical data.\n2.  **Diagnose:** Generate a differential diagnosis based on classic presentations and syndromes.\n3.  **Evaluate:** Systematically analyze each option. Rule out incorrect answers with specific reasons.\n4.  **Conclude:** Justify the single best answer.\n\n**Key Decision Rules (Always Apply):**\n*   **Emergencies:** In life-threatening situations where consent cannot be obtained, proceed under the doctrine of implied consent. Do not delay treatment.\n*   **ABGs:** A normal HCO₃⁻ with acidemia (low pH) and hypercapnia (high PaCO₂) indicates an **acute respiratory acidosis**.\n*   **Triads:** Recognize pathognomonic presentations (e.g., Gait instability + Urinary incontinence + Cognitive decline = Normal Pressure Hydrocephalus; Unresponsiveness + Bradypnea + Miosis = Opioid overdose).\n*   **Pediatrics:** Night terrors occur in **non-REM sleep** and feature amnesia.\n\n**Output your final answer within <answer>X</answer> tags.**",
+            "Q": 4.75,
+            "N": 3,
+            "uct_value": 1.9026203650645566,
+            "reward": 0.9,
+            "children": [
+              {
+                "id": 3,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are a medical expert. Answer the question by carefully applying clinical reasoning. Follow these steps:\n\n1.  **Summarize & Identify the Key Clue:** List critical findings, demographics, and history. Explicitly state the single most important clue that directs the diagnostic pathway.\n2.  **Diagnose & Explain the Mechanism:** Generate a differential diagnosis. For the leading diagnosis, concisely explain the pathophysiological mechanism connecting the clue to the presentation.\n3.  **Evaluate & Rule Out:** Systematically analyze each option. For incorrect answers, provide a specific, fact-based reason for elimination (e.g., contradicts a finding, mismatches the mechanism, or is not the best fit for the question's wording).\n4.  **Conclude with Precision:** Justify the single best answer, ensuring it is the most direct and accurate response to the specific question asked.\n\n**Key Decision Rules (Always Apply):**\n*   **Emergencies:** In life-threatening situations without consent, proceed under implied consent. Do not delay treatment.\n*   **ABGs:** A normal HCO₃⁻ with acidemia and hypercapnia indicates **acute respiratory acidosis**.\n*   **Triads:** Recognize pathognomonic presentations (e.g., Unresponsiveness + Bradypnea + Miosis = Opioid overdose).\n*   **Neuraxial Anesthesia:** Hypotension shortly after an epidural/spinal is due to **sympathetic blockade** (vasodilation, reduced preload).\n*   **Diabetes in Pregnancy:** Poor glycemic control risks fetal **congenital heart defects** and neonatal **transient hypertrophic cardiomyopathy**.\n*   **CKD-MBD:** Chronic Kidney Disease causes **secondary hyperparathyroidism** (hypocalcemia, high PTH), leading to fractures. Tertiary HPT involves hypercalcemia.\n*   **Tissue Healing:** Cartilage heals poorly due to avascularity and lack of progenitors. The **perichondrium** contains chondrogenic progenitor cells.\n\n**Reasoning Invariants:**\n*   **Find the Key:** Always identify and state the primary diagnostic clue.\n*   **Explain the \"Why\":** Link the clue to the diagnosis with a brief mechanism.\n*   **Eliminate to Validate:** Rule out alternatives with specific reasons.\n*   **Match the Question:** The conclusion must precisely answer the question asked.\n\n**Output your final answer within <answer>X</answer> tags.**",
+                "Q": 0.95,
+                "N": 0,
+                "uct_value": 0.0026203676849205124,
+                "reward": 0.95,
+                "children": []
+              },
+              {
+                "id": 4,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are a medical expert. Answer the question by carefully applying clinical reasoning. Follow these steps:\n\n1.  **Summarize:** Identify key findings, demographics, and critical data.\n2.  **Triage Findings:** Distinguish between pathognomonic/hallmark findings and potential distractors, comorbidities, or incidental findings. Identify the core clinical syndrome.\n3.  **Diagnose:** Generate a differential diagnosis based on the hallmark presentation, prioritizing the most common cause for the demographic and findings.\n4.  **Evaluate:** Systematically analyze each option. Rule out answers that are incompatible with the pathognomonic findings or the most likely diagnosis. For other findings, consider if they could be incidental or explained by a separate, common comorbidity.\n5.  **Conclude:** Justify the single best answer, accounting for all data but prioritizing the highest-yield findings.\n\n**Key Decision Rules (Always Apply):**\n*   **Prior Probability:** The most common cause of a classic presentation is usually correct. Do not favor rare diseases without definitive evidence.\n*   **Red Herrings:** Not all clinical findings are connected. Isolate and minimize distractors to avoid misdiagnosis. A single uncommon finding should not automatically rule out the most likely diagnosis.\n*   **Emergencies:** In life-threatening situations where consent cannot be obtained, proceed under the doctrine of implied consent. Do not delay treatment.\n*   **ABGs:** A normal HCO₃⁻ with acidemia (low pH) and hypercapnia (high PaCO₂) indicates an **acute respiratory acidosis**.\n*   **Triads:** Recognize pathognomonic presentations (e.g., Gait instability + Urinary incontinence + Cognitive decline = Normal Pressure Hydrocephalus; Unresponsiveness + Bradypnea + Miosis = Opioid overdose).\n*   **Pediatrics:** Night terrors occur in **non-REM sleep** and feature amnesia.\n*   **Neuro-Ophthalmology:** Bilateral internuclear ophthalmoplegia (INO) in a young adult is most commonly caused by demyelination (e.g., multiple sclerosis). Papilledema is not a feature of demyelination and should be considered a potential distractor.\n\n**Example of Handling a Red Herring (Learn from this):**\n*   **Finding:** A young patient presents with bilateral INO (hallmark for demyelination) and papilledema (distractor).\n*   **Reasoning:** The INO is the pathognomonic finding. Papilledema is atypical for demyelination and is likely an incidental finding or due to a separate, common comorbidity (e.g., IIH from oral contraceptives). The most likely cause of the core syndrome (INO) is demyelination.\n*   **Incorrect Approach:** Abandoning demyelination for a rare cause like a compressive hematoma just to explain the papilledema.\n*   **Correct Approach:** Anchor on the most common cause of the hallmark finding (demyelination) and consider the other finding (papilledema) separately.\n\n**Output your final answer within <answer>X</answer> tags.**",
+                "Q": 0.95,
+                "N": 0,
+                "uct_value": 0.0026203676849205124,
+                "reward": 0.95,
+                "children": []
+              },
+              {
+                "id": 5,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are a medical expert. Answer the question by carefully applying clinical reasoning. Follow these steps:\n\n1.  **Summarize:** Identify key findings, demographics, and critical data. Interpret nuanced phrases (e.g., \"inherited from\") within the context of the diagnosed condition's known biology.\n2.  **Diagnose:** Generate a differential diagnosis based on classic presentations and syndromes.\n3.  **Evaluate:** Systematically analyze each option. Rule out incorrect answers with specific reasons.\n    ***Critical Check:* Cross-reference your mechanistic reasoning against the established, most common pathophysiology for the diagnosed condition. If your conclusion contradicts a well-established medical fact, re-examine your initial summary and diagnosis.**\n4.  **Conclude:** Justify the single best answer, ensuring it aligns with the most probable biological mechanism.\n\n**Key Decision Rules (Always Apply):**\n*   **Emergencies:** In life-threatening situations where consent cannot be obtained, proceed under the doctrine of implied consent. Do not delay treatment.\n*   **ABGs:** A normal HCO₃⁻ with acidemia (low pH) and hypercapnia (high PaCO₂) indicates an **acute respiratory acidosis**.\n*   **Triads:** Recognize pathognomonic presentations (e.g., Gait instability + Urinary incontinence + Cognitive decline = Normal Pressure Hydrocephalus; Unresponsiveness + Bradypnea + Miosis = Opioid overdose).\n*   **Pediatrics:** Night terrors occur in **non-REM sleep** and feature amnesia.\n*   **Genetics & Meiosis:**\n    *   **Klinefelter (47,XXY):** Paternal origin is typically from **nondisjunction in Meiosis I** (resulting in an XY sperm).\n    *   **Down Syndrome (Trisomy 21):** Most commonly from **maternal Meiosis I** nondisjunction.\n    *   **Turner (45,X):** Often due to loss of the paternal sex chromosome.\n\n**Example of Correct Reasoning (Learn from this):**\n*   **Scenario:** A tall, infertile male with gynecomastia, small testes, elevated FSH, and high estradiol:testosterone ratio is diagnosed with 47,XXY. If the abnormality was inherited from the father, the error occurred in the **primary spermatocyte**.\n*   **Why:** The father (46,XY) produces an XY sperm due to Meiosis I nondisjunction. This sperm fertilizes a normal X egg to create a 47,XXY zygote. The \"abnormality\" inherited is the meiotic error itself, not an \"extra X\" from the father. An XX sperm is not a typical biological mechanism for paternal Klinefelter syndrome.\n\n**Output your final answer within <answer>X</answer> tags.**",
+                "Q": 3.8499999999999996,
+                "N": 3,
+                "uct_value": 1.4526203650645566,
+                "reward": 1.0,
+                "children": [
+                  {
+                    "id": 6,
+                    "depth": 4,
+                    "action_sequence": [
+                      "SuccessDrivenAction",
+                      "FailureDrivenAction",
+                      "FailureDrivenAction",
+                      "SuccessDrivenAction"
+                    ],
+                    "prompt": "You are a medical expert. Answer the question by carefully applying clinical reasoning. Follow these steps:\n\n1.  **Summarize:** Identify and interpret key findings, demographics, and critical data. Synthesize information to form a clinical picture, paying close attention to nuanced phrases and contextual clues.\n2.  **Diagnose:** Generate a differential diagnosis based on classic presentations, syndromes, and pathognomonic triads. State your leading diagnosis before evaluating the options.\n3.  **Evaluate:** Systematically analyze each option. Rule out incorrect answers with specific, mechanistic reasons.\n    ***Critical Check:* For each option, cross-reference your reasoning against established pathophysiology, guidelines, and medical facts. If a conclusion contradicts a well-established principle, re-examine your initial summary and diagnosis.**\n4.  **Conclude:** Justify the single best answer, ensuring it aligns with the most probable biological mechanism and synthesizes your findings from all previous steps.\n\n**Key Decision Rules (Always Apply):**\n*   **Emergencies:** In life-threatening situations where consent cannot be obtained, proceed under the doctrine of implied consent. Do not delay treatment.\n*   **ABGs:** A normal HCO₃⁻ with acidemia (low pH) and hypercapnia (high PaCO₂) indicates an **acute respiratory acidosis**.\n*   **Triads:** Recognize pathognomonic presentations (e.g., Unresponsiveness + Bradypnea + Miosis = Opioid overdose).\n*   **Pediatrics:** For asthma, GINA guidelines define symptoms >2 days/week or nighttime awakenings >2 times/month as **persistent asthma**, requiring a daily inhaled corticosteroid.\n*   **Serology:** Anti-HAV IgM+ / IgG- indicates **acute hepatitis A infection**.\n*   **Pharmacotherapy:** Long-acting beta-agonists (LABAs) must never be used as monotherapy for asthma.\n\n**Output your final answer within <answer>X</answer> tags.**",
+                    "Q": 0.95,
+                    "N": 3,
+                    "uct_value": 0.47762036506455674,
+                    "reward": 0.95,
+                    "children": []
+                  },
+                  {
+                    "id": 7,
+                    "depth": 4,
+                    "action_sequence": [
+                      "SuccessDrivenAction",
+                      "FailureDrivenAction",
+                      "FailureDrivenAction",
+                      "SuccessDrivenAction"
+                    ],
+                    "prompt": "You are a medical expert. Answer the question by carefully applying clinical reasoning. Follow these steps:\n\n1.  **Summarize:** Identify key findings, demographics, and critical data. **Interpret nuanced phrases within the context of the diagnosed condition's known biology to build a pathophysiological narrative.**\n2.  **Diagnose:** Generate a differential diagnosis by matching the findings to **classic clinical patterns and syndromes.**\n3.  **Evaluate:** Systematically analyze each option. **Rule out incorrect answers with specific, mechanistic reasons** (e.g., \"X is incorrect because it is used for Y, which contradicts Z finding\").  \n    ***Critical Check:* Cross-reference your reasoning against the most common pathophysiology for the diagnosed condition. If your conclusion contradicts a well-established medical fact, re-examine your initial summary and diagnosis.**\n4.  **Conclude:** Justify the single best answer, ensuring it aligns with the most probable biological mechanism and the patient's specific presentation.\n\n**Key Decision Rules (Always Apply):**\n*   **Emergencies:** In life-threatening situations where consent cannot be obtained, proceed under the doctrine of implied consent. Do not delay treatment.\n*   **ABGs:** A normal HCO₃⁻ with acidemia (low pH) and hypercapnia (high PaCO₂) indicates an **acute respiratory acidosis**.\n*   **Triads:** Recognize pathognomonic presentations (e.g., Gait instability + Urinary incontinence + Cognitive decline = Normal Pressure Hydrocephalus; Unresponsiveness + Bradypnea + Miosis = Opioid overdose).\n*   **Pediatrics:** Night terrors occur in **non-REM sleep** and feature amnesia.\n*   **Genetics & Meiosis:**\n    *   **Klinefelter (47,XXY):** Paternal origin is typically from **nondisjunction in Meiosis I** (resulting in an XY sperm).\n    *   **Down Syndrome (Trisomy 21):** Most commonly from **maternal Meiosis I** nondisjunction.\n    *   **Turner (45,X):** Often due to loss of the paternal sex chromosome.\n*   **Management Priority:** For questions regarding patient management, **prioritize identifying and addressing the root cause** of a problem over managing its symptoms.\n\n**Output your final answer within <answer>X</answer> tags.**",
+                    "Q": 0.95,
+                    "N": 0,
+                    "uct_value": 0.0026203676849205124,
+                    "reward": 0.95,
+                    "children": []
+                  },
+                  {
+                    "id": 8,
+                    "depth": 4,
+                    "action_sequence": [
+                      "SuccessDrivenAction",
+                      "FailureDrivenAction",
+                      "FailureDrivenAction",
+                      "SuccessDrivenAction"
+                    ],
+                    "prompt": "You are a medical expert. Answer the question by carefully applying clinical reasoning. Follow these steps:\n\n1.  **Summarize:** Identify key findings, demographics, and critical data. **Establish a precise timeline, correlating symptoms with events (e.g., procedures, medication changes).** Interpret nuanced phrases within their clinical context. **Actively note the absence of findings that would be expected in other diagnoses.**\n\n2.  **Diagnose:** Generate a differential diagnosis. **First, scan for pathognomonic signs, classic triads, or 'hallmark' biopsy findings. If present, anchor your initial diagnosis here.**\n\n3.  **Evaluate:** Systematically analyze each option. **Rule out incorrect answers by stating the specific clinical or pathophysiological expectation that is violated by the case details.**\n    ***Critical Check:* Cross-reference your reasoning against the established, most common pathophysiology for the condition. If your conclusion contradicts a well-established medical fact, re-examine your initial summary.**\n    ***Biopsy Rule:* If a biopsy finding is provided, your chosen diagnosis must be one that produces those exact histological changes.**\n\n4.  **Conclude:** Justify the single best answer, ensuring it aligns with the most probable biological mechanism and all provided evidence.\n\n**Key Decision Rules (Always Apply):**\n*   **Emergencies:** In life-threatening situations where consent cannot be obtained, proceed under the doctrine of implied consent. Do not delay treatment.\n*   **ABGs:** A normal HCO₃⁻ with acidemia (low pH) and hypercapnia (high PaCO₂) indicates an **acute respiratory acidosis**.\n*   **Triads:** Recognize pathognomonic presentations (e.g., Gait instability + Urinary incontinence + Cognitive decline = Normal Pressure Hydrocephalus). **These are often definitive.**\n*   **Timing is Data:** The onset of symptoms relative to a procedure or medication is a high-priority diagnostic clue.\n*   **Absence as Evidence:** The lack of an expected sign (e.g., no tachycardia in hypotension) is actively used to rule out differentials.\n*   **Pediatrics:** Night terrors occur in **non-REM sleep** and feature amnesia.\n*   **Genetics & Meiosis:**\n    *   **Klinefelter (47,XXY):** Paternal origin is typically from **nondisjunction in Meiosis I**.\n    *   **Down Syndrome (Trisomy 21):** Most commonly from **maternal Meiosis I** nondisjunction.\n    *   **Turner (45,X):** Often due to loss of the paternal sex chromosome.\n\n**Output your final answer within <answer>X</answer> tags.**",
+                    "Q": 0.9,
+                    "N": 0,
+                    "uct_value": 0.0026203676849205124,
+                    "reward": 0.9,
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are a medical expert. Answer the question by carefully applying clinical reasoning. Strictly follow these steps in order:\n\n1.  **Summarize:** Identify key findings, demographics, history, physical exam, labs, and critical data. Flag any contradictions or red herrings.\n2.  **Diagnose:** Generate a differential diagnosis. Immediately check if any pre-defined \"Key Decision Rules\" or pathognomonic triads apply.\n3.  **Evaluate:** Systematically analyze each option. This is the most critical step.\n    *   For the correct answer: Justify it by anchoring your reasoning in core scientific principles (e.g., physiology, immunology) and specific evidence.\n    *   For every incorrect option: Provide a specific, definitive reason to rule it out. Explain why it is inconsistent with the data or science.\n    *   Resolve any contradictions identified in your summary.\n4.  **Conclude:** State the single best answer, summarizing the most compelling evidence from your evaluation.\n\n**Key Decision Rules (Always Apply First):**\n*   **Emergencies:** In life-threatening situations without consent, proceed under implied consent. Do not delay treatment.\n*   **ABGs:** A normal HCO₃⁻ with acidemia (low pH) and hypercapnia (high PaCO₂) indicates an **acute respiratory acidosis**.\n*   **Triads:** Recognize pathognomonic presentations (e.g., Gait instability + Urinary incontinence + Cognitive decline = Normal Pressure Hydrocephalus).\n*   **Pediatrics:** Night terrors occur in **non-REM sleep** and feature amnesia.\n*   **Hemodynamics:** Resistance to flow is proportional to **1/radius⁴** (Poiseuille's Law).\n*   **Serology:** Anti-HAV IgM+ & IgG- = **acute hepatitis A infection**; Anti-HBs+ & HBsAg- = **immunity to hepatitis B**.\n*   **Pharmacology:** A history of **gastritis** is a contraindication to aspirin.\n*   **HDN:** Hemolytic disease requires **maternal IgG antibodies** against an **antigen present on fetal RBCs**.\n\n**Output your final answer within <answer>X</answer> tags.**",
+            "Q": 0.9,
+            "N": 0,
+            "uct_value": 0.0026203676849205124,
+            "reward": 0.9,
+            "children": []
+          },
+          {
+            "id": 4,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are a medical expert. Answer the question by carefully applying clinical reasoning. Follow these steps:\n\n1.  **Summarize:** Identify key findings, demographics, and critical data.\n2.  **Diagnose:** Generate a differential diagnosis based on classic presentations and syndromes.\n3.  **Evaluate:** Systematically analyze each option. Rule out incorrect answers with specific reasons. Prioritize objective findings (e.g., imaging, labs) over historical clues when they conflict.\n4.  **Conclude:** Justify the single best answer.\n\n**Key Decision Rules (Always Apply):**\n*   **Emergencies:** In life-threatening situations where consent cannot be obtained, proceed under the doctrine of implied consent. Do not delay treatment.\n*   **ABGs:** A normal HCO₃⁻ with acidemia (low pH) and hypercapnia (high PaCO₂) indicates an **acute respiratory acidosis**.\n*   **Triads:** Recognize pathognomonic presentations (e.g., Gait instability + Urinary incontinence + Cognitive decline = Normal Pressure Hydrocephalus; Unresponsiveness + Bradypnea + Miosis = Opioid overdose).\n*   **Pediatrics:**\n    - **Night Terrors:** Occur in **non-REM sleep** and feature amnesia.\n    - **Developmental Milestones (CDC):**\n        - 2 months: Lifts head/chest in prone, tracks to midline, hands fisted.\n        - 6 months: Rolls supine to prone, transfers objects, no words.\n        - 9 months: Pulls to stand, cruises, immature pincer grasp.\n        - 12 months: Walks independently, follows simple commands, says 1-2 words.\n*   **Teratogens:**\n    - **Lithium:** Associated with Ebstein's anomaly (displaced/elongated tricuspid valve) AND persistent truncus arteriosus (single overriding great vessel). If truncus arteriosus is present, suspect DiGeorge syndrome (22q11.2 deletion) with hypoparathyroidism (low PTH).\n    - **Alcohol:** Causes fetal alcohol syndrome (smooth philtrum, thin vermilion border, microcephaly, growth restriction).\n*   **Cardiac Defects:**\n    - A \"single overriding great vessel\" on echo is pathognomonic for **persistent truncus arteriosus**, not Ebstein's anomaly.\n    - Persistent truncus arteriosus is a conotruncal anomaly strongly associated with **22q11.2 deletion (DiGeorge syndrome)**.\n\n**Output your final answer within <answer>X</answer> tags.**\n\n**Example Reasoning (Learn from these):**\n*   **Example 1 (Teratogen):** A newborn with micrognathia, cleft palate, and a single overriding great vessel on echo, born to a mother on lithium. While lithium is teratogenic, the specific echo finding points to truncus arteriosus, which is linked to DiGeorge syndrome and hypoparathyroidism (low PTH). Do not assume Ebstein's anomaly contradicts this finding.\n*   **Example 2 (Milestones):** A child taking independent steps and recognizing object names but not following a command like \"grab the ball\" is most consistent with 12 months. At this age, not following a simple command may still be normal, but independent walking is a key 12-month milestone. Do not downgrade to 9 months based on command-following alone.",
+            "Q": 0.9,
+            "N": 0,
+            "uct_value": 0.0026203676849205124,
+            "reward": 0.9,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "depth": 1,
+        "action_sequence": [
+          "FailureDrivenAction"
+        ],
+        "prompt": "As a medical expert, analyze the following question step-by-step:\n\n1.  **Identify Key Findings:** Extract all critical clinical details (history, exam, diagnostics, planned treatment).\n2.  **Acknowledge Conflicts:** Note any seemingly contradictory information (e.g., a treatment plan that may be a red herring based on initial, non-definitive reports).\n3.  **Generate Differential Diagnoses:** Consider both common and uncommon conditions that fit the *aggregate* data. Do not anchor on the first or most common possibility.\n4.  **Determine Metastatic Pattern:** For each potential diagnosis, recall its precise pathological behavior, focusing on the *initial* route and specific sites of metastasis (e.g., lymphatic vs. hematogenous spread).\n5.  **Map to Options:** Select the answer that is best explained by the most specific diagnosis supported by the key findings, particularly those that are unusual or highly indicative.\n\n**Critical Guidance:** The most statistically common diagnosis may not be correct. The answer is often determined by a single, specific detail that overrides general assumptions. Pay extreme attention to descriptors of invasion (e.g., \"fixed,\" \"immobile\") and their pathological implications.\n\n**Example of Reasoning to Avoid:**\n*   **Input:** A thyroid nodule case with planned radioiodine therapy.\n*   **Flawed Reasoning:** Anchors on radioiodine as definitive for papillary cancer, assumes lymphatic spread, and selects \"cervical lymph nodes.\"\n*   **Correct Approach:** Notes the \"fixed, immobile\" nodule as a clue for locally aggressive disease like medullary thyroid carcinoma (MTC), which spreads hematogenously first (e.g., via vascular structures like the inferior thyroid arteries), making radioiodine irrelevant for metastasis pattern.\n\nNow, apply this rigorous protocol to the following question. Explain your reasoning through each step before giving your final answer.",
+        "Q": 8.55,
+        "N": 5,
+        "uct_value": 1.9039408887879206,
+        "reward": 0.95,
+        "children": [
+          {
+            "id": 3,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "As a medical expert, analyze the following question using this rigorous, step-by-step protocol:\n\n1.  **Exhaustive Data Extraction:** List all critical clinical details in a structured format (history, exam, diagnostics, social context).\n2.  **Identify Conflicts & Red Herrings:** Explicitly state the most common or tempting misdiagnosis and explain which specific finding(s) rule it out.\n3.  **Generate Differential Diagnoses:** Based on the *aggregate* data, consider plausible diagnoses. Do not anchor on the first or most common possibility.\n4.  **Determine Pathophysiological Mechanism:** For each potential diagnosis, recall its precise underlying mechanism and explain how it produces the specific key findings.\n5.  **Map to the Correct Answer:** Select the option best explained by the diagnosis whose mechanism most specifically accounts for the findings, particularly any unusual or highly indicative \"killer detail.\"\n\n**Critical Guidance:** The answer is often determined by a single, specific detail that overrides general assumptions. Your final explanation must identify this detail.\n\n**Now, apply this protocol to the following question. Explain your reasoning through each step before giving your final answer.**",
+            "Q": 7.6000000000000005,
+            "N": 5,
+            "uct_value": 1.6656715842597867,
+            "reward": 0.95,
+            "children": [
+              {
+                "id": 4,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "As a medical expert, analyze the following question using this rigorous, step-by-step protocol:\n\n**1.  Exhaustive Data Extraction:** List all critical clinical details in a structured format (history, exam, diagnostics, medications, social context).\n**2.  Establish Epidemiological Prior:** Briefly state the 1-2 most statistically likely diagnoses for this presentation based on patient demographics, setting, and key findings.\n**3.  Identify Conflicts & Red Herrings:** Explicitly state common misdiagnoses and explain which specific finding(s) rule them out. Note any crucial missing information.\n**4.  Generate Differential Diagnoses:** Based on the aggregate data, list plausible diagnoses. Systematically compare each to the findings. **Do not anchor on the first or most exotic possibility.**\n**5.  Determine Pathophysiological Mechanism:** For the top 2-3 diagnoses, explain the mechanism that produces the key findings. **Avoid speculative mechanisms not supported by standard teaching.**\n**6.  Map to the Correct Answer:** Select the option that is:\n    *   **a)** Most consistent with the pre-test probability (from Step 2).\n    *   **b)** Best explained by the core pathophysiology.\n    *   **c)** Accounted for by the findings without requiring assumptions about missing data.\n**7.  If Question is About Risk/Complication:** For the selected diagnosis, state the most common or most feared complication relevant to the patient's context. Do not confuse pathophysiological possibility with clinical likelihood.\n\n**Critical Guidance:** While a specific detail can be definitive, prioritize common sense and prevalence. The simplest explanation that fits all major findings is usually correct. Your final explanation must justify why the chosen answer is **more likely** than the alternatives.\n\n**Examples of Reasoning to Avoid:**\n*   **Example 1 (HS & Splenic Sequestration):** Do not anchor on a highly specific lab value (e.g., elevated MCHC) and then select a complication (splenic sequestration) that is less common than the standard complication (cholecystitis from pigment stones) for that very diagnosis.\n*   **Example 2 (Tertiary HPT):** Do not over-interpret a temporal note (e.g., \"after dialysis\") as a precise pathophysiological trigger to justify a rare diagnosis (tertiary hyperparathyroidism) when a common one (secondary hyperparathyroidism) fits perfectly without speculation.\n\n**Now, apply this protocol to the following question. Explain your reasoning through each step before giving your final answer.**",
+                "Q": 6.65,
+                "N": 5,
+                "uct_value": 1.4281715842597866,
+                "reward": 0.95,
+                "children": [
+                  {
+                    "id": 5,
+                    "depth": 4,
+                    "action_sequence": [
+                      "FailureDrivenAction",
+                      "SuccessDrivenAction",
+                      "FailureDrivenAction",
+                      "SuccessDrivenAction"
+                    ],
+                    "prompt": "As a medical expert, analyze the following question using this rigorous, step-by-step protocol:\n\n### Core Reasoning Principles ###\n1.  **Prevalence First:** The most common presentation of a common disease is always the initial anchor. Rare diseases are considered only when findings are *highly specific* and *cannot* be explained by common ones.\n2.  **Contradictions are Key:** Actively seek and prioritize findings that rule diagnoses in or out. A single strong contradiction often outweighs several supportive but non-specific findings.\n3.  **Mechanism Must Be Standard:** The pathophysiological explanation must be straightforward and based on established medical knowledge, not speculative chain reactions.\n4.  **Answer the Question Asked:** Meticulously align the final answer with the precise wording of the question.\n5.  **Structure is Non-Negotiable:** The step-by-step protocol is a cognitive forcing function. Do not skip or merge steps.\n\n**Step-by-Step Protocol:**\n\n**1.  Exhaustive Data Extraction:** List all critical clinical details in a structured format (history, exam, diagnostics, medications, social context).\n**2.  Establish Epidemiological Prior:** Briefly state the 1-2 most statistically likely diagnoses for this presentation based on patient demographics, setting, and key findings.\n**3.  Identify Conflicts & Red Herrings:** Explicitly state common misdiagnoses and explain which specific finding(s) rule them out. Note any crucial missing information.\n**4.  Generate Differential Diagnoses:** Based on the aggregate data, list plausible diagnoses in a comparative table (Plausibility, How it Fits, How it Contradicts). **Do not anchor on the first or most exotic possibility.**\n**5.  Determine Pathophysiological Mechanism:** For the top diagnosis, explain the mechanism that produces the key findings. **Avoid speculative mechanisms not supported by standard teaching.**\n**6.  Map to the Correct Answer:** Select the option that is:\n    *   **a)** Most consistent with the pre-test probability (from Step 2).\n    *   **b)** Best explained by the core pathophysiology.\n    *   **c)** Accounted for by the findings without requiring assumptions about missing data.\n    Systematically disqualify each incorrect option by demonstrating a clear misfit.\n**7.  If Question is About Risk/Complication:** For the selected diagnosis, state the most common or most feared complication relevant to the patient's context. Do not confuse pathophysiological possibility with clinical likelihood.\n\n**Critical Guidance:** While a specific detail can be definitive, prioritize common sense and prevalence. The simplest explanation that fits all major findings is usually correct. Your final explanation must justify why the chosen answer is **more likely** than the alternatives.\n\n**Now, apply this protocol to the following question. Explain your reasoning through each step before giving your final answer.**",
+                    "Q": 0.9,
+                    "N": 0,
+                    "uct_value": 0.0031715906029487987,
+                    "reward": 0.9,
+                    "children": []
+                  },
+                  {
+                    "id": 6,
+                    "depth": 4,
+                    "action_sequence": [
+                      "FailureDrivenAction",
+                      "SuccessDrivenAction",
+                      "FailureDrivenAction",
+                      "SuccessDrivenAction"
+                    ],
+                    "prompt": "As a medical expert, analyze the following question using this rigorous, step-by-step protocol:\n\n**1.  Exhaustive Data Extraction:** List all critical clinical details in a structured format (history, exam, diagnostics, medications, social context).\n**2.  Establish Epidemiological Prior:** Briefly state the 1-2 most statistically likely diagnoses for this presentation based on patient demographics, setting, and key findings.\n**3.  Identify Conflicts & Red Herrings:** Explicitly state common misdiagnoses and explain which specific finding(s) rule them out. Note any crucial missing information.\n**4.  Generate Differential Diagnoses:** Based on the aggregate data, list plausible diagnoses. Systematically compare each to the findings. **Do not anchor on the first or most exotic possibility.**\n**5.  Determine Pathophysiological Mechanism:** For the top 2-3 diagnoses, explain the mechanism that produces the key findings. **Avoid speculative mechanisms not supported by standard teaching.**\n**6.  Map to the Correct Answer:** Select the option that is:\n    *   **a)** Most consistent with the pre-test probability (from Step 2).\n    *   **b)** Best explained by the core pathophysiology.\n    *   **c)** Accounted for by the findings without requiring assumptions about missing data.\n**7.  If Question is About Risk/Complication:** For the selected diagnosis, state the most common or most feared complication relevant to the patient's context. Do not confuse pathophysiological possibility with clinical likelihood.\n\n**Critical Guidance:** While a specific detail can be definitive, prioritize common sense and prevalence. The simplest explanation that fits all major findings is usually correct. Your final explanation must justify why the chosen answer is **more likely** than the alternatives.\n\n**Examples of Reasoning to Avoid:**\n*   **Example 1 (HS & Splenic Sequestration):** Do not anchor on a highly specific lab value (e.g., elevated MCHC) and then select a complication (splenic sequestration) that is less common than the standard complication (cholecystitis from pigment stones) for that very diagnosis.\n*   **Example 2 (Tertiary HPT):** Do not over-interpret a temporal note (e.g., \"after dialysis\") as a precise pathophysiological trigger to justify a rare diagnosis (tertiary hyperparathyroidism) when a common one (secondary hyperparathyroidism) fits perfectly without speculation.\n\n**Now, apply this protocol to the following question. Explain your reasoning through each step before giving your final answer.**",
+                    "Q": 0.9,
+                    "N": 0,
+                    "uct_value": 0.0031715906029487987,
+                    "reward": 0.9,
+                    "children": []
+                  },
+                  {
+                    "id": 7,
+                    "depth": 4,
+                    "action_sequence": [
+                      "FailureDrivenAction",
+                      "SuccessDrivenAction",
+                      "FailureDrivenAction",
+                      "SuccessDrivenAction"
+                    ],
+                    "prompt": "As a medical expert, analyze the following question using this rigorous, step-by-step protocol:\n\n**1.  Exhaustive Data Extraction:** List all critical clinical details in a structured format (history, exam, diagnostics, medications, social context).\n**2.  Establish Epidemiological Prior:** State the 1-2 most statistically likely diagnoses for this presentation based on patient demographics, setting, and key findings.\n**3.  Identify Conflicts & Red Herrings:** Explicitly state common misdiagnoses and explain which specific finding(s) rule them out. Note any crucial missing information.\n**4.  Generate Differential Diagnoses:** List plausible diagnoses based on aggregate data. Systematically compare each to findings. **Do not anchor on the first or most exotic possibility.**\n**5.  Determine Pathophysiological Mechanism:** For the top diagnosis, explain the standard pathophysiological mechanism that produces the key findings. **Avoid speculative mechanisms.**\n**6.  Map to the Correct Answer:** Select the option that is:\n    *   **a)** Most consistent with the pre-test probability (from Step 2).\n    *   **b)** Best explained by the core pathophysiology.\n    *   **c)** Accounted for by the findings without requiring assumptions about missing data.\n**7.  Tailor to Question Type:** If the question is about risk/complication, state the most common or most feared complication for the diagnosed condition. If about management, apply patient-centered principles.\n\n**Critical Guidance:** Prioritize common sense and prevalence. The simplest explanation that fits all major findings is usually correct. Avoid two key errors:\n*   **Anchoring on a lab value** to justify a rare complication while ignoring the more common one.\n*   **Over-interpreting temporality** to build a speculative mechanism for a rare diagnosis when a common one fits.\n\n**Now, apply this protocol to the following question. Explain your reasoning through each step before giving your final answer.**",
+                    "Q": 5.7,
+                    "N": 5,
+                    "uct_value": 1.1906715842597866,
+                    "reward": 0.95,
+                    "children": [
+                      {
+                        "id": 8,
+                        "depth": 5,
+                        "action_sequence": [
+                          "FailureDrivenAction",
+                          "SuccessDrivenAction",
+                          "FailureDrivenAction",
+                          "SuccessDrivenAction",
+                          "FailureDrivenAction"
+                        ],
+                        "prompt": "As a medical expert, analyze the following question using this rigorous, step-by-step protocol:\n\n**1.  Exhaustive Data Extraction:** List all critical clinical details in a structured format (history, exam, diagnostics, medications, social context).\n**2.  Establish Epidemiological Prior:** State the 1-2 most statistically likely diagnoses for this presentation based on patient demographics, setting, and key findings.\n**3.  Identify Conflicts & Red Herrings:** Explicitly state common misdiagnoses and explain which specific finding(s) rule them out. Note any crucial missing information.\n**4.  Generate Differential Diagnoses:** List plausible diagnoses based on aggregate data. Systematically compare each to findings. **Do not anchor on the first or most exotic possibility.**\n**5.  Determine Pathophysiological Mechanism:** For the top diagnosis, explain the standard pathophysiological mechanism that produces the key findings. **Avoid speculative mechanisms.**\n**6.  Map to the Correct Answer:** Select the option that is:\n    *   **a)** Most consistent with the pre-test probability (from Step 2).\n    *   **b)** Best explained by the core pathophysiology.\n    *   **c)** Accounted for by the findings without requiring assumptions about missing data.\n**7.  Tailor to Question Type:** If the question is about risk/complication, state the most common or most feared complication for the diagnosed condition. If about management, apply patient-centered principles.\n\n**Critical Guidance:** Prioritize common sense and prevalence. The simplest explanation that fits all major findings is usually correct. Avoid two key errors:\n*   **Anchoring on a lab value** to justify a rare complication while ignoring the more common one.\n*   **Over-interpreting temporality** to build a speculative mechanism for a rare diagnosis when a common one fits.\n\n**Now, apply this protocol to the following question. Explain your reasoning through each step before giving your final answer.**",
+                        "Q": 0.9,
+                        "N": 0,
+                        "uct_value": 0.0031715906029487987,
+                        "reward": 0.9,
+                        "children": []
+                      },
+                      {
+                        "id": 9,
+                        "depth": 5,
+                        "action_sequence": [
+                          "FailureDrivenAction",
+                          "SuccessDrivenAction",
+                          "FailureDrivenAction",
+                          "SuccessDrivenAction",
+                          "FailureDrivenAction"
+                        ],
+                        "prompt": "As a medical expert, analyze the following question using this rigorous, step-by-step protocol:\n\n**Step 0: Classify Question Type**\n- **Diagnosis (D):** \"What is the most likely diagnosis?\"\n- **Mechanism (M):** \"How/Why does this occur?\" (pathophysiology, genetics, pharmacology)\n- **Management (C):** \"What is the next best step?\"\n- **Risk/Complication (R):** \"What is the most common/serious complication?\"\n- **Ethics (E):** \"What is the most appropriate communication/ethical approach?\"\n\n**Apply the relevant sub-protocol below:**\n\n---\n\n**FOR ALL QUESTION TYPES:**\n**1.  Exhaustive Data Extraction:** List all critical details (demographics, history, exam, labs, imaging, medications, social context) in a structured format.\n**2.  Identify Constraints & Red Herrings:** Note any seemingly contradictory information, common misdiagnoses, or crucial missing data. Explicitly state which findings rule out alternatives.\n\n---\n\n**TYPE D (DIAGNOSIS) SUB-PROTOCOL:**\n**3.  Establish Epidemiological Prior:** State the 1-2 most statistically likely diagnoses based on prevalence, demographics, and classic findings.\n**4.  Generate Differential Diagnoses:** List plausible diagnoses. Compare each to all findings. **Do not anchor on the first or most exotic possibility.**\n**5.  Determine Pathophysiological Mechanism:** For the top diagnosis, explain the standard mechanism that produces the key findings.\n**6.  Map to Answer:** Select the option most consistent with pre-test probability, core pathophysiology, and all findings without requiring assumptions.\n\n---\n\n**TYPE M (MECHANISM) SUB-PROTOCOL:**\n**3.  Isolate Core Scientific Principle:** Identify the fundamental discipline (e.g., genetics, physiology) and key variables.\n**4.  Recall Foundational Knowledge:** State the established, textbook principles. **Do not extrapolate or speculate.**\n**5.  Map Scenario to Principle:** Apply the question's facts directly to the foundational knowledge. Trace the mechanism step-by-step.\n**6.  Eliminate Impossibilities:** Rule out options violating core scientific principles.\n**7.  Reconcile with Clinical Context:** Ensure the mechanistic answer is consistent with clinical details, but **the mechanism takes precedence.**\n**8.  Map to Answer:** Select the option definitively supported by foundational science.\n\n---\n\n**TYPE C (MANAGEMENT) SUB-PROTOCOL:**\n**3.  Define Immediate Goal:** Diagnosis, treatment, stabilization, or monitoring?\n**4.  Apply \"ACCC\" Framework:** \n    - **A:** Assess/Airway - Is patient stable? Prioritize ABCs.\n    - **C:** Common Practice - Gold-standard, first-line intervention.\n    - **C:** Contraindications - Patient-specific factors ruling out options.\n    - **C:** Cost-Effectiveness - Safest, least invasive option first.\n**5.  Map to Answer:** Select the best management step.\n\n---\n\n**TYPE R (RISK/COMPLICATION) SUB-PROTOCOL:**\n**3.  Confirm Diagnosis:** (Briefly use Type D protocol if not given).\n**4.  State Complications:** \n    - Most common complication for the diagnosis.\n    - Most feared complication for the diagnosis.\n**5.  Map to Answer:** Select based on whether question asks \"most common\" or \"most serious.\"\n\n---\n\n**TYPE E (ETHICS) SUB-PROTOCOL:**\n**3.  Identify Core Ethical Principle:** Autonomy, Beneficence, Non-maleficence, Justice.\n**4.  Apply Patient-Centeredness:** Assess patient's understanding, preferences, values.\n**5.  Prioritize Communication:** Best step is usually to further discuss, explore, or inform.\n**6.  Map to Answer:** Select the most appropriate communication approach.\n\n---\n\n**CRITICAL GUIDANCE & FAILURE EXAMPLES:**\n- **Prioritize common sense and prevalence for Diagnosis, but Mechanism takes absolute precedence for Basic Science.**\n- **Avoid Anchoring:** Do not fixate on a single finding (e.g., a lab value) to justify a rare complication when a common one fits.\n- **Avoid Speculative Mechanisms:** Do not over-interpret temporality to build a rare mechanism when a common one fits.\n- **Example Failure (Genetics):** For a 47,XXY karyotype inherited from the father, the error must occur in paternal meiosis I (primary spermatocyte), not meiosis II. This is determined by foundational genetics (homologous X-Y pair separation in Meiosis I), not epidemiological prevalence.\n- **Example Failure (Hematology):** In sickle cell disease, cholelithiasis (from pigment stones) is a common complication; splenic sequestration is acute and less common. Do not anchor on a single lab value (e.g., high MCHC) to choose the rarer complication.\n\n**Now, apply this protocol to the following question. First, classify the question type. Then, follow the relevant sub-protocol. Explain your reasoning through each step before giving your final answer.**",
+                        "Q": 0.95,
+                        "N": 5,
+                        "uct_value": 0.2406715842597866,
+                        "reward": 0.95,
+                        "children": []
+                      },
+                      {
+                        "id": 10,
+                        "depth": 5,
+                        "action_sequence": [
+                          "FailureDrivenAction",
+                          "SuccessDrivenAction",
+                          "FailureDrivenAction",
+                          "SuccessDrivenAction",
+                          "FailureDrivenAction"
+                        ],
+                        "prompt": "As a medical expert, analyze the following question using this rigorous, step-by-step protocol. **Pay special attention to epidemiological context and avoid early anchoring.**\n\n**1.  Exhaustive Data Extraction:** List all critical clinical details, with particular emphasis on **demographics, key epidemiological risk factors (e.g., travel, exposures, prenatal care, vaccination status, ethnicity), and the social history.** Note any crucial missing information that would change the pre-test probability.\n\n**2.  Establish Epidemiological Prior:** State the 1-2 most statistically likely diagnoses based **primarily on the patient's age, setting, and epidemiological context.** Justify your choices.\n\n**3.  Identify Anchors & Red Herrings:** Explicitly state which findings could lead to early anchoring on a specific diagnosis. Challenge these anchors. Explain which findings rule out common misdiagnoses.\n\n**4.  Generate & Rank Differential Diagnoses:** List 3-4 plausible diagnoses. **Systematically compare each to all findings, not just supporting ones.** For each diagnosis, state:\n    *   **Key Supporting Findings:** Why it fits.\n    *   **Key Contradicting Findings:** Why it might not fit.\n    *   **Likelihood Score:** High/Medium/Low based on prevalence and context.\nRank them from most to least likely.\n\n**5.  Re-evaluate Against Top Choices:** **Before proceeding, re-examine your top two diagnoses from Step 4. Could a finding you initially discounted (e.g., lack of prenatal care) actually make the less obvious choice more likely?** Has any single data point been over-weighted?\n\n**6.  Determine the Diagnostic Goal:** Is the question asking for the...\n    *   **Pathophysiological Mechanism?** Explain the standard mechanism for the top diagnosis.\n    *   **Most Specific Confirmatory Test?** Choose the test that directly identifies the **root etiology** (e.g., PCR for a virus, genetic test) over the test that confirms the mechanism, unless the mechanism *is* the disease (e.g., SCID).\n    *   **Next Step in Management?** Apply patient-centered principles.\n    *   **Most Common Complication?** State the most common or most feared complication for the **most likely diagnosis**.\n\n**7.  Map to the Correct Answer:** Select the option that is:\n    *   **a)** Most consistent with the pre-test probability **(especially epidemiological context)**.\n    *   **b)** Affirmed by the **most specific and direct diagnostic test** for the root cause.\n    *   **c)** Explained by the findings, making the **most reasonable assumptions** based on prevalence (e.g., assuming a common risk factor if missing).\n\n**Critical Guidance:** Prioritize common sense and prevalence. The simplest explanation that fits all major findings **and the epidemiological context** is usually correct. The most powerful data points are often found in the social and epidemiological history. **Be prepared to change your initial leading diagnosis if a later finding (e.g., risk factors) overwhelmingly supports a different one.**\n\n**Examples of Reasoning to Avoid:**\n*   **Example A (Anchoring on a Lab Value):** A 3-year-old with jaundice, splenomegaly, and a recent infection has an elevated MCHC. While this suggests Hereditary Spherocytosis (HS), the lack of reported ethnicity is a critical missing epidemiological clue for Sickle Cell Disease (SCD). Anchoring on MCHC and selecting a HS complication (splenic sequestration) ignores that SCD is a more common cause of this presentation and its most common long-term complication is cholelithiasis/cholecystitis.\n*   **Example B (Ignoring Social Context):** A 3-month-old with failure to thrive, thrush, and pneumonia, born at home with no prenatal care. While SCID is plausible, the social context (no prenatal care) is a massive risk factor for undiagnosed congenital HIV. Choosing a test for the mechanism of immunodeficiency (TREC analysis) over a test for the most likely causative agent (HIV PCR) is an error.\n\n**Now, apply this protocol to the following question. Explain your reasoning through each step before giving your final answer.**",
+                        "Q": 0.95,
+                        "N": 0,
+                        "uct_value": 0.0031715906029487987,
+                        "reward": 0.95,
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": 5,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "As a medical expert, analyze the following question using this rigorous, step-by-step protocol:\n\n1.  **Exhaustive Data Extraction:** List all critical clinical details in a structured format (e.g., History, Exam, Diagnostics, Social Context).\n2.  **Identify Conflicts & Red Herrings:** Explicitly state the most common or tempting misdiagnosis (or incorrect answer) and explain which specific finding(s) rule it out.\n3.  **Generate Differential Diagnoses/Options:** Based on the *aggregate* data, consider all plausible diagnoses or management choices. Do not anchor on the first or most common possibility.\n4.  **Determine Pathophysiological Mechanism:** For each potential diagnosis, recall its precise underlying mechanism and explain how it produces the specific key findings. For management questions, explain the mechanism of action or guideline-based indication.\n5.  **Map to the Correct Answer:** Select the option best explained by the diagnosis or choice whose mechanism most specifically accounts for the findings, particularly any unusual or highly indicative \"killer detail.\" Justify your selection by contrasting it with the closest alternative.\n\n**Critical Guidance:** The answer is often determined by a single, specific detail that overrides general assumptions. Your final explanation must identify this \"killer detail.\"\n\n**Now, apply this protocol to the following question. Explain your reasoning through each step before giving your final answer.**",
+                "Q": 0.95,
+                "N": 0,
+                "uct_value": 0.0031715906029487987,
+                "reward": 0.95,
+                "children": []
+              },
+              {
+                "id": 6,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "As a medical expert, analyze the following question using this rigorous, step-by-step protocol:\n\n**Step 1: Task Identification & Analysis**\nFirst, determine the nature of the task. Is it primarily:\n- **A) Diagnostic Reasoning:** Identifying a disease or condition from clinical findings.\n- **B) Developmental Assessment:** Matching observed milestones to expected ages.\n- **C) Factual Recall:** Testing knowledge of definitions, classifications, or protocols.\n- **D) Pharmacological/Interventional:** Reasoning about drugs, treatments, or procedures.\n- **E) Ethical/Professional:** Judging the most appropriate action in a scenario.\n\n**Step 2: Structured Data Extraction**\nList all critical details in a structured format relevant to the task type (e.g., history, exam, diagnostics, social context, milestones, vitals, lab values).\n\n**Step 3: Task-Specific Analytical Pathway**\n- **If Diagnostic (A):**\n  - Identify potential misdiagnoses (red herrings) and the specific finding(s) that rule them out.\n  - Generate a differential diagnosis based on the aggregate data, avoiding early anchoring.\n  - For each potential diagnosis, explain its pathophysiological mechanism and how it produces the key findings.\n- **If Developmental (B):**\n  - Recall the standard expected milestones and their typical age ranges. **Crucially, do not pathologize; focus on the expected range of normal variation.**\n  - Map each described finding to its typical age window. Identify any finding that is a strong positive or negative predictor for a specific age.\n- **If Other (C, D, E):** Apply the relevant factual knowledge or framework to the extracted data.\n\n**Step 4: Synthesize the Answer**\nSelect the option most consistent with the data and analysis.\n- For diagnostic tasks, identify the most specific \"killer detail\" that anchors the correct diagnosis.\n- For other tasks, identify the key finding that is most discriminative.\n\n**Step 5: Reconcile Apparent Contradictions**\nIf any statement in the question seems to contradict your conclusion (e.g., \"assessed as normal\"), first re-evaluate your initial assumptions against standard medical knowledge before dismissing the statement. The presented scenario is designed to be internally consistent.\n\n**Critical Guidance:** The most common assumption may be a red herring. The answer is often determined by a single, specific detail that overrides general assumptions. Your final explanation must identify this detail.\n\n**Now, apply this protocol to the following question. Explain your reasoning through each step before giving your final answer.**",
+                "Q": 0.95,
+                "N": 0,
+                "uct_value": 0.0031715906029487987,
+                "reward": 0.95,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 4,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "As a medical expert, analyze the following question using this rigorous protocol. Explain your reasoning through each step before giving your final answer.\n\n**1.  Extract & Contextualize Findings:** Identify all critical clinical details (history, exam, diagnostics). For each abnormal finding, briefly state its clinical significance.\n\n**2.  Identify the Central Conflict:** Actively identify the finding that is most inconsistent with the simplest or most common explanation for the presentation. This \"red herring\" or contradictory detail is often the key to the diagnosis.\n\n**3.  Generate Targeted Differentials:** List plausible diagnoses that can explain the *entire* clinical picture, **especially the conflicting finding** from Step 2. Do not anchor on the first possibility.\n\n**4.  Apply Pathophysiological Mechanism:** For each leading diagnosis, recall its precise underlying mechanism (e.g., metastatic spread pattern, anatomical vulnerability, microbiological behavior, or test principle).\n*   **If malignancy/infection:** Determine its initial route and specific sites of spread (lymphatic vs. hematogenous).\n*   **If organ damage:** Determine the specific cells or structures most vulnerable to the insult based on anatomy/physiology.\n*   **If diagnostic test:** Recall the biological principle the test measures.\n\n**5.  Map to Options & Eliminate Incorrect Answers:**\n*   Select the answer best explained by the mechanism in Step 4.\n*   **For each incorrect option, provide a one-sentence explanation stating which specific case finding makes it pathophysiologically impossible or unlikely.**\n\n**Critical Guidance:** The answer is often determined by a **single, specific detail** that overrides general assumptions. Your final reasoning must clearly state what this detail is.\n\n**Now, apply this protocol to the following question.**",
+            "Q": 0.95,
+            "N": 0,
+            "uct_value": 0.0031715906029487987,
+            "reward": 0.95,
+            "children": []
+          },
+          {
+            "id": 5,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "As a medical expert, analyze the following question step-by-step using the structured protocol below. Pay close attention to specialty-specific considerations and avoid common reasoning pitfalls.\n\n---\n\n### **Step 1: Identify Key Findings**\nExtract all critical clinical details (history, exam, diagnostics). For lab values, consider potential artifacts (e.g., elevated MCHC may indicate spherocytosis but could also result from cold agglutinins or hyperlipidemia). If a peripheral smear is referenced, infer its likely characteristics based on other data.\n\n### **Step 2: Acknowledge Conflicts**\nNote seemingly contradictory information, but distinguish between true red herrings and associated findings that may not contradict the primary diagnosis (e.g., disc hyperemia in myopia may represent pseudo-papilledema rather than true increased ICP).\n\n### **Step 3: Generate Differential Diagnoses**\nConsider both common and uncommon conditions that fit the aggregate data. Avoid anchoring on the first possibility, but remember that common diagnoses are common for a reason—override only if a clue is unequivocally inconsistent with the common diagnosis.\n\n### **Step 4: Determine Pathophysiological Mechanism**\n- **If oncology case:** Recall the precise metastatic behavior (initial route and specific sites of spread, e.g., lymphatic vs. hematogenous).\n- **If non-oncology case:** Explain the disease mechanism and how it leads to the findings (e.g., vascular, inflammatory, metabolic).\n\n### **Step 5: Map to Options**\nSelect the answer best supported by the key findings, prioritizing specificity to the patient’s demographics and risk factors. If multiple options are plausible, choose the one most consistent with the most definitive clues.\n\n---\n\n### **Critical Guidance**\n- The most common diagnosis may not be correct, but it should always be considered first.\n- The answer is often determined by a single, specific detail, but ensure that detail is not a misinterpretation or artifact.\n- Pay extreme attention to descriptors of invasion (e.g., \"fixed,\" \"immobile\") in oncology cases.\n- For neurological cases, prioritize classic localization patterns (e.g., INO → MLF lesion).\n- For hematology cases, consider common hemoglobinopathies (e.g., sickle cell) in addition to spherocytosis.\n\n---\n\n### **Examples of Reasoning to Avoid**\n\n**Example 1 (Neurology):**\n- **Input:** A 25-year-old woman with myopia, bilateral INO, and disc hyperemia after trauma.\n- **Flawed Reasoning:** Overweights disc hyperemia as true papilledema, forcing a vascular mechanism (infarction/CVT) despite classic INO for demyelination.\n- **Correct Approach:** Recognizes disc hyperemia as likely pseudo-papilledema (given myopia) and prioritizes demyelination (e.g., MS) as the most common cause of bilateral INO in young adults.\n\n**Example 2 (Hematology):**\n- **Input:** A 3-year-old boy with jaundice, splenomegaly, anemia, high MCHC, and negative Coombs after URTI.\n- **Flawed Reasoning:** Anchors on high MCHC as pathognomonic for hereditary spherocytosis, overlooking sickle cell disease.\n- **Correct Approach:** Considers sickle cell disease (common in children, triggered by infection) and its complications (e.g., cholecystitis from pigmented stones), despite high MCHC (which may be artifactual or less specific).\n\n---\n\nNow, apply this rigorous protocol to the following question. Explain your reasoning through each step before giving your final answer.",
+            "Q": 0.95,
+            "N": 0,
+            "uct_value": 0.0031715906029487987,
+            "reward": 0.95,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "depth": 1,
+        "action_sequence": [
+          "FailureDrivenAction"
+        ],
+        "prompt": "You are a medical geneticist expert. Analyze the question with extreme precision, following this mandatory reasoning framework:\n\n1.  **Clinical Diagnosis:** Identify the syndrome based on the presentation.\n2.  **Karyotype Definition:** State the specific numerical chromosomal abnormality.\n3.  **Gamete Analysis:** Determine the exact chromosomal constitution of the parental gametes that combined to create this karyotype, based on the specified inheritance (e.g., paternal origin).\n4.  **Meiotic Stage Deduction:** Critically, recall that in **male meiosis I, the X and Y chromosomes segregate from each other**. A primary spermatocyte (46,XY) undergoing normal meiosis I produces two secondary spermatocytes: one 23,X and one 23,Y. Nondisjunction of the X and Y in meiosis I produces a 24,XY secondary spermatocyte and a 24,0 secondary spermatocyte. The 24,XY cell undergoes meiosis II to produce two normal sperm (23,X and 23,Y). Therefore, an abnormal sperm carrying both an X and a Y chromosome (resulting in 47,XXY when fertilizing a normal X egg) can **only** arise from nondisjunction of the X and Y chromosomes during **meiosis I** in the father. This error occurs in the **primary spermatocyte**.\n5.  **Option Mapping:** Map the correct stage of error to the provided options.\n\n**Avoid Common Pitfalls:**\n- Do not confuse the behavior of sex chromosomes (X and Y) with homologous autosomes in meiosis I.\n- Do not assume nondisjunction in meiosis II can produce an XY sperm; it can only produce XX or YY sperm from a failure of sister chromatid separation.\n\n**Output Format:**\n- Provide your final answer within the tags `<answer>[LETTER]</answer>`.\n\nNow, answer the following question:",
+        "Q": 7.6000000000000005,
+        "N": 4,
+        "uct_value": 1.9039408887879206,
+        "reward": 0.95,
+        "children": [
+          {
+            "id": 4,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are a medical expert. First, determine the domain of the question. Then, apply the following specialized reasoning framework only if the question involves genetics or chromosomal abnormalities. For all other questions, use the general clinical reasoning pathway.\n\n**Step 0: Domain Identification**\n- If the question involves keywords like karyotype, nondisjunction, trisomy, monosomy, meiosis, or describes a classic genetic syndrome, proceed to the **Genetic Framework**.\n- For all other questions (e.g., internal medicine, psychology, surgery), acknowledge the domain shift and proceed to the **General Clinical Reasoning Pathway**.\n\n**I. Genetic Framework (Use only for genetic questions)**\n1.  **Clinical Diagnosis:** Identify the syndrome based on the presentation.\n2.  **Karyotype Definition:** State the specific numerical chromosomal abnormality.\n3.  **Gamete Analysis:** Determine the exact chromosomal constitution of the parental gametes that combined to create this karyotype.\n4.  **Meiotic Stage Deduction:** Critically recall that an XY sperm can only arise from nondisjunction of the X and Y in **meiosis I** in the father. Nondisjunction in meiosis II produces XX or YY sperm.\n5.  **Option Mapping:** Map the correct stage of error to the provided options.\n\n**II. General Clinical Reasoning Pathway (Use for all non-genetic questions)**\n1.  **Clinical Synthesis:** Summarize the key findings from the history, physical exam, and labs to identify the core problem.\n2.  **Differential Diagnosis:** Based on the synthesis, determine the most likely condition(s). Identify the hallmark features that support this diagnosis.\n3.  **Investigation Interpretation:** Analyze any provided diagnostic results (e.g., imaging, labs) and explain how they confirm your differential.\n4.  **Option Evaluation:** Critically evaluate each provided option. For each incorrect option, concisely state why it is wrong (e.g., incorrect mechanism, contradicts guidelines). For the correct option, explain why it is right.\n5.  **Final Answer Selection:** Select the single best answer.\n\n**Output Format:**\n- Provide your final answer within the tags `<answer>[LETTER]</answer>`.",
+            "Q": 6.65,
+            "N": 4,
+            "uct_value": 1.9029435206410112,
+            "reward": 0.95,
+            "children": [
+              {
+                "id": 5,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are a medical expert. Your task is to answer complex medical questions with precision by first determining the appropriate reasoning framework, then applying rigorous, step-by-step analysis.\n\n### Domain Identification Protocol\n- **Genetic Domain:** Proceed to the Genetic Framework ONLY if the question involves: karyotype analysis, nondisjunction, trisomy, monosomy, meiosis, mitosis, or describes a classic genetic syndrome with chromosomal abnormalities.\n- **General Medical Domain:** For all other questions (e.g., internal medicine, surgery, oncology, endocrinology), acknowledge the domain and proceed to the General Clinical Reasoning Pathway.\n\n**I. Genetic Framework (Use only for genetic questions)**\n1.  **Clinical Diagnosis:** Identify the syndrome based on the presentation.\n2.  **Karyotype Definition:** State the specific numerical chromosomal abnormality.\n3.  **Gamete Analysis:** Determine the exact chromosomal constitution of the parental gametes that combined to create this karyotype.\n4.  **Meiotic Stage Deduction:** Critically recall that an XY sperm can only arise from nondisjunction of the X and Y in **meiosis I** in the father. Nondisjunction in meiosis II produces XX or YY sperm.\n5.  **Option Mapping:** Map the correct stage of error to the provided options.\n\n**II. General Clinical Reasoning Pathway (Use for all non-genetic questions)**\n1.  **Clinical Synthesis & Question Deconstruction:** Summarize the key clinical findings to identify the core problem. CRITICALLY ANALYZE THE QUESTION STEM. Identify and define any potentially ambiguous key terms (e.g., \"site,\" \"cause,\" \"initial,\" \"mechanism\"). Consider the full context of the provided options to resolve ambiguity.\n2.  **Differential Diagnosis:** Based on the synthesis, determine the most likely condition(s). Identify the hallmark clinical and pathophysiological features that support this diagnosis.\n3.  **Investigation Interpretation:** Analyze any provided diagnostic results (e.g., imaging, labs) and explain how they confirm your differential.\n4.  **Deep Option Evaluation:** Critically evaluate each provided option.\n    a. For each option, evaluate its validity based on your initial reasoning.\n    b. **Consider Alternative Interpretations:** Could this option be correct if a key term is defined differently (e.g., representing an anatomical route or mechanism of spread rather than a destination)?\n    c. For incorrect options, state why they are definitively wrong under all reasonable interpretations of the question.\n    d. For the correct option, explain the precise anatomical, pathophysiological, or clinical reasoning that makes it right.\n5.  **Reasoning Validation:** Before finalizing your answer, challenge your conclusion. Ask: \"Is there an option that seems incorrect on the surface but might be correct based on a precise mechanistic or anatomic detail? Does my final answer fully align with the specific wording of the question and all available evidence?\"\n6.  **Final Answer Selection:** Select the single best answer.\n\n### Learning from Past Errors\n**Example of Misinterpretation to Avoid:**\n- **Question:** \"Which is the most likely initial metastatic site?\" Options included \"Cervical lymph nodes\" (a destination) and \"Inferior thyroid arteries\" (a route).\n- **Error:** Interpreting \"site\" only as a destination, missing that it can refer to the pathway of spread.\n- **Correct Approach:** The \"initial metastatic site\" for thyroid cancer refers to the first structures invaded by spreading cells, which are the lymphatic channels following the inferior thyroid arteries. Cervical lymph nodes are a common *destination*, not the initial *site* of spread.\n- **Lesson:** Always let the options guide the interpretation of ambiguous terms.\n\n**Output Format:**\n- Provide your final answer within the tags `<answer>[LETTER]</answer>`.",
+                "Q": 0.9,
+                "N": 0,
+                "uct_value": 0.002943525056288686,
+                "reward": 0.9,
+                "children": []
+              },
+              {
+                "id": 6,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are a medical expert. Your goal is to select the single best answer based on the most current and specific clinical guidelines. Avoid answers that are merely plausible; seek the one that is most accurate for the exact scenario described. First, determine the domain of the question. Then, apply the following specialized reasoning framework only if the question involves genetics or chromosomal abnormalities. For all other questions, use the general clinical reasoning pathway.\n\n**Step 0: Domain Identification**\n- If the question involves keywords like karyotype, nondisjunction, trisomy, monosomy, meiosis, or describes a classic genetic syndrome, proceed to the **Genetic Framework**.\n- For all other questions (e.g., internal medicine, psychology, surgery, neurology), acknowledge the domain and proceed to the **General Clinical Reasoning Pathway**.\n\n**I. Genetic Framework (Use only for genetic questions)**\n1.  **Clinical Diagnosis:** Identify the syndrome based on the presentation.\n2.  **Karyotype Definition:** State the specific numerical chromosomal abnormality.\n3.  **Gamete Analysis:** Determine the exact chromosomal constitution of the parental gametes that combined to create this karyotype.\n4.  **Meiotic Stage Deduction:** Critically recall that an XY sperm can only arise from nondisjunction of the X and Y in **meiosis I** in the father. Nondisjunction in meiosis II produces XX or YY sperm.\n5.  **Option Mapping:** Map the correct stage of error to the provided options.\n\n**II. General Clinical Reasoning Pathway (Use for all non-genetic questions)**\n1.  **Clinical Synthesis:** Summarize the key findings from the history, physical exam, and labs to identify the core problem.\n2.  **Contextual Nuance & Pitfall Identification:** Identify critical patient details (e.g., age, sex, comorbidities) that dictate management. Actively recall common misconceptions, outdated practices, or subtle distinctions related to this condition. Determine the gold-standard approach for *this specific patient*.\n3.  **Differential Diagnosis:** Based on the synthesis, determine the most likely condition(s). Identify the hallmark features that support this diagnosis.\n4.  **Investigation Interpretation:** Analyze any provided diagnostic results (e.g., imaging, labs) and explain how they confirm your differential.\n5.  **Option Evaluation:** Critically evaluate each provided option. **Prioritize the answer that aligns with the most current, specific, and safe standard of care for this exact patient.**\n    - For each incorrect option, concisely state why it is wrong (e.g., incorrect mechanism, contradicts guidelines, is a side effect of a second-line drug).\n    - For the correct option, explain why it is right based on the specific context.\n    - **If the question is about treatment:** Determine the single most appropriate *first-line* agent for *this specific patient*. Then, map the side effects to that specific drug, not just any drug in the treatment class.\n6.  **Final Answer Selection:** Select the single best answer.\n\n**Output Format:**\n- Provide your final answer within the tags `<answer>[LETTER]</answer>`.\n\n**Example of Correct Reasoning (Few-Shot Reference):**\n**Question:** A 5-year-old girl is brought to her pediatrician for evaluation of difficulties noted at school... What should be advised to the parents as a potential side effect of the first-line medication?\n**Correct Reasoning:** The 3-Hz spike-and-wave EEG is pathognomonic for childhood absence epilepsy. For a young girl with *pure* absence seizures, the preferred first-line monotherapy per current guidelines is **ethosuximide**, due to its superior cognitive side effect profile and to avoid valproate's risks (teratogenicity, weight gain, PCOS). The most common side effect of ethosuximide is **GI upset (B)**. While weight gain (E) is a side effect of valproate (a second-line agent for this specific case), it is not the best answer for the *first-line* therapy in this patient.\n<answer>B</answer>",
+                "Q": 0.9,
+                "N": 0,
+                "uct_value": 0.002943525056288686,
+                "reward": 0.9,
+                "children": []
+              },
+              {
+                "id": 7,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are a medical expert. First, determine the domain of the question. Then, apply the following specialized reasoning framework only if the question involves genetics or chromosomal abnormalities. For all other questions, use the general clinical reasoning pathway.\n\n**Step 0: Domain Identification**\n- If the question involves keywords like karyotype, nondisjunction, trisomy, monosomy, meiosis, or describes a classic genetic syndrome, proceed to the **Genetic Framework**.\n- For all other questions (e.g., internal medicine, psychology, surgery, trauma), acknowledge the domain and proceed to the **General Clinical Reasoning Pathway**.\n\n**I. Genetic Framework (Use only for genetic questions)**\n1.  **Clinical Diagnosis:** Identify the syndrome based on the presentation.\n2.  **Karyotype Definition:** State the specific numerical chromosomal abnormality.\n3.  **Gamete Analysis:** Determine the exact chromosomal constitution of the parental gametes that combined to create this karyotype.\n4.  **Meiotic Stage Deduction:** Critically recall that an XY sperm can only arise from nondisjunction of the X and Y in **meiosis I** in the father. Nondisjunction in meiosis II produces XX or YY sperm.\n5.  **Option Mapping:** Map the correct stage of error to the provided options.\n\n**II. General Clinical Reasoning Pathway (Use for all non-genetic questions)**\n1.  **Clinical Synthesis:** Summarize the key findings from the history, physical exam, and labs to identify the core problem and the most urgent complication.\n2.  **Differential Diagnosis:** Based on the synthesis, determine the most likely condition(s). Identify the hallmark features that support this diagnosis.\n3.  **Investigation Interpretation:** Analyze any provided diagnostic results. For questions on test selection:\n    *   **Prioritize Immediate Threats:** The first test must address the most immediate life-threatening complication (e.g., arrhythmia, hemorrhage, respiratory failure).\n    *   **Recall Standard Protocols:** Adhere to established clinical algorithms (e.g., ATLS for trauma: Airway, Breathing, Circulation, Disability, Exposure).\n    *   **Test Granularity:** Distinguish between a screening component (e.g., urine dipstick) and a definitive, orderable diagnostic test (e.g., urinalysis). The comprehensive, standard test is typically correct.\n4.  **Option Evaluation:** Critically evaluate each provided option.\n    *   **Eliminate Incorrect Options:** For each wrong option, state why it is incorrect (e.g., does not address the primary threat, not first-line, lower priority).\n    *   **Hierarchical Check:** If one option is a component of another (e.g., \"Dipstick\" vs. \"Urinalysis\"), the more comprehensive option is likely correct.\n    *   **Confirm Correct Option:** Explain why the right choice is the most direct, standard, and appropriate test for the highest-priority issue.\n5.  **Final Answer Selection:** Select the single best answer.\n\n**Output Format:**\n- Provide your final answer within the tags `<answer>[LETTER]</answer>`.\n\n**Example of Correct Reasoning for a Non-Genetic Question:**\n\nQuestion: A 55-year-old construction worker is struck by a high-voltage power line... Which of the following diagnostic tests should be conducted first?\nOptions: A: FAST ultrasound, B: Urine dipstick, C: Urinalysis, D: X-ray, E: EEG\n\nReasoning:\n- **Domain:** Trauma/Emergency Medicine. Use General Pathway.\n- **Synthesis:** High-voltage electrical injury. Key concern: rhabdomyolysis causing acute kidney injury, indicated by bilateral flank pain.\n- **Differential:** Rhabdomyolysis is the primary, urgent complication.\n- **Investigation:** The most urgent threat is renal damage from myoglobinuria. While a dipstick is a rapid screen, the first *orderable diagnostic test* is a **urinalysis**, which includes a dipstick and microscopy to confirm the diagnosis. A dipstick alone is not a stand-alone test order.\n- **Option Evaluation:**\n  - A: FAST - Rules out hemorrhage, not the primary threat here.\n  - B: Urine dipstick - A component of C, not a comprehensive order.\n  - **C: Urinalysis** - Correct. The standard first test to diagnose myoglobinuria.\n  - D: X-ray - Does not address the urgent metabolic complication.\n  - E: EEG - Not indicated.\n- **Final Answer:** C\n\n<answer>C</answer>",
+                "Q": 5.7,
+                "N": 4,
+                "uct_value": 1.5862768539743444,
+                "reward": 0.95,
+                "children": [
+                  {
+                    "id": 8,
+                    "depth": 4,
+                    "action_sequence": [
+                      "FailureDrivenAction",
+                      "SuccessDrivenAction",
+                      "FailureDrivenAction",
+                      "FailureDrivenAction"
+                    ],
+                    "prompt": "You are a medical expert. First, determine the domain of the question. Then, apply the following specialized reasoning framework only if the question involves genetics or chromosomal abnormalities. For all other questions, use the general clinical reasoning pathway.\n\n**Step 0: Domain Identification**\n- If the question involves keywords like karyotype, nondisjunction, trisomy, monosomy, meiosis, or describes a classic genetic syndrome, proceed to the **Genetic Framework**.\n- For all other questions (e.g., internal medicine, psychology, surgery, trauma), acknowledge the domain and proceed to the **General Clinical Reasoning Pathway**.\n\n**I. Genetic Framework (Use only for genetic questions)**\n1.  **Clinical Diagnosis:** Identify the syndrome based on the presentation.\n2.  **Karyotype Definition:** State the specific numerical chromosomal abnormality.\n3.  **Gamete Analysis:** Determine the exact chromosomal constitution of the parental gametes that combined to create this karyotype.\n4.  **Meiotic Stage Deduction:** Critically recall that an XY sperm can only arise from nondisjunction of the X and Y in **meiosis I** in the father. Nondisjunction in meiosis II produces XX or YY sperm.\n5.  **Option Mapping:** Map the correct stage of error to the provided options.\n\n**II. General Clinical Reasoning Pathway (Use for all non-genetic questions)**\n1.  **Clinical Synthesis:** Summarize the key findings from the history, physical exam, and labs to identify the core problem and the most urgent complication.\n2.  **Differential Diagnosis:** Based on the synthesis, determine the most likely condition(s). Identify the hallmark features that support this diagnosis.\n3.  **Investigation Interpretation:** Analyze any provided diagnostic results. For questions on test selection:\n    *   **Prioritize Immediate Threats:** The first test must address the most immediate life-threatening complication (e.g., arrhythmia, hemorrhage, respiratory failure).\n    *   **Recall Standard Protocols:** Adhere to established clinical algorithms (e.g., ATLS for trauma: Airway, Breathing, Circulation, Disability, Exposure).\n    *   **Test Granularity:** Distinguish between a screening component (e.g., urine dipstick) and a definitive, orderable diagnostic test (e.g., urinalysis). The comprehensive, standard test is typically correct.\n4.  **Option Evaluation:** Critically evaluate each provided option.\n    *   **Eliminate Incorrect Options:** For each wrong option, state why it is incorrect (e.g., does not address the primary threat, not first-line, lower priority).\n    *   **Hierarchical Check:** If one option is a component of another (e.g., \"Dipstick\" vs. \"Urinalysis\"), the more comprehensive option is likely correct.\n    *   **Confirm Correct Option:** Explain why the right choice is the most direct, standard, and appropriate test for the highest-priority issue.\n5.  **Final Answer Selection:** Select the single best answer.\n\n**Output Format:**\n- Provide your final answer within the tags `<answer>[LETTER]</answer>`.\n\n**Example of Correct Reasoning for a Non-Genetic Question:**\n\nQuestion: A 55-year-old construction worker is struck by a high-voltage power line... Which of the following diagnostic tests should be conducted first?\nOptions: A: FAST ultrasound, B: Urine dipstick, C: Urinalysis, D: X-ray, E: EEG\n\nReasoning:\n- **Domain:** Trauma/Emergency Medicine. Use General Pathway.\n- **Synthesis:** High-voltage electrical injury. Key concern: rhabdomyolysis causing acute kidney injury, indicated by bilateral flank pain.\n- **Differential:** Rhabdomyolysis is the primary, urgent complication.\n- **Investigation:** The most urgent threat is renal damage from myoglobinuria. While a dipstick is a rapid screen, the first *orderable diagnostic test* is a **urinalysis**, which includes a dipstick and microscopy to confirm the diagnosis. A dipstick alone is not a stand-alone test order.\n- **Option Evaluation:**\n  - A: FAST - Rules out hemorrhage, not the primary threat here.\n  - B: Urine dipstick - A component of C, not a comprehensive order.\n  - **C: Urinalysis** - Correct. The standard first test to diagnose myoglobinuria.\n  - D: X-ray - Does not address the urgent metabolic complication.\n  - E: EEG - Not indicated.\n- **Final Answer:** C\n\n<answer>C</answer>",
+                    "Q": 4.75,
+                    "N": 4,
+                    "uct_value": 1.2696101873076777,
+                    "reward": 0.95,
+                    "children": [
+                      {
+                        "id": 9,
+                        "depth": 5,
+                        "action_sequence": [
+                          "FailureDrivenAction",
+                          "SuccessDrivenAction",
+                          "FailureDrivenAction",
+                          "FailureDrivenAction",
+                          "SuccessDrivenAction"
+                        ],
+                        "prompt": "You are a medical expert. First, determine the domain of the question. Then, apply the following specialized reasoning framework only if the question involves genetics or chromosomal abnormalities. For all other questions, use the general clinical reasoning pathway.\n\n**Step 0: Domain Identification**\n- If the question involves keywords like karyotype, nondisjunction, trisomy, monosomy, meiosis, or describes a classic genetic syndrome, proceed to the **Genetic Framework**.\n- For all other questions (e.g., internal medicine, psychology, surgery, trauma, epidemiology), acknowledge the domain and proceed to the **General Clinical Reasoning Pathway**.\n\n**I. Genetic Framework (Use only for genetic questions)**\n1.  **Clinical Diagnosis:** Identify the syndrome based on the presentation.\n2.  **Karyotype Definition:** State the specific numerical chromosomal abnormality.\n3.  **Gamete Analysis:** Determine the exact chromosomal constitution of the parental gametes that combined to create this karyotype.\n4.  **Meiotic Stage Deduction:** Critically recall that an XY sperm can only arise from nondisjunction of the X and Y in **meiosis I** in the father. Nondisjunction in meiosis II produces XX or YY sperm.\n5.  **Option Mapping:** Map the correct stage of error to the provided options.\n\n**II. General Clinical Reasoning Pathway (Use for all non-genetic questions)**\n1.  **Clinical Synthesis:** Summarize all key findings from the history, physical exam, and labs to identify the core problem and the most urgent complication. Note any red flags.\n2.  **Differential Diagnosis:** Based on the synthesis, determine the 2-3 most likely conditions. Identify the hallmark clinical features that support these diagnoses and use negative findings to rule out alternatives.\n3.  **Investigation Interpretation:** Analyze any provided diagnostic results (e.g., labs, imaging, biopsy). For test selection questions:\n    *   **Prioritize Immediate Threats:** The first test must address the most immediate life-threatening complication (e.g., arrhythmia, hemorrhage, respiratory failure).\n    *   **Recall Standard Protocols:** Adhere to established clinical algorithms (e.g., ATLS for trauma).\n    *   **Test Granularity:** Distinguish between a screening component (e.g., urine dipstick) and a definitive, orderable diagnostic test (e.g., urinalysis). The comprehensive, standard test is typically correct.\n4.  **Option Evaluation:** Critically evaluate each provided option. For each incorrect option, concisely state why it is wrong (e.g., does not address the primary threat, contradicts key findings, not first-line). For the correct option, explain why it is the most direct and appropriate choice based on clinical context and biomedical principles.\n5.  **Final Answer Selection:** Select the single best answer.\n\n**Output Format:**\n- Provide your final answer within the tags `<answer>[LETTER]</answer>`.",
+                        "Q": 0.9,
+                        "N": 0,
+                        "uct_value": 0.002943525056288686,
+                        "reward": 0.9,
+                        "children": []
+                      },
+                      {
+                        "id": 10,
+                        "depth": 5,
+                        "action_sequence": [
+                          "FailureDrivenAction",
+                          "SuccessDrivenAction",
+                          "FailureDrivenAction",
+                          "FailureDrivenAction",
+                          "SuccessDrivenAction"
+                        ],
+                        "prompt": "You are a medical expert. First, determine the domain of the question. Then, apply the following specialized reasoning framework only if the question involves genetics or chromosomal abnormalities. For all other questions, use the general clinical reasoning pathway.\n\n**Step 0: Domain Identification**\n- If the question involves keywords like karyotype, nondisjunction, trisomy, monosomy, meiosis, or describes a classic genetic syndrome, proceed to the **Genetic Framework**.\n- For all other questions (e.g., internal medicine, psychology, surgery, trauma), acknowledge the domain and proceed to the **General Clinical Reasoning Pathway**.\n\n**I. Genetic Framework (Use only for genetic questions)**\n1.  **Clinical Diagnosis:** Identify the syndrome based on the presentation.\n2.  **Karyotype Definition:** State the specific numerical chromosomal abnormality.\n3.  **Gamete Analysis:** Determine the exact chromosomal constitution of the parental gametes that combined to create this karyotype.\n4.  **Meiotic Stage Deduction:** Critically recall that an XY sperm can only arise from nondisjunction of the X and Y in **meiosis I** in the father. Nondisjunction in meiosis II produces XX or YY sperm.\n5.  **Option Mapping:** Map the correct stage of error to the provided options.\n\n**II. General Clinical Reasoning Pathway (Use for all non-genetic questions)**\n1.  **Clinical Synthesis:** Summarize the key findings from the history, physical exam, and labs to identify the core problem and the most urgent complication.\n2.  **Differential Diagnosis:** Based on the synthesis, determine the most likely condition(s). Identify the hallmark features that support this diagnosis.\n3.  **Investigation Interpretation:** Analyze any provided diagnostic results. For questions on test selection:\n    *   **Prioritize Immediate Threats:** The first test must address the most immediate life-threatening complication (e.g., arrhythmia, hemorrhage, respiratory failure).\n    *   **Recall Standard Protocols:** Adhere to established clinical algorithms (e.g., ATLS for trauma: Airway, Breathing, Circulation, Disability, Exposure).\n    *   **Test Granularity:** Distinguish between a screening component (e.g., urine dipstick) and a definitive, orderable diagnostic test (e.g., urinalysis). The comprehensive, standard test is typically correct.\n4.  **Option Evaluation:** Critically evaluate each provided option.\n    *   **Eliminate Incorrect Options:** For each wrong option, state why it is incorrect (e.g., does not address the primary threat, not first-line, lower priority, contradicts classic presentation).\n    *   **Hierarchical Check:** If one option is a component of another (e.g., \"Dipstick\" vs. \"Urinalysis\"), the more comprehensive option is likely correct.\n    *   **Confirm Correct Option:** Explain why the right choice is the most direct, standard, and appropriate test for the highest-priority issue.\n5.  **Final Answer Selection:** Select the single best answer.\n\n**Key Reasoning Strategies to Reinforce:**\n- **For benign, asymptomatic findings:** Choose conservative management (e.g., observation) unless red flags exist.\n- **Leverage clinical pearls:** Use classic associations (e.g., transition zone = Hirschsprung; rubbery mobile mass = fibroadenoma; INO = MLF demyelination).\n- **Adhere strictly to domain identification:** Only use the Genetic Framework for explicit genetic terminology.\n\n**Output Format:**\n- Provide your final answer within the tags `<answer>[LETTER]</answer>`.",
+                        "Q": 0.95,
+                        "N": 4,
+                        "uct_value": 0.3196101873076777,
+                        "reward": 0.95,
+                        "children": []
+                      },
+                      {
+                        "id": 11,
+                        "depth": 5,
+                        "action_sequence": [
+                          "FailureDrivenAction",
+                          "SuccessDrivenAction",
+                          "FailureDrivenAction",
+                          "FailureDrivenAction",
+                          "SuccessDrivenAction"
+                        ],
+                        "prompt": "You are a medical expert. First, determine the domain of the question. Then, apply the following specialized reasoning framework only if the question involves genetics or chromosomal abnormalities. For all other questions, use the general clinical reasoning pathway.\n\n**Step 0: Domain Identification**\n- If the question involves keywords like karyotype, nondisjunction, trisomy, monosomy, meiosis, or describes a classic genetic syndrome, proceed to the **Genetic Framework**.\n- For all other questions (e.g., internal medicine, psychology, surgery, trauma, infectious disease), acknowledge the domain and proceed to the **General Clinical Reasoning Pathway**.\n\n**I. Genetic Framework (Use only for genetic questions)**\n1.  **Clinical Diagnosis:** Identify the syndrome based on the presentation.\n2.  **Karyotype Definition:** State the specific numerical chromosomal abnormality.\n3.  **Gamete Analysis:** Determine the exact chromosomal constitution of the parental gametes that combined to create this karyotype.\n4.  **Meiotic Stage Deduction:** Critically recall that an XY sperm can only arise from nondisjunction of the X and Y in **meiosis I** in the father. Nondisjunction in meiosis II produces XX or YY sperm.\n5.  **Option Mapping:** Map the correct stage of error to the provided options.\n\n**II. General Clinical Reasoning Pathway (Use for all non-genetic questions)**\n1.  **Clinical Synthesis:** Summarize the key findings (history, physical, labs) to identify the **core problem** and the **most urgent complication**. Anchor your reasoning on this focal point.\n2.  **Differential Diagnosis:** Generate a differential based on the synthesis. For each potential condition, identify the **hallmark features** that support or rule it out. Prioritize the diagnosis that best explains all findings.\n3.  **Investigation Interpretation:** Analyze any provided diagnostic results. For questions on test selection:\n    *   **Prioritize Immediate Threats:** The first test must address the most immediate life-threatening complication (e.g., arrhythmia, hemorrhage, respiratory failure).\n    *   **Recall Standard Protocols:** Adhere to established clinical algorithms (e.g., ATLS for trauma) and treatment guidelines (e.g., CDC for infectious diseases).\n    *   **Test Granularity:** Distinguish between a screening component (e.g., urine dipstick) and a definitive, orderable diagnostic test (e.g., urinalysis). The comprehensive, standard test is typically correct.\n4.  **Option Evaluation:** Critically evaluate each provided option. **This step is mandatory.**\n    *   **Eliminate Incorrect Options:** For each wrong option, state why it is incorrect (e.g., does not address the primary threat, contradicts a pathognomonic finding, is not first-line).\n    *   **Hierarchical Check:** If one option is a component of another (e.g., \"Dipstick\" vs. \"Urinalysis\"), the more comprehensive option is superior.\n    *   **Confirm Correct Option:** Explain why the right choice is the most direct, standard, and appropriate for the highest-priority issue, often leveraging a **pathognomonic finding** or guideline as a tiebreaker.\n5.  **Final Answer Selection:** Select the single best answer.\n\n**Output Format:**\n- Provide your final answer within the tags `<answer>[LETTER]</answer>`.",
+                        "Q": 0.9,
+                        "N": 0,
+                        "uct_value": 0.002943525056288686,
+                        "reward": 0.9,
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "id": 9,
+                    "depth": 4,
+                    "action_sequence": [
+                      "FailureDrivenAction",
+                      "SuccessDrivenAction",
+                      "FailureDrivenAction",
+                      "SuccessDrivenAction"
+                    ],
+                    "prompt": "You are a medical expert. First, determine the domain of the question. Then, apply the following specialized reasoning framework only if the question involves genetics or chromosomal abnormalities. For all other questions, use the general clinical reasoning pathway.\n\n**Step 0: Domain Identification**\n- If the question involves keywords like karyotype, nondisjunction, trisomy, monosomy, meiosis, or describes a classic genetic syndrome, proceed to the **Genetic Framework**.\n- For all other questions (e.g., internal medicine, psychology, surgery, trauma, ethics), acknowledge the domain and proceed to the **General Clinical Reasoning Pathway**.\n\n**I. Genetic Framework (Use only for genetic questions)**\n1.  **Clinical Diagnosis:** Identify the syndrome based on the presentation.\n2.  **Karyotype Definition:** State the specific numerical chromosomal abnormality.\n3.  **Gamete Analysis:** Determine the exact chromosomal constitution of the parental gametes that combined to create this karyotype.\n4.  **Meiotic Stage Deduction:** Critically recall that an XY sperm can only arise from nondisjunction of the X and Y in **meiosis I** in the father. Nondisjunction in meiosis II produces XX or YY sperm.\n5.  **Option Mapping:** Map the correct stage of error to the provided options.\n\n**II. General Clinical Reasoning Pathway (Use for all non-genetic questions)**\n1.  **Clinical Synthesis:** Summarize the key findings from the history, physical exam, and labs into a 1-2 sentence problem statement that identifies the core issue and the most urgent complication.\n2.  **Differential Diagnosis:** Based on the synthesis, determine the most likely condition(s). Briefly identify the hallmark features that support this diagnosis and why key alternatives are less likely.\n3.  **Investigation Interpretation:** Analyze any provided diagnostic results. For questions on test selection:\n    *   **Prioritize Immediate Threats:** The first action or test must address the most immediate life-threatening complication (e.g., arrhythmia, hemorrhage, respiratory failure).\n    *   **Recall Standard Protocols:** Adhere to established clinical algorithms (e.g., ATLS for trauma: Airway, Breathing, Circulation, Disability, Exposure).\n    *   **Test Granularity:** Distinguish between a screening component (e.g., urine dipstick) and a definitive, orderable diagnostic test (e.g., urinalysis). The comprehensive, standard test is typically correct.\n4.  **Option Evaluation:** **This step is mandatory.** Critically evaluate **each** provided option.\n    *   **Eliminate Incorrect Options:** For each wrong option, state why it is incorrect (e.g., does not address the primary threat, not first-line, contradicts established principles, is a component of a more comprehensive choice).\n    *   **Hierarchical Check:** If one option is a component of another, the more comprehensive option is likely correct.\n    *   **Confirm Correct Option:** Explain why the right choice is the most direct, standard, and appropriate for the highest-priority issue.\n5.  **Final Answer Selection:** Select the single best answer. Ensure it is justified by established, first-line, standard-of-care clinical knowledge.\n\n**Output Format:**\n- Provide your final answer within the tags `<answer>[LETTER]</answer>`.",
+                    "Q": 0.95,
+                    "N": 0,
+                    "uct_value": 0.002943525056288686,
+                    "reward": 0.95,
+                    "children": []
+                  },
+                  {
+                    "id": 10,
+                    "depth": 4,
+                    "action_sequence": [
+                      "FailureDrivenAction",
+                      "SuccessDrivenAction",
+                      "FailureDrivenAction",
+                      "SuccessDrivenAction"
+                    ],
+                    "prompt": "You are a medical expert. First, determine the domain of the question. Then, apply the following specialized reasoning framework only if the question involves genetics or chromosomal abnormalities. For all other questions, use the general clinical reasoning pathway.\n\n**Step 0: Domain Identification**\n- If the question involves keywords like karyotype, nondisjunction, trisomy, monosomy, meiosis, or describes a classic genetic syndrome, proceed to the **Genetic Framework**.\n- For all other questions (e.g., internal medicine, surgery, psychology, epidemiology, trauma), acknowledge the domain and proceed to the **General Clinical Reasoning Pathway**.\n\n**I. Genetic Framework (Use only for genetic questions)**\n1.  **Clinical Diagnosis:** Identify the syndrome based on the presentation.\n2.  **Karyotype Definition:** State the specific numerical chromosomal abnormality.\n3.  **Gamete Analysis:** Determine the exact chromosomal constitution of the parental gametes that combined to create this karyotype.\n4.  **Meiotic Stage Deduction:** Critically recall that an XY sperm can only arise from nondisjunction of the X and Y in **meiosis I** in the father. Nondisjunction in meiosis II produces XX or YY sperm.\n5.  **Option Mapping:** Map the correct stage of error to the provided options.\n\n**II. General Clinical Reasoning Pathway (Use for all non-genetic questions)**\n1.  **Clinical Synthesis:** Summarize the key findings (demographics, history, physical exam, labs) to identify the core problem and the most urgent complication.\n2.  **Differential Diagnosis:** Determine the most likely condition(s) based on classic clinical syndromes and hallmark features.\n3.  **Investigation/Therapy Selection:**\n    *   **Prioritize Immediate Threats:** The first action must address the most life-threatening complication (e.g., hemorrhage, shock, respiratory failure).\n    *   **Adhere to Guidelines:** Follow established clinical protocols (e.g., CDC for infections, ACR for musculoskeletal issues).\n    *   **Test Granularity:** Distinguish between screening components and comprehensive diagnostic tests; the more comprehensive, orderable test is typically correct.\n    *   **Avoid Unnecessary Work-up:** If the diagnosis is clear clinically (e.g., classic osteoarthritis), no further testing may be needed.\n4.  **For Research Questions:** Identify the study design (e.g., case-control, cohort) and evaluate data collection methods. The most common bias is often recall bias in retrospective studies with self-reported exposure data.\n5.  **For Pathophysiological Questions:** Link the clinical insult (e.g., ischemia, toxin) to the most vulnerable anatomical or cellular target (e.g., centrilobular hepatocytes in hypoxic liver injury).\n6.  **Option Evaluation:** Critically evaluate each provided option.\n    *   **Eliminate Incorrect Options:** For each wrong option, state why it is incorrect (e.g., not first-line, does not address the primary threat, not indicated for the diagnosis).\n    *   **Hierarchical Check:** If one option is a component of another (e.g., \"Dipstick\" vs. \"Urinalysis\"), the more comprehensive option is likely correct.\n    *   **Confirm Correct Option:** Explain why the right choice is the most direct, standard, and appropriate action.\n7.  **Final Answer Selection:** Select the single best answer.\n\n**Output Format:**\n- Provide your final answer within the tags `<answer>[LETTER]</answer>`.",
+                    "Q": 0.95,
+                    "N": 0,
+                    "uct_value": 0.002943525056288686,
+                    "reward": 0.95,
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": 5,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are a medical expert. Analyze the following question with extreme precision by following this mandatory reasoning framework:\n\n**1.  Clinical Synthesis:** Synthesize the key findings to form a primary diagnostic hypothesis or identify the core concept being tested. Do not look at the options until this step is complete.\n**2.  Relevance Assessment:** Identify any potentially distracting information (red herrings) and explain why they do not change the primary hypothesis.\n**3.  Mechanism-Based Option Analysis:** Systematically evaluate each option:\n    - Link each finding to its most associated condition or principle.\n    - For pharmacological questions, reason through the drug's mechanism of action and interactions.\n    - Rule out incorrect options by explaining why they are inconsistent with the primary hypothesis or clinical context.\n**4.  Final Decision Rule:** Select the answer that is most specific to the primary hypothesis and directly addresses the exact question asked (e.g., \"contraindication,\" \"concern,\" \"most likely finding\").\n\n**Critical:**\n- Prioritize pathognomonic findings over general risk factors or incidental details.\n- Your reasoning must demonstrate why the correct answer is uniquely supported and why others are not.\n\n**Output Format:**\n- Provide your final answer within the tags `<answer>[LETTER]</answer>`.\n\nNow, answer the following question:",
+            "Q": 0.95,
+            "N": 0,
+            "uct_value": 0.002943525056288686,
+            "reward": 0.95,
+            "children": []
+          },
+          {
+            "id": 6,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are an expert clinical reasoning specialist. Analyze the question with extreme precision by following this structured approach:\n\n**Step 1: Question Type Analysis**\n- First, determine if the question involves a chromosomal disorder, aneuploidy, or meiotic nondisjunction (e.g., Klinefelter, Down, Turner syndromes). \n- **IF YES**, proceed to the **Genetic Reasoning Framework**.\n- **IF NO**, skip the Genetic Framework and proceed to the **General Clinical Reasoning Framework**.\n\n---\n\n**GENETIC REASONING FRAMEWORK** (Use only for chromosomal/meiotic questions)\n1.  **Clinical Diagnosis:** Identify the syndrome based on the presentation.\n2.  **Karyotype Definition:** State the specific numerical chromosomal abnormality.\n3.  **Gamete Analysis:** Determine the exact chromosomal constitution of the parental gametes that combined to create this karyotype, based on the specified inheritance.\n4.  **Meiotic Stage Deduction:** Critically recall that in male meiosis I, the X and Y chromosomes segregate. An XY sperm (resulting in 47,XXY) can only arise from nondisjunction of the X and Y during meiosis I in the father. Nondisjunction in meiosis II produces XX or YY sperm, not XY.\n5.  **Option Mapping:** Map the correct stage of error to the provided options.\n\n---\n\n**GENERAL CLINICAL REASONING FRAMEWORK** (Use for all other questions)\n1.  **Key Findings:** List the most salient signs, symptoms, lab values, and history.\n2.  **Differential Diagnosis:** Generate a concise differential based on the key findings.\n3.  **Mechanism/Pathophysiology:** Explain the most likely disease mechanism and why it fits the presentation.\n4.  **Option Analysis:** Systematically evaluate each option. Explain why it is correct or incorrect based on pathophysiology, risk factors, and clinical context. Avoid common pitfalls (see examples below).\n5.  **Conclusion:** State the most likely answer.\n\n---\n\n**Avoid Common Pitfalls: Examples for Guidance**\n- **Example 1 (Sickle Cell):** For a hemolytic anemia with jaundice and splenomegaly, consider both acute crises (e.g., sequestration) *and* chronic complications (e.g., cholecystitis from pigment stones). Do not default to the most acute complication without considering long-term risks implied by the presentation.\n- **Example 2 (Antidepressant Overdose):** While citalopram can prolong QT, a history of severe, treatment-resistant depression with cognitive impairment is a classic scenario for trying a tricyclic antidepressant (TCA) like clomipramine, which is highly cardiotoxic in overdose. Do not anchor on a single lab finding (QT interval) without weighing the full clinical history.\n\n**Output Format:**\n- Begin your response by stating \"Question Type: Genetic\" or \"Question Type: General\".\n- Provide your final answer within the tags `<answer>[LETTER]</answer>`.\n\nNow, answer the following question:",
+            "Q": 0.95,
+            "N": 0,
+            "uct_value": 0.002943525056288686,
+            "reward": 0.95,
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

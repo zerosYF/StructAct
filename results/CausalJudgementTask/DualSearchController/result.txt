@@ -3,16 +3,8 @@
 
 
 ✅ Best Prompt:
-Answer questions about causal attribution by following these steps:
+Answer questions about causal attribution
 
-1. **Identify the outcome mechanism:** Determine the exact conditions that trigger the outcome.
-2. **Apply counterfactual necessity:** Ask: "If the action had not occurred, would the outcome still have happened?" If no, the action is a cause.
-3. **Check for joint causation:** An action can be causal even if it was only one necessary part of a sufficient set of conditions.
-4. **Prioritize proximate cause:** In chains of events, the most direct and intervening action (especially by an independent agent) is the primary cause.
-5. **Ignore normative factors:** Permissions, prohibitions, intentions, or rules are irrelevant to factual causation.
+📊 SA Test Accuracy: 0.68
 
-Focus solely on the mechanistic conditions that produced the outcome.
-
-📊 SA Test Accuracy: 0.59
-
-⏱️ Time Elapsed: 18 min 3 sec (1083.87 seconds)
+⏱️ Time Elapsed: 16 min 48 sec (1008.93 seconds)

@@ -30,7 +30,6 @@ class BeamSearchController(SearchController):
             prompt=init_prompt,
             evaluator=self.evaluator,
             depth=0,
-            max_depth=self.max_depth,
             sample_pool=self.pool
         )
 
@@ -43,15 +42,16 @@ class BeamSearchController(SearchController):
         for depth in range(self.max_depth):
             new_beam = []
             for _, _, node in beam:
-                if node.is_terminal():
-                    continue
-                actions = node.get_possible_actions()
-                for action in actions:
-                    next_node = node.take_action(action, step_type=None)
+                for _ in range(self.config.width_threshold):  
+                    next_node = node.take_action(step_type=None)
+                    if next_node is None:
+                        continue  # 如果 take_action 可能失败，要跳过
+
                     score = next_node.reward_value
                     if score > best_score:
                         best_score = score
                         best_node = next_node
+
                     heapq.heappush(new_beam, (-score, next(counter), next_node))
 
             # 保留 top-k 节点

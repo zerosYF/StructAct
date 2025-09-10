@@ -2,7 +2,7 @@ from task.base_task import TaskBase
 from search.evaluator import PromptEvaluator
 from search.config import SearchConfig
 from typing import List, Set
-from visualizer import Visualizer
+from visualizer import RNNVisualizer
 from structs.prompt_template import PromptTemplate
 from structs.mini_blocks import get_all_blocks
 from search.search import SearchController
@@ -27,7 +27,8 @@ class RNNSearchController(SearchController):
         logger.info(f"🔍 Initial template constraints:\n{template.describe()}")
         init_prompt = self.task.origin_prompt
 
-        Visualizer.start(title=self.task.name)
+        visualizer = RNNVisualizer()
+        visualizer.start()
 
         # PPO 批量/小批参数（若 config 没有则走默认）
         ppo_batch_min  = getattr(self.config, "ppo_batch_min", 64)
@@ -92,7 +93,7 @@ class RNNSearchController(SearchController):
             logger.info(f"🏅 Epoch {epoch+1}: best_reward={best_reward:.4f} mean_reward={mean_reward:.4f}")
             # Use batch_entropy if available (from reinforce_batch), otherwise use last_entropy
             entropy_value = float(getattr(self.controller, "batch_entropy", getattr(self.controller, "last_entropy", 0.0)))
-            Visualizer.log_train(mean_reward, entropy_value)
+            visualizer.log_train(mean_reward, entropy_value)
 
             # Skip reinforce if batch update was already done
             skip_reinforce = self.controller is not None and len(batch_samples) > 0

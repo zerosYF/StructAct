@@ -4,6 +4,7 @@ from mcts.node import Node, Step
 from program.sample_pools import DynamicSamplePool
 from typing import List, Set
 from logger import logger
+import numpy as np
 
 class PromptNode(Node):
     def __init__(self, 
@@ -13,9 +14,14 @@ class PromptNode(Node):
                  prompt: str, 
                  evaluator: PromptEvaluator, 
                  depth: int, 
-                 max_depth: int,
-                 sample_pool: DynamicSamplePool = None):
-        
+
+                 sample_pool: DynamicSamplePool = None,
+
+                 Q:float=0.0, N:int=0, 
+                 uct_value:float=0.0, 
+                 parent=None
+                 ):
+        super().__init__(depth=depth, Q=Q, N=N, uct_value=uct_value, parent=parent)
         self.type = prompt
         self.action_set: Set[OptimizeAction] = action_set
         self.evaluator: PromptEvaluator = evaluator
@@ -23,68 +29,77 @@ class PromptNode(Node):
         self.current_prompt: str = prompt
         logger.info(f"📜 Get new node at depth {depth} using action {action_seq[-1].name if len(action_seq) > 0 else None}")
         
-        self.children: List[PromptNode] = None
         self.action_seq: List[OptimizeAction] = action_seq
-
-        self.depth = depth
-        self.max_depth = max_depth
         self.pool = sample_pool
         self.reward_value: float = self.reward()
+        self.Q = self.reward_value
+    
+    def _weighted_random_choice(self, temperature: float = 1.0):
+        """Softmax weighted random selection of a single action based on failure_counter and usage_count"""
+        actions = list(self.action_set)
 
-    def __hash__(self):
-        return id(self)
+        failure_counts = np.array([a.sample_failure_counter for a in actions])
+        usage_counts = np.array([a.usage_count for a in actions])
 
-    def __eq__(self, other):
-        return self is other
+        logits = - (failure_counts + usage_counts) / temperature 
+        logits /= temperature  
 
-    def get_untried_actions(self):
-        # Used only once when initializing a new MCTS node.
-        # Controller will be responsible for popping later.
-        return list(self.action_set)
+        probs = np.exp(logits)
+        probs /= probs.sum() 
 
-    def get_possible_actions(self):
-        # In each rollout, actions can be reselected.
-        return list(self.action_set)
+        selected_index = np.random.choice(len(actions), p=probs)
+        
+        return actions[selected_index]
 
-    def take_action(self, action: OptimizeAction, step_type:Step):
+    def take_action(self, step_type:Step):
         # Then apply the strategy-level semantic transformation.
+        action:OptimizeAction = self._weighted_random_choice()
         new_prompt = action.do(
             current_prompt=self.current_prompt, 
             trajectory_prompts=self.trajectory_prompts, 
             sample_pool=self.pool
             )
+        logger.info(f"📊 Current Step Type:{step_type}")
         logger.info(f"📊 Current Prompt:\n{new_prompt}")
-        return PromptNode(
+        new_child = PromptNode(
             action_set=self.action_set,
             action_seq=self.action_seq + [action],
             trajectory_prompts=self.trajectory_prompts + [self.current_prompt],
             prompt=new_prompt,
             evaluator=self.evaluator,
-            depth=self.depth + 1,
-            max_depth=self.max_depth,
-            sample_pool=self.pool
-        )
+            sample_pool=self.pool,
 
-    def is_terminal(self):
-        return self.depth == self.max_depth
+            depth=self.depth + 1,
+            parent=self,
+        )
+        return new_child
 
     def reward(self):
         val_samples = self.evaluator.task.get_eval()
         score = self.evaluator.batch_reward(self.current_prompt, val_samples)
         logger.info(f"🎯 [Reward] Prompt evaluation score = {score:.4f}, Action sequence = {[a.name for a in self.action_seq]}")
         return score + self.pool.compute_cpool() if self.pool else score
-
-    def clone_node(self):
-        return PromptNode(
-            action_set=self.action_set,  # shared reference
-            action_seq=list(self.action_seq),
-            trajectory_prompts=list(self.trajectory_prompts),
-            prompt=self.current_prompt,
-            evaluator=self.evaluator,
-            depth=self.depth,
-            max_depth=self.max_depth,
-            sample_pool=self.pool
-        )
     
     def q_value(self, last_q, rollout_reward):
         return last_q + rollout_reward
+    
+    def serialize(self, node_id:int):
+        node_dict = {
+            "id": node_id,
+            "depth": self.depth,
+            "action_sequence": [a.name for a in self.action_seq],
+            "prompt": self.current_prompt,
+            "Q": self.Q,
+            "N": self.N, 
+            "uct_value": self.uct_value,
+            "reward": self.reward_value,
+            "children": []
+        }
+
+        for child in self.children:
+            node_id += 1
+            child_serialized = child.serialize(node_id)
+            if child_serialized:
+                node_dict["children"].append(child_serialized)
+
+        return node_dict

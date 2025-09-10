@@ -1,0 +1,475 @@
+{
+  "config": {
+    "mcts_iters": 10,
+    "rollout_length": 4,
+    "depth_threshold": 5,
+    "width_threshold": 3
+  },
+  "search_stats": {
+    "total_nodes": 31,
+    "total_Q_values": 31
+  },
+  "best_node": {
+    "action_sequence": [],
+    "prompt": "Answer the multiple-choice question based on the context.",
+    "depth": 0,
+    "Q": 29.004166666666674,
+    "N": 30
+  },
+  "search_tree": {
+    "id": 0,
+    "depth": 0,
+    "action_sequence": [],
+    "prompt": "Answer the multiple-choice question based on the context.",
+    "Q": 29.004166666666674,
+    "N": 30,
+    "uct_value": null,
+    "reward": 1.0,
+    "children": [
+      {
+        "id": 1,
+        "depth": 1,
+        "action_sequence": [
+          "FailureDrivenAction"
+        ],
+        "prompt": "Answer the multiple-choice question based on the context.",
+        "Q": 9.60833333333333,
+        "N": 10,
+        "uct_value": 2.649978262299988,
+        "reward": 0.95,
+        "children": [
+          {
+            "id": 2,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Answer the multiple-choice question based on the context.",
+            "Q": 3.8916666666666666,
+            "N": 4,
+            "uct_value": 3.9101895499411143,
+            "reward": 1.0,
+            "children": [
+              {
+                "id": 3,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer the multiple-choice question using ONLY the information from the provided context. Do not use any external knowledge.\n\nFollow these steps:\n1. Carefully read the context and the question.\n2. Determine if the context contains information that directly answers the question.\n3. If the answer cannot be found in the context, output: <answer>Unanswerable</answer>\n4. If the answer is in the context, select the correct choice letter (A, B, C, or D) based solely on the context information.\n5. Output your final answer in the format: <answer>X</answer> where X is the letter or 'Unanswerable'.\n\nExample of correct behavior:\nInput: \nQuestion: \"What is the capital of France?\"\nChoices: ['Paris', 'London', 'Berlin', 'Rome']\nContext: \"The country of France is known for its wine and cuisine.\"\nOutput: \n<reasoning>The context discusses France but does not mention its capital city. Therefore, the question is unanswerable based on the context.</reasoning>\n<answer>Unanswerable</answer>\n\nNow answer this question:\nQuestion: {question}\nChoices: {choices}\nContext: {context}",
+                "Q": 0.975,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.95,
+                "children": []
+              },
+              {
+                "id": 4,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer the multiple-choice science question by applying general knowledge and rigorous reasoning. Follow these steps precisely:\n\n1.  **Analyze the Question:** Identify the core concept being tested.\n2.  **Evaluate Each Choice:** Systematically reason through each option. For the correct choice, explain why it is right. For each incorrect choice, explain the specific flaw in its logic or factual accuracy.\n3.  **Output Format:** Conclude your response with the final answer inside the XML tag: `<answer>{letter}</answer>` (e.g., `<answer>D</answer>`).\n\n**Example of Correct Reasoning for a Similar Question:**\n\n**Question:** Which sequence correctly describes the energy transformation in a hydroelectric dam?\n**Choices:**\nA: gravitational potential -> kinetic -> electrical\nB: kinetic -> gravitational potential -> electrical\nC: electrical -> kinetic -> gravitational potential\nD: gravitational potential -> electrical -> kinetic\n\n**Reasoning:**\nThe question involves energy conversion in a hydroelectric dam. Water is held at a height, storing gravitational potential energy. When released, this energy becomes kinetic energy as the water flows downhill. The moving water spins a turbine, which is connected to a generator that converts the kinetic energy into electrical energy.\n-   **Why A is correct:** It accurately follows the sequence: water's potential -> water's motion -> electricity.\n-   **Why B is incorrect:** It starts with kinetic energy, but the water is initially at rest, possessing potential energy, not kinetic.\n-   **Why C is incorrect:** This is the reverse sequence; electrical energy is the output, not the input.\n-   **Why D is incorrect:** Electrical energy is produced last, not in the middle of the sequence. The potential energy must first be converted to kinetic to spin the turbine.\n\n<answer>A</answer>\n\nNow, apply this same rigorous, step-by-step analysis to the following question.\n\n**Question:** {question}\n**Choices:**\nA: {choice_A}\nB: {choice_B}\nC: {choice_C}\nD: {choice_D}\n\n**Your Reasoning:**",
+                "Q": 0.975,
+                "N": 1,
+                "uct_value": null,
+                "reward": 1.0,
+                "children": []
+              },
+              {
+                "id": 5,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer the following multiple-choice question by applying relevant principles and reasoning step by step. After your reasoning, output your final answer using the corresponding numeric label from the provided list.\n\n### Example:\n**Input:**  \nQuestion: A student pushes against a tree with a force of 10 newtons (N). The tree does not move. What is the amount of force exerted by the tree on the student?  \nOptions: 0 N, 5 N, 10 N, 20 N  \nLabels: 1, 2, 3, 4  \n\n**Reasoning:**  \nAccording to Newton's Third Law of Motion, the force exerted by the student on the tree (10 N) must be equal in magnitude and opposite in direction to the force exerted by the tree on the student. The tree not moving implies other forces (like friction) are at play, but this does not affect the action-reaction pair. Therefore, the force exerted by the tree is 10 N.  \n\n**Final Answer:**  \n<answer>3</answer>\n\n### Instructions:\n- Carefully analyze the question and apply relevant principles (e.g., Newton's Laws, conservation rules).  \n- Explain your reasoning step by step to ensure accuracy.  \n- Output your final answer in the exact format: `<answer>[label]</answer>`, where `[label]` is the numeric label (e.g., 1, 2, 3, 4) corresponding to the correct option.  \n\n### Question:\n{question}  \n### Options:\n{options}  \n### Labels:\n{labels}",
+                "Q": 0.975,
+                "N": 1,
+                "uct_value": null,
+                "reward": 1.0,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 6,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Answer the multiple-choice question based on the context.",
+            "Q": 3.816666666666667,
+            "N": 4,
+            "uct_value": 4.454061169764272,
+            "reward": 1.0,
+            "children": [
+              {
+                "id": 7,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer the multiple-choice question based on the context.",
+                "Q": 0.975,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.95,
+                "children": []
+              },
+              {
+                "id": 8,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer the multiple-choice question using your knowledge. First, reason step by step to determine the correct answer. Then, output your final answer as the single corresponding letter (A, B, C, or D) wrapped in the XML tag <answer>.\n\n### Example:\n**Question:** Which sequence of energy transformations occurs after a battery-operated flashlight is turned on?\n**Options:**\nA. electrical -> light -> chemical\nB. electrical -> chemical -> light\nC. chemical -> light -> electrical\nD. chemical -> electrical -> light\n\n**Reasoning:** A battery stores chemical energy. When the flashlight is turned on, this chemical energy is converted into electrical energy (current), which is then transformed into light energy by the bulb. The correct sequence is chemical → electrical → light, which corresponds to option D.\n\n<answer>D</answer>",
+                "Q": 0.925,
+                "N": 1,
+                "uct_value": null,
+                "reward": 1.0,
+                "children": []
+              },
+              {
+                "id": 9,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer the multiple-choice question based on the context. You will be given a tuple containing: (Question, [List of Options], [List of Corresponding Letters]).\n\nThink step by step to reason about the question and the provided options. However, your final output must be exclusively in the format: 'Answer: [LETTER]'\n\nTo avoid common mistakes, follow these guidelines:\n- Do not output any explanation, justification, or free text before or after the final answer.\n- Ensure your response contains only the required format, as extraneous text will cause the answer to be marked incorrect.\n\nExample of correct output:\nInput: ('What is the capital of France?', ['London', 'Berlin', 'Paris', 'Madrid'], ['A', 'B', 'C', 'D'])\nOutput: Answer: C\n\nNow, answer the following question:",
+                "Q": 0.95,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.95,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 10,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Answer the multiple-choice question using ONLY information from the provided context. Do not use any external knowledge. If the context does not support any option, output NULL.\n\n**Input Structure:**\n- Question: [The multiple-choice question]\n- Options: [List of options, labeled A, B, C, etc.]\n- Context: [The text you must base your answer on]\n\n**Instructions:**\n1. Read the context carefully.\n2. Determine which option is directly stated or best supported by the context.\n3. If the context contradicts general knowledge or is insufficient to support any option, you must still rely solely on the context.\n4. Output your response in the exact format below:\n\n<reasoning>[Briefly explain which part of the context supports your answer or why no option is supported.]</reasoning>\n<answer>[Letter of the chosen option or NULL]</answer>\n\n**Example 1 (Correct Behavior):**\nInput:\n- Question: What causes the seasons?\n- Options: A) The Earth's distance from the Sun changes. B) The Earth's axis is tilted. C) The Sun's temperature fluctuates.\n- Context: Many people think the seasons are caused by the Earth moving closer to and farther from the Sun (A), but this is incorrect. The real reason is the tilt of the Earth's axis (B).\n\nOutput:\n<reasoning>The context states that option A is a misconception and explicitly identifies option B as the real reason.</reasoning>\n<answer>B</answer>\n\n**Example 2 (Failure to Avoid):**\nInput:\n- Question: Why is it winter in North America when it is summer in South America?\n- Options: A) The south is always warmer. B) There is less land in the south. C) North America gets less direct sunlight. D) When it is December in NA, it is June in SA.\n- Context: [This context is intentionally missing and does not provide an explanation.]\n\nOutput:\n<reasoning>The provided context is empty and does not support any of the given options.</reasoning>\n<answer>NULL</answer>",
+            "Q": 0.9499999999999998,
+            "N": 1,
+            "uct_value": null,
+            "reward": 1.0,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": 11,
+        "depth": 1,
+        "action_sequence": [
+          "FailureDrivenAction"
+        ],
+        "prompt": "Answer the following multiple-choice question. First, reason step by step to determine the correct answer. Then, on the final line, output only the corresponding uppercase letter of the correct choice (e.g., 'D').\n\nQuestion: {question}\nChoices:\nA. {choice_A}\nB. {choice_B}\nC. {choice_C}\nD. {choice_D}",
+        "Q": 9.795833333333333,
+        "N": 10,
+        "uct_value": 2.626709885953805,
+        "reward": 1.0,
+        "children": [
+          {
+            "id": 12,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Answer the following multiple-choice question. First, reason step by step to determine the correct answer. Then, on the final line, output only the corresponding uppercase letter of the correct choice (e.g., 'D').\n\nQuestion: {question}\nChoices:\nA. {choice_A}\nB. {choice_B}\nC. {choice_C}\nD. {choice_D}",
+            "Q": 3.9333333333333336,
+            "N": 4,
+            "uct_value": 3.926856199941131,
+            "reward": 0.95,
+            "children": [
+              {
+                "id": 13,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer the following multiple-choice question. First, reason step by step to determine the correct answer. Then, on the final line, output only the corresponding uppercase letter of the correct choice (e.g., 'D').\n\nQuestion: {question}\nChoices:\nA. {choice_A}\nB. {choice_B}\nC. {choice_C}\nD. {choice_D}",
+                "Q": 0.975,
+                "N": 1,
+                "uct_value": null,
+                "reward": 1.0,
+                "children": []
+              },
+              {
+                "id": 14,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer the following multiple-choice question. Follow these steps rigorously:\n\n1.  **Identify the Core Concept:** Determine the fundamental principle or mechanism the question is testing.\n2.  **Evaluate Each Choice Individually:** For each option (A, B, C, D), assess:\n    - **Accuracy:** Is the statement factually correct?\n    - **Relevance:** Does it directly answer the \"why\" or \"how\" of the question?\n    - **Causality:** Does it explain the root cause, or is it merely a correlative observation or secondary effect?\n3.  **Compare and Synthesize:** Based on your evaluation, select the choice that is both accurate and provides the most direct, causal explanation.\n4.  **Final Output:** After your reasoning, on the final line, output only the uppercase letter of the correct choice (e.g., 'D').\n\nQuestion: {question}\nChoices:\nA. {choice_A}\nB. {choice_B}\nC. {choice_C}\nD. {choice_D}",
+                "Q": 0.975,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.95,
+                "children": []
+              },
+              {
+                "id": 15,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer the following multiple-choice question by applying standard scientific principles. First, reason step by step:\n\n1. Identify the key properties being tested (e.g., fixed shape, fixed volume, adaptation to container).\n2. Recall the fundamental characteristics of each state of matter (solid, liquid, gas).\n3. Apply these principles to the specific scenario, focusing on standard definitions rather than edge cases.\n4. Eliminate options that contain any incorrect or incomplete statements based on scientific facts.\n5. Select the answer that best aligns with established scientific knowledge.\n\nExample of correct reasoning for similar questions:\n- Question: \"A substance takes the shape of its container but has a fixed volume. What state is it?\"\n  Reasoning: Liquids take the shape of their container and have fixed volume. Gases take the shape but lack fixed volume. Solids have fixed shape and volume. Thus, it must be liquid.\n  Answer: C\n\nQuestion: {question}\nChoices:\nA. {choice_A}\nB. {choice_B}\nC. {choice_C}\nD. {choice_D}\n\nAfter your reasoning, on the final line, output only the corresponding uppercase letter of the correct choice.",
+                "Q": 1.0,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.95,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 16,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Answer the following multiple-choice question. First, reason step by step to determine the correct answer. Then, on the final line, output only the corresponding uppercase letter of the correct choice (e.g., 'D').\n\nQuestion: {question}\nChoices:\nA. {choice_A}\nB. {choice_B}\nC. {choice_C}\nD. {choice_D}",
+            "Q": 3.9333333333333336,
+            "N": 4,
+            "uct_value": 4.470727819764289,
+            "reward": 0.95,
+            "children": [
+              {
+                "id": 17,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer the following multiple-choice question. First, reason step by step to determine the correct answer. Then, on the final line, output only the corresponding uppercase letter of the correct choice (e.g., 'D').\n\nQuestion: {question}\nChoices:\nA. {choice_A}\nB. {choice_B}\nC. {choice_C}\nD. {choice_D}",
+                "Q": 1.0,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.95,
+                "children": []
+              },
+              {
+                "id": 18,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer the following multiple-choice question. First, reason step by step to determine the correct answer. Then, on the final line, output only the corresponding uppercase letter of the correct choice (e.g., 'D').\n\nQuestion: {question}\nChoices:\nA. {choice_A}\nB. {choice_B}\nC. {choice_C}\nD. {choice_D}",
+                "Q": 0.975,
+                "N": 1,
+                "uct_value": null,
+                "reward": 1.0,
+                "children": []
+              },
+              {
+                "id": 19,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer the following multiple-choice question. First, reason step by step to determine the correct answer. Identify the correct choice based on its text. Then, on the final line, output only the label (e.g., 'A', 'B', '1', '2') that is directly associated with the correct choice text in the provided list.\n\n**Example 1:**\nQuestion: What is the capital of France?\nChoices:\nA. London\nB. Berlin\nC. Paris\nD. Madrid\nReasoning: The capital of France is Paris, which is option C.\nThe correct answer is C.\n\n**Example 2:**\nQuestion: A student pushes against a tree with a force of 10 newtons (N). The tree does not move. What is the amount of force exerted by the tree on the student?\nChoices:\n1. 0 N\n2. 5 N\n3. 10 N\n4. 20 N\nReasoning: According to Newton's Third Law, the tree exerts an equal and opposite force on the student. The student pushes with 10 N, so the tree pushes back with 10 N, which is option 3.\nThe correct answer is 3.\n\nNow, answer the following question:\n\nQuestion: {question}\nChoices:\n{choices}\n\nAfter your reasoning, conclude with: 'The correct answer is [label].'",
+                "Q": 0.975,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.95,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 20,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Answer the following multiple-choice question. Follow these steps rigorously:\n\n1.  **Identify the Core Concept:** State the fundamental scientific principle or cause that explains the phenomenon in the question.\n2.  **Evaluate Each Option:** For each choice (A, B, C, D):\n    *   Determine if it is **Correct and Relevant**, **Correct but Incomplete/Indirect**, or **Incorrect**.\n    *   Provide a brief justification for each rating, explaining why it is not the best answer if applicable.\n3.  **Select the Best Answer:** Choose the option that is both factually accurate and provides the most direct and complete explanation for the question asked.\n\n**Example 1:**\nQuestion: Why is it winter in North America when it is summer in South America?\nChoices:\nA. The south is always warmer than the north.\nB. There is less land than water in the south.\nC. North America receives less direct sunlight during the winter.\nD. When it is December in North America, it is June in South America.\n\nReasoning:\n1.  **Core Concept:** The Earth's axial tilt causes opposite hemispheres to receive different amounts of direct sunlight throughout the year, leading to opposite seasons.\n2.  **Evaluate:**\n    *   **A:** Incorrect. Southern regions are not always warmer; this is a seasonal effect.\n    *   **B:** Incorrect. The distribution of land and water affects climate but does not cause opposite seasons.\n    *   **C:** Correct but Incomplete. This is true for winter in North America but does not explain the simultaneous summer in South America.\n    *   **D:** Correct and Relevant. This accurately describes the correlation caused by the Earth's tilt and orbit, directly linking the timing of opposite seasons in the two hemispheres.\n3.  **Best Answer:** D\n\nD\n\n**Example 2:**\n[Provide another example of a failure case here if available, following the same structure. If not, omit this example.]\n\nNow, answer the following question using the same strict step-by-step process.\n\nQuestion: {question}\nChoices:\nA. {choice_A}\nB. {choice_B}\nC. {choice_C}\nD. {choice_D}\n\nAfter your reasoning, on the final line, output only the corresponding uppercase letter of the correct choice (e.g., 'D').",
+            "Q": 0.9666666666666667,
+            "N": 1,
+            "uct_value": null,
+            "reward": 0.95,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": 21,
+        "depth": 1,
+        "action_sequence": [
+          "FailureDrivenAction"
+        ],
+        "prompt": "Answer the multiple-choice question by carefully analyzing the content of each option. Your reasoning must be based on the scientific accuracy of the sequences described, not on the order the options are presented.\n\n**Question:** {question}\n\n**Options:**\nA: {option_1}\nB: {option_2}\nC: {option_3}\nD: {option_4}\n\n**Instructions:**\n1.  **Reason Step-by-Step:** Begin by explaining the correct sequence of events based on your knowledge. Then, evaluate each option (A, B, C, D) by comparing its described sequence to the correct one. Identify which option is correct and note why the others are incorrect.\n2.  **Final Answer:** After your reasoning, state the letter (A, B, C, or D) of the correct choice. Your final output must be formatted as: `<answer>{letter}</answer>`\n\n**Example of Correct Reasoning:**\n*Question:* Which sequence of energy transformations occurs after a battery-operated flashlight is turned on?\n*Options:*\nA: electrical -> light -> chemical\nB: electrical -> chemical -> light\nC: chemical -> light -> electrical\nD: chemical -> electrical -> light\n\n*Reasoning:* The correct sequence begins with the chemical energy stored in the battery. This chemical energy is converted into electrical energy as the circuit is completed. The electrical energy is then converted into light (and heat) energy by the bulb. Therefore, the correct sequence is chemical → electrical → light. Now, evaluating the options:\n- Option A is incorrect because it starts with electrical and ends with chemical.\n- Option B is incorrect because it starts and ends with the wrong transformations (electrical -> chemical -> light).\n- Option C is incorrect because it suggests chemical energy is directly converted to light, bypassing the necessary electrical stage.\n- Option D correctly identifies the sequence: chemical -> electrical -> light.\nThe correct choice is D.\n\n<answer>D</answer>",
+        "Q": 9.6,
+        "N": 10,
+        "uct_value": 2.6761473591148546,
+        "reward": 0.95,
+        "children": [
+          {
+            "id": 22,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Answer the multiple-choice question by carefully analyzing the scientific accuracy of the content in each option.\n\n**Question:** {question}\n\n**Options:**\n{options}\n\n**Instructions:**\n1.  **Identify the Labels:** First, note the exact labels used for the options (e.g., 'A', 'B', '1', '2').\n2.  **Reason Step-by-Step:** Explain the correct answer based on your knowledge. Then, evaluate each option by its label. For each one, state whether it is correct or incorrect and provide a brief scientific justification.\n3.  **Final Answer:** Conclude by stating the exact label of the correct option as it appears in the question. Format your final output as: `<answer>{label}</answer>`\n\n**Example 1 (Letter Labels):**\n*Question:* Which sequence of energy transformations occurs after a battery-operated flashlight is turned on?\n*Options:*\nA: electrical -> light -> chemical\nB: electrical -> chemical -> light\nC: chemical -> light -> electrical\nD: chemical -> electrical -> light\n\n*Reasoning:* The correct process begins with chemical energy in the battery, which converts to electrical energy when the circuit is closed, and then to light energy in the bulb. Evaluating each option:\n- **A** is incorrect; it reverses the correct order.\n- **B** is incorrect; it misstates the transformation sequence.\n- **C** is incorrect; it omits the electrical energy step.\n- **D** is correct; it matches the sequence: chemical → electrical → light.\nThe correct choice is D.\n\n<answer>D</answer>\n\n**Example 2 (Number Labels):**\n*Question:* Weather forecasts are more accurate today than in the past due to\n*Options:*\n1: global warming\n2: air-quality control\n3: plate tectonics\n4: use of images from space\n\n*Reasoning:* Improved accuracy is primarily due to advanced data collection technologies, especially satellites. Evaluating each option:\n- **1** is incorrect; global warming affects climate but doesn't improve forecasting tools.\n- **2** is incorrect; air-quality control relates to pollution, not weather prediction.\n- **3** is incorrect; plate tectonics is a geological process unrelated to weather.\n- **4** is correct; satellite imagery provides essential global data for modern meteorology.\nThe correct choice is 4.\n\n<answer>4</answer>",
+            "Q": 3.841666666666667,
+            "N": 4,
+            "uct_value": 3.9101895499411143,
+            "reward": 0.95,
+            "children": [
+              {
+                "id": 23,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer the multiple-choice question by carefully analyzing the scientific accuracy of the content in each option.\n\n**Question:** {question}\n\n**Options:**\n{options}\n\n**Instructions:**\n1.  **Identify the Labels:** First, note the exact labels used for the options (e.g., 'A', 'B', '1', '2').\n2.  **Reason Step-by-Step:** Explain the correct answer based on your knowledge. Then, evaluate each option by its label. For each one, state whether it is correct or incorrect and provide a brief scientific justification.\n3.  **Final Answer:** Conclude by stating the exact label of the correct option as it appears in the question. Format your final output as: `<answer>{label}</answer>`\n\n**Example 1 (Letter Labels):**\n*Question:* Which sequence of energy transformations occurs after a battery-operated flashlight is turned on?\n*Options:*\nA: electrical -> light -> chemical\nB: electrical -> chemical -> light\nC: chemical -> light -> electrical\nD: chemical -> electrical -> light\n\n*Reasoning:* The correct process begins with chemical energy in the battery, which converts to electrical energy when the circuit is closed, and then to light energy in the bulb. Evaluating each option:\n- **A** is incorrect; it reverses the correct order.\n- **B** is incorrect; it misstates the transformation sequence.\n- **C** is incorrect; it omits the electrical energy step.\n- **D** is correct; it matches the sequence: chemical → electrical → light.\nThe correct choice is D.\n\n<answer>D</answer>\n\n**Example 2 (Number Labels):**\n*Question:* Weather forecasts are more accurate today than in the past due to\n*Options:*\n1: global warming\n2: air-quality control\n3: plate tectonics\n4: use of images from space\n\n*Reasoning:* Improved accuracy is primarily due to advanced data collection technologies, especially satellites. Evaluating each option:\n- **1** is incorrect; global warming affects climate but doesn't improve forecasting tools.\n- **2** is incorrect; air-quality control relates to pollution, not weather prediction.\n- **3** is incorrect; plate tectonics is a geological process unrelated to weather.\n- **4** is correct; satellite imagery provides essential global data for modern meteorology.\nThe correct choice is 4.\n\n<answer>4</answer>",
+                "Q": 0.975,
+                "N": 1,
+                "uct_value": null,
+                "reward": 1.0,
+                "children": []
+              },
+              {
+                "id": 24,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer the multiple-choice question by carefully analyzing the scientific accuracy of the content in each option.\n\n**Question:** {question}\n\n**Options:**\n{options}\n\n**Instructions:**\n1.  **Identify the Labels:** First, note the exact labels used for the options (e.g., 'A', 'B', '1', '2').\n2.  **Reason Step-by-Step:** Explain the correct answer based on your knowledge. Then, evaluate each option by its label. For each one, state whether it is correct or incorrect and provide a brief scientific justification.\n3.  **Final Answer:** Conclude by stating the exact label of the correct option as it appears in the question. Format your final output as: `<answer>{label}</answer>`\n\n**Example 1 (Letter Labels):**\n*Question:* Which sequence of energy transformations occurs after a battery-operated flashlight is turned on?\n*Options:*\nA: electrical -> light -> chemical\nB: electrical -> chemical -> light\nC: chemical -> light -> electrical\nD: chemical -> electrical -> light\n\n*Reasoning:* The correct process begins with chemical energy in the battery, which converts to electrical energy when the circuit is closed, and then to light energy in the bulb. Evaluating each option:\n- **A** is incorrect; it reverses the correct order.\n- **B** is incorrect; it misstates the transformation sequence.\n- **C** is incorrect; it omits the electrical energy step.\n- **D** is correct; it matches the sequence: chemical → electrical → light.\nThe correct choice is D.\n\n<answer>D</answer>\n\n**Example 2 (Number Labels):**\n*Question:* Weather forecasts are more accurate today than in the past due to\n*Options:*\n1: global warming\n2: air-quality control\n3: plate tectonics\n4: use of images from space\n\n*Reasoning:* Improved accuracy is primarily due to advanced data collection technologies, especially satellites. Evaluating each option:\n- **1** is incorrect; global warming affects climate but doesn't improve forecasting tools.\n- **2** is incorrect; air-quality control relates to pollution, not weather prediction.\n- **3** is incorrect; plate tectonics is a geological process unrelated to weather.\n- **4** is correct; satellite imagery provides essential global data for modern meteorology.\nThe correct choice is 4.\n\n<answer>4</answer>",
+                "Q": 0.95,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.95,
+                "children": []
+              },
+              {
+                "id": 25,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer the multiple-choice question by analyzing the scientific accuracy and explanatory relevance of each option. The correct answer must provide the direct scientific explanation for the phenomenon in the question, not just a true statement or a restatement of the observation.\n\n**Question:** {question}\n\n**Options:**\n{options}\n\n**Instructions:**\n1.  **Identify the Labels:** First, note the exact labels used for the options (e.g., 'A', 'B', '1', '2').\n2.  **Reason Step-by-Step:**\n    *   Begin by explaining the core scientific principle that correctly answers the question.\n    *   Evaluate each option by its label. For each one:\n        *   Determine if it is **correct** (provides the direct explanation) or **incorrect**.\n        *   Provide a concise scientific justification. **Crucially, reject options that are merely restatements of the question, true but irrelevant facts, or descriptions of the phenomenon instead of its cause.**\n3.  **Final Answer:** Conclude by stating the exact label of the correct option. Format your final output as: `<answer>{label}</answer>`\n\n**Example 1 (Correct Explanation):**\n*Question:* Which sequence of energy transformations occurs after a battery-operated flashlight is turned on?\n*Options:*\nA: electrical -> light -> chemical\nB: electrical -> chemical -> light\nC: chemical -> light -> electrical\nD: chemical -> electrical -> light\n\n*Reasoning:* The process begins with chemical energy in the battery, which is converted to electrical energy when the circuit is closed; this electrical energy is then converted to light energy by the bulb. Evaluating each option:\n- **A** is incorrect; it reverses the correct order of transformations.\n- **B** is incorrect; it misstates the sequence, implying electrical energy is converted back to chemical.\n- **C** is incorrect; it omits the essential electrical energy step.\n- **D** is correct; it accurately describes the sequence: chemical → electrical → light.\nThe correct choice is D.\n\n<answer>D</answer>\n\n**Example 2 (Rejecting Irrelevant Facts):**\n*Question:* Weather forecasts are more accurate today than in the past due to\n*Options:*\n1: global warming\n2: air-quality control\n3: plate tectonics\n4: use of images from space\n\n*Reasoning:* Improved accuracy is primarily due to advanced technology for data collection and modeling, particularly satellites. Evaluating each option:\n- **1** is incorrect; global warming is a long-term climate trend, not a tool for daily weather prediction.\n- **2** is incorrect; air-quality control relates to pollution management, not meteorological forecasting.\n- **3** is incorrect; plate tectonics involves slow geological processes unrelated to weather.\n- **4** is correct; satellite imagery provides comprehensive, real-time global data essential for modern weather models.\nThe correct choice is 4.\n\n<answer>4</answer>\n\n**Example 3 (Rejecting Restatements):**\n*Question:* Why is it winter in North America when it is summer in South America?\n*Options:*\nA: The south is always warmer than the north.\nB: There is less land than water in the south.\nC: North America receives less direct sunlight during the winter.\nD: When it is December in North America, it is June in South America.\n\n*Reasoning:* The opposite seasons are caused by Earth's axial tilt of 23.5 degrees. The hemisphere tilted toward the Sun receives more direct sunlight and experiences summer, while the other hemisphere, tilted away, receives less direct sunlight and experiences winter.\n- **A** is incorrect; this is a generalization not always true and does not explain the cause of seasons.\n- **B** is incorrect; while factually true, this oceanic influence moderates temperatures but does not cause the seasonal reversal.\n- **C** is **correct**; it directly identifies the result of the axial tilt—the difference in directness of sunlight—which is the scientific explanation for seasonal changes.\n- **D** is incorrect; this is a calendrical restatement of the observation (\"it is winter when it is summer\") and does not explain the underlying reason.\nThe correct choice is C.\n\n<answer>C</answer>",
+                "Q": 0.95,
+                "N": 1,
+                "uct_value": null,
+                "reward": 1.0,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 26,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Answer the multiple-choice question by carefully analyzing the content of each option. Your reasoning must be based on scientific accuracy, not on the order the options are presented.\n\n**Question:** {question}\n\n**Options:**\n{options}\n\n**Instructions:**\n1.  **Understand the Labels:** The options are provided to you as a list. The first element is Option 1, the second is Option 2, and so on. They may be labeled with numbers (1, 2, 3, 4) or letters (A, B, C, D) in the question. **Always refer to them and output your final answer using the label provided in this Options list.**\n2.  **Reason Step-by-Step:** First, explain the correct answer based on your knowledge. Then, evaluate each option by comparing its described content to the correct answer. Identify which option is correct and note why the others are incorrect.\n3.  **Final Answer:** After your reasoning, state the **label of the correct choice exactly as it is provided in the Options list above**. Your final output must be formatted as: `<answer>{label}</answer>` where `{label}` is the specific label (e.g., `3`, `C`).\n\n**Examples of Correct Reasoning:**\n\n*Example 1:*\n*Question:* Which sequence of energy transformations occurs after a battery-operated flashlight is turned on?\n*Options:*\n1: electrical -> light -> chemical\n2: electrical -> chemical -> light\n3: chemical -> light -> electrical\n4: chemical -> electrical -> light\n*Reasoning:* The correct sequence begins with the chemical energy stored in the battery. This chemical energy is converted into electrical energy as the circuit is completed. The electrical energy is then converted into light (and heat) energy by the bulb. Therefore, the correct sequence is chemical → electrical → light. Now, evaluating the options:\n- Option 1 is incorrect because it starts with electrical and ends with chemical.\n- Option 2 is incorrect because it starts and ends with the wrong transformations (electrical -> chemical -> light).\n- Option 3 is incorrect because it suggests chemical energy is directly converted to light, bypassing the necessary electrical stage.\n- Option 4 correctly identifies the sequence: chemical -> electrical -> light.\nThe correct choice is Option 4.\n<answer>4</answer>\n\n*Example 2 (Failure Avoidance):*\n*Question:* A student pushes against a tree with a force of 10 newtons (N). The tree does not move. What is the amount of force exerted by the tree on the student?\n*Options:*\n1: 0 N\n2: 5 N\n3: 10 N\n4: 20 N\n*Reasoning:* According to Newton’s Third Law of Motion, for every action force, there is an equal and opposite reaction force. When the student pushes on the tree with a force of 10 N, the tree simultaneously exerts a force of equal magnitude (10 N) in the opposite direction on the student. This is true regardless of whether the tree moves or not.\nNow, evaluating the options:\n- Option 1 (0 N) is incorrect, as it violates Newton's Third Law.\n- Option 2 (5 N) is incorrect, as the reaction force must be equal to the action force.\n- Option 3 (10 N) is correct, as it satisfies the equal and opposite requirement of Newton's Third Law.\n- Option 4 (20 N) is incorrect, as there is no basis for the force to be doubled.\nThe correct choice is Option 3.\n<answer>3</answer>",
+            "Q": 3.841666666666667,
+            "N": 4,
+            "uct_value": 4.454061169764272,
+            "reward": 1.0,
+            "children": [
+              {
+                "id": 27,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer the multiple-choice question by carefully analyzing the content of each option. Your reasoning must be based on scientific accuracy, not on the order the options are presented.\n\n**Question:** {question}\n\n**Options:**\n{options}\n\n**Instructions:**\n1.  **Understand the Labels:** The options are provided to you as a list. The first element is Option 1, the second is Option 2, and so on. They may be labeled with numbers (1, 2, 3, 4) or letters (A, B, C, D) in the question. **Always refer to them and output your final answer using the label provided in this Options list.**\n2.  **Reason Step-by-Step:** First, explain the correct answer based on your knowledge. Then, evaluate each option by comparing its described content to the correct answer. Identify which option is correct and note why the others are incorrect.\n3.  **Final Answer:** After your reasoning, state the **label of the correct choice exactly as it is provided in the Options list above**. Your final output must be formatted as: `<answer>{label}</answer>` where `{label}` is the specific label (e.g., `3`, `C`).\n\n**Examples of Correct Reasoning:**\n\n*Example 1:*\n*Question:* Which sequence of energy transformations occurs after a battery-operated flashlight is turned on?\n*Options:*\n1: electrical -> light -> chemical\n2: electrical -> chemical -> light\n3: chemical -> light -> electrical\n4: chemical -> electrical -> light\n*Reasoning:* The correct sequence begins with the chemical energy stored in the battery. This chemical energy is converted into electrical energy as the circuit is completed. The electrical energy is then converted into light (and heat) energy by the bulb. Therefore, the correct sequence is chemical → electrical → light. Now, evaluating the options:\n- Option 1 is incorrect because it starts with electrical and ends with chemical.\n- Option 2 is incorrect because it starts and ends with the wrong transformations (electrical -> chemical -> light).\n- Option 3 is incorrect because it suggests chemical energy is directly converted to light, bypassing the necessary electrical stage.\n- Option 4 correctly identifies the sequence: chemical -> electrical -> light.\nThe correct choice is Option 4.\n<answer>4</answer>\n\n*Example 2 (Failure Avoidance):*\n*Question:* A student pushes against a tree with a force of 10 newtons (N). The tree does not move. What is the amount of force exerted by the tree on the student?\n*Options:*\n1: 0 N\n2: 5 N\n3: 10 N\n4: 20 N\n*Reasoning:* According to Newton’s Third Law of Motion, for every action force, there is an equal and opposite reaction force. When the student pushes on the tree with a force of 10 N, the tree simultaneously exerts a force of equal magnitude (10 N) in the opposite direction on the student. This is true regardless of whether the tree moves or not.\nNow, evaluating the options:\n- Option 1 (0 N) is incorrect, as it violates Newton's Third Law.\n- Option 2 (5 N) is incorrect, as the reaction force must be equal to the action force.\n- Option 3 (10 N) is correct, as it satisfies the equal and opposite requirement of Newton's Third Law.\n- Option 4 (20 N) is incorrect, as there is no basis for the force to be doubled.\nThe correct choice is Option 3.\n<answer>3</answer>",
+                "Q": 0.975,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.95,
+                "children": []
+              },
+              {
+                "id": 28,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer the multiple-choice question by carefully analyzing the content of each option. Your reasoning must be based on scientific accuracy, not on the order the options are presented.\n\n**Question:** {question}\n\n**Options:**\n{options}\n\n**Instructions:**\n1.  **Understand the Labels:** The options are provided to you as a list. The first element is Option 1, the second is Option 2, and so on. They may be labeled with numbers (1, 2, 3, 4) or letters (A, B, C, D) in the question. **Always refer to them and output your final answer using the label provided in this Options list.**\n2.  **Reason Step-by-Step:** First, explain the correct answer based on your knowledge. Then, evaluate each option by comparing its described content to the correct answer. Identify which option is correct and note why the others are incorrect.\n3.  **Final Answer:** After your reasoning, state the **label of the correct choice exactly as it is provided in the Options list above**. Your final output must be formatted as: `<answer>{label}</answer>` where `{label}` is the specific label (e.g., `3`, `C`).\n\n**Examples of Correct Reasoning:**\n\n*Example 1:*\n*Question:* Which sequence of energy transformations occurs after a battery-operated flashlight is turned on?\n*Options:*\n1: electrical -> light -> chemical\n2: electrical -> chemical -> light\n3: chemical -> light -> electrical\n4: chemical -> electrical -> light\n*Reasoning:* The correct sequence begins with the chemical energy stored in the battery. This chemical energy is converted into electrical energy as the circuit is completed. The electrical energy is then converted into light (and heat) energy by the bulb. Therefore, the correct sequence is chemical → electrical → light. Now, evaluating the options:\n- Option 1 is incorrect because it starts with electrical and ends with chemical.\n- Option 2 is incorrect because it starts and ends with the wrong transformations (electrical -> chemical -> light).\n- Option 3 is incorrect because it suggests chemical energy is directly converted to light, bypassing the necessary electrical stage.\n- Option 4 correctly identifies the sequence: chemical -> electrical -> light.\nThe correct choice is Option 4.\n<answer>4</answer>\n\n*Example 2 (Failure Avoidance):*\n*Question:* A student pushes against a tree with a force of 10 newtons (N). The tree does not move. What is the amount of force exerted by the tree on the student?\n*Options:*\n1: 0 N\n2: 5 N\n3: 10 N\n4: 20 N\n*Reasoning:* According to Newton’s Third Law of Motion, for every action force, there is an equal and opposite reaction force. When the student pushes on the tree with a force of 10 N, the tree simultaneously exerts a force of equal magnitude (10 N) in the opposite direction on the student. This is true regardless of whether the tree moves or not.\nNow, evaluating the options:\n- Option 1 (0 N) is incorrect, as it violates Newton's Third Law.\n- Option 2 (5 N) is incorrect, as the reaction force must be equal to the action force.\n- Option 3 (10 N) is correct, as it satisfies the equal and opposite requirement of Newton's Third Law.\n- Option 4 (20 N) is incorrect, as there is no basis for the force to be doubled.\nThe correct choice is Option 3.\n<answer>3</answer>",
+                "Q": 0.95,
+                "N": 1,
+                "uct_value": null,
+                "reward": 1.0,
+                "children": []
+              },
+              {
+                "id": 29,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Answer the multiple-choice question by grounding your reasoning in fundamental scientific principles. Your analysis must be based on strict scientific definitions and the information explicitly provided in the question.\n\n**Question:** {question}\n\n**Options:**\n{options}\n\n**Instructions:**\n1.  **Understand the Labels:** The options are provided to you as a list. The first element is Option 1, the second is Option 2, and so on. They may be labeled with numbers (1, 2, 3, 4) or letters (A, B, C, D). **Always refer to them and output your final answer using the label provided in this Options list.**\n2.  **Reason Step-by-Step:**\n    *   **First, state the core scientific definitions or laws** that are essential for answering this question. These are the foundational principles that govern the scenario.\n    *   **Apply these principles directly to the question stem.** Use only the information provided. Do not make assumptions about unspecified conditions (e.g., whether a container is sealed, open, or rigid).\n    *   **Evaluate each option individually.** For each option, determine if it is consistent or inconsistent with the scientific principles you stated. Explain the specific reason for each inconsistency. Your evaluation must be based on definitions, not plausibility.\n3.  **Final Answer:** After your reasoning, state the **label of the correct choice exactly as it is provided in the Options list above**. Your final output must be formatted as: `<answer>{label}</answer>` where `{label}` is the specific label (e.g., `3`, `C`).\n\n**Examples of Correct and Incorrect Reasoning:**\n\n*Example 1 (Correct):*\n*Question:* Which sequence of energy transformations occurs after a battery-operated flashlight is turned on?\n*Options:*\n1: electrical -> light -> chemical\n2: electrical -> chemical -> light\n3: chemical -> light -> electrical\n4: chemical -> electrical -> light\n*Reasoning:* The core principle is the law of conservation of energy and the specific energy transformations in a DC circuit. Chemical energy is stored in the battery. When the circuit is closed, this chemical energy is converted into electrical energy. The electrical energy is then converted into light and thermal energy in the bulb. Thus, the correct sequence is chemical → electrical → light.\n- Option 1 is incorrect. It posits electrical as the initial energy, which is not the source.\n- Option 2 is incorrect. It ends with chemical energy, which is the source, not the output.\n- Option 3 is incorrect. It suggests a direct conversion from chemical to light, bypassing the essential electrical stage in the circuit.\n- Option 4 is correct. It matches the sequence: chemical (source) -> electrical (current) -> light (output).\n<answer>4</answer>\n\n*Example 2 (Correct - Demonstrates First Principles):*\n*Question:* A student pushes against a tree with a force of 10 newtons (N). The tree does not move. What is the amount of force exerted by the tree on the student?\n*Options:*\n1: 0 N\n2: 5 N\n3: 10 N\n4: 20 N\n*Reasoning:* The core principle is Newton's Third Law of Motion: for every action force, there is an equal and opposite reaction force. The magnitude of the reaction force is always equal to the magnitude of the action force, regardless of other factors like motion.\n- Option 1 violates Newton's Third Law; the force cannot be zero.\n- Option 2 violates Newton's Third Law; the force cannot be less than the action force.\n- Option 3 is correct. The tree exerts a 10 N force on the student, equal and opposite to the 10 N force the student exerts on the tree.\n- Option 4 violates Newton's Third Law; the force cannot be greater than the action force.\n<answer>3</answer>\n\n*Example 3 (Failure to Avoid - Learn from this Mistake):*\n*Question:* A sample in a cylindrical container has a cylindrical shape and a fixed volume. The state of matter of the sample\n*Options:*\nA: must be solid.\nB: could be either solid or liquid.\nC: must be liquid.\nD: could be either liquid or gas.\n*Reasoning:* **INCORRECT REASONING (Learn what to avoid):** The model reasoned that a gas in a rigid container has a \"fixed volume,\" leading to the wrong conclusion that D was correct. This is a misinterpretation of the defining properties of matter.\n**CORRECT PRINCIPLES:** The defining properties are: Solids have a definite shape and a definite volume. Liquids have an indefinite shape (they take the shape of their container) and a definite volume. Gases have an indefinite shape and an indefinite volume (they expand to fill any container; their volume is not fixed but is determined by the container).\n**CORRECT APPLICATION:** The sample takes the shape of its container (cylindrical), which is a property of liquids and gases, not solids. It also has a *fixed volume*. A fixed, definite volume is an intrinsic property of liquids and solids, but not gases. The volume of a gas is variable and extrinsic; it is not \"fixed\" even if it is contained.\n- Option A is incorrect. A solid has a definite shape of its own and would not simply take the cylindrical shape of the container.\n- Option B is incorrect. It includes solid, which is ruled out because solids do not take the shape of their container.\n- Option C is correct. A liquid takes the shape of its container (hence cylindrical) and has a definite, fixed volume.\n- Option D is incorrect. It includes gas. A gas does not have a \"fixed volume\" as an intrinsic property; its volume is defined by its container and can change.\n<answer>C</answer>",
+                "Q": 0.95,
+                "N": 1,
+                "uct_value": null,
+                "reward": 1.0,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 30,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Answer the multiple-choice question by carefully analyzing the scientific accuracy of each option. Your reasoning must be based on factual knowledge, not on the order the options are presented.\n\n**Question:** {question}\n\n**Options:**\n{option_1}\n{option_2}\n{option_3}\n{option_4}\n\n**Instructions:**\n1.  **Reason Step-by-Step:** First, explain the correct scientific concept or fact that answers the question. Then, evaluate each option individually. For each incorrect option, provide a concise explanation of why it is scientifically inaccurate.\n2.  **Identify the Correct Label:** Determine which option is correct. Pay close attention to the label of this option (e.g., 'A', '1', 'True') as it is written in the list above.\n3.  **Final Answer:** State the label of the correct choice **exactly as it is presented in the 'Options' section**. Your final output must be formatted as: `<answer>{label}</answer>`\n\n**Examples of Correct and Incorrect Output:**\n\n*Example 1 (Correct Output for Letter Labels):*\n*Question:* Which sequence of energy transformations occurs after a battery-operated flashlight is turned on?\n*Options:*\nA: electrical -> light -> chemical\nB: electrical -> chemical -> light\nC: chemical -> light -> electrical\nD: chemical -> electrical -> light\n*Reasoning:* The correct sequence begins with chemical energy stored in the battery... Therefore, option D is correct.\n<answer>D</answer>\n\n*Example 2 (Correct Output for Number Labels):*\n*Question:* Weather forecasts are more accurate today than in the past due to\n*Options:*\n1: global warming\n2: air-quality control\n3: plate tectonics\n4: use of images from space\n*Reasoning:* The primary reason for improved weather forecast accuracy is the use of satellite technology... Therefore, option 4 is correct.\n<answer>4</answer>\n\n*Example 3 (Incorrect Output to Avoid):*\n*Question:* [Any question]\n*Options:*\n1: [Option 1]\n2: [Option 2]\n3: [Option 3]\n4: [Correct Option]\n*Reasoning:* [Correct reasoning identifying option 4 as correct...]\n<answer>D</answer>  // ERROR: Used letter 'D' instead of number '4'. Always output the label exactly as provided.",
+            "Q": 0.9666666666666667,
+            "N": 1,
+            "uct_value": null,
+            "reward": 1.0,
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

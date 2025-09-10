@@ -60,9 +60,9 @@ class PhysicsMCQTask(TaskBase):
     def get_reward(self, output: str, target: str) -> float:
         pred_letter = self._normalize_answer(output)
         gold_letter = target.upper()
-        logger.info(
-            f"[Reward Evaluation]\n"
-            f"  Predicted Letter: {pred_letter}\n"
-            f"  Gold Letter     : {gold_letter}"
-        )
+        # logger.info(
+        #     f"[Reward Evaluation]\n"
+        #     f"  Predicted Letter: {pred_letter}\n"
+        #     f"  Gold Letter     : {gold_letter}"
+        # )
         return 1.0 if pred_letter == gold_letter else 0.0

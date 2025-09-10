@@ -98,9 +98,9 @@ class ObjectCountingTask(TaskBase):
         """Return 1.0 if normalized output matches normalized target, else 0.0"""
         norm_out = self._normalize_answer(output)
         norm_tgt = self._normalize_answer(target)
-        logger.info(
-                f"[Reward Evaluation]\n"
-                f"  Model Answer: {norm_out}\n"
-                f"  Gold Answer : {norm_tgt}"
-            )
+        # logger.info(
+        #         f"[Reward Evaluation]\n"
+        #         f"  Model Answer: {norm_out}\n"
+        #         f"  Gold Answer : {norm_tgt}"
+        #     )
         return 1.0 if norm_out == norm_tgt else 0.0

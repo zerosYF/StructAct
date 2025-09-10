@@ -61,9 +61,9 @@ class GeometricShapesTask(TaskBase):
     def get_reward(self, output: str, target: str) -> float:
         pred = self._normalize_answer(output)
         gold = target.strip()
-        logger.info(
-            f"[Reward Evaluation]\n"
-            f"  Predicted: {pred}\n"
-            f"  Gold     : {gold}"
-        )
+        # logger.info(
+        #     f"[Reward Evaluation]\n"
+        #     f"  Predicted: {pred}\n"
+        #     f"  Gold     : {gold}"
+        # )
         return 1.0 if pred == gold else 0.0

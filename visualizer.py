@@ -11,64 +11,45 @@ import warnings
 def hash_str(s: str) -> str:
     return hashlib.md5(s.encode()).hexdigest()[:6]
 
-class MCTSVisualizer:
-    def __init__(self, mcts=None, root=None, interval=2.0, max_nodes=100):
-        self.mcts = mcts
-        self.root = root
+class RNNVisualizer:
+    def __init__(self, interval=2.0):
         self.interval = interval
-        self.max_nodes = max_nodes
         self.rewards = []
         self.entropies = []
         self._stop_event = threading.Event()
         self._force_update = False
         self._thread = threading.Thread(target=self._run)
 
-    def start(self, title: str = "MCTS Visualization"):
+    def start(self, title="RNN Training Progress"):
         self.title = title
         self._thread.start()
 
     def stop(self):
         self._stop_event.set()
         self._thread.join()
-    
-    def set_mcts(self, mcts, root, max_nodes=100):
-        self.mcts = mcts
-        self.root = root
-        self.max_nodes = max_nodes
 
-    def log_train(self, reward: float, entropy:float):
+    def log_train(self, reward: float, entropy: float):
         self.rewards.append(reward)
         self.entropies.append(entropy)
-        # Force immediate update for better real-time display
-        if hasattr(self, '_force_update'):
-            self._force_update = True
+        self._force_update = True
 
     def _run(self):
-        # Suppress the GUI thread warning
         with warnings.catch_warnings():
             warnings.filterwarnings("ignore", message="Starting a Matplotlib GUI outside of the main thread")
             plt.ion()
-            fig = plt.figure(figsize=(12, 8), num=self.title)
-        gs = GridSpec(2, 1, height_ratios=[1, 2]) 
-        ax_train = fig.add_subplot(gs[0])
-        ax_train_ = ax_train.twinx()
-        ax_tree = fig.add_subplot(gs[1])
+            fig = plt.figure(figsize=(8, 5), num=self.title)
+
+        ax = fig.add_subplot(111)
+        ax2 = ax.twinx()
 
         while not self._stop_event.is_set():
-            # Don't clear axes here, let each draw method handle it
-            self._draw_train_curve(ax_train, ax_train_)
-
-            if self.mcts and self.root:
-                ax_tree.clear()
-                self._draw_tree(ax_tree)
-
+            self._draw(ax, ax2)
             fig.tight_layout()
             fig.canvas.draw()
             fig.canvas.flush_events()
-            
-            # Use shorter sleep if force update is requested
+
             if self._force_update:
-                time.sleep(0.1)  # Quick update
+                time.sleep(0.1)
                 self._force_update = False
             else:
                 time.sleep(self.interval)
@@ -76,59 +57,72 @@ class MCTSVisualizer:
         plt.ioff()
         plt.show()
 
-    def _draw_train_curve(self, ax_l, ax_r):
-        # Clear both axes first
-        ax_l.clear()
-        ax_r.clear()
-        
-        if not self.rewards:
-            ax_l.set_title("Waiting for RNN data...")
-            ax_l.set_xlabel("Epoch")
-            ax_l.set_ylabel("Reward", color="green")
-            return
-        
-        # Set title and labels
-        ax_l.set_title(f"RNN Training Progress (Epoch {len(self.rewards)})")
-        ax_l.set_xlabel("Epoch")
-        ax_l.set_ylabel("Reward", color="green")
-        ax_l.tick_params(axis='y', labelcolor="green")
-        
-        # Plot data
-        x = list(range(1, len(self.rewards) + 1))  # Start from 1 for epoch numbers
-        ax_l.plot(x, self.rewards, 'o-', label="Mean Reward", color="green", linewidth=2, markersize=6)
-        
-        # Configure right y-axis for entropy
-        ax_r.set_ylabel("Entropy", color="blue")
-        ax_r.tick_params(axis='y', labelcolor="blue")
-        ax_r.yaxis.set_label_position("right")
-        
-        # Plot entropy if available
-        if self.entropies and len(self.entropies) == len(self.rewards):
-            ax_r.plot(x, self.entropies, 's-', label="Entropy", color="blue", linewidth=2, markersize=6)
-        
-        # Add grid and legend
-        ax_l.grid(True, alpha=0.3)
-        lines1, labels1 = ax_l.get_legend_handles_labels()
-        lines2, labels2 = ax_r.get_legend_handles_labels()
-        ax_l.legend(lines1 + lines2, labels1 + labels2, loc="best")
-        
-        # Add latest values as text
-        if self.rewards:
-            latest_reward = self.rewards[-1]
-            ax_l.text(0.02, 0.98, f"Latest Reward: {latest_reward:.4f}", 
-                     transform=ax_l.transAxes, verticalalignment='top',
-                     bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
-        
-        if self.entropies:
-            latest_entropy = self.entropies[-1]
-            ax_r.text(0.98, 0.98, f"Latest Entropy: {latest_entropy:.4f}", 
-                     transform=ax_r.transAxes, verticalalignment='top', horizontalalignment='right',
-                     bbox=dict(boxstyle='round', facecolor='lightblue', alpha=0.5))
+    def _draw(self, ax, ax2):
+        ax.clear()
+        ax2.clear()
 
-    def _draw_tree(self, ax):
+        if not self.rewards:
+            ax.set_title("Waiting for RNN data...")
+            return
+
+        x = list(range(1, len(self.rewards) + 1))
+        ax.set_title(f"RNN Training (Epoch {len(self.rewards)})")
+        ax.set_xlabel("Epoch")
+        ax.set_ylabel("Reward", color="green")
+        ax.plot(x, self.rewards, "o-", color="green", label="Reward")
+        ax.tick_params(axis="y", labelcolor="green")
+
+        ax2.set_ylabel("Entropy", color="blue")
+        ax2.plot(x, self.entropies, "s-", color="blue", label="Entropy")
+        ax2.tick_params(axis="y", labelcolor="blue")
+
+        ax.grid(True, alpha=0.3)
+
+class MCTSVisualizer:
+    def __init__(self, root=None, interval=2.0, max_nodes=100, max_children=5):
+        self.root = root
+        self.interval = interval
+        self.max_nodes = max_nodes
+        self.max_children = max_children  # 每层最多展开的子节点
+        self._stop_event = threading.Event()
+        self._thread = threading.Thread(target=self._run)
+
+    def set_root(self, root, max_nodes=100):
+        self.root = root
+        self.max_nodes = max_nodes
+
+    def start(self, title="MCTS Visualization"):
+        self.title = title
+        self._thread.start()
+
+    def stop(self):
+        self._stop_event.set()
+        self._thread.join()
+
+    def _run(self):
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", message="Starting a Matplotlib GUI outside of the main thread")
+            plt.ion()
+            fig = plt.figure(figsize=(14, 9), num=self.title)
+        ax = fig.add_subplot(111)
+
+        while not self._stop_event.is_set():
+            ax.clear()
+            if self.root:
+                self._draw_tree(ax, self.root)
+
+            fig.tight_layout()
+            fig.canvas.draw()
+            fig.canvas.flush_events()
+            time.sleep(self.interval)
+
+        plt.ioff()
+        plt.show()
+
+    def _draw_tree(self, ax, root):
         G = nx.DiGraph()
         labels = {}
-        queue = [self.root]
+        queue = [root]
         visited = set()
 
         while queue and len(G.nodes) < self.max_nodes:
@@ -138,32 +132,46 @@ class MCTSVisualizer:
             visited.add(node)
 
             G.add_node(node)
-
-            q = self.mcts.Q.get(node, 0)
-            n = self.mcts.N.get(node, 0)
+            q, n, uct = node.Q, node.N, node.uct_value
             qn_ratio = f"{(q / n):.2f}" if n else "?"
-            action_name = node.action_seq[-1].name if node.action_seq else "Root"
-            labels[node] = f"{action_name}\nQ={q:.4f}, N={n}, Q/N={qn_ratio}, reward={node.reward_value:.2f}"
+            action_name = node.action_seq[-1].name if getattr(node, "action_seq", None) else "Root"
+            labels[node] = f"{action_name}\nQ={q:.2f}, N={n} \n UCT={uct:.2f} \n R={node.reward_value:.2f}"
 
-            children = self.mcts.children.get(node, [])
-            for child in children:
+            # 限制展开的子节点数
+            children_sorted = sorted(node.children, key=lambda c: c.Q / (c.N + 1e-6), reverse=True)
+            for child in children_sorted[:self.max_children]:
                 G.add_edge(node, child)
                 queue.append(child)
 
-        if len(G.nodes) == 0:
+        if not G.nodes:
             return
 
         try:
-            pos = nx.nx_agraph.graphviz_layout(G, prog='dot')  
+            pos = nx.nx_agraph.graphviz_layout(G, prog="dot")  
         except Exception:
-            pos = nx.spring_layout(G, seed=42)  
+            pos = self._hierarchy_pos(G, root)  
 
         nx.draw(
-            G, pos, with_labels=False, node_color='lightblue',
-            node_size=1400, edge_color='gray', arrows=True, ax=ax
+            G, pos, with_labels=False, node_color="lightblue",
+            node_size=1400, edge_color="gray", arrows=True, ax=ax
         )
         nx.draw_networkx_labels(G, pos, labels=labels, font_size=8, ax=ax)
-        ax.set_title("MCTS")
-        ax.axis('off')
+        ax.set_title("MCTS Search Tree")
+        ax.axis("off")
 
-Visualizer = MCTSVisualizer()
+    def _hierarchy_pos(self, G, root, width=1., vert_gap=0.3, vert_loc=0, xcenter=0.5):
+        """
+        如果没安装 graphviz，则使用递归分层布局
+        """
+        def _hierarchy_pos(G, root, left, right, vert_loc, pos):
+            pos[root] = ((left + right) / 2, vert_loc)
+            children = list(G.successors(root))
+            if len(children) != 0:
+                dx = (right - left) / len(children)
+                nextx = left
+                for child in children:
+                    nextx += dx
+                    pos = _hierarchy_pos(G, child, nextx - dx, nextx, vert_loc - vert_gap, pos)
+            return pos
+
+        return _hierarchy_pos(G, root, 0, width, vert_loc, {})

@@ -7,4 +7,4 @@ Answer questions about a table of penguins and their attributes
 
 📊 SA Test Accuracy: 0.9746835443037974
 
-⏱️ Time Elapsed: 64 min 33 sec (3873.20 seconds)
+⏱️ Time Elapsed: 50 min 17 sec (3017.41 seconds)

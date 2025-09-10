@@ -1,0 +1,478 @@
+{
+  "config": {
+    "mcts_iters": 10,
+    "rollout_length": 4,
+    "depth_threshold": 5,
+    "width_threshold": 3
+  },
+  "search_stats": {
+    "total_nodes": 31,
+    "total_Q_values": 31
+  },
+  "best_node": {
+    "action_sequence": [
+      "FailureDrivenAction",
+      "FailureDrivenAction"
+    ],
+    "prompt": "Determine whether the Premise logically entails the Hypothesis. Follow these steps rigorously:\n\n1. **Identify the core claim** in the Hypothesis.\n2. Ask: \"If the Premise is true, does it **necessarily guarantee** that the core claim in the Hypothesis is also true?\"\n3. **Critical Rule:** If the Premise only describes a person’s belief, assumption, or thought (e.g., “X thinks that Y”), it does **not** entail that the believed proposition (Y) is true. The person could be mistaken.\n4. Ignore surface-level text similarity. Focus on truth conditions.\n\n**Example to Avoid Common Error:**\n- Premise: Thomas thinks that John assumes a man is riding up an escalator.\n- Hypothesis: John assumes a man is riding up an escalator.\n- Correct Analysis: The Premise reports Thomas’s belief about John’s assumption. It does **not** guarantee John actually holds that assumption. Thomas could be wrong.\n- Correct Answer: non-entailment\n\nApply this logic to the current problem. Output only `entailment` or `non-entailment` as your final answer.",
+    "depth": 2,
+    "Q": 3.7666666666666666,
+    "N": 4
+  },
+  "search_tree": {
+    "id": 0,
+    "depth": 0,
+    "action_sequence": [],
+    "prompt": "Determine whether one sentence entails the next",
+    "Q": 28.309095744680853,
+    "N": 30,
+    "uct_value": null,
+    "reward": 0.9361702127659575,
+    "children": [
+      {
+        "id": 1,
+        "depth": 1,
+        "action_sequence": [
+          "FailureDrivenAction"
+        ],
+        "prompt": "Determine whether one sentence entails the next",
+        "Q": 9.44,
+        "N": 10,
+        "uct_value": 2.594447985800743,
+        "reward": 0.9574468085106383,
+        "children": [
+          {
+            "id": 2,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Determine whether the Premise logically entails the Hypothesis. Follow these steps rigorously:\n\n1. **Identify the core claim** in the Hypothesis.\n2. Ask: \"If the Premise is true, does it **necessarily guarantee** that the core claim in the Hypothesis is also true?\"\n3. **Critical Rule:** If the Premise only describes a person’s belief, assumption, or thought (e.g., “X thinks that Y”), it does **not** entail that the believed proposition (Y) is true. The person could be mistaken.\n4. Ignore surface-level text similarity. Focus on truth conditions.\n\n**Example to Avoid Common Error:**\n- Premise: Thomas thinks that John assumes a man is riding up an escalator.\n- Hypothesis: John assumes a man is riding up an escalator.\n- Correct Analysis: The Premise reports Thomas’s belief about John’s assumption. It does **not** guarantee John actually holds that assumption. Thomas could be wrong.\n- Correct Answer: non-entailment\n\nApply this logic to the current problem. Output only `entailment` or `non-entailment` as your final answer.",
+            "Q": 3.7666666666666666,
+            "N": 4,
+            "uct_value": 4.434061189764252,
+            "reward": 0.96,
+            "children": [
+              {
+                "id": 3,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Determine whether the Premise logically entails the Hypothesis. Follow these steps rigorously:\n\n1. **Identify the core claim** in the Hypothesis.\n2. Ask: \"If the Premise is true, does it **necessarily guarantee** that the core claim in the Hypothesis is also true?\"\n3. **Critical Rule:** If the Premise only describes a person’s belief, assumption, or thought (e.g., “X thinks that Y”), it does **not** entail that the believed proposition (Y) is true. The person could be mistaken.\n4. Ignore surface-level text similarity. Focus on truth conditions.\n\n**Example to Avoid Common Error:**\n- Premise: Thomas thinks that John assumes a man is riding up an escalator.\n- Hypothesis: John assumes a man is riding up an escalator.\n- Correct Analysis: The Premise reports Thomas’s belief about John’s assumption. It does **not** guarantee John actually holds that assumption. Thomas could be wrong.\n- Correct Answer: non-entailment\n\nApply this logic to the current problem. Output only `entailment` or `non-entailment` as your final answer.",
+                "Q": 0.935,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.96,
+                "children": []
+              },
+              {
+                "id": 4,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Determine whether the Premise logically entails the Hypothesis. Follow these steps rigorously:\n\n1. **Identify the core claim** in the Hypothesis.\n2. Ask: \"If the Premise is true, does it **necessarily guarantee** that the core claim in the Hypothesis is also true?\"\n3. **Critical Rule:** If the Premise only describes a person’s belief, assumption, or thought (e.g., “X thinks that Y”), it does **not** entail that the believed proposition (Y) is true. The person could be mistaken.\n4. Ignore surface-level text similarity. Focus on truth conditions.\n\n**Example to Avoid Common Error:**\n- Premise: Thomas thinks that John assumes a man is riding up an escalator.\n- Hypothesis: John assumes a man is riding up an escalator.\n- Correct Analysis: The Premise reports Thomas’s belief about John’s assumption. It does **not** guarantee John actually holds that assumption. Thomas could be wrong.\n- Correct Answer: non-entailment\n\nApply this logic to the current problem. Output only `entailment` or `non-entailment` as your final answer.",
+                "Q": 0.945,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.93,
+                "children": []
+              },
+              {
+                "id": 5,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Determine whether the Premise logically entails the Hypothesis. Follow these steps rigorously:\n\n1. **Identify the core claim** in the Hypothesis.\n2. **Analyze the verbs in the Premise:** Pay close attention to verbs describing mental states, knowledge, or perception (e.g., thinks, believes, knows, learns, realizes, suspects, assumes).\n   - **Rule A (Non-Factive Verbs):** If the Premise uses a non-factive verb (e.g., `thinks`, `believes`, `assumes`, `suspects`), it does **not** guarantee the truth of the embedded proposition. The person could be mistaken.\n   - **Rule B (Factive Verbs):** If the Premise uses a factive verb (e.g., `knows`, `learns`, `discovers`, `realizes`, `sees`, `is aware that`), it **does** guarantee the truth of the embedded proposition. These verbs presuppose the truth of their complements.\n3. Ask: \"If the Premise is true, does it **necessarily guarantee** that the core claim in the Hypothesis is also true?\" Apply Rules A and B to make this determination.\n4. Ignore surface-level text similarity. Focus on logical truth conditions.\n\n**Examples to Illustrate Critical Distinctions:**\n\n- **Example 1 (Non-Entailment):**\n  - Premise: Thomas **thinks** that John assumes a man is riding up an escalator.\n  - Hypothesis: John assumes a man is riding up an escalator.\n  - Analysis: `Thinks` is non-factive. Thomas could be wrong about John's assumption.\n  - Answer: `non-entailment`\n\n- **Example 2 (Entailment):**\n  - Premise: Thomas **learns** that James suspects that a dirty, shirtless homeless man sits on the sidewalk, holding his cup up to passerby asking for change.\n  - Hypothesis: James suspects that a dirty, shirtless homeless man sits on the sidewalk, holding his cup up to passerby asking for change.\n  - Analysis: `Learns` is factive. If Thomas learned it, it must be true that James holds that suspicion.\n  - Answer: `entailment`\n\n- **Example 3 (Entailment of Fact):**\n  - Premise: Anna **knows** that the meeting started at noon.\n  - Hypothesis: The meeting started at noon.\n  - Analysis: `Knows` is factive. If Anna knows it, it must be a fact.\n  - Answer: `entailment`\n\nApply this logic to the current problem. Output only `entailment` or `non-entailment` as your final answer.",
+                "Q": 0.94,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.94,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 6,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "**Task:** Determine whether the Premise linguistically entails the Hypothesis. Use common sense and typical interpretations of language, not strict logical possibilities. Follow these reasoning steps:\n\n1.  **Identify Key Verbs:** Find the main action verb and any mental state verbs (e.g., *knows, remembers, believes, thinks*).\n2.  **Classify Mental States:** Determine if a mental state verb is **factive** (implies truth: *knows, remembers, realizes, saw*) or **non-factive** (does not imply truth: *believes, thinks, suspects*).\n3.  **Project Beliefs:** If a person believes that another person has a factive mental state about an event, then the first person also believes that event is true.\n4.  **Decide Entailment:** Based on this analysis, can a reasonable person infer the Hypothesis from the Premise?\n\n**Examples for Guidance:**\n\n**Example 1 (Entailment):**\nPremise: Olivia believes that Ava remembers that a young boy in green is practicing kicking.\nHypothesis: Olivia believes that a young boy in green is practicing kicking.\n**Reasoning:** \"Remembers\" is factive. Olivia believes Ava's memory is correct, so Olivia believes the event itself.\n**Answer:** entailment\n\n**Example 2 (Non-Entailment):**\nPremise: Olivia believes that Ava thinks that a young boy in green is practicing kicking.\nHypothesis: Olivia believes that a young boy in green is practicing kicking.\n**Reasoning:** \"Thinks\" is non-factive. Olivia only believes that Ava holds a belief, which could be false. Olivia does not necessarily share that belief.\n**Answer:** non-entailment\n\n**Now, analyze the new input:**\n**Premise:** {premise}\n**Hypothesis:** {hypothesis}\n**Options:** entailment, non-entailment\n\n**Reasoning (apply steps 1-4):**",
+            "Q": 0.93,
+            "N": 1,
+            "uct_value": null,
+            "reward": 0.96,
+            "children": []
+          },
+          {
+            "id": 7,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Determine whether the Premise entails the Hypothesis. Use strict natural language inference, incorporating pragmatic cues and linguistic phenomena such as factive verbs and coreference.\n\n**Reasoning Guidelines:**\n- **Pronouns:** Words like \"she\" or \"his\" provide definite information (e.g., \"she\" implies female).\n- **Factive Verbs:** Phrases like \"remembers X\" or \"knows X\" entail that X is true.\n- **Belief Projection:** If someone believes a factive statement (e.g., \"A remembers X\"), they also believe X.\n- **Lexical & Contextual Entailment:** Consider common knowledge and contextual implications from the Premise.\n\n**Examples for Reference:**\n- Example A:  \n  Premise: \"Olivia suspects that a gymnast is seen defying gravity as she performs...\"  \n  Hypothesis: \"Olivia suspects that the gymnast is a woman.\"  \n  Reasoning: The pronoun \"she\" in the Premise specifies the gymnast is female, so the Hypothesis must be true.  \n  Answer: entailment\n\n- Example B:  \n  Premise: \"Richard believes that David remembers that a man is sitting...\"  \n  Hypothesis: \"Richard believes that a man is sitting...\"  \n  Reasoning: \"Remembers\" is factive, so believing \"David remembers X\" entails believing X is true.  \n  Answer: entailment\n\n**Step-by-Step Evaluation:**\n1. Identify key pronouns, factive verbs, and belief contexts in the Premise.\n2. Check if the Hypothesis is directly supported by these elements.\n3. Confirm the Hypothesis must be true if the Premise is true.\n\nPremise: {premise}\nHypothesis: {hypothesis}\nOptions: entailment, non-entailment\n\nReason step by step, then provide your final answer within <answer> tags.",
+            "Q": 3.7899999999999996,
+            "N": 4,
+            "uct_value": 3.8935228999410976,
+            "reward": 0.95,
+            "children": [
+              {
+                "id": 8,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Determine whether the Premise entails the Hypothesis. Use strict natural language inference, incorporating pragmatic cues and linguistic phenomena such as factive verbs, propositional attitudes, and coreference.\n\n**Key Concepts:**\n- **Factive Verbs:** Verbs that presuppose the truth of their complement (e.g., `knows`, `remembers`, `regrets`). If someone [factive verb] X, then X is true.\n- **Propositional Attitude Verbs:** Verbs that describe a mental state toward a proposition (e.g., `believes`, `suspects`, `thinks`, `assumes`). These do not entail the truth of their complement.\n- **Belief and Factive Projection:** If a person (Agent A) holds a propositional attitude (e.g., believes, suspects, thinks) that another person (Agent B) [factive verb] X, then Agent A also holds that same attitude toward X. One cannot entertain someone *knowing* X without also accepting X as true.\n- **Pronouns:** Words like \"she\" or \"his\" provide definite information (e.g., \"she\" implies female).\n- **Lexical & Contextual Entailment:** Consider common knowledge and contextual implications from the Premise.\n\n**Examples for Reference:**\n- Example A (Entailment):  \n  Premise: \"Olivia suspects that a gymnast is seen defying gravity as she performs...\"  \n  Hypothesis: \"Olivia suspects that the gymnast is a woman.\"  \n  Reasoning: The pronoun \"she\" in the Premise specifies the gymnast is female, so the Hypothesis must be true.  \n  Answer: entailment\n\n- Example B (Entailment):  \n  Premise: \"Richard believes that David remembers that a man is sitting...\"  \n  Hypothesis: \"Richard believes that a man is sitting...\"  \n  Reasoning: \"Remembers\" is factive, so believing \"David remembers X\" entails believing X is true via belief projection.  \n  Answer: entailment\n\n- Example C (Entailment):  \n  Premise: \"Richard suspects that Amelia knows that the wind propels a sailing ship...\"  \n  Hypothesis: \"Richard suspects that the wind propels a sailing ship...\"  \n  Reasoning: \"Knows\" is factive. Richard suspects that Amelia knows X. Therefore, Richard suspects that X is true.  \n  Answer: entailment\n\n- Example D (Non-Entailment):  \n  Premise: \"Rachel suspects that Tim believes that the treasure is hidden nearby.\"  \n  Hypothesis: \"Rachel suspects that the treasure is hidden nearby.\"  \n  Reasoning: \"Believes\" is not factive. Rachel can suspect that Tim holds a belief without sharing that belief.  \n  Answer: non-entailment\n\n**Step-by-Step Evaluation:**\n1. Identify all propositional attitude verbs (e.g., believes, suspects) and their agents.\n2. Identify all factive verbs (e.g., knows, remembers) and their complements.\n3. Check if a factive verb is embedded within a propositional attitude. If so, apply the Belief and Factive Projection rule.\n4. Resolve pronouns and other coreferences using contextual cues.\n5. Verify whether the Hypothesis must be true if the Premise is true.\n\nPremise: {premise}\nHypothesis: {hypothesis}\nOptions: entailment, non-entailment\n\nReason step by step, then provide your final answer within <answer> tags.",
+                "Q": 0.965,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.94,
+                "children": []
+              },
+              {
+                "id": 9,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Determine whether the Premise entails the Hypothesis. Use strict natural language inference, incorporating pragmatic cues and linguistic phenomena such as factive verbs, non-factive verbs, and coreference.\n\n**Reasoning Guidelines:**\n- **Pronouns:** Words like \"she\" or \"his\" provide definite information (e.g., \"she\" implies female).\n- **Factive Verbs:** Verbs like \"knows\", \"remembers\", \"realizes\" entail that their complement clause is **true** (e.g., \"A remembers X\" entails X is true).\n- **Non-Factive Verbs:** Verbs like \"believes\", \"assumes\", \"suspects\", \"thinks\" **do NOT** entail that their complement clause is true. The complement is only claimed to be part of a person's mental state.\n- **Inferences within Belief Contexts:** If a person has a belief that involves a factive statement, you can infer they believe the fact. (e.g., \"A believes that B **knows** X\" entails \"A believes that X is true\").\n- **Inferences about Belief Contexts:** A statement that \"Person A believes X\" **only** entails that A holds that belief. It does **not** entail that X is actually true in the world. (e.g., \"Emma believes Taylor assumes X\" **does not** entail \"Taylor assumes X\". It only entails that *Emma holds that belief*).\n- **Lexical & Contextual Entailment:** Consider common knowledge and contextual implications from the Premise.\n\n**Examples for Reference:**\n- Example A:  \n  Premise: \"Olivia suspects that a gymnast is seen defying gravity as she performs...\"  \n  Hypothesis: \"Olivia suspects that the gymnast is a woman.\"  \n  Reasoning: The pronoun \"she\" in the Premise specifies the gymnast is female. This is definite information, so the Hypothesis must be true.  \n  Answer: entailment\n\n- Example B:  \n  Premise: \"Richard believes that David remembers that a man is sitting...\"  \n  Hypothesis: \"Richard believes that a man is sitting...\"  \n  Reasoning: \"Remembers\" is factive, so \"David remembers X\" entails X is true. Therefore, believing \"David remembers X\" entails believing X is true.  \n  Answer: entailment\n\n- Example C:  \n  Premise: \"Emma believes that Taylor assumes that a cement worker is working on a new sidewalk outside of a clothing store.\"  \n  Hypothesis: \"Taylor assumes that a cement worker is working on a new sidewalk outside of a clothing store.\"  \n  Reasoning: The verb \"assumes\" is non-factive. The Premise only describes Emma's belief about Taylor's assumption. It does not establish that Taylor actually holds this assumption; Emma could be mistaken. Therefore, the Hypothesis is not necessarily true.  \n  Answer: non-entailment\n\n**Step-by-Step Evaluation:**\n1.  Identify all verbs (especially \"factive\" vs. \"non-factive\") and the structure of belief/claim embedding in the Premise.\n2.  Determine the truth status of clauses:\n    -   If a clause is the complement of a **factive verb**, it is presented as true.\n    -   If a clause is the complement of a **non-factive verb**, it is only presented as part of a belief/assumption, not as a fact.\n3.  For the Hypothesis, check if it is directly asserted as a fact by the Premise, or if it is a necessary consequence of a factive entailment or pronoun resolution.\n4.  **Crucially:** A belief about someone else's mental state (e.g., \"A believes B assumes X\") does **not** entail the truth of that mental state (\"B assumes X\"). It only entails that A holds that belief.\n5.  Confirm the Hypothesis **must be true** if the Premise is true. If there is any possibility the Hypothesis could be false while the Premise is true, the answer is non-entailment.\n\nPremise: {premise}\nHypothesis: {hypothesis}\nOptions: entailment, non-entailment\n\nReason step by step, then provide your final answer within <answer> tags.",
+                "Q": 0.9299999999999999,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.95,
+                "children": []
+              },
+              {
+                "id": 10,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Determine whether the Premise entails the Hypothesis. Use strict natural language inference, incorporating pragmatic cues and linguistic phenomena such as factive verbs, presuppositions, and coreference.\n\n**Core Definitions & Rules:**\n- **Factive Verbs:** Verbs like \"knows,\" \"remembers,\" \"realizes,\" **\"recognizes,\"** \"is aware that,\" etc., presuppose the truth of their complement clause. For example, \"A recognizes that X\" entails that X is true.\n- **Presuppositions:** Change-of-state verbs (e.g., \"stopped,\" \"continued\") and implicative verbs (e.g., \"managed to\") carry presuppositions. For instance, \"stopped X\" presupposes that X was true previously.\n- **Pronouns & Coreference:** Pronouns like \"she,\" \"his,\" \"they,\" etc., provide definite information (e.g., \"she\" implies female). Resolve all pronouns to their antecedents.\n- **Belief Contexts:** If a factive statement is embedded under a belief (e.g., \"A believes that B knows X\"), then the believer (A) believes that X is true.\n- **Entailment Principle:** The Hypothesis must be necessarily true if the Premise is true. Avoid using common knowledge to add unsupported details; rely only on logical inferences from the Premise.\n\n**Reasoning Guidelines:**\n1. **Identify Factive Verbs and Presuppositions:** Extract all clauses embedded under factive verbs or presupposition triggers, and mark their content as true.\n2. **Resolve Coreference:** Link pronouns to their antecedents and note the properties they imply (e.g., gender, number).\n3. **Break Down Hypothesis:** List each claim made in the Hypothesis.\n4. **Check Necessity:** For each claim, verify if it is explicitly stated or necessarily inferred from the Premise. If any claim requires assumption or is not supported, entailment fails.\n5. **Avoid Ambiguity:** If the Premise allows multiple interpretations, choose the most literal one unless context forces a specific reading.\n\n**Examples for Reference:**\n- Example A:  \n  Premise: \"Olivia suspects that a gymnast is seen defying gravity as she performs...\"  \n  Hypothesis: \"Olivia suspects that the gymnast is a woman.\"  \n  Reasoning: The pronoun \"she\" in the Premise specifies the gymnast is female, so the Hypothesis must be true.  \n  Answer: entailment\n\n- Example B:  \n  Premise: \"Richard believes that David remembers that a man is sitting...\"  \n  Hypothesis: \"Richard believes that a man is sitting...\"  \n  Reasoning: \"Remembers\" is factive, so believing \"David remembers X\" entails believing X is true.  \n  Answer: entailment\n\n- Example C (Failure Case):  \n  Premise: \"Thomas recognizes that a boy in a green shirt surrounded by toys and another boy, wearing a blue shirt with penguins, to his left.\"  \n  Hypothesis: \"Thomas recognizes that two boys sit in a classroom at their desks.\"  \n  Reasoning: \"Recognizes that\" is factive, so the embedded proposition (two boys with specific descriptions) is true. However, the Hypothesis adds unsupported details (classroom, desks) not necessarily inferred from the Premise. The toys suggest a play environment, not necessarily a classroom.  \n  Answer: non-entailment\n\n**Step-by-Step Evaluation:**\n1. Parse the Premise for factive verbs, presuppositions, and pronouns. Extract any embedded propositions and mark them as true.\n2. Resolve all coreferences, noting properties like gender and number.\n3. Deconstruct the Hypothesis into its individual claims.\n4. For each claim, check if it is directly stated or necessarily inferred from the Premise (using the rules above).\n5. If all claims in the Hypothesis are necessarily true given the Premise, output entailment; otherwise, output non-entailment.\n\nPremise: {premise}\nHypothesis: {hypothesis}\nOptions: entailment, non-entailment\n\nReason step by step, then provide your final answer within <answer> tags.",
+                "Q": 0.945,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.94,
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 11,
+        "depth": 1,
+        "action_sequence": [
+          "FailureDrivenAction"
+        ],
+        "prompt": "Determine whether one sentence entails the next",
+        "Q": 9.437429078014185,
+        "N": 10,
+        "uct_value": 2.6579229442917978,
+        "reward": 0.9574468085106383,
+        "children": [
+          {
+            "id": 12,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Determine whether one sentence entails the next",
+            "Q": 3.7699290780141843,
+            "N": 4,
+            "uct_value": 3.8960051669623765,
+            "reward": 0.9361702127659575,
+            "children": [
+              {
+                "id": 13,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Determine whether one sentence entails the next",
+                "Q": 0.9324468085106383,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.9361702127659575,
+                "children": []
+              },
+              {
+                "id": 14,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Determine whether the premise entails the hypothesis. Use a commonsense interpretation of language, assuming that if a person believes (or suspects) that another person knows or recognizes a fact, then the first person also believes that fact to be true.\n\n**Example 1:**\nPremise: Sarah believes that Mark knows the restaurant is closed.\nHypothesis: Sarah believes the restaurant is closed.\nAnalysis: Sarah's belief about Mark's knowledge implies her own belief. Therefore, the premise entails the hypothesis.\nAnswer: entailment\n\n**Example 2:**\nPremise: Richard suspects that James recognizes that people dressed in business clothing are walking by.\nHypothesis: Richard suspects that people dressed in business clothing are walking by.\nAnalysis: Richard's suspicion about James's recognition implies his own suspicion about the scene. Therefore, the premise entails the hypothesis.\nAnswer: entailment\n\nNow, analyze the following question:\nPremise: {premise}\nHypothesis: {hypothesis}\nOptions:\nentailment\nnon-entailment",
+                "Q": 0.945,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.94,
+                "children": []
+              },
+              {
+                "id": 15,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "**Task:** Perform Natural Language Inference (NLI). Classify the relationship between the Premise (P) and Hypothesis (H) as either `entailment` or `non-entailment`.\n\n**Definitions:**\n- **`entailment`**: The truth of P *guarantees* the truth of H. If P is true, H cannot be false. The information in H must be directly stated or be a necessary logical consequence of the information in P.\n- **`non-entailment`**: P can be true while H is false. This includes contradiction, neutrality, and cases where H introduces information not justified by P (e.g., a claim about a person's belief that is only assumed by someone else in the premise).\n\n**Critical Instructions:**\n1.  **Base analysis strictly on the text.** Consider only the information provided. Do not use external world knowledge, common sense, or personal beliefs. The truth of a *statement about a belief* (e.g., \"X assumes Y\") is not the same as the truth of the believed proposition itself (e.g., \"Y is true\").\n2.  **Analyze linguistic structure.** Pay close attention to words that create separate contexts, such as:\n    -   **Propositional Attitudes:** (e.g., *assumes, believes, thinks, knows, doubts*). The content of a belief is only claimed to be held by that person. It is not asserted as a global truth.\n    -   **Modals and Negations:** (e.g., *might, must, not, never*).\n3.  **For `non-entailment`:** Ask yourself, \"Is it logically possible for P to be true, but for H to be false?\" If yes, the answer is `non-entailment`.\n\n**Reasoning Chain:** Before answering, think step-by-step:\n- Identify the main subjects, verbs, objects, and modifiers in both P and H.\n- Check if H makes a claim that P does not directly support, especially by removing layers of belief or assumption.\n- If P describes a person's belief about another person's belief, this does not guarantee the truth of the inner belief itself.\n\n**Examples of Common Failures:**\n- **Input:** Premise: Taylor assumes that William assumes that a boy at the beach runs... Hypothesis: William assumes that a boy at the beach runs...\n- **Correct Analysis:** The premise only states Taylor's belief about William's assumption. William might not actually hold that assumption. Therefore, P can be true while H is false. This is `non-entailment`.\n- **Incorrect Analysis:** Concluding that because Taylor assumes William assumes something, William must indeed assume it. This is a logical error.\n\n**Now, analyze the following input:**",
+                "Q": 0.94,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.93,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 16,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Determine whether the Premise logically entails the Hypothesis by carefully analyzing embedded beliefs. Follow these steps:\n\n1.  **Identify belief verbs** (e.g., thinks, knows, believes, understands) and note the structure.\n2.  **Apply the key rule:** If a person believes that someone else *knows* or *understands* a proposition, they must themselves *believe that proposition is true*. This does not apply to negative attitudes (e.g., doubts, is wrong).\n3.  **Simplify the nested belief** based on this rule and check if the Hypothesis is directly supported.\n4.  **Output only \"entailment\" or \"non-entailment\".**\n\n**Example:**\nPremise: Isabella thinks that Amelia understands that men play hockey.\nHypothesis: Isabella thinks that men play hockey.\nReasoning: Isabella believes Amelia understands P (\"men play hockey\"). Believing someone understands P requires believing P is true. Therefore, the Premise entails the Hypothesis.\nAnswer: entailment\n\n**Your task:**\nPremise: {premise}\nHypothesis: {hypothesis}\nOptions:\nentailment\nnon-entailment\n\nReasoning:",
+            "Q": 0.9366666666666666,
+            "N": 1,
+            "uct_value": null,
+            "reward": 0.96,
+            "children": []
+          },
+          {
+            "id": 17,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Determine whether the premise entails the hypothesis. Entailment means that if the premise is true, the hypothesis must also be true—either through direct statement, logical consequence, or pragmatic implication based on commonsense reasoning. Do not rely solely on keyword matching; consider context and real-world knowledge.\n\nFollow these reasoning steps:\n1. Identify the key elements and context in the premise.\n2. Check if the hypothesis is explicitly stated or strongly implied by the premise.\n3. If not explicit, use commonsense reasoning to assess whether the hypothesis is a necessary part of the scenario described (e.g., \"surrounded by toys\" and \"to his left\" pragmatically imply a classroom setting with desks).\n4. If the hypothesis follows logically or contextually from the premise, choose \"entailment\"; if it introduces unsupported or contradictory information, choose \"non-entailment\".\n\nExamples for guidance:\n- Premise: Thomas recognizes that a boy in a green shirt surrounded by toys and another boy, wearing a blue shirt with penguins, to his left.\n  Hypothesis: Thomas recognizes that two boys sit in a classroom at their desks.\n  Explanation: The arrangement of toys and children sitting together implies a classroom context; desks are a pragmatic necessity. Therefore, entailment.\n- Premise: The woman carried a heavy bag.\n  Hypothesis: The woman was strong.\n  Explanation: \"Heavy bag\" does not necessarily imply strength; it could be an effortful task. Therefore, non-entailment.\n\nNow, apply this reasoning to the current input. After your analysis, output your final answer within <answer> tags.",
+            "Q": 3.783333333333333,
+            "N": 4,
+            "uct_value": 4.430727859764249,
+            "reward": 0.94,
+            "children": [
+              {
+                "id": 18,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Determine whether the premise entails the hypothesis. Entailment means that if the premise is true, the hypothesis must also be true—either through direct statement, logical consequence, or pragmatic implication based on commonsense reasoning. Do not rely solely on keyword matching; consider context and real-world knowledge.\n\nFollow these reasoning steps:\n1. Identify the key elements and context in the premise.\n2. Check if the hypothesis is explicitly stated or strongly implied by the premise.\n3. If not explicit, use commonsense reasoning to assess whether the hypothesis is a necessary part of the scenario described (e.g., \"surrounded by toys\" and \"to his left\" pragmatically imply a classroom setting with desks).\n4. If the hypothesis follows logically or contextually from the premise, choose \"entailment\"; if it introduces unsupported or contradictory information, choose \"non-entailment\".\n\nExamples for guidance:\n- Premise: Thomas recognizes that a boy in a green shirt surrounded by toys and another boy, wearing a blue shirt with penguins, to his left.\n  Hypothesis: Thomas recognizes that two boys sit in a classroom at their desks.\n  Explanation: The arrangement of toys and children sitting together implies a classroom context; desks are a pragmatic necessity. Therefore, entailment.\n- Premise: The woman carried a heavy bag.\n  Hypothesis: The woman was strong.\n  Explanation: \"Heavy bag\" does not necessarily imply strength; it could be an effortful task. Therefore, non-entailment.\n\nNow, apply this reasoning to the current input. After your analysis, output your final answer within <answer> tags.",
+                "Q": 0.96,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.95,
+                "children": []
+              },
+              {
+                "id": 19,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Determine whether the premise entails the hypothesis. Entailment means that if the premise is true, the hypothesis must also be true—either through direct statement, logical consequence, or pragmatic implication based on commonsense reasoning. Do not rely solely on keyword matching; consider context and real-world knowledge.\n\nFollow these reasoning steps:\n1. Identify the key elements and context in the premise.\n2. Check if the hypothesis is explicitly stated or strongly implied by the premise.\n3. If not explicit, use commonsense reasoning to assess whether the hypothesis is a necessary part of the scenario described (e.g., \"surrounded by toys\" and \"to his left\" pragmatically imply a classroom setting with desks).\n4. If the hypothesis follows logically or contextually from the premise, choose \"entailment\"; if it introduces unsupported or contradictory information, choose \"non-entailment\".\n\nExamples for guidance:\n- Premise: Thomas recognizes that a boy in a green shirt surrounded by toys and another boy, wearing a blue shirt with penguins, to his left.\n  Hypothesis: Thomas recognizes that two boys sit in a classroom at their desks.\n  Explanation: The arrangement of toys and children sitting together implies a classroom context; desks are a pragmatic necessity. Therefore, entailment.\n- Premise: The woman carried a heavy bag.\n  Hypothesis: The woman was strong.\n  Explanation: \"Heavy bag\" does not necessarily imply strength; it could be an effortful task. Therefore, non-entailment.\n\nNow, apply this reasoning to the current input. After your analysis, output your final answer within <answer> tags.",
+                "Q": 0.94,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.95,
+                "children": []
+              },
+              {
+                "id": 20,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Determine whether the premise entails the hypothesis. Entailment occurs if the hypothesis is directly stated, logically follows, or is strongly implied through pragmatic reasoning based on commonsense knowledge and typical real-world scenarios. Avoid relying on keyword matching—focus on contextual meaning and likely interpretations.\n\n**Reasoning Steps:**\n1. **Identify Key Elements:** Extract the main entities, actions, and contextual clues from the premise.\n2. **Check Explicit Statement:** See if the hypothesis is directly expressed in the premise.\n3. **Assess Implicature:** If not explicit, determine whether the hypothesis is a strong pragmatic inference. Ask: \"Is this the most natural and default interpretation of the premise in everyday contexts?\"\n4. **Avoid Over-Strictness:** Remember that entailment often relies on probable real-world scenarios, not just logical necessity. If the hypothesis aligns strongly with common situations implied by the premise, it is likely entailment.\n5. **Contradiction or Weak Inference:** If the hypothesis introduces unlikely, contradictory, or only peripherally related information, it is non-entailment.\n\n**Examples for Guidance:**\n- **Premise:** Thomas recognizes that a boy in a green shirt surrounded by toys and another boy, wearing a blue shirt with penguins, to his left.  \n  **Hypothesis:** Thomas recognizes that two boys sit in a classroom at their desks.  \n  **Explanation:** The scenario strongly implies a classroom setting with desks due to the arrangement and context. Entailment.\n\n- **Premise:** Robert knows that a young woman dressed up semi-formally is reading a book and drinking in the sun, seated on a bench.  \n  **Hypothesis:** Robert knows that a young woman reads near the ocean.  \n  **Explanation:** \"In the sun on a bench\" combined with reading and drinking strongly suggests a common outdoor leisure setting like a beach or park near the ocean. Entailment.\n\n- **Premise:** The woman carried a heavy bag.  \n  **Hypothesis:** The woman was strong.  \n  **Explanation:** Carrying a heavy bag does not pragmatically imply strength; it could indicate effort or struggle. Non-entailment.\n\n- **Premise:** The man ordered a coffee at the counter.  \n  **Hypothesis:** The man is in a library.  \n  **Explanation:** Ordering coffee does not strongly imply a library; it could be a café, restaurant, etc. Non-entailment.\n\n**Now, apply this reasoning to the current input. After your analysis, output your final answer within <answer> tags.**",
+                "Q": 0.94,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.95,
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 21,
+        "depth": 1,
+        "action_sequence": [
+          "FailureDrivenAction"
+        ],
+        "prompt": "Determine whether the Premise entails the Hypothesis. Your final answer must be either \"entailment\" or \"non-entailment\".\n\n**Critical Instructions for Reasoning:**\n1.  **Identify all belief states** (e.g., \"thinks,\" \"believes\") and **factive verbs** (e.g., \"knows,\" \"remembers\"). A factive verb implies the speaker accepts the subsequent information as true.\n2.  **A person who asserts a factive claim commits to its truth.** For example, if \"A thinks that B knows/remembers X,\" this entails that \"A thinks X\" is true. Asserting that someone *remembers* something is a stronger claim than just asserting they *think* it; it means the speaker believes the memory is correct.\n3.  **Do not assume entailment for non-factive verbs.** If \"A thinks that B believes X,\" this does not entail that \"A believes X.\"\n\n**Examples to Guide Your Reasoning:**\n\n**Example 1 (Entailment):**\nPremise: Sarah knows that Mike remembers the password.\nHypothesis: Sarah knows the password.\nReasoning: The verb \"knows\" is factive. Sarah knows that Mike's memory is correct. Therefore, Sarah herself is committed to the truth of the password being known. The premise entails the hypothesis.\nAnswer: entailment\n\n**Example 2 (Non-Entailment):**\nPremise: Chris believes that Emma thinks the story is true.\nHypothesis: Chris believes the story is true.\nReasoning: The verb \"thinks\" is non-factive. Chris has a belief about Emma's opinion, but he does not necessarily share that opinion himself. The premise does not entail the hypothesis.\nAnswer: non-entailment\n\n**Example 3 (Entailment - Common Mistake):**\nPremise: Isabella thinks that John remembers that a man is holding an accordion.\nHypothesis: Isabella thinks that a man is holding an accordion.\nReasoning: The premise uses the factive verb \"remembers.\" By stating that John *remembers* the event, Isabella is implying that she believes John's memory is correct and the event is true. Therefore, the premise entails the hypothesis.\nAnswer: entailment\n\n**Now, analyze the new input:**\nPremise: {Premise}\nHypothesis: {Hypothesis}\nReasoning: Let's think step by step.",
+        "Q": 9.431666666666665,
+        "N": 10,
+        "uct_value": 2.629025884340804,
+        "reward": 0.95,
+        "children": [
+          {
+            "id": 22,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Determine whether the Premise entails the Hypothesis. Your final answer must be either \"entailment\" or \"non-entailment\".\n\n**Critical Instructions for Reasoning:**\n1.  **Identify all belief states** (e.g., \"thinks,\" \"believes\") and **factive verbs** (e.g., \"knows,\" \"remembers\"). A factive verb implies the speaker accepts the subsequent information as true.\n2.  **A person who asserts a factive claim commits to its truth.** For example, if \"A thinks that B knows/remembers X,\" this entails that \"A thinks X\" is true. Asserting that someone *remembers* something is a stronger claim than just asserting they *think* it; it means the speaker believes the memory is correct.\n3.  **Do not assume entailment for non-factive verbs.** If \"A thinks that B believes X,\" this does not entail that \"A believes X.\"\n\n**Examples to Guide Your Reasoning:**\n\n**Example 1 (Entailment):**\nPremise: Sarah knows that Mike remembers the password.\nHypothesis: Sarah knows the password.\nReasoning: The verb \"knows\" is factive. Sarah knows that Mike's memory is correct. Therefore, Sarah herself is committed to the truth of the password being known. The premise entails the hypothesis.\nAnswer: entailment\n\n**Example 2 (Non-Entailment):**\nPremise: Chris believes that Emma thinks the story is true.\nHypothesis: Chris believes the story is true.\nReasoning: The verb \"thinks\" is non-factive. Chris has a belief about Emma's opinion, but he does not necessarily share that opinion himself. The premise does not entail the hypothesis.\nAnswer: non-entailment\n\n**Example 3 (Entailment - Common Mistake):**\nPremise: Isabella thinks that John remembers that a man is holding an accordion.\nHypothesis: Isabella thinks that a man is holding an accordion.\nReasoning: The premise uses the factive verb \"remembers.\" By stating that John *remembers* the event, Isabella is implying that she believes John's memory is correct and the event is true. Therefore, the premise entails the hypothesis.\nAnswer: entailment\n\n**Now, analyze the new input:**\nPremise: {Premise}\nHypothesis: {Hypothesis}\nReasoning: Let's think step by step.",
+            "Q": 3.77,
+            "N": 4,
+            "uct_value": 4.437394519764255,
+            "reward": 0.94,
+            "children": [
+              {
+                "id": 23,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Determine whether the Premise entails the Hypothesis. Your final answer must be either \"entailment\" or \"non-entailment\".\n\n**Critical Instructions for Reasoning:**\n1.  **Identify all belief states** (e.g., \"thinks,\" \"believes\") and **factive verbs** (e.g., \"knows,\" \"remembers\"). A factive verb implies the speaker accepts the subsequent information as true.\n2.  **A person who asserts a factive claim commits to its truth.** For example, if \"A thinks that B knows/remembers X,\" this entails that \"A thinks X\" is true. Asserting that someone *remembers* something is a stronger claim than just asserting they *think* it; it means the speaker believes the memory is correct.\n3.  **Do not assume entailment for non-factive verbs.** If \"A thinks that B believes X,\" this does not entail that \"A believes X.\"\n\n**Examples to Guide Your Reasoning:**\n\n**Example 1 (Entailment):**\nPremise: Sarah knows that Mike remembers the password.\nHypothesis: Sarah knows the password.\nReasoning: The verb \"knows\" is factive. Sarah knows that Mike's memory is correct. Therefore, Sarah herself is committed to the truth of the password being known. The premise entails the hypothesis.\nAnswer: entailment\n\n**Example 2 (Non-Entailment):**\nPremise: Chris believes that Emma thinks the story is true.\nHypothesis: Chris believes the story is true.\nReasoning: The verb \"thinks\" is non-factive. Chris has a belief about Emma's opinion, but he does not necessarily share that opinion himself. The premise does not entail the hypothesis.\nAnswer: non-entailment\n\n**Example 3 (Entailment - Common Mistake):**\nPremise: Isabella thinks that John remembers that a man is holding an accordion.\nHypothesis: Isabella thinks that a man is holding an accordion.\nReasoning: The premise uses the factive verb \"remembers.\" By stating that John *remembers* the event, Isabella is implying that she believes John's memory is correct and the event is true. Therefore, the premise entails the hypothesis.\nAnswer: entailment\n\n**Now, analyze the new input:**\nPremise: {Premise}\nHypothesis: {Hypothesis}\nReasoning: Let's think step by step.",
+                "Q": 0.94,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.95,
+                "children": []
+              },
+              {
+                "id": 24,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Determine whether the Premise entails the Hypothesis. Your final answer must be either \"entailment\" or \"non-entailment\".\n\n**Critical Instructions for Reasoning:**\n1.  **Identify all verbs** indicating mental states or assertions. Classify them as:\n    *   **Factive verbs (e.g., \"knows,\" \"remembers\"):** These imply the speaker accepts the subsequent information as true.\n    *   **Non-factive verbs (e.g., \"thinks,\" \"believes,\" \"suspects\"):** These do not, by themselves, imply the speaker accepts the embedded information as true.\n2.  **A person who asserts a clause containing a factive verb commits to the truth of the proposition embedded under it.** For example, if \"A says that B knows X,\" the speaker is asserting that B knows X, which commits the speaker to the truth of X.\n3.  **Do not assume entailment for non-factive verbs governing other non-factive verbs.** If \"A thinks that B believes X,\" this does not entail that \"A believes X.\"\n4.  **Analyze nested structures with extreme care.**\n    *   If a non-factive verb (e.g., \"suspects,\" \"believes\") governs a factive verb (e.g., \"knows,\" \"remembers\"), the factivity often projects upwards.\n    *   **Crucially, if a person suspects/believes that someone else *knows* a fact, this implies they also suspect/believe that the fact itself is true.** It is pragmatically inconsistent to suspect someone has knowledge of a false proposition.\n\n**Examples to Guide Your Reasoning:**\n\n**Example 1 (Entailment):**\nPremise: Sarah knows that Mike remembers the password.\nHypothesis: Sarah knows the password.\nReasoning: The verb \"knows\" is factive. Sarah knows that Mike's memory is correct. Therefore, Sarah herself is committed to the truth of the password. The premise entails the hypothesis.\nAnswer: entailment\n\n**Example 2 (Non-Entailment):**\nPremise: Chris believes that Emma thinks the story is true.\nHypothesis: Chris believes the story is true.\nReasoning: The verb \"thinks\" is non-factive. Chris has a belief about Emma's opinion, but he does not necessarily share that opinion himself. The premise does not entail the hypothesis.\nAnswer: non-entailment\n\n**Example 3 (Entailment - Common Mistake):**\nPremise: Isabella thinks that John remembers that a man is holding an accordion.\nHypothesis: Isabella thinks that a man is holding an accordion.\nReasoning: The premise uses the factive verb \"remembers.\" By stating that John *remembers* the event, Isabella is implying that she believes John's memory is correct and the event is true. Therefore, the premise entails the hypothesis.\nAnswer: entailment\n\n**Example 4 (Entailment - Nested Structure):**\nPremise: Joseph suspects that James knows that a woman is holding an axe.\nHypothesis: Joseph suspects that a woman is holding an axe.\nReasoning: The key verb \"knows\" is factive. While Joseph only \"suspects\" (non-factive) that James has this knowledge, the use of the word \"knows\" implies that the knowledge is correct. Therefore, Joseph's suspicion that James *knows* X logically contains a suspicion that X is true. The premise entails the hypothesis.\nAnswer: entailment\n\n**Reasoning: Let's think step by step.**\n1.  **Identify the main claim:** What is the outermost verb in the Premise?\n2.  **Identify embedded clauses:** Are there nested propositions? What verbs introduce them?\n3.  **Classify the verbs:** Label each verb as factive or non-factive.\n4.  **Apply interaction rules:**\n    *   If a factive verb is asserted, its embedded proposition is true.\n    *   If a non-factive verb governs a factive verb, apply Rule 4 (e.g., \"A suspects that B knows X\" -> entails \"A suspects X\").\n    *   If a non-factive verb governs another non-factive verb, do not assume entailment (e.g., \"A thinks that B believes X\" -> no entailment for \"A believes X\").\n5.  **Compare to Hypothesis:** Based on this analysis, does the Premise provide sufficient evidence to conclude the Hypothesis?\n\n**Now, analyze the new input:**\nPremise: {Premise}\nHypothesis: {Hypothesis}\nReasoning: Let's think step by step.",
+                "Q": 0.95,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.93,
+                "children": []
+              },
+              {
+                "id": 25,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Determine whether the Premise entails the Hypothesis. Your final answer must be either \"entailment\" or \"non-entailment\".\n\n**Critical Instructions for Reasoning:**\n1.  **Identify all belief states** (e.g., \"thinks,\" \"believes,\" \"suspects\") and **factive verbs** (e.g., \"knows,\" \"remembers,\" \"learns\"). A factive verb implies the speaker accepts the subsequent information as true.\n2.  **A person who asserts a factive claim (either directly or by describing someone else's factive state) commits to its truth.** For example, if \"A thinks that B knows/remembers X,\" this entails that \"A thinks X\" is true. Asserting that someone *remembers* something is a stronger claim than just asserting they *think* it; it means the speaker believes the memory is correct.\n3.  **Do not assume entailment for non-factive verbs.** If \"A thinks that B believes X,\" this does not entail that \"A believes X.\"\n4.  **Consider the speaker's commitment.** The entire Premise is an assertion made by the speaker. You must analyze the logical consequences of the entire asserted statement, even if it describes doubt or uncertainty.\n5.  **Factive verbs under weak mental states:** If a person **suspects, doubts, or is uncertain** whether a factive event occurred, this still implies that they suspect/doubt the **truth of the embedded proposition**. (e.g., \"A suspects that B learned X\" entails \"A suspects X\").\n\n**Examples to Guide Your Reasoning:**\n\n**Example 1 (Entailment):**\nPremise: Sarah knows that Mike remembers the password.\nHypothesis: Sarah knows the password.\nReasoning: The verb \"knows\" is factive. Sarah knows that Mike's memory is correct. Therefore, Sarah herself is committed to the truth of the password being known. The premise entails the hypothesis.\nAnswer: entailment\n\n**Example 2 (Non-Entailment):**\nPremise: Chris believes that Emma thinks the story is true.\nHypothesis: Chris believes the story is true.\nReasoning: The verb \"thinks\" is non-factive. Chris has a belief about Emma's opinion, but he does not necessarily share that opinion himself. The premise does not entail the hypothesis.\nAnswer: non-entailment\n\n**Example 3 (Entailment - Common Mistake):**\nPremise: Isabella thinks that John remembers that a man is holding an accordion.\nHypothesis: Isabella thinks that a man is holding an accordion.\nReasoning: The premise uses the factive verb \"remembers.\" By stating that John *remembers* the event, Isabella is implying that she believes John's memory is correct and the event is true. Therefore, the premise entails the hypothesis.\nAnswer: entailment\n\n**Example 4 (Entailment - Suspicion with Factive Verb):**\nPremise: Michael suspects that Charles learns that eight tourists stand at a railing.\nHypothesis: Michael suspects that eight tourists stand at a railing.\nReasoning: \"Learns\" is factive. Michael's suspicion is about the factive event \"Charles learns X.\" For Charles to learn X, X must be true. Therefore, by suspecting that Charles learned it, Michael is expressing suspicion about the truth of X itself. The premise entails the hypothesis.\nAnswer: entailment\n\n**Example 5 (Non-Entailment - Weak Verb with Non-Factive):**\nPremise: Laura doubts that Mark believes the theory.\nHypothesis: Laura doubts the theory.\nReasoning: \"Believes\" is non-factive. Laura's doubt is about Mark's belief state, not necessarily about the truth of the theory itself. She could doubt that Mark believes it while still accepting the theory as true. The premise does not entail the hypothesis.\nAnswer: non-entailment\n\n**Now, analyze the new input:**\nPremise: {Premise}\nHypothesis: {Hypothesis}\nReasoning: Let's think step by step.",
+                "Q": 0.9299999999999999,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.95,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 26,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Determine whether the Premise entails the Hypothesis. Your final answer must be either \"entailment\" or \"non-entailment\".\n\n**Critical Instructions for Reasoning:**\n1.  **Identify all belief states** (e.g., \"thinks,\" \"believes\") and **factive verbs** (e.g., \"knows,\" \"remembers\"). A factive verb implies the speaker accepts the subsequent information as true.\n2.  **A person who asserts a factive claim commits to its truth.** For example, if \"A thinks that B knows/remembers X,\" this entails that \"A thinks X\" is true. Asserting that someone *remembers* something is a stronger claim than just asserting they *think* it; it means the speaker believes the memory is correct.\n3.  **Do not assume entailment for non-factive verbs.** If \"A thinks that B believes X,\" this does not entail that \"A believes X.\"\n\n**Examples to Guide Your Reasoning:**\n\n**Example 1 (Entailment):**\nPremise: Sarah knows that Mike remembers the password.\nHypothesis: Sarah knows the password.\nReasoning: The verb \"knows\" is factive. Sarah knows that Mike's memory is correct. Therefore, Sarah herself is committed to the truth of the password being known. The premise entails the hypothesis.\nAnswer: entailment\n\n**Example 2 (Non-Entailment):**\nPremise: Chris believes that Emma thinks the story is true.\nHypothesis: Chris believes the story is true.\nReasoning: The verb \"thinks\" is non-factive. Chris has a belief about Emma's opinion, but he does not necessarily share that opinion himself. The premise does not entail the hypothesis.\nAnswer: non-entailment\n\n**Example 3 (Entailment - Common Mistake):**\nPremise: Isabella thinks that John remembers that a man is holding an accordion.\nHypothesis: Isabella thinks that a man is holding an accordion.\nReasoning: The premise uses the factive verb \"remembers.\" By stating that John *remembers* the event, Isabella is implying that she believes John's memory is correct and the event is true. Therefore, the premise entails the hypothesis.\nAnswer: entailment\n\n**Now, analyze the new input:**\nPremise: {Premise}\nHypothesis: {Hypothesis}\nReasoning: Let's think step by step.",
+            "Q": 3.7783333333333333,
+            "N": 4,
+            "uct_value": 3.906856219941111,
+            "reward": 0.95,
+            "children": [
+              {
+                "id": 27,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Determine whether the Premise entails the Hypothesis. Your final answer must be either \"entailment\" or \"non-entailment\".\n\n**Critical Instructions for Reasoning:**\n1.  **Identify all mental state verbs.** Categorize them by commitment strength:\n    *   **Factive verbs (strong commitment):** e.g., \"knows,\" \"remembers,\" \"realized.\" These imply the speaker accepts the subsequent information as true.\n    *   **Strongly implicative verbs (strong commitment):** e.g., \"understands,\" \"is aware that,\" \"realizes.\" These imply the subject treats the information as a fact.\n    *   **Weakly non-factive verbs (weak commitment):** e.g., \"thinks,\" \"believes,\" \"assumes,\" \"suspects.\" These do not imply the speaker accepts the information as true.\n2.  **A person who asserts a strong commitment verb commits to its truth.** For example, if \"A knows that B remembers X,\" this entails that \"A knows X\" is true.\n3.  **A strong commitment verb embedded under a weak verb often \"shines through.\"** The structure \"A [weak-verb] that B [strong-verb] X\" often entails that \"A [weak-verb] X\". For instance, if \"A assumes that B understands X,\" then A is making an assumption about a fact, which entails that \"A assumes X.\"\n4.  **Do not assume entailment for weak verbs alone.** If \"A thinks that B believes X,\" this does not entail that \"A believes X.\"\n\n**Examples to Guide Your Reasoning:**\n\n**Example 1 (Entailment - Factive):**\nPremise: Sarah knows that Mike remembers the password.\nHypothesis: Sarah knows the password.\nReasoning: \"Knows\" and \"remembers\" are strong commitment verbs. Sarah knows Mike's memory is correct, so she is committed to the truth of the password. The premise entails the hypothesis.\nAnswer: entailment\n\n**Example 2 (Non-Entailment - Weak Verbs):**\nPremise: Chris believes that Emma thinks the story is true.\nHypothesis: Chris believes the story is true.\nReasoning: \"Believes\" and \"thinks\" are weak verbs. Chris has a belief about Emma's opinion, not necessarily a belief in the story itself. The premise does not entail the hypothesis.\nAnswer: non-entailment\n\n**Example 3 (Entailment - Strong Embedded under Weak):**\nPremise: Joseph assumes that Amelia understands that three military officials are battling a fire by a building.\nHypothesis: Joseph assumes that three military officials are battling a fire by a building.\nReasoning: \"Assumes\" is weak, but \"understands\" is strongly implicative. Joseph's assumption is about Amelia's correct knowledge of a fact. Therefore, he himself is assuming that fact to be true. The premise entails the hypothesis.\nAnswer: entailment\n\n**Example 4 (Non-Entailment - Contrast):**\nPremise: David suspects that Chloe thinks the meeting is cancelled.\nHypothesis: David suspects the meeting is cancelled.\nReasoning: Both \"suspects\" and \"thinks\" are weak verbs. David has a suspicion about Chloe's opinion, but this does not mean he suspects the meeting is cancelled himself. The premise does not entail the hypothesis.\nAnswer: non-entailment\n\n**Example 5 (Entailment - Strong Implicative):**\nPremise: The committee discovered that the director was aware of the issue.\nHypothesis: The committee discovered the issue.\nReasoning: \"Discover\" is factive, and \"is aware of\" is strongly implicative. The committee's discovery is about the director's factual awareness, which means they are committed to the truth of the issue's existence. The premise entails the hypothesis.\nAnswer: entailment\n\n**Now, analyze the new input:**\nPremise: {Premise}\nHypothesis: {Hypothesis}\nReasoning: Let's think step by step.",
+                "Q": 0.93,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.96,
+                "children": []
+              },
+              {
+                "id": 28,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Determine whether the Premise entails the Hypothesis. Your final answer must be either \"entailment\" or \"non-entailment\".\n\n**Critical Instructions for Reasoning:**\nFollow these steps in order:\n\n1.  **Semantic Analysis:** Parse the meaning of both Premise and Hypothesis. Identify key entities, actions, and states. Note synonyms (e.g., \"man\" / \"human\"), hypernyms (e.g., \"sauna\" is a type of \"room\"), and other semantic relationships. Use world knowledge and pragmatic understanding (e.g., \"dressed only in a towel\" implies a state of undress).\n2.  **Identify Commitment Verbs:** Look for verbs that express belief, knowledge, or suspicion (e.g., \"thinks,\" \"knows,\" \"suspects,\" \"remembers\").\n    *   **Factive Verbs (e.g., \"knows,\" \"remembers\"):** The speaker commits to the truth of the embedded clause.\n    *   **Non-Factive Verbs (e.g., \"thinks,\" \"believes,\" \"suspects\"):** The speaker does not commit to the truth of the embedded clause. The claim is only about the subject's belief state.\n3.  **Apply Factive Logic (If applicable):**\n    *   If a factive verb is asserted by the speaker (e.g., \"A knows that B remembers X\"), then the speaker (A) is committed to the truth of X.\n    *   If only non-factive verbs are used (e.g., \"A believes that B thinks X\"), you cannot assume the speaker believes X is true.\n4.  **Check for Core Entailment:** Temporarily ignore the belief/suspicion verbs. Does the *core factual proposition* within the Premise logically imply the *core factual proposition* within the Hypothesis?\n5.  **Combine the Analyses:**\n    *   **Case 1:** If the speaker is committed to the truth of the premise's core proposition (via a factive verb) AND that proposition entails the hypothesis, then the answer is **entailment**.\n    *   **Case 2:** If the core proposition of the premise entails the core proposition of the hypothesis, but the premise only states that the subject *suspects* or *believes* that core proposition (non-factive verb), then the subject also suspects or believes the entailed hypothesis. This is **entailment**.\n    *   **Case 3:** If the core propositions do not entail each other, the answer is **non-entailment**, regardless of the verbs used.\n\n**Examples to Guide Your Reasoning:**\n\n**Example 1 (Entailment - Factive):**\nPremise: Sarah knows that Mike remembers the password.\nHypothesis: Sarah knows the password.\nReasoning: \"Knows\" and \"remembers\" are factive. Sarah is committed to the truth that Mike remembers the password, which entails that the password is known. The core proposition \"the password is known\" is entailed.\nAnswer: entailment\n\n**Example 2 (Non-Entailment - Belief):**\nPremise: Chris believes that Emma thinks the story is true.\nHypothesis: Chris believes the story is true.\nReasoning: \"Believes\" and \"thinks\" are non-factive. The core proposition \"the story is true\" is the same. However, Chris's belief is about Emma's opinion, not his own commitment to the story's truth. The verbs block the inference.\nAnswer: non-entailment\n\n**Example 3 (Entailment - Factive Embedding):**\nPremise: Isabella thinks that John remembers that a man is holding an accordion.\nHypothesis: Isabella thinks that a man is holding an accordion.\nReasoning: \"Thinks\" is non-factive, but \"remembers\" is factive. By stating that John *remembers*, Isabella implies she believes John's memory is correct. Therefore, she is committed to the truth of the accordion event. The core proposition is entailed.\nAnswer: entailment\n\n**Example 4 (Entailment - Semantic & Pragmatic Inference):**\nPremise: Olivia suspects that a man dressed only in a towel is in a sauna.\nHypothesis: Olivia suspects that a human not wearing any clothes is in a room.\nReasoning:\n1.  **Semantic Analysis:** \"Man\" → \"human\". \"Sauna\" → \"room\". \"Dressed only in a towel\" pragmatically implies \"not wearing [conventional] clothes\".\n2.  **Commitment Verbs:** \"Suspects\" is non-factive. Olivia is not committed to the truth.\n3.  **Core Entailment:** The core proposition \"a man dressed only in a towel is in a sauna\" entails \"a human not wearing any clothes is in a room\".\n4.  **Combination:** Since Olivia suspects the first core proposition, and it entails the second, she must also suspect the second. The non-factive verb \"suspects\" applies to the entire entailed scenario.\nAnswer: entailment\n\n**Now, analyze the new input:**\nPremise: {Premise}\nHypothesis: {Hypothesis}\nReasoning: Let's think step by step.",
+                "Q": 0.95,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.94,
+                "children": []
+              },
+              {
+                "id": 29,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Determine whether the Premise entails the Hypothesis. Your final answer must be either \"entailment\" or \"non-entailment\".\n\n**Critical Instructions for Reasoning:**\n1.  **Identify all belief states** (e.g., \"thinks,\" \"believes\") and **factive verbs** (e.g., \"knows,\" \"remembers\"). A factive verb implies the speaker accepts the subsequent information as true.\n2.  **A person who asserts a factive claim commits to its truth.** For example, if \"A thinks that B knows/remembers X,\" this entails that \"A thinks X\" is true. Asserting that someone *remembers* something is a stronger claim than just asserting they *think* it; it means the speaker believes the memory is correct.\n3.  **Do not assume entailment for non-factive verbs.** If \"A thinks that B believes X,\" this does not entail that \"A believes X.\"\n4.  **Distinguish Events from Propositions:** Separate the description of a **mental event or state** (e.g., \"Evelyn assumes,\" \"John remembers\") from the **propositional content** of that state (e.g., \"that two men are playing\"). The uncertainty of a non-factive verb applies only to the truth of the deepest embedded proposition, not to the events leading to it.\n5.  **Identify \"Factive-of-the-Event\" Verbs:** Verbs like `learns`, `discovers`, `found out`, `is aware that`, and `realizes` are non-factive regarding a final proposition but are **factive regarding the event they describe**. If `[Person1] [Factive-of-Event-Verb] that [Event]`, then the sentence entails that `[Event]` is true. It does **not** entail that the propositional content inside `[Event]` is true.\n\n**Examples to Guide Your Reasoning:**\n\n**Example 1 (Entailment):**\nPremise: Sarah knows that Mike remembers the password.\nHypothesis: Sarah knows the password.\nReasoning: The verb \"knows\" is factive. Sarah knows that Mike's memory is correct. Therefore, Sarah herself is committed to the truth of the password being known. The premise entails the hypothesis.\nAnswer: entailment\n\n**Example 2 (Non-Entailment):**\nPremise: Chris believes that Emma thinks the story is true.\nHypothesis: Chris believes the story is true.\nReasoning: The verb \"thinks\" is non-factive. Chris has a belief about Emma's opinion, but he does not necessarily share that opinion himself. The premise does not entail the hypothesis.\nAnswer: non-entailment\n\n**Example 3 (Entailment - Nested Factive):**\nPremise: Isabella thinks that John remembers that a man is holding an accordion.\nHypothesis: Isabella thinks that a man is holding an accordion.\nReasoning: The premise uses the factive verb \"remembers.\" By stating that John *remembers* the event, Isabella is implying that she believes John's memory is correct and the event is true. Therefore, the premise entails the hypothesis.\nAnswer: entailment\n\n**Example 4 (Entailment - Factive-of-the-Event):**\nPremise: David discovered that Lisa believed the meeting was canceled.\nHypothesis: Lisa believed the meeting was canceled.\nReasoning: The verb \"discovered\" is non-factive regarding the proposition \"the meeting was canceled.\" However, it is factive regarding the event it describes. For David to *discover* that Lisa believed something, it must be true that Lisa actually held that belief. Therefore, the premise entails the hypothesis. The truth of the embedded proposition is not relevant to this entailment.\nAnswer: entailment\n\n**Example 5 (Non-Entailment - Deep Proposition):**\nPremise: Olivia learns that Evelyn assumes that two men are playing in a lake.\nHypothesis: Two men are playing in a lake.\nReasoning: The verb \"learns\" is factive-of-the-event, so it entails that \"Evelyn assumes X\" is true. However, \"assumes\" is non-factive. The premise only tells us about Evelyn's assumption and Olivia's awareness of it. It does not commit anyone to the truth of the proposition \"two men are playing in a lake.\" Therefore, the premise does not entail the hypothesis.\nAnswer: non-entailment\n\n**Now, analyze the new input:**\nPremise: {Premise}\nHypothesis: {Hypothesis}\nReasoning: Let's think step by step.",
+                "Q": 0.935,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.94,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 30,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Determine whether the Premise entails the Hypothesis. Your final answer must be either \"entailment\" or \"non-entailment\".\n\n**Critical Instructions for Reasoning:**\n1.  **Identify and classify all verbs introducing a clause.**\n    *   **A factive verb** is one where `[Subject] [verb] that P` entails that the speaker believes `P` is true. Common factive verbs include:\n        *   **Cognitive factives:** \"knows,\" \"remembers,\" \"forgets,\" \"realizes\"\n        *   **Perceptive factives:** \"sees,\" \"hears,\" \"notices\" (when followed by a `that`-clause)\n        *   **Emotive factives:** \"regrets,\" \"is glad that,\" \"is sad that\"\n    *   **A belief (non-factive) verb** does not entail the speaker's commitment to the truth of `P`. Common belief verbs include: \"thinks,\" \"believes,\" \"assumes,\" \"supposes,\" \"expects.\"\n    *   **Crucial:** The verb \"sees\" is **factive** when used as `\"sees that P\"` but is **not factive** when used as `\"sees something\"` (a noun phrase).\n\n2.  **A person who asserts a factive claim commits to its truth.** For example, if \"A thinks that B knows/remembers/sees that X,\" this entails that \"A thinks X\" is true. Asserting a factive verb is a stronger claim than a belief verb; it means the speaker believes the subsequent information is correct.\n3.  **Do not assume entailment for non-factive verbs.** If \"A thinks that B believes X,\" this does not entail that \"A believes X.\"\n\n**Examples to Guide Your Reasoning:**\n\n**Example 1 (Entailment):**\nPremise: Sarah knows that Mike remembers the password.\nHypothesis: Sarah knows the password.\nReasoning: The verb \"knows\" is factive. Sarah knows that Mike's memory is correct. Therefore, Sarah herself is committed to the truth of the password being known.\nAnswer: entailment\n\n**Example 2 (Non-Entailment):**\nPremise: Chris believes that Emma thinks the story is true.\nHypothesis: Chris believes the story is true.\nReasoning: The verb \"thinks\" is non-factive. Chris has a belief about Emma's opinion, but he does not necessarily share that opinion himself.\nAnswer: non-entailment\n\n**Example 3 (Entailment):**\nPremise: Isabella thinks that John remembers that a man is holding an accordion.\nHypothesis: Isabella thinks that a man is holding an accordion.\nReasoning: The verb \"remembers\" is factive. By stating that John *remembers* the event, Isabella is implying that she believes John's memory is correct and the event is true.\nAnswer: entailment\n\n**Example 4 (Entailment - Perception Verb):**\nPremise: David hears that Anna sees that the package has been delivered.\nHypothesis: David hears that the package has been delivered.\nReasoning: The verb \"sees\" is factive when used with a `that`-clause. \"Anna sees that the package has been delivered\" entails that the package has been delivered. David is hearing a report that contains this factive claim.\nAnswer: entailment\n\n**Example 5 (Non-Entailment - Non-factive \"sees\"):**\nPremise: Lisa believes that Tom sees a ghost.\nHypothesis: Lisa believes that a ghost exists.\nReasoning: The verb \"sees\" here is followed by a noun phrase (\"a ghost\"), not a `that`-clause. In this construction, \"sees\" is not factive; it describes a perceptual experience that may not be real. Lisa believes Tom is having that experience, but she does not necessarily commit to the existence of the ghost.\nAnswer: non-entailment\n\n**Example 6 (Entailment - Correcting a Common Mistake):**\nPremise: Isabella assumes that Michael sees that a young man is jumping over rocks.\nHypothesis: Isabella assumes that a young man is jumping over rocks.\nReasoning: The verb \"sees\" is used with a `that`-clause, making it factive. \"Michael sees that P\" entails P is true. Isabella's assumption includes this factive claim, meaning she assumes the event (P) is true.\nAnswer: entailment\n\n**Now, analyze the new input:**\nPremise: {Premise}\nHypothesis: {Hypothesis}\nReasoning: Let's think step by step.\n**First, identify and classify every verb introducing a clause (e.g., as factive or non-factive). Then, apply the rules of commitment to determine if the premise entails the hypothesis.**",
+            "Q": 0.9433333333333334,
+            "N": 1,
+            "uct_value": null,
+            "reward": 0.94,
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

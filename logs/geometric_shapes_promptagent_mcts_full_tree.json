@@ -1,0 +1,475 @@
+{
+  "config": {
+    "mcts_iters": 10,
+    "rollout_length": 4,
+    "depth_threshold": 5,
+    "width_threshold": 3
+  },
+  "search_stats": {
+    "total_nodes": 31,
+    "total_Q_values": 31
+  },
+  "best_node": {
+    "action_sequence": [],
+    "prompt": "Name geometric shapes from their SVG paths",
+    "depth": 0,
+    "Q": 25.697222222222226,
+    "N": 30
+  },
+  "search_tree": {
+    "id": 0,
+    "depth": 0,
+    "action_sequence": [],
+    "prompt": "Name geometric shapes from their SVG paths",
+    "Q": 25.697222222222226,
+    "N": 30,
+    "uct_value": null,
+    "reward": 0.9,
+    "children": [
+      {
+        "id": 1,
+        "depth": 1,
+        "action_sequence": [
+          "FailureDrivenAction"
+        ],
+        "prompt": "You are an expert at analyzing SVG paths to identify the primary geometric shape they are intended to draw. Your task is to analyze the provided `d` attribute and choose the correct shape from the given options.\n\n**Instructions for Analysis:**\n1.  **Parse the Commands:** Identify all path commands (M, L, H, V, C, S, Q, T, A, Z).\n2.  **Determine the Rendered Shape:** Ignore any redundant or degenerate segments (e.g., paths that retrace themselves or have zero length). Focus on the final, visible outline that would be rendered on a screen. If a path draws a segment and then immediately undoes it, the net effect is that nothing is drawn; in such cases, identify the intended shape based on the parameters of the first valid segment.\n3.  **Check for Closure:** Determine if the path is explicitly closed (with the 'Z' command) or implicitly closed by ending at its starting point.\n4.  **Simplify and Interpret:** Based on the commands, identify the simplest geometric shape that matches the path's intent. The path may be an approximation of a perfect shape (e.g., a circle made with arcs).\n5.  **Select the Answer:** Choose the most accurate answer from the provided list of options.\n\n**Important Considerations:**\n- The radii values (rx, ry) in the Arc command `A`: If `rx` and `ry` are equal, the arc is circular. If they differ, it is elliptical.\n- A single Arc command does not make a full circle. A full circle is typically made with two or four arc commands.\n- A path that ends at its starting point without a 'Z' may still be a closed shape.\n\n**Example of Correct Reasoning for a Degenerate Path:**\n**Input:** `<path d=\"M 18.32,43.48 A 12.66,12.66 94.39 1,0 20.26,18.23 A 12.66,12.66 94.39 1,0 18.32,43.48\"/>`\n**Reasoning:** The second arc uses identical parameters to the first, meaning it retraces the first arc in reverse. The net visible result is degenerate (nothing is drawn). However, the arc parameters (equal radii of 12.66) indicate the intent was to draw a circular shape. Therefore, the correct answer is \"circle\", not \"sector\".\n\nNow, analyze the following question and options.\nQuestion:\nThis SVG path element <path d=\"PATH\"/> draws a\nOptions:\n[LIST OF OPTIONS]",
+        "Q": 8.58611111111111,
+        "N": 10,
+        "uct_value": 2.5444227218237954,
+        "reward": 0.8,
+        "children": [
+          {
+            "id": 2,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are an expert at analyzing SVG paths to identify the primary geometric shape they are intended to draw. Your task is to analyze the provided `d` attribute and choose the correct shape from the given options.\n\n**Instructions for Analysis:**\n\n1.  **Parse the Commands:** Identify all path commands (M, L, H, V, C, S, Q, T, A, Z). Extract all distinct points (vertices) from these commands.\n    - For `M`: sets the current point.\n    - For `L`, `C`, `S`, `Q`, `T`, `A`: the endpoint is a vertex.\n    - For `H` (horizontal line) and `V` (vertical line): the endpoint is a vertex only if it is different from the current point.\n    - For `Z`: closes the path to the initial point of the current subpath. Do not add a new vertex; it simply connects to the start.\n    - **Crucial:** Only distinct coordinates count as vertices. If a command does not change the current point (e.g., `L` to the same point), it does **not** add a vertex.\n\n2.  **Count Vertices Correctly:**\n    - The starting point (from the first `M`) is vertex 1.\n    - Each subsequent command that adds a new distinct point increases the vertex count.\n    - The closing command (`Z` or an implicit return to the start via another command) does **not** add a vertex.\n    - The total number of sides in the resulting polygon is equal to the number of distinct vertices.\n\n3.  **Determine the Rendered Shape:** Ignore any redundant or degenerate segments (e.g., paths that retrace themselves or have zero length). Focus on the final, visible outline that would be rendered. If a path draws a segment and then immediately undoes it, the net effect is that nothing is drawn; in such cases, identify the intended shape based on the parameters of the first valid segment.\n\n4.  **Check for Closure:** Determine if the path is explicitly closed (with the 'Z' command) or implicitly closed by ending at its starting point. Remember: closure does not create a new vertex.\n\n5.  **Simplify and Interpret:** Based on the commands and the count of distinct vertices, identify the simplest geometric shape that matches the path's intent. The path may be an approximation of a perfect shape (e.g., a circle made with arcs).\n\n6.  **Select the Answer:** Choose the most accurate answer from the provided list of options.\n\n**Important Considerations:**\n- The radii values (rx, ry) in the Arc command `A`: If `rx` and `ry` are equal, the arc is circular. If they differ, it is elliptical.\n- A single Arc command does not make a full circle. A full circle is typically made with two or four arc commands.\n\n**Examples of Correct Reasoning:**\n\n**Example 1: Degenerate Path**\n**Input:** `<path d=\"M 18.32,43.48 A 12.66,12.66 94.39 1,0 20.26,18.23 A 12.66,12.66 94.39 1,0 18.32,43.48\"/>`\n**Reasoning:** The second arc uses identical parameters to the first, meaning it retraces the first arc in reverse. The net visible result is degenerate (nothing is drawn). However, the arc parameters (equal radii of 12.66) indicate the intent was to draw a circular shape. Therefore, the correct answer is \"circle\", not \"sector\".\n\n**Example 2: Vertex Miscounting (Common Mistake)**\n**Input:** `<path d=\"M 31.00,73.00 L 40.00,50.00 L 55.00,53.00 L 49.00,40.00 L 77.00,50.00 L 64.00,57.00 L 64.00,76.00 L 31.00,73.00\"/>`\n**Incorrect Reasoning:** Counting the starting point and every `L` endpoint yields 8 vertices, suggesting an octagon.\n**Correct Reasoning:** The distinct vertices are: (31,73), (40,50), (55,53), (49,40), (77,50), (64,57), (64,76). The final `L` returns to the start, which is not a new vertex. This results in 7 distinct vertices, forming a heptagon.\n\nNow, analyze the following question and options.\nQuestion:\nThis SVG path element <path d=\"PATH\"/> draws a\nOptions:\n[LIST OF OPTIONS]",
+            "Q": 3.4611111111111112,
+            "N": 4,
+            "uct_value": 3.821300749941025,
+            "reward": 0.8666666666666667,
+            "children": [
+              {
+                "id": 3,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert at analyzing SVG paths to identify the primary geometric shape they are intended to draw. Your task is to analyze the provided `d` attribute and choose the correct shape from the given options.\n\n**Instructions for Analysis:**\n\n1.  **Parse the Commands:** Identify all path commands (M, L, H, V, C, S, Q, T, A, Z). Extract all distinct points (vertices) from these commands.\n    - For `M`: sets the current point.\n    - For `L`, `C`, `S`, `Q`, `T`, `A`: the endpoint is a vertex.\n    - For `H` (horizontal line) and `V` (vertical line): the endpoint is a vertex only if it is different from the current point.\n    - For `Z`: closes the path to the initial point of the current subpath. Do not add a new vertex; it simply connects to the start.\n    - **Crucial:** Only distinct coordinates count as vertices. If a command does not change the current point (e.g., `L` to the same point), it does **not** add a vertex.\n\n2.  **Count Vertices Correctly:**\n    - The starting point (from the first `M`) is vertex 1.\n    - Each subsequent command that adds a new distinct point increases the vertex count.\n    - The closing command (`Z` or an implicit return to the start via another command) does **not** add a vertex.\n    - The total number of sides in the resulting polygon is equal to the number of distinct vertices.\n\n3.  **Determine the Rendered Shape:** Ignore any redundant or degenerate segments (e.g., paths that retrace themselves or have zero length). Focus on the final, visible outline that would be rendered. If a path draws a segment and then immediately undoes it, the net effect is that nothing is drawn; in such cases, identify the intended shape based on the parameters of the first valid segment.\n\n4.  **Check for Closure:** Determine if the path is explicitly closed (with the 'Z' command) or implicitly closed by ending at its starting point. Remember: closure does not create a new vertex.\n\n5.  **Simplify and Interpret:** Based on the commands and the count of distinct vertices, identify the simplest geometric shape that matches the path's intent. The path may be an approximation of a perfect shape (e.g., a circle made with arcs).\n\n6.  **Select the Answer:** Choose the most accurate answer from the provided list of options.\n\n**Important Considerations:**\n- The radii values (rx, ry) in the Arc command `A`: If `rx` and `ry` are equal, the arc is circular. If they differ, it is elliptical.\n- A single Arc command does not make a full circle. A full circle is typically made with two or four arc commands.\n\n**Examples of Correct Reasoning:**\n\n**Example 1: Degenerate Path**\n**Input:** `<path d=\"M 18.32,43.48 A 12.66,12.66 94.39 1,0 20.26,18.23 A 12.66,12.66 94.39 1,0 18.32,43.48\"/>`\n**Reasoning:** The second arc uses identical parameters to the first, meaning it retraces the first arc in reverse. The net visible result is degenerate (nothing is drawn). However, the arc parameters (equal radii of 12.66) indicate the intent was to draw a circular shape. Therefore, the correct answer is \"circle\", not \"sector\".\n\n**Example 2: Vertex Miscounting (Common Mistake)**\n**Input:** `<path d=\"M 31.00,73.00 L 40.00,50.00 L 55.00,53.00 L 49.00,40.00 L 77.00,50.00 L 64.00,57.00 L 64.00,76.00 L 31.00,73.00\"/>`\n**Incorrect Reasoning:** Counting the starting point and every `L` endpoint yields 8 vertices, suggesting an octagon.\n**Correct Reasoning:** The distinct vertices are: (31,73), (40,50), (55,53), (49,40), (77,50), (64,57), (64,76). The final `L` returns to the start, which is not a new vertex. This results in 7 distinct vertices, forming a heptagon.\n\nNow, analyze the following question and options.\nQuestion:\nThis SVG path element <path d=\"PATH\"/> draws a\nOptions:\n[LIST OF OPTIONS]",
+                "Q": 0.8500000000000001,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.8333333333333334,
+                "children": []
+              },
+              {
+                "id": 4,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert at analyzing SVG paths to identify the primary geometric shape they are intended to draw. Your task is to analyze the provided `d` attribute and choose the correct shape from the given options.\n\n**Instructions for Analysis:**\n\n1.  **Parse the Commands:** Identify all path commands (M, L, H, V, C, S, Q, T, A, Z). Extract all distinct points (vertices) from these commands.\n    - For `M`: sets the current point.\n    - For `L`, `C`, `S`, `Q`, `T`, `A`: the endpoint is a vertex.\n    - For `H` (horizontal line) and `V` (vertical line): the endpoint is a vertex only if it is different from the current point.\n    - For `Z`: closes the path to the initial point of the current subpath. Do not add a new vertex; it simply connects to the start.\n    - **Crucial:** Only distinct coordinates count as vertices. If a command does not change the current point (e.g., `L` to the same point), it does **not** add a vertex.\n\n2.  **Count Vertices Correctly:**\n    - The starting point (from the first `M`) is vertex 1.\n    - Each subsequent command that adds a new distinct point increases the vertex count.\n    - The closing command (`Z` or an implicit return to the start via another command) does **not** add a vertex.\n    - The total number of sides in the resulting polygon is equal to the number of distinct vertices.\n\n3.  **Determine the Rendered Shape:** Ignore any redundant or degenerate segments (e.g., paths that retrace themselves or have zero length). Focus on the final, visible outline that would be rendered. If a path draws a segment and then immediately undoes it, the net effect is that nothing is drawn; in such cases, identify the intended shape based on the parameters of the first valid segment.\n\n4.  **Check for Closure:** Determine if the path is explicitly closed (with the 'Z' command) or implicitly closed by ending at its starting point. Remember: closure does not create a new vertex.\n\n5.  **Simplify and Interpret:** Based on the commands and the count of distinct vertices, identify the simplest geometric shape that matches the path's intent. The path may be an approximation of a perfect shape (e.g., a circle made with arcs).\n\n6.  **Select the Answer:** Choose the most accurate answer from the provided list of options.\n\n**Important Considerations:**\n- The radii values (rx, ry) in the Arc command `A`: If `rx` and `ry` are equal, the arc is circular. If they differ, it is elliptical.\n- A single Arc command does not make a full circle. A full circle is typically made with two or four arc commands.\n\n**Examples of Correct Reasoning:**\n\n**Example 1: Degenerate Path**\n**Input:** `<path d=\"M 18.32,43.48 A 12.66,12.66 94.39 1,0 20.26,18.23 A 12.66,12.66 94.39 1,0 18.32,43.48\"/>`\n**Reasoning:** The second arc uses identical parameters to the first, meaning it retraces the first arc in reverse. The net visible result is degenerate (nothing is drawn). However, the arc parameters (equal radii of 12.66) indicate the intent was to draw a circular shape. Therefore, the correct answer is \"circle\", not \"sector\".\n\n**Example 2: Vertex Miscounting (Common Mistake)**\n**Input:** `<path d=\"M 31.00,73.00 L 40.00,50.00 L 55.00,53.00 L 49.00,40.00 L 77.00,50.00 L 64.00,57.00 L 64.00,76.00 L 31.00,73.00\"/>`\n**Incorrect Reasoning:** Counting the starting point and every `L` endpoint yields 8 vertices, suggesting an octagon.\n**Correct Reasoning:** The distinct vertices are: (31,73), (40,50), (55,53), (49,40), (77,50), (64,57), (64,76). The final `L` returns to the start, which is not a new vertex. This results in 7 distinct vertices, forming a heptagon.\n\nNow, analyze the following question and options.\nQuestion:\nThis SVG path element <path d=\"PATH\"/> draws a\nOptions:\n[LIST OF OPTIONS]",
+                "Q": 0.8500000000000001,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.9666666666666667,
+                "children": []
+              },
+              {
+                "id": 5,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert at analyzing SVG paths to identify the primary geometric shape they are intended to draw. Your task is to analyze the provided `d` attribute and choose the correct shape from the given options.\n\n**Instructions for Analysis:**\n\n1.  **Parse the Commands:** Identify all path commands (M, L, H, V, C, S, Q, T, A, Z). Extract all distinct points (vertices) from these commands.\n    - For `M`: sets the current point.\n    - For `L`, `C`, `S`, `Q`, `T`, `A`: the endpoint is a vertex.\n    - For `H` (horizontal line) and `V` (vertical line): the endpoint is a vertex only if it is different from the current point.\n    - For `Z`: closes the path to the initial point of the current subpath. Do not add a new vertex; it simply connects to the start.\n    - **Crucial:** Only distinct coordinates count as vertices. Treat two points as identical if their x and y coordinates differ by less than 0.01. If a command does not change the current point (e.g., `L` to the same point), it does **not** add a vertex.\n\n2.  **Count Vertices Correctly:**\n    - The starting point (from the first `M`) is vertex 1.\n    - Each subsequent command that adds a new distinct point increases the vertex count.\n    - The closing command (`Z` or an implicit return to the start via another command) does **not** add a vertex.\n    - The total number of sides in the resulting polygon is equal to the number of distinct vertices.\n\n3.  **Combine Subpaths:** If a subpath starts at the endpoint of the previous subpath, consider the entire path as continuous for shape analysis. The full visible outline may be formed by multiple subpaths.\n\n4.  **Determine the Rendered Shape:** Ignore any redundant or degenerate segments (e.g., paths that retrace themselves or have zero length). Focus on the final, visible outline that would be rendered. If a path draws a segment and then immediately undoes it, the net effect is that nothing is drawn; in such cases, identify the intended shape based on the parameters of the first valid segment.\n\n5.  **Check for Closure:** Determine if the path is explicitly closed (with the 'Z' command) or implicitly closed by ending at its starting point (within 0.01 tolerance). Remember: closure does not create a new vertex.\n\n6.  **Classify the Shape:** Based on the commands and the count of distinct vertices, identify the simplest geometric shape that matches the path's intent. For polygons:\n    - **3 vertices:** triangle.\n    - **4 vertices:** Compute vectors for each side. Check if opposite sides are parallel (vectors are scalar multiples within tolerance). \n        - If all angles are right angles (dot product of adjacent sides has |dot| < 0.1), it is a rectangle.\n        - If two pairs of adjacent sides are equal (lengths differ by < 0.1), it is a kite.\n        - If at least one pair of sides is parallel, it is a trapezoid (inclusive definition).\n        - Otherwise, it is a general quadrilateral.\n    - **5 vertices:** pentagon.\n    - **6 vertices:** hexagon.\n    - **7 vertices:** heptagon.\n    - **8 vertices:** octagon.\n    - For circular shapes: If the path consists of arc commands with equal radii (rx = ry within 0.01 tolerance), it is a circle (if closed) or a sector (if open). If radii differ, it is an ellipse.\n\n7.  **Select the Answer:** Choose the most accurate answer from the provided list of options. If the path is degenerate but contains commands with shape parameters (e.g., equal radii in arcs), choose the shape indicated by the parameters.\n\n**Important Considerations:**\n- When comparing points, vectors, or lengths, account for floating-point precision. Use a tolerance of 0.01.\n- A single Arc command does not make a full circle. A full circle is typically made with two or four arc commands.\n\n**Examples of Correct Reasoning:**\n\n**Example 1: Degenerate Path**\n**Input:** `<path d=\"M 18.32,43.48 A 12.66,12.66 94.39 1,0 20.26,18.23 A 12.66,12.66 94.39 1,0 18.32,43.48\"/>`\n**Reasoning:** The second arc uses identical parameters to the first, meaning it retraces the first arc in reverse. The net visible result is degenerate (nothing is drawn). However, the arc parameters (equal radii of 12.66) indicate the intent was to draw a circular shape. Therefore, the correct answer is \"circle\", not \"sector\".\n\n**Example 2: Rectangle (Precision Handling)**\n**Input:** `<path d=\"M 87.94,93.98 L 8.62,89.32 M 8.62,89.32 L 11.17,45.94 L 90.49,50.60 L 87.94,93.98\"/>`\n**Reasoning:** Combined subpaths form a closed quadrilateral with vertices: (87.94,93.98), (8.62,89.32), (11.17,45.94), (90.49,50.60). Vectors: AB = (-79.32, -4.66), BC = (2.55, -43.38). Dot product ≈ -0.206 (|dot| < 0.1), so ∠ABC ≈ 90°. Similarly, all angles are right angles. Thus, it is a rectangle.\n\n**Example 3: Vertex Miscounting**\n**Input:** `<path d=\"M 31.00,73.00 L 40.00,50.00 L 55.00,53.00 L 49.00,40.00 L 77.00,50.00 L 64.00,57.00 L 64.00,76.00 L 31.00,73.00\"/>`\n**Reasoning:** Distinct vertices: (31,73), (40,50), (55,53), (49,40), (77,50), (64,57), (64,76). The final `L` returns to the start, which is not a new vertex. This results in 7 distinct vertices, forming a heptagon.\n\nNow, analyze the following question and options.\nQuestion:\nThis SVG path element <path d=\"PATH\"/> draws a\nOptions:\n[LIST OF OPTIONS]",
+                "Q": 0.8833333333333333,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.9,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 6,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are an expert geometric analyst specializing in SVG paths. Your task is to analyze the `d` attribute and identify the single most specific geometric shape it is intended to represent from the provided options.\n\n**Instructions for Analysis:**\n\n1.  **Parse and Simplify:** Identify all path commands. Ignore redundant moves (e.g., `M` to the current point) and zero-length segments. Focus on the net visible outline.\n2.  **Check Closure:** Determine if the path is closed explicitly (with 'Z') or implicitly by ending at its starting point.\n3.  **Extract Vertices:** List the distinct vertices in order that define the shape's outline.\n4.  **Analyze Geometry:** For the extracted shape, calculate key properties using specified tolerances:\n    *   **Sides:** Count the number of sides.\n    *   **Lengths:** Calculate side lengths. Use tolerance of `0.1` for equality.\n    *   **Angles:** Calculate vertex angles. Use tolerance of `2 degrees` for right angles (90°).\n    *   **Parallelism:** Calculate slopes. Use tolerance of `0.05` for parallel lines (equal slopes) or perpendicular lines (slopes are negative reciprocals).\n5.  **Match to Shape:** Follow this specificity hierarchy:\n    *   **Circle/Ellipse:** If composed of arcs with equal (circle) or different (ellipse) radii.\n    *   **Triangle/Quadrilateral/Polygon:** First identify number of sides.\n    *   **Special Quadrilaterals:** Check in this order:\n        1.  **Square:** 4 equal sides, 4 right angles.\n        2.  **Rectangle:** 4 right angles, opposite sides equal.\n        3.  **Kite:** Two distinct pairs of adjacent equal sides.\n        4.  **Rhombus:** 4 equal sides.\n        5.  **Parallelogram:** Both pairs of opposite sides parallel.\n        6.  **Trapezoid:** At least one pair of parallel sides.\n    *   *Always choose the most specific option available in the list.*\n6.  **Final Decision:** If properties match a specific shape within tolerances, select it. For degenerate paths, identify intent from first valid segment's parameters.\n\n**Important Considerations:**\n- **Floating-Point Precision:** Use tolerances for all comparisons. Do not expect perfect equality.\n- **Intent Over Literal Interpretation:** Infer the intended shape from parameters (e.g., equal radii indicate circle, right angles indicate rectangle).\n- **Option Availability:** Your answer must be from provided options. If your deduced shape isn't listed, find its most specific parent category that is listed.\n\n**Example Analysis 1 (Degenerate Path):**\n**Input:** `<path d=\"M 18.32,43.48 A 12.66,12.66 94.39 1,0 20.26,18.23 A 12.66,12.66 94.39 1,0 18.32,43.48\"/>`\n**Reasoning:** The second arc retraces the first. Net visible result is degenerate. Arc parameters (equal radii of 12.66) indicate intent to draw a circle.\n**Conclusion:** circle\n\n**Example Analysis 2 (Quadrilateral with Right Angles):**\n**Input:** `<path d=\"M 31.84,9.21 L 39.79,23.26 L 46.03,19.73 L 38.09,5.68 M 38.09,5.68 L 31.84,9.21\"/>`\n**Vertices:** A(31.84,9.21), B(39.79,23.26), C(46.03,19.73), D(38.09,5.68)\n**Slopes:** AB(~1.77), BC(~-0.565), CD(~1.77), DA(~-0.565). ∴ AB ∥ CD and BC ∥ DA (parallelogram).\n**Angles:** Dot product of AB & BC ≈ 0 (perpendicular). All angles are right angles within tolerance.\n**Conclusion:** This is a rectangle (available option), not just a trapezoid or parallelogram.\n\nNow, analyze the following question and options.\nQuestion:\nThis SVG path element <path d=\"PATH\"/> draws a\nOptions:\n[LIST OF OPTIONS]",
+            "Q": 0.8444444444444446,
+            "N": 1,
+            "uct_value": null,
+            "reward": 0.9,
+            "children": []
+          },
+          {
+            "id": 7,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are an expert at analyzing SVG paths to identify the primary geometric shape they are intended to draw. Your task is to analyze the provided `d` attribute and choose the correct shape from the given options.\n\n**Instructions for Analysis:**\n1.  **Parse the Commands:** Identify all path commands (M, L, H, V, C, S, Q, T, A, Z). Note any multiple subpaths (from M commands).\n2.  **Combine Subpaths:** If subpaths are connected (e.g., the end of one subpath is the start of another), treat them as a single path. If they are separate, the overall shape may be composite (but choose the dominant shape if possible).\n3.  **Determine the Rendered Shape:** Ignore redundant or degenerate segments (e.g., paths that retrace themselves or have zero length). For very short segments (length < 1 unit), consider if they are intentional or noise; if they do not change the overall shape, ignore them.\n4.  **Check for Closure:** Determine if the path is explicitly closed (with 'Z') or implicitly closed by ending at its starting point within the same subpath.\n5.  **Compute Geometric Properties:** For line-based paths:\n    - Calculate the number of vertices and sides.\n    - Compute side lengths and vectors between points.\n    - Check for parallel sides (vectors are scalar multiples) and perpendicular sides (dot product zero).\n    - Check for equal side lengths and equal angles.\n    For arc-based paths:\n    - If arcs have equal radii (rx = ry), they are circular; else elliptical.\n    - Multiple arcs may form a circle or ellipse.\n6.  **Simplify and Interpret:** Based on the properties, identify the most specific geometric shape:\n    - If all sides are equal and all angles are 90°, it is a square (if available, else rectangle).\n    - If opposite sides are parallel and equal, and angles are 90°, it is a rectangle.\n    - If two pairs of adjacent sides are equal, it is a kite.\n    - For arcs: two arcs with same radii and parameters forming a semicircle, or four for a full circle.\n7.  **Select the Answer:** Choose the most accurate answer from the options. If the path is degenerate but parameters indicate intent (e.g., retraced circle), choose the intended shape.\n\n**Important Considerations:**\n- Use tolerance for floating-point comparisons (e.g., lengths within 0.1 units, angles within 5°).\n- A single Arc command does not make a full circle. A full circle is typically made with two or four arc commands.\n- For polygons, vertex count alone is not sufficient; check properties.\n\n**Example of Correct Reasoning for a Kite:**\n**Input:** `<path d=\"M x1,y1 L x2,y2 L x3,y3 L x4,y4 Z\"/>`\n**Reasoning:** Compute side lengths: AB = AD, BC = CD, and adjacent pairs are equal. Also, diagonals may be perpendicular. Therefore, it is a kite.\n\n**Example for a Rectangle:**\n**Input:** `<path d=\"M x1,y1 L x2,y2 L x3,y3 L x4,y4 Z\"/>`\n**Reasoning:** Vectors AB and CD are parallel and equal, BC and DA are parallel and equal. Dot product of AB and BC is zero, so angle is 90°. Therefore, it is a rectangle.\n\nNow, analyze the following question and options.\nQuestion:\nThis SVG path element <path d=\"PATH\"/> draws a\nOptions:\n[LIST OF OPTIONS]",
+            "Q": 3.4222222222222225,
+            "N": 4,
+            "uct_value": 4.342950169764161,
+            "reward": 0.8333333333333334,
+            "children": [
+              {
+                "id": 8,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert at analyzing SVG paths to identify the primary geometric shape they are intended to draw. Your task is to analyze the provided `d` attribute and choose the correct shape from the given options.\n\n**Instructions for Analysis:**\n1.  **Parse the Commands:** Identify all path commands (M, L, H, V, C, S, Q, T, A, Z). Note any multiple subpaths (from M commands).\n2.  **Combine Subpaths:** If subpaths are connected (e.g., the end of one subpath is the start of another), treat them as a single path. If they are separate, the overall shape may be composite (but choose the dominant shape if possible).\n3.  **Determine the Rendered Shape:** Ignore redundant or degenerate segments (e.g., paths that retrace themselves or have zero length). For very short segments (length < 1 unit), consider if they are intentional or noise; if they do not change the overall shape, ignore them.\n4.  **Check for Closure:** Determine if the path is explicitly closed (with 'Z') or implicitly closed by ending at its starting point within the same subpath.\n5.  **Compute Geometric Properties:** For line-based paths:\n    - Calculate the number of vertices and sides.\n    - Compute side lengths and vectors between points.\n    - Check for parallel sides (vectors are scalar multiples) and perpendicular sides (dot product zero).\n    - Check for equal side lengths and equal angles.\n    For arc-based paths:\n    - If arcs have equal radii (rx = ry), they are circular; else elliptical.\n    - Multiple arcs may form a circle or ellipse.\n6.  **Simplify and Interpret:** Based on the properties, identify the most specific geometric shape:\n    - If all sides are equal and all angles are 90°, it is a square (if available, else rectangle).\n    - If opposite sides are parallel and equal, and angles are 90°, it is a rectangle.\n    - If two pairs of adjacent sides are equal, it is a kite.\n    - For arcs: two arcs with same radii and parameters forming a semicircle, or four for a full circle.\n7.  **Select the Answer:** Choose the most accurate answer from the options. If the path is degenerate but parameters indicate intent (e.g., retraced circle), choose the intended shape.\n\n**Important Considerations:**\n- Use tolerance for floating-point comparisons (e.g., lengths within 0.1 units, angles within 5°).\n- A single Arc command does not make a full circle. A full circle is typically made with two or four arc commands.\n- For polygons, vertex count alone is not sufficient; check properties.\n\n**Example of Correct Reasoning for a Kite:**\n**Input:** `<path d=\"M x1,y1 L x2,y2 L x3,y3 L x4,y4 Z\"/>`\n**Reasoning:** Compute side lengths: AB = AD, BC = CD, and adjacent pairs are equal. Also, diagonals may be perpendicular. Therefore, it is a kite.\n\n**Example for a Rectangle:**\n**Input:** `<path d=\"M x1,y1 L x2,y2 L x3,y3 L x4,y4 Z\"/>`\n**Reasoning:** Vectors AB and CD are parallel and equal, BC and DA are parallel and equal. Dot product of AB and BC is zero, so angle is 90°. Therefore, it is a rectangle.\n\nNow, analyze the following question and options.\nQuestion:\nThis SVG path element <path d=\"PATH\"/> draws a\nOptions:\n[LIST OF OPTIONS]",
+                "Q": 0.8333333333333334,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.8666666666666667,
+                "children": []
+              },
+              {
+                "id": 9,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert at analyzing SVG paths to identify the primary geometric shape they are intended to draw. Your task is to analyze the provided `d` attribute and choose the correct shape from the given options.\n\n**Instructions for Analysis:**\n1.  **Parse the Commands:** Identify all path commands (M, L, H, V, C, S, Q, T, A, Z). Note any multiple subpaths (from M commands).\n2.  **Combine Subpaths:** If subpaths are connected (e.g., the end of one subpath is the start of another), treat them as a single path. If they are separate, the overall shape may be composite (but choose the dominant shape if possible).\n3.  **Determine the Rendered Shape:** Ignore redundant or degenerate segments (e.g., paths that retrace themselves or have zero length). For very short segments (length < 1 unit), consider if they are intentional or noise; if they do not change the overall shape, ignore them.\n4.  **Check for Closure:** Determine if the path is explicitly closed (with 'Z') or implicitly closed by ending at its starting point within the same subpath.\n5.  **Compute Geometric Properties:** For line-based paths:\n    - Calculate the number of vertices and sides.\n    - Compute side lengths and vectors between points.\n    - Check for parallel sides (vectors are scalar multiples) and perpendicular sides (dot product zero).\n    - Check for equal side lengths and equal angles.\n    For arc-based paths:\n    - If arcs have equal radii (rx = ry), they are circular; else elliptical.\n    - Multiple arcs may form a circle or ellipse.\n6.  **Simplify and Interpret:** Based on the properties, identify the most specific geometric shape:\n    - If all sides are equal and all angles are 90°, it is a square (if available, else rectangle).\n    - If opposite sides are parallel and equal, and angles are 90°, it is a rectangle.\n    - If two pairs of adjacent sides are equal, it is a kite.\n    - For arcs: two arcs with same radii and parameters forming a semicircle, or four for a full circle.\n7.  **Select the Answer:** Choose the most accurate answer from the options. If the path is degenerate but parameters indicate intent (e.g., retraced circle), choose the intended shape.\n\n**Important Considerations:**\n- Use tolerance for floating-point comparisons (e.g., lengths within 0.1 units, angles within 5°).\n- A single Arc command does not make a full circle. A full circle is typically made with two or four arc commands.\n- For polygons, vertex count alone is not sufficient; check properties.\n\n**Example of Correct Reasoning for a Kite:**\n**Input:** `<path d=\"M x1,y1 L x2,y2 L x3,y3 L x4,y4 Z\"/>`\n**Reasoning:** Compute side lengths: AB = AD, BC = CD, and adjacent pairs are equal. Also, diagonals may be perpendicular. Therefore, it is a kite.\n\n**Example for a Rectangle:**\n**Input:** `<path d=\"M x1,y1 L x2,y2 L x3,y3 L x4,y4 Z\"/>`\n**Reasoning:** Vectors AB and CD are parallel and equal, BC and DA are parallel and equal. Dot product of AB and BC is zero, so angle is 90°. Therefore, it is a rectangle.\n\nNow, analyze the following question and options.\nQuestion:\nThis SVG path element <path d=\"PATH\"/> draws a\nOptions:\n[LIST OF OPTIONS]",
+                "Q": 0.8833333333333333,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.8666666666666667,
+                "children": []
+              },
+              {
+                "id": 10,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert at analyzing SVG paths to identify the primary geometric shape they are intended to draw. Your task is to analyze the provided `d` attribute and choose the correct shape from the given options.\n\n**Instructions for Analysis:**\n1.  **Parse the Commands:** Identify all path commands (M, L, H, V, C, S, Q, T, A, Z). Note any multiple subpaths (from M commands).\n2.  **Combine Subpaths:** If subpaths are connected (e.g., the end of one subpath is the start of another), treat them as a single path. If they are separate, the overall shape may be composite (but choose the dominant shape if possible).\n3.  **Determine the Rendered Shape:** Ignore redundant or degenerate segments (e.g., paths that retrace themselves or have zero length). For very short segments (length < 1 unit), consider if they are intentional or noise; if they do not change the overall shape, ignore them.\n4.  **Check for Closure:** Determine if the path is explicitly closed (with 'Z') or implicitly closed by ending at its starting point within the same subpath.\n5.  **Compute Geometric Properties:** For line-based paths:\n    - Calculate the number of vertices and sides.\n    - Compute side lengths and vectors between points.\n    - Check for parallel sides (vectors are scalar multiples) and perpendicular sides (dot product zero).\n    - Check for equal side lengths and equal angles.\n    For arc-based paths:\n    - If arcs have equal radii (rx = ry), they are circular; else elliptical.\n    - Multiple arcs may form a circle or ellipse.\n6.  **Simplify and Interpret:** Based on the properties, identify the most specific geometric shape:\n    - If all sides are equal and all angles are 90°, it is a square (if available, else rectangle).\n    - If opposite sides are parallel and equal, and angles are 90°, it is a rectangle.\n    - If two pairs of adjacent sides are equal, it is a kite.\n    - For arcs: two arcs with same radii and parameters forming a semicircle, or four for a full circle.\n7.  **Select the Answer:** Choose the most accurate answer from the options. If the path is degenerate but parameters indicate intent (e.g., retraced circle), choose the intended shape.\n\n**Important Considerations:**\n- Use tolerance for floating-point comparisons (e.g., lengths within 0.1 units, angles within 5°).\n- A single Arc command does not make a full circle. A full circle is typically made with two or four arc commands.\n- For polygons, vertex count alone is not sufficient; check properties.\n\n**Example of Correct Reasoning for a Kite:**\n**Input:** `<path d=\"M x1,y1 L x2,y2 L x3,y3 L x4,y4 Z\"/>`\n**Reasoning:** Compute side lengths: AB = AD, BC = CD, and adjacent pairs are equal. Also, diagonals may be perpendicular. Therefore, it is a kite.\n\n**Example for a Rectangle:**\n**Input:** `<path d=\"M x1,y1 L x2,y2 L x3,y3 L x4,y4 Z\"/>`\n**Reasoning:** Vectors AB and CD are parallel and equal, BC and DA are parallel and equal. Dot product of AB and BC is zero, so angle is 90°. Therefore, it is a rectangle.\n\nNow, analyze the following question and options.\nQuestion:\nThis SVG path element <path d=\"PATH\"/> draws a\nOptions:\n[LIST OF OPTIONS]",
+                "Q": 0.8500000000000001,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.9,
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 11,
+        "depth": 1,
+        "action_sequence": [
+          "FailureDrivenAction"
+        ],
+        "prompt": "Identify the geometric shape that the SVG path is intended to represent, accounting for possible rounding in coordinates. Use approximate comparisons (within 0.1 units for distances and 5 degrees for angles) and prioritize the most specific matching option.\n\nOptions: circle, heptagon, hexagon, kite, line, octagon, pentagon, rectangle, sector, triangle, trapezoid.\n\nReasoning steps:\n1. Parse the path commands to extract all distinct points.\n2. Determine the number of unique vertices to identify the polygon type.\n3. For quadrilaterals:\n   - Check if opposite sides are approximately parallel (slopes within 10%).\n   - Check if all angles are approximately 90° (dot products near zero).\n   - If both conditions hold, output \"rectangle\".\n   - Else, if two distinct pairs of adjacent sides are equal in length (within 0.1 units), output \"kite\".\n   - Else, if at least one pair of sides is parallel, output \"trapezoid\".\n4. For triangles, output \"triangle\".\n5. For other polygons, output based on side count (e.g., pentagon for 5 sides).\n\nExamples for guidance:\n- Path: <path d=\"M0,0 L10,0 L10,10 L0,10 Z\"/> → rectangle (exact right angles).\n- Path: <path d=\"M0,0 L5,10 L10,0 Z\"/> → triangle (three sides).\n- Path: <path d=\"M31.84,9.21 L39.79,23.26 L46.03,19.73 L38.09,5.68 Z\"/> → rectangle (angles approximately 90° despite rounding).",
+        "Q": 8.555555555555554,
+        "N": 10,
+        "uct_value": 2.5638457878563488,
+        "reward": 0.8666666666666667,
+        "children": [
+          {
+            "id": 12,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Identify the geometric shape that the SVG path is intended to represent, accounting for possible rounding in coordinates. Use approximate comparisons (within 0.1 units for distances and 5 degrees for angles) and prioritize the most specific matching option.\n\nOptions: circle, heptagon, hexagon, kite, line, octagon, pentagon, rectangle, sector, triangle, trapezoid.\n\nReasoning steps:\n1. Parse the path commands to extract all distinct points.\n2. Determine the number of unique vertices to identify the polygon type.\n3. For quadrilaterals:\n   - Check if opposite sides are approximately parallel (slopes within 10%).\n   - Check if all angles are approximately 90° (dot products near zero).\n   - If both conditions hold, output \"rectangle\".\n   - Else, if two distinct pairs of adjacent sides are equal in length (within 0.1 units), output \"kite\".\n   - Else, if at least one pair of sides is parallel, output \"trapezoid\".\n4. For triangles, output \"triangle\".\n5. For other polygons, output based on side count (e.g., pentagon for 5 sides).\n\nExamples for guidance:\n- Path: <path d=\"M0,0 L10,0 L10,10 L0,10 Z\"/> → rectangle (exact right angles).\n- Path: <path d=\"M0,0 L5,10 L10,0 Z\"/> → triangle (three sides).\n- Path: <path d=\"M31.84,9.21 L39.79,23.26 L46.03,19.73 L38.09,5.68 Z\"/> → rectangle (angles approximately 90° despite rounding).",
+            "Q": 3.405555555555556,
+            "N": 4,
+            "uct_value": 3.799078549941003,
+            "reward": 0.8666666666666667,
+            "children": [
+              {
+                "id": 13,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Identify the geometric shape that the SVG path is intended to represent, accounting for possible rounding in coordinates. Use approximate comparisons (within 0.1 units for distances and 5 degrees for angles) and prioritize the most specific matching option.\n\nOptions: circle, heptagon, hexagon, kite, line, octagon, pentagon, rectangle, sector, triangle, trapezoid.\n\nReasoning steps:\n1. Parse the path commands to extract all distinct points.\n2. Determine the number of unique vertices to identify the polygon type.\n3. For quadrilaterals:\n   - Check if opposite sides are approximately parallel (slopes within 10%).\n   - Check if all angles are approximately 90° (dot products near zero).\n   - If both conditions hold, output \"rectangle\".\n   - Else, if two distinct pairs of adjacent sides are equal in length (within 0.1 units), output \"kite\".\n   - Else, if at least one pair of sides is parallel, output \"trapezoid\".\n4. For triangles, output \"triangle\".\n5. For other polygons, output based on side count (e.g., pentagon for 5 sides).\n\nExamples for guidance:\n- Path: <path d=\"M0,0 L10,0 L10,10 L0,10 Z\"/> → rectangle (exact right angles).\n- Path: <path d=\"M0,0 L5,10 L10,0 Z\"/> → triangle (three sides).\n- Path: <path d=\"M31.84,9.21 L39.79,23.26 L46.03,19.73 L38.09,5.68 Z\"/> → rectangle (angles approximately 90° despite rounding).",
+                "Q": 0.8500000000000001,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.9,
+                "children": []
+              },
+              {
+                "id": 14,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Identify the geometric shape that the SVG path is intended to represent, accounting for possible rounding in coordinates. Use approximate comparisons (within 0.1 units for distances and 5 degrees for angles) and prioritize the most specific matching option.\n\nOptions: circle, heptagon, hexagon, kite, line, octagon, pentagon, rectangle, sector, triangle, trapezoid.\n\nReasoning steps:\n1. Parse the path commands to extract all distinct points.\n2. Determine the number of unique vertices to identify the polygon type.\n3. For quadrilaterals:\n   - Check if opposite sides are approximately parallel (slopes within 10%).\n   - Check if all angles are approximately 90° (dot products near zero).\n   - If both conditions hold, output \"rectangle\".\n   - Else, if two distinct pairs of adjacent sides are equal in length (within 0.1 units), output \"kite\".\n   - Else, if at least one pair of sides is parallel, output \"trapezoid\".\n4. For triangles, output \"triangle\".\n5. For other polygons, output based on side count (e.g., pentagon for 5 sides).\n\nExamples for guidance:\n- Path: <path d=\"M0,0 L10,0 L10,10 L0,10 Z\"/> → rectangle (exact right angles).\n- Path: <path d=\"M0,0 L5,10 L10,0 Z\"/> → triangle (three sides).\n- Path: <path d=\"M31.84,9.21 L39.79,23.26 L46.03,19.73 L38.09,5.68 Z\"/> → rectangle (angles approximately 90° despite rounding).",
+                "Q": 0.8500000000000001,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.7666666666666667,
+                "children": []
+              },
+              {
+                "id": 15,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Identify the geometric shape that the SVG path is intended to represent, accounting for possible rounding in coordinates. Use approximate comparisons (within 0.1 units for distances and 5 degrees for angles) and prioritize the most specific matching option.\n\nOptions: circle, heptagon, hexagon, kite, line, octagon, pentagon, rectangle, sector, triangle, trapezoid.\n\nReasoning steps:\n1. Parse the path commands to extract all distinct points.\n2. Determine the number of unique vertices to identify the polygon type.\n3. For quadrilaterals:\n   - Check if opposite sides are approximately parallel (slopes within 10%).\n   - Check if all angles are approximately 90° (dot products near zero).\n   - If both conditions hold, output \"rectangle\".\n   - Else, if two distinct pairs of adjacent sides are equal in length (within 0.1 units), output \"kite\".\n   - Else, if at least one pair of sides is parallel, output \"trapezoid\".\n4. For triangles, output \"triangle\".\n5. For other polygons, output based on side count (e.g., pentagon for 5 sides).\n\nExamples for guidance:\n- Path: <path d=\"M0,0 L10,0 L10,10 L0,10 Z\"/> → rectangle (exact right angles).\n- Path: <path d=\"M0,0 L5,10 L10,0 Z\"/> → triangle (three sides).\n- Path: <path d=\"M31.84,9.21 L39.79,23.26 L46.03,19.73 L38.09,5.68 Z\"/> → rectangle (angles approximately 90° despite rounding).",
+                "Q": 0.8500000000000001,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.7666666666666667,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 16,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Identify the geometric shape that the SVG path is intended to represent, accounting for possible rounding in coordinates. Use approximate comparisons (within 0.1 units for distances and 5 degrees for angles) and prioritize the most specific matching option.\n\nOptions: circle, heptagon, hexagon, kite, line, octagon, pentagon, rectangle, sector, triangle, trapezoid.\n\nReasoning steps:\n1. Parse the path commands to extract all distinct points.\n2. Determine the number of unique vertices to identify the polygon type.\n3. For quadrilaterals:\n   - Check if opposite sides are approximately parallel (slopes within 10%).\n   - Check if all angles are approximately 90° (dot products near zero).\n   - If both conditions hold, output \"rectangle\".\n   - Else, if two distinct pairs of adjacent sides are equal in length (within 0.1 units), output \"kite\".\n   - Else, if at least one pair of sides is parallel, output \"trapezoid\".\n4. For triangles, output \"triangle\".\n5. For other polygons, output based on side count (e.g., pentagon for 5 sides).\n\nExamples for guidance:\n- Path: <path d=\"M0,0 L10,0 L10,10 L0,10 Z\"/> → rectangle (exact right angles).\n- Path: <path d=\"M0,0 L5,10 L10,0 Z\"/> → triangle (three sides).\n- Path: <path d=\"M31.84,9.21 L39.79,23.26 L46.03,19.73 L38.09,5.68 Z\"/> → rectangle (angles approximately 90° despite rounding).",
+            "Q": 3.4722222222222223,
+            "N": 4,
+            "uct_value": 4.342950169764161,
+            "reward": 0.9,
+            "children": [
+              {
+                "id": 17,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Identify the geometric shape that the SVG path is intended to represent, accounting for possible rounding in coordinates. Use approximate comparisons (within 0.1 units for distances and 5 degrees for angles) and prioritize the most specific matching option.\n\nOptions: circle, heptagon, hexagon, kite, line, octagon, pentagon, rectangle, sector, triangle, trapezoid.\n\nReasoning steps:\n1. Parse the path commands to extract all distinct points.\n2. Determine the number of unique vertices to identify the polygon type.\n3. For quadrilaterals:\n   - Check if opposite sides are approximately parallel (slopes within 10%).\n   - Check if all angles are approximately 90° (dot products near zero).\n   - If both conditions hold, output \"rectangle\".\n   - Else, if two distinct pairs of adjacent sides are equal in length (within 0.1 units), output \"kite\".\n   - Else, if at least one pair of sides is parallel, output \"trapezoid\".\n4. For triangles, output \"triangle\".\n5. For other polygons, output based on side count (e.g., pentagon for 5 sides).\n\nExamples for guidance:\n- Path: <path d=\"M0,0 L10,0 L10,10 L0,10 Z\"/> → rectangle (exact right angles).\n- Path: <path d=\"M0,0 L5,10 L10,0 Z\"/> → triangle (three sides).\n- Path: <path d=\"M31.84,9.21 L39.79,23.26 L46.03,19.73 L38.09,5.68 Z\"/> → rectangle (angles approximately 90° despite rounding).",
+                "Q": 0.8500000000000001,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.8666666666666667,
+                "children": []
+              },
+              {
+                "id": 18,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Identify the geometric shape that the SVG path is intended to represent, accounting for possible rounding in coordinates. Use approximate comparisons (within 0.1 units for distances and 5 degrees for angles) and prioritize the most specific matching option.\n\nOptions: circle, heptagon, hexagon, kite, line, octagon, pentagon, rectangle, sector, triangle, trapezoid.\n\nReasoning steps:\n1. Parse the path commands to extract all distinct points.\n2. Determine the number of unique vertices to identify the polygon type.\n3. For quadrilaterals:\n   - Check if opposite sides are approximately parallel (slopes within 10%).\n   - Check if all angles are approximately 90° (dot products near zero).\n   - If both conditions hold, output \"rectangle\".\n   - Else, if two distinct pairs of adjacent sides are equal in length (within 0.1 units), output \"kite\".\n   - Else, if at least one pair of sides is parallel, output \"trapezoid\".\n4. For triangles, output \"triangle\".\n5. For other polygons, output based on side count (e.g., pentagon for 5 sides).\n\nExamples for guidance:\n- Path: <path d=\"M0,0 L10,0 L10,10 L0,10 Z\"/> → rectangle (exact right angles).\n- Path: <path d=\"M0,0 L5,10 L10,0 Z\"/> → triangle (three sides).\n- Path: <path d=\"M31.84,9.21 L39.79,23.26 L46.03,19.73 L38.09,5.68 Z\"/> → rectangle (angles approximately 90° despite rounding).",
+                "Q": 0.8833333333333333,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.8333333333333334,
+                "children": []
+              },
+              {
+                "id": 19,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Identify the geometric shape that the SVG path is intended to represent, accounting for possible rounding in coordinates. Use approximate comparisons (within 0.1 units for distances and 5 degrees for angles) and prioritize the most specific matching option.\n\nOptions: circle, heptagon, hexagon, kite, line, octagon, pentagon, rectangle, sector, triangle, trapezoid.\n\nReasoning steps:\n1. Parse the path commands to extract all distinct points.\n2. Determine the number of unique vertices to identify the polygon type.\n3. For quadrilaterals:\n   - Check if opposite sides are approximately parallel (slopes within 10%).\n   - Check if all angles are approximately 90° (dot products near zero).\n   - If both conditions hold, output \"rectangle\".\n   - Else, if two distinct pairs of adjacent sides are equal in length (within 0.1 units), output \"kite\".\n   - Else, if at least one pair of sides is parallel, output \"trapezoid\".\n4. For triangles, output \"triangle\".\n5. For other polygons, output based on side count (e.g., pentagon for 5 sides).\n\nExamples for guidance:\n- Path: <path d=\"M0,0 L10,0 L10,10 L0,10 Z\"/> → rectangle (exact right angles).\n- Path: <path d=\"M0,0 L5,10 L10,0 Z\"/> → triangle (three sides).\n- Path: <path d=\"M31.84,9.21 L39.79,23.26 L46.03,19.73 L38.09,5.68 Z\"/> → rectangle (angles approximately 90° despite rounding).",
+                "Q": 0.8833333333333333,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.8,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 20,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Identify the geometric shape that the SVG path is intended to represent, accounting for possible rounding in coordinates. Use approximate comparisons (within 0.1 units for distances and 5 degrees for angles) and prioritize the most specific matching option.\n\nOptions: circle, heptagon, hexagon, kite, line, octagon, pentagon, rectangle, sector, triangle, trapezoid.\n\nReasoning steps:\n1. Parse the path commands to extract all points. Round each coordinate to 0.1 units to handle rounding errors.\n2. Remove consecutive duplicate points (coordinates within 0.1 units of each other).\n3. Check if the path is closed: if the first and last points are approximately equal (within 0.1 units) OR if the path ends with a 'Z' command. If closed, remove the last point (if it duplicates the first) and treat the vertex list as cyclic.\n4. Count the number of unique vertices to identify the polygon type.\n5. For quadrilaterals (4 vertices):\n   - Check if opposite sides are approximately parallel (slopes within 10%).\n   - Check if all angles are approximately 90° (dot products near zero).\n   - If both conditions hold, output \"rectangle\".\n   - Else, if two distinct pairs of adjacent sides are equal in length (within 0.1 units), output \"kite\".\n   - Else, if at least one pair of sides is parallel, output \"trapezoid\".\n6. For triangles (3 vertices), output \"triangle\".\n7. For other polygons, output based on side count (pentagon for 5, hexagon for 6, etc.).\n\nImportant: Pay special attention to vertex counting in closed paths. A common mistake is counting the starting point twice when the path returns to it.\n\nExamples for guidance:\n- Path: <path d=\"M0,0 L10,0 L10,10 L0,10 Z\"/> → rectangle (4 vertices, right angles)\n- Path: <path d=\"M0,0 L5,10 L10,0 Z\"/> → triangle (3 vertices)\n- Path: <path d=\"M31.84,9.21 L39.79,23.26 L46.03,19.73 L38.09,5.68 Z\"/> → rectangle (angles ~90°)\n- Path: <path d=\"M0,0 L10,0 L10,10 L0,10 L0,0\"/> → rectangle (implicit closure, 4 vertices)\n- Path: <path d=\"M 76.02,27.33 L 78.76,15.38 L 67.84,7.09 L 62.04,11.54 L 65.94,19.73 L 76.02,27.33\"/> → pentagon (5 unique vertices, closed path)",
+            "Q": 0.8444444444444444,
+            "N": 1,
+            "uct_value": null,
+            "reward": 0.9,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": 21,
+        "depth": 1,
+        "action_sequence": [
+          "FailureDrivenAction"
+        ],
+        "prompt": "Identify the geometric shape drawn by the SVG path. Follow these steps precisely:\n\n1.  Extract all absolute coordinate points from the path commands. For `M` (move) and `L` (line) commands, note the coordinates. Ignore any curved segments (e.g., `C`, `S`, `Q`, `T`).\n2.  List these points in order, but remove any duplicates. If the path ends by returning to the start point (either explicitly with `Z` or implicitly with the same coordinates), do **not** count the return as a new vertex.\n3.  Count the number of **unique vertices** in the resulting list.\n4.  Map the count to the shape: 2 vertices = line, 3 = triangle, 4 = quadrilateral (e.g., rectangle, kite), 5 = pentagon, 6 = hexagon, 7 = heptagon, 8 = octagon.\n\n**Critical: The number of `L` commands does NOT equal the number of sides. You must count unique points.**\n\nExample of a common mistake:\n*   Path: `M 22,34 L 33,49 L 62,26 L 85,28 L 52,13 L 22,34`\n*   Incorrect: Counting 6 `L` commands and calling it a hexagon.\n*   Correct: The unique points are (22,34), (33,49), (62,26), (85,28), (52,13). There are 5 unique vertices, so it is a pentagon.\n\nNow, analyze the following path:",
+        "Q": 8.555555555555555,
+        "N": 10,
+        "uct_value": 2.5090511726034626,
+        "reward": 0.8333333333333334,
+        "children": [
+          {
+            "id": 22,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Identify the geometric shape drawn by the SVG path. Follow these steps precisely:\n\n**Step 1: Analyze Path Composition**\nScan all commands in the `d` attribute. Determine if the path contains:\n- **Only straight-line commands:** `M`, `L`, `H`, `V`, and `Z`\n- **Any curved commands:** `A` (arc), `C`, `S` (cubic Bézier), `Q`, `T` (quadratic Bézier)\n\n**Step 2: Branch Analysis Based on Path Type**\n\n**A. If the path contains ONLY straight-line commands (`M`, `L`, `H`, `V`, `Z`):**\n1. Extract all absolute coordinate points:\n   - For `M` and `L`: Use the given coordinates\n   - For `H x`: Calculate (x, current_y)\n   - For `V y`: Calculate (current_x, y)\n   - Ignore `Z` as a point (it returns to start)\n2. List points in order, removing consecutive duplicates\n3. Count unique vertices (ignore duplicate start/end if closed)\n4. Map vertex count to shape:\n   - 2 vertices: line\n   - 3 vertices: triangle\n   - 4 vertices: quadrilateral (rectangle, kite, etc.)\n   - 5 vertices: pentagon\n   - 6 vertices: hexagon\n   - 7 vertices: heptagon\n   - 8 vertices: octagon\n\n**B. If the path contains ANY curved commands:**\n1. **Check for Sector (pie slice):**\n   - Pattern: `M x1,y1 L x2,y2 A ... x3,y3 L x1,y1` (or `Z`)\n   - Requires: Two straight lines + one arc + return to start\n   - If matched: answer = **sector**\n\n2. **Check for Circle/Ellipse:**\n   - Pattern: Single `M` followed by one or more `A` commands forming closed loop\n   - Arc flags should indicate full rotation (e.g., large-arc-flag=1)\n   - If start/end points coincide: answer = **circle** (if rx=ry) or **ellipse** (if rx≠ry)\n\n3. **Check for Rounded Rectangle:**\n   - Pattern: Alternating `L` and `A` commands (typically 4 of each)\n   - Overall rectangular bounding behavior\n   - If matched: answer = **rectangle**\n\n4. **If no pattern matches:**\n   - Default to simplest shape possible (often \"line\")\n\n**Step 3: Special Considerations**\n- For closed paths ending with `Z`, the starting point is not counted as an additional vertex\n- Floating-point coordinates: Points are considered identical if coordinates match within 0.01 tolerance\n- Relative commands: Convert to absolute coordinates before analysis\n\n**Examples for Reference:**\n\nExample 1 (Previous mistake):\nPath: `M 38.00,35.00 L 45.66,9.11 A 27.00,27.00 0.00 0,1 63.92,27.46 L 38.00,35.00`\n- Contains curve (`A`) → Use curved path branch\n- Matches sector pattern: M→L→A→L (to start)\n- Correct answer: **sector**\n\nExample 2 (Polygon):\nPath: `M 22,34 L 33,49 L 62,26 L 85,28 L 52,13 Z`\n- Only straight commands → Use straight path branch\n- Unique vertices: (22,34), (33,49), (62,26), (85,28), (52,13) → 5 vertices\n- Correct answer: **pentagon**\n\nExample 3 (Rounded rectangle):\nPath: `M 10,10 H 90 A 10,10 0 0 1 100,20 V 80 A 10,10 0 0 1 90,90 H 10 A 10,10 0 0 1 0,80 V 20 A 10,10 0 0 1 10,10 Z`\n- Contains curves → Use curved path branch\n- Pattern shows rounded rectangle behavior\n- Correct answer: **rectangle**\n\nNow, analyze the following path:",
+            "Q": 3.4000000000000004,
+            "N": 4,
+            "uct_value": 4.3540612697641725,
+            "reward": 0.8333333333333334,
+            "children": [
+              {
+                "id": 23,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Identify the geometric shape drawn by the SVG path. Follow these steps precisely:\n\n**Step 1: Analyze Path Composition**\nScan all commands in the `d` attribute. Determine if the path contains:\n- **Only straight-line commands:** `M`, `L`, `H`, `V`, and `Z`\n- **Any curved commands:** `A` (arc), `C`, `S` (cubic Bézier), `Q`, `T` (quadratic Bézier)\n\n**Step 2: Branch Analysis Based on Path Type**\n\n**A. If the path contains ONLY straight-line commands (`M`, `L`, `H`, `V`, `Z`):**\n1. Extract all absolute coordinate points:\n   - For `M` and `L`: Use the given coordinates\n   - For `H x`: Calculate (x, current_y)\n   - For `V y`: Calculate (current_x, y)\n   - Ignore `Z` as a point (it returns to start)\n2. List points in order, removing consecutive duplicates\n3. Count unique vertices (ignore duplicate start/end if closed)\n4. Map vertex count to shape:\n   - 2 vertices: line\n   - 3 vertices: triangle\n   - 4 vertices: quadrilateral (rectangle, kite, etc.)\n   - 5 vertices: pentagon\n   - 6 vertices: hexagon\n   - 7 vertices: heptagon\n   - 8 vertices: octagon\n\n**B. If the path contains ANY curved commands:**\n1. **Check for Sector (pie slice):**\n   - Pattern: `M x1,y1 L x2,y2 A ... x3,y3 L x1,y1` (or `Z`)\n   - Requires: Two straight lines + one arc + return to start\n   - If matched: answer = **sector**\n\n2. **Check for Circle/Ellipse:**\n   - Pattern: Single `M` followed by one or more `A` commands forming closed loop\n   - Arc flags should indicate full rotation (e.g., large-arc-flag=1)\n   - If start/end points coincide: answer = **circle** (if rx=ry) or **ellipse** (if rx≠ry)\n\n3. **Check for Rounded Rectangle:**\n   - Pattern: Alternating `L` and `A` commands (typically 4 of each)\n   - Overall rectangular bounding behavior\n   - If matched: answer = **rectangle**\n\n4. **If no pattern matches:**\n   - Default to simplest shape possible (often \"line\")\n\n**Step 3: Special Considerations**\n- For closed paths ending with `Z`, the starting point is not counted as an additional vertex\n- Floating-point coordinates: Points are considered identical if coordinates match within 0.01 tolerance\n- Relative commands: Convert to absolute coordinates before analysis\n\n**Examples for Reference:**\n\nExample 1 (Previous mistake):\nPath: `M 38.00,35.00 L 45.66,9.11 A 27.00,27.00 0.00 0,1 63.92,27.46 L 38.00,35.00`\n- Contains curve (`A`) → Use curved path branch\n- Matches sector pattern: M→L→A→L (to start)\n- Correct answer: **sector**\n\nExample 2 (Polygon):\nPath: `M 22,34 L 33,49 L 62,26 L 85,28 L 52,13 Z`\n- Only straight commands → Use straight path branch\n- Unique vertices: (22,34), (33,49), (62,26), (85,28), (52,13) → 5 vertices\n- Correct answer: **pentagon**\n\nExample 3 (Rounded rectangle):\nPath: `M 10,10 H 90 A 10,10 0 0 1 100,20 V 80 A 10,10 0 0 1 90,90 H 10 A 10,10 0 0 1 0,80 V 20 A 10,10 0 0 1 10,10 Z`\n- Contains curves → Use curved path branch\n- Pattern shows rounded rectangle behavior\n- Correct answer: **rectangle**\n\nNow, analyze the following path:",
+                "Q": 0.8333333333333334,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.8333333333333334,
+                "children": []
+              },
+              {
+                "id": 24,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Identify the geometric shape drawn by the SVG path. Follow these steps precisely:\n\n**Step 1: Analyze Path Composition**\nScan all commands in the `d` attribute. Determine if the path contains:\n- **Only straight-line commands:** `M`, `L`, `H`, `V`, and `Z`\n- **Any curved commands:** `A` (arc), `C`, `S` (cubic Bézier), `Q`, `T` (quadratic Bézier)\n\n**Step 2: Branch Analysis Based on Path Type**\n\n**A. If the path contains ONLY straight-line commands (`M`, `L`, `H`, `V`, `Z`):**\n1. Extract all absolute coordinate points:\n   - For `M` and `L`: Use the given coordinates\n   - For `H x`: Calculate (x, current_y)\n   - For `V y`: Calculate (current_x, y)\n   - Ignore `Z` as a point (it returns to start)\n2. List points in order, removing consecutive duplicates\n3. Count unique vertices (ignore duplicate start/end if closed)\n4. Map vertex count to shape:\n   - 2 vertices: line\n   - 3 vertices: triangle\n   - 4 vertices: quadrilateral (rectangle, kite, etc.)\n   - 5 vertices: pentagon\n   - 6 vertices: hexagon\n   - 7 vertices: heptagon\n   - 8 vertices: octagon\n\n**B. If the path contains ANY curved commands:**\n1. **Check for Sector (pie slice):**\n   - Pattern: `M x1,y1 L x2,y2 A ... x3,y3 L x1,y1` (or `Z`)\n   - Requires: Two straight lines + one arc + return to start\n   - If matched: answer = **sector**\n\n2. **Check for Circle/Ellipse:**\n   - Pattern: Single `M` followed by one or more `A` commands forming closed loop\n   - Arc flags should indicate full rotation (e.g., large-arc-flag=1)\n   - If start/end points coincide: answer = **circle** (if rx=ry) or **ellipse** (if rx≠ry)\n\n3. **Check for Rounded Rectangle:**\n   - Pattern: Alternating `L` and `A` commands (typically 4 of each)\n   - Overall rectangular bounding behavior\n   - If matched: answer = **rectangle**\n\n4. **If no pattern matches:**\n   - Default to simplest shape possible (often \"line\")\n\n**Step 3: Special Considerations**\n- For closed paths ending with `Z`, the starting point is not counted as an additional vertex\n- Floating-point coordinates: Points are considered identical if coordinates match within 0.01 tolerance\n- Relative commands: Convert to absolute coordinates before analysis\n\n**Examples for Reference:**\n\nExample 1 (Previous mistake):\nPath: `M 38.00,35.00 L 45.66,9.11 A 27.00,27.00 0.00 0,1 63.92,27.46 L 38.00,35.00`\n- Contains curve (`A`) → Use curved path branch\n- Matches sector pattern: M→L→A→L (to start)\n- Correct answer: **sector**\n\nExample 2 (Polygon):\nPath: `M 22,34 L 33,49 L 62,26 L 85,28 L 52,13 Z`\n- Only straight commands → Use straight path branch\n- Unique vertices: (22,34), (33,49), (62,26), (85,28), (52,13) → 5 vertices\n- Correct answer: **pentagon**\n\nExample 3 (Rounded rectangle):\nPath: `M 10,10 H 90 A 10,10 0 0 1 100,20 V 80 A 10,10 0 0 1 90,90 H 10 A 10,10 0 0 1 0,80 V 20 A 10,10 0 0 1 10,10 Z`\n- Contains curves → Use curved path branch\n- Pattern shows rounded rectangle behavior\n- Correct answer: **rectangle**\n\nNow, analyze the following path:",
+                "Q": 0.8666666666666667,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.8666666666666667,
+                "children": []
+              },
+              {
+                "id": 25,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Identify the geometric shape drawn by the SVG path. Follow these steps precisely:\n\n**Step 1: Analyze Path Composition**\nScan all commands in the `d` attribute. Determine if the path contains:\n- **Only straight-line commands:** `M`, `L`, `H`, `V`, and `Z`\n- **Any curved commands:** `A` (arc), `C`, `S` (cubic Bézier), `Q`, `T` (quadratic Bézier)\n\n**Step 2: Branch Analysis Based on Path Type**\n\n**A. If the path contains ONLY straight-line commands (`M`, `L`, `H`, `V`, `Z`):**\n1. Extract all absolute coordinate points (convert relative commands to absolute):\n   - For `M` and `L`: Use the given coordinates\n   - For `H x`: Calculate (x, current_y)\n   - For `V y`: Calculate (current_x, y)\n   - Ignore `Z` as a point (it returns to start)\n2. List points in order, removing consecutive duplicates and points within 0.01 tolerance\n3. **Simplify the polygon:** If a point lies within 0.5 units of the line segment between its neighbors (indicating redundancy), remove it\n4. Count unique vertices (ignore duplicate start/end if closed)\n5. **For quadrilaterals (4 vertices):**\n   - Calculate all side lengths and diagonals\n   - Check if opposite sides are equal (within 1% tolerance)\n   - Check if all angles are 90° (dot product of adjacent sides ≈ 0)\n   - If both conditions hold: answer = **rectangle**\n   - Else, check if at least one pair of sides is parallel: answer = **trapezoid**\n   - Else, check if two pairs of adjacent sides are equal: answer = **kite**\n   - Else: answer = **quadrilateral** (but default to simplest match in options)\n6. For other vertex counts:\n   - 2 vertices: line\n   - 3 vertices: triangle\n   - 5 vertices: pentagon\n   - 6 vertices: hexagon\n   - 7 vertices: heptagon\n   - 8 vertices: octagon\n\n**B. If the path contains ANY curved commands:**\n1. **Check for Sector (pie slice):**\n   - Pattern: `M x1,y1` followed by straight lines + one arc + return to start\n   - Variations allowed: `L` can be replaced with `H`/`V`\n   - If matched: answer = **sector**\n\n2. **Check for Circle/Ellipse:**\n   - Pattern: Single `M` followed by one or more `A` commands forming closed loop\n   - Arc flags should indicate full rotation (e.g., large-arc-flag=1)\n   - If start/end points coincide: answer = **circle** (if rx=ry) or **ellipse** (if rx≠ry)\n\n3. **Check for Rounded Rectangle:**\n   - Pattern: Four straight segments alternating with four arcs\n   - Overall rectangular bounding behavior\n   - If matched: answer = **rectangle**\n\n4. **If no pattern matches:**\n   - Default to simplest shape possible (often \"line\")\n\n**Step 3: Special Considerations**\n- For closed paths ending with `Z`, the starting point is not counted as an additional vertex\n- Multiple subpaths should be treated as a single shape if they connect at endpoints\n- Floating-point coordinates: Use 0.01 tolerance for point equality, 1% for length equality, and 0.01 for dot products near zero\n\n**Examples for Reference:**\n\nExample 1 (Rectangle with redundant points):\nPath: `M 23.33,42.35 L 22.72,41.71 L 7.96,55.69 M 7.96,55.69 L 8.56,56.33 L 23.33,42.35`\n- Only straight commands → Use straight path branch\n- Points: (23.33,42.35), (22.72,41.71), (7.96,55.69), (8.56,56.33)\n- After simplification: Points B and D are redundant (close to line AC) → effectively 2 vertices?\n- But check: B and D not exactly on AC → keep as quadrilateral\n- Opposite sides equal and parallel → parallelogram\n- Check angles: not 90° → not rectangle\n- But options include trapezoid → answer = trapezoid\n- **Correction:** This path actually represents a rectangle with approximation errors. After geometric checks:\n  - Opposite sides equal: AB ≈ CD ≈ 0.88, BC ≈ DA ≈ 20.33\n  - Angles: dot products near zero → right angles\n  - Correct answer: **rectangle**\n\nExample 2 (Sector with horizontal line):\nPath: `M 50,50 H 80 A 30,30 0 0,1 50,20 Z`\n- Contains curve (`A`) → Use curved path branch\n- Pattern: M→H→A→Z (return to start)\n- Matches sector pattern with H command\n- Correct answer: **sector**\n\nExample 3 (Pentagon):\nPath: `M 22,34 L 33,49 L 62,26 L 85,28 L 52,13 Z`\n- Only straight commands → Use straight path branch\n- Unique vertices: 5 points\n- Correct answer: **pentagon**\n\nNow, analyze the following path:",
+                "Q": 0.8333333333333334,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.8333333333333334,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 26,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Identify the geometric shape drawn by the SVG path. Follow these steps precisely:\n\n1.  Extract all absolute coordinate points from the path commands:\n    - For `M` (move) and `L` (line) commands, note the coordinates.\n    - For curved commands (`A`, `C`, `S`, `Q`, `T`), note the **endpoint coordinates** (the last two numbers).\n    - Ignore all control points and intermediate parameters for curves.\n2.  List these points in the order they occur. Remove duplicates: if two points have coordinates within 0.01 of each other, consider them identical. If the path ends by returning to the start (via `Z` or identical coordinates), do **not** count the return as a new vertex.\n3.  Count the number of **unique vertices** in the resulting list.\n4.  Check for curved commands:\n    - If the path contains an `A` (arc) command and has exactly 3 unique vertices, and the path is closed, classify it as a **sector**.\n    - Else, if the path contains any curved commands and is closed, consider it a **curved shape** (e.g., circle, ellipse) unless vertex count indicates otherwise.\n    - Else, map the vertex count to the shape: 2 = line, 3 = triangle, 4 = quadrilateral, 5 = pentagon, 6 = hexagon, 7 = heptagon, 8 = octagon.\n\n**Critical: The number of `L` commands does NOT equal the number of sides. You must count unique points, including endpoints of curves.**\n\n**Examples for Common Mistakes:**\n\nExample 1 (Straight-line polygon):\n- Path: `M 22,34 L 33,49 L 62,26 L 85,28 L 52,13 L 22,34`\n- Points: (22,34), (33,49), (62,26), (85,28), (52,13) → 5 unique vertices.\n- Correct: pentagon (not hexagon, despite 6 `L` commands).\n\nExample 2 (Sector with arc):\n- Path: `M 59,38 L 66,49 A 13,13 0 0,1 53,50 L 59,38`\n- Points: (59,38) [M], (66,49) [L], (53,50) [A endpoint], (59,38) [L] → unique: (59,38), (66,49), (53,50).\n- Contains `A` command and 3 vertices → Correct: sector (not line or triangle).\n\nNow, analyze the following path:",
+            "Q": 0.8666666666666667,
+            "N": 1,
+            "uct_value": null,
+            "reward": 0.9,
+            "children": []
+          },
+          {
+            "id": 27,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "Identify the geometric shape drawn by the SVG path. Follow these steps precisely:\n\n**Step 1: Classify the Path Type**\nScan the entire `d` attribute for command types.\n- If the path contains **any `A` (arc) commands**, it is a **circular-related shape** (e.g., circle, ellipse, sector). Proceed to **Step 2A**.\n- If the path contains **any `C`, `S`, `Q`, or `T` commands** (Bézier curves), the shape is **curved** and likely not a basic polygon. Pay close attention to the options.\n- If the path contains **only `M`, `L`, `H`, `V`, and/or `Z` commands**, it is a **polygon or line**. Proceed to **Step 2B**.\n\n**Step 2A: Analyze Circular Paths (Arcs)**\nFor paths with `A` commands:\n- Extract the arc parameters: radii (`rx, ry`) and the arc's endpoint.\n- Check if the path ends at its start point (via `Z` or coordinates).\n- **Crucial: Check for lines to a common point.** If the path has lines from a central point to the arc's start and end, it is a **sector**.\n  - *Example:* `M C L P1 A ... P2 L C` forms a sector, where `C` is the center.\n- If the arc is the primary element and forms a full circle (often with two symmetric arcs), it is a **circle** (if `rx == ry`) or an **ellipse** (if `rx != ry`).\n\n**Step 2B: Analyze Polygonal Paths**\nFor paths with only `M`, `L`, `H`, `V`, `Z`:\n1. Extract all absolute points from `M`, `L`, `H`, and `V` commands (convert `H`/`V` to full coordinates).\n2. List points in order, removing consecutive duplicates.\n3. If the path closes with `Z`, it returns to the start; do not add an extra point.\n4. Count the **unique vertices**.\n5. Map the count: 2 = line, 3 = triangle, 4 = quadrilateral, 5 = pentagon, 6 = hexagon, 7 = heptagon, 8 = octagon.\n   - *Note:* The number of `L` commands does NOT equal the number of sides.\n\n**Step 3: Match to Options**\nChoose the most specific and accurate option from the provided list.\n\n---\n\n**Example to Avoid Common Mistakes:**\n- **Path:** `M 59.00,38.00 L 66.02,48.94 A 13.00,13.00 0.00 0,1 53.59,49.82 L 59.00,38.00`\n- **Incorrect:** Ignoring the arc and counting only `M`/`L` points yields 2 vertices (line).\n- **Correct:** The path has an `A` command (Step 1 → Step 2A). It has lines from a center point (`59.00,38.00`) to the arc's start and end, forming a **sector**.\n\nNow, analyze the following path:",
+            "Q": 3.4222222222222225,
+            "N": 4,
+            "uct_value": 3.8324118499410367,
+            "reward": 0.8666666666666667,
+            "children": [
+              {
+                "id": 28,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Identify the geometric shape drawn by the SVG path. Follow these steps precisely:\n\n**Step 1: Classify the Path Type**\nScan the entire `d` attribute for command types.\n- If the path contains **any `A` (arc) commands**, it is a **circular-related shape** (e.g., circle, ellipse, sector). Proceed to **Step 2A**.\n- If the path contains **any `C`, `S`, `Q`, or `T` commands** (Bézier curves), the shape is **curved** and likely not a basic polygon. Pay close attention to the options.\n- If the path contains **only `M`, `L`, `H`, `V`, and/or `Z` commands**, it is a **polygon or line**. Proceed to **Step 2B**.\n\n**Step 2A: Analyze Circular Paths (Arcs)**\nFor paths with `A` commands:\n- Extract the arc parameters: radii (`rx, ry`) and the arc's endpoint.\n- Check if the path ends at its start point (via `Z` or coordinates).\n- **Crucial: Check for lines to a common point.** If the path has lines from a central point to the arc's start and end, it is a **sector**.\n  - *Example:* `M C L P1 A ... P2 L C` forms a sector, where `C` is the center.\n- If the arc is the primary element and forms a full circle (often with two symmetric arcs), it is a **circle** (if `rx == ry`) or an **ellipse** (if `rx != ry`).\n\n**Step 2B: Analyze Polygonal Paths**\nFor paths with only `M`, `L`, `H`, `V`, `Z`:\n1. **Extract all absolute points** from all commands in order:\n   - Convert `H x` to `(x, current_y)`\n   - Convert `V y` to `(current_x, y)`\n   - Treat `Z` as returning to the initial point of the current subpath (do not add a new point)\n2. **Handle multiple subpaths**:\n   - If multiple `M` commands exist, check if subpaths connect (end point of one subpath matches start point of next)\n   - Merge connected subpaths into a single continuous path\n3. **Create ordered vertex list**:\n   - List all points in sequence, removing:\n     - Consecutive duplicate points\n     - Duplicate points at subpath connections\n   - If the path closes (via `Z` or ending at start), ensure the closing point is not counted as an additional vertex\n4. **Count unique vertices**: Count distinct coordinate pairs in the ordered list\n5. **Map the count**: 2 = line, 3 = triangle, 4 = quadrilateral, 5 = pentagon, 6 = hexagon, 7 = heptagon, 8 = octagon\n   - *Note:* The number of `L` commands does NOT equal the number of sides\n\n**Step 3: Match to Options**\nChoose the most specific and accurate option from the provided list.\n\n---\n\n**Critical Examples to Avoid Common Mistakes:**\n\n**Example 1: Multiple Subpaths Forming One Polygon**\n- Path: `M 0,0 L 10,0 M 10,0 L 10,10 M 10,10 L 0,10 M 0,10 L 0,0`\n- Forms a square with vertices: (0,0), (10,0), (10,10), (0,10)\n- Count: 4 vertices → quadrilateral (not octagon)\n\n**Example 2: Duplicate Points at Subpath Connections**\n- Path: `M 68.30,63.99 L 51.75,56.30 L 54.65,45.37 L 44.78,49.20 M 44.78,49.20 L 53.45,29.00 L 58.01,38.91 L 72.03,39.79 L 68.30,63.99`\n- Points: (68.30,63.99), (51.75,56.30), (54.65,45.37), (44.78,49.20), (53.45,29.00), (58.01,38.91), (72.03,39.79)\n- Count: 7 unique vertices → heptagon (not octagon)\n\n**Example 3: Arc with Center Lines (Sector)**\n- Path: `M 59.00,38.00 L 66.02,48.94 A 13.00,13.00 0.00 0,1 53.59,49.82 L 59.00,38.00`\n- Contains `A` command → Step 2A\n- Has lines from center point (59.00,38.00) to arc endpoints → sector\n\n**Validation Check**: After counting vertices, verify that for a closed polygon with N vertices, there are exactly N line segments (including the closing segment).\n\nNow, analyze the following path:",
+                "Q": 0.8500000000000001,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.8333333333333334,
+                "children": []
+              },
+              {
+                "id": 29,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Identify the geometric shape drawn by the SVG path. Follow these steps precisely:\n\n**Step 1: Classify Path Structure and Type**\n- Count the number of `M` (moveto) commands. Each `M` starts a new, independent subpath.\n- Scan for command types:\n  - If the path contains **any `A` (arc) commands**, it is a **circular-related shape** (e.g., circle, ellipse, sector). Proceed to **Step 2A**.\n  - If the path contains **any `C`, `S`, `Q`, or `T` commands** (Bézier curves), the shape is **curved** and likely not a basic polygon.\n  - If the path contains **only `M`, `L`, `H`, `V`, and/or `Z` commands**, it is composed of straight lines. Proceed to **Step 2B**.\n\n**Step 2A: Analyze Circular Paths (Arcs)**\nFor paths with `A` commands:\n- Extract arc parameters: radii (`rx, ry`) and endpoints.\n- Check if the path closes with `Z` or returns to the start.\n- **Crucial:** Check for lines connecting to a common center point. If present, it is likely a **sector**.\n\n**Step 2B: Analyze Straight-Line Paths**\n1. **Identify Subpaths:** Split the path into separate subpaths at each `M`. For each subpath, list all absolute points (convert `H`/`V` to coordinates).\n2. **Check Closure per Subpath:** A subpath is closed if it ends with `Z` or if its endpoint equals its start point.\n3. **Synthesize the Overall Shape:**\n   - If there is **only one closed subpath**, treat it as a single polygon. Count its **unique vertices** and proceed to classify.\n   - If there are **multiple subpaths**, determine if they connect to form a single shape:\n     - *Example:* `M A L B M B L C M C L A` forms a **triangle** via three lines.\n     - Subpaths that do not connect form separate shapes (e.g., two lines).\n4. **Classify the Polygon:**\n   - For closed shapes, map vertex count: 3 = triangle, 4 = quadrilateral, etc.\n   - For quadrilaterals, check geometric properties:\n     - Right angles and equal opposite sides → **rectangle**\n     - Two pairs of parallel sides → **parallelogram** (if no rectangle, may be trapezoid)\n     - One pair of parallel sides → **trapezoid**\n     - Adjacent pairs of equal sides → **kite**\n\n**Step 3: Match to Options**\nChoose the most specific option from the list. If the shape is drawn by multiple connected subpaths (e.g., outline of a rectangle), select that shape.\n\n---\n\n**Examples to Avoid Common Mistakes:**\n- **Path:** `M A L B M B L C L D M D L A`\n  - **Incorrect:** Treating as one quadrilateral with 4 vertices.\n  - **Correct:** Three subpaths that form a closed quadrilateral outline (e.g., rectangle).\n- **Path:** `M 59.00,38.00 L 66.02,48.94 A 13.00,13.00 0.00 0,1 53.59,49.82 L 59.00,38.00`\n  - **Incorrect:** Counting only `L` points yields a line.\n  - **Correct:** Contains an arc and lines to a center → **sector**.\n\nNow, analyze the following path:",
+                "Q": 0.8500000000000001,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.8666666666666667,
+                "children": []
+              },
+              {
+                "id": 30,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "Identify the geometric shape drawn by the SVG path. Follow these steps precisely:\n\n**Step 1: Classify the Path Type**\nScan the entire `d` attribute for command types.\n- If the path contains **any `A` (arc) commands**, it is a **circular-related shape** (e.g., circle, ellipse, sector). Proceed to **Step 2A**.\n- If the path contains **any `C`, `S`, `Q`, or `T` commands** (Bézier curves), the shape is **curved** and likely not a basic polygon. Pay close attention to the options.\n- If the path contains **only `M`, `L`, `H`, `V`, and/or `Z` commands**, it is a **polygon or line**. Proceed to **Step 2B**.\n\n**Step 2A: Analyze Circular Paths (Arcs)**\nFor paths with `A` commands:\n- Extract the arc parameters: radii (`rx, ry`) and the arc's endpoint.\n- Check if the path ends at its start point (via `Z` or coordinates).\n- **Crucial: Check for lines to a common point.** If the path has lines from a central point to the arc's start and end, it is a **sector**.\n  - *Example:* `M C L P1 A ... P2 L C` forms a sector, where `C` is the center.\n- If the arc is the primary element and forms a full circle (often with two symmetric arcs), it is a **circle** (if `rx == ry`) or an **ellipse** (if `rx != ry`).\n\n**Step 2B: Analyze Polygonal Paths**\nFor paths with only `M`, `L`, `H`, `V`, `Z`:\n1. Extract all absolute points from `M`, `L`, `H`, and `V` commands (convert `H`/`V` to full coordinates).\n2. List points in order, removing consecutive duplicates. If the path closes with `Z`, it returns to the start; do not add an extra point.\n3. Count the **unique vertices**.\n4. If the number of vertices is 4, proceed to **Step 2B-1: Classify Quadrilateral**.\n5. Otherwise, map the count: 2 = line, 3 = triangle, 5 = pentagon, 6 = hexagon, 7 = heptagon, 8 = octagon.\n\n**Step 2B-1: Classify Quadrilateral**\nFor paths with 4 vertices (A, B, C, D in order):\n- Compute vectors for each side: AB, BC, CD, DA.\n- Check for parallel sides: Two sides are parallel if their vectors are scalar multiples (within tolerance ±0.01).\n- Check for right angles: For each vertex, compute the dot product between vectors of adjacent sides. If |dot product| < 0.01, the angle is 90°.\n- Check side lengths (using distance formula) with tolerance (±0.01).\n- If all four angles are 90°, it is a **rectangle**.\n- Else if two pairs of adjacent sides are equal, it is a **kite**.\n- Else if at least one pair of sides is parallel, it is a **trapezoid**.\n- Else, it is a generic quadrilateral (choose best fit from options).\n\n**Step 3: Match to Options**\nChoose the most specific and accurate option from the provided list.\n\n**Note on Numerical Precision:** Use a tolerance (e.g., ±0.01) for all floating-point comparisons (lengths, dot products, vector multiples).\n\n---\n\n**Examples to Avoid Common Mistakes:**\n\n**Example 1:**\n- **Path:** `M 59.00,38.00 L 66.02,48.94 A 13.00,13.00 0.00 0,1 53.59,49.82 L 59.00,38.00`\n- **Incorrect:** Ignoring the arc and counting only `M`/`L` points yields 2 vertices (line).\n- **Correct:** The path has an `A` command (Step 1 → Step 2A). It has lines from a center point (`59.00,38.00`) to the arc's start and end, forming a **sector**.\n\n**Example 2:**\n- **Path:** `M 31.84,9.21 L 39.79,23.26 L 46.03,19.73 L 38.09,5.68 M 38.09,5.68 L 31.84,9.21`\n- **Incorrect:** Classifying as trapezoid due to parallel sides but missing right angles.\n- **Correct:** After extracting points (A:31.84,9.21; B:39.79,23.26; C:46.03,19.73; D:38.09,5.68), compute vectors:\n  - AB ≈ (7.95,14.05), BC ≈ (6.24,-3.53)\n  - Dot product AB · BC ≈ 7.95*6.24 + 14.05*(-3.53) ≈ 49.608 - 49.5965 ≈ 0.0115 (<0.01) → angle at B is 90°.\n  - Similarly, all angles are 90° → **rectangle**.\n\nNow, analyze the following path:",
+                "Q": 0.8333333333333334,
+                "N": 1,
+                "uct_value": null,
+                "reward": 0.8333333333333334,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

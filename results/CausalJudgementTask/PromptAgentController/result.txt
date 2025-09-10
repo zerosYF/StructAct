@@ -3,8 +3,35 @@
 
 
 ✅ Best Prompt:
-Answer questions about causal attribution
+Answer questions about causal attribution by following this structured reasoning framework:
 
-📊 SA Test Accuracy: 0.69
+1. **Identify the Outcome:** Clearly state the event in question.
+2. **List All Contributing Factors:** Identify all actions, events, or conditions that played a role in bringing about the outcome. **Note the chronological sequence of these factors.**
+3. **Analyze Necessary and Sufficient Conditions:** For each factor, determine whether it was necessary (without it, the outcome would not have occurred) and/or sufficient (on its own, it could have caused the outcome).
+4. **Check for Causal Symmetry:** Determine if multiple factors are in a symmetric causal relationship (i.e., they are all equally necessary and none are sufficient on their own, and the outcome required their simultaneous or joint action). If so, avoid attributing causation to any single factor.
+5. **Apply the "But-For" Test with a Temporal Focus:** Ask "But for the specified individual's action, would the outcome have occurred **at the time it did, or in the manner it did?**" If the answer is "no," then the individual's action was a cause. **Crucially, an outcome can be caused at a specific moment; subsequent events do not negate an earlier cause.**
+6. **Identify the Proximate Cause:** Among the necessary causes, identify the most immediate, direct, and deliberate action that set the outcome in motion. **Background conditions (e.g., a pre-existing disease, a rule) are typically enabling factors rather than the primary cause of an outcome.**
+7. **Final Judgment (Causal Accuracy):** Decide whether it is **causally accurate** to say the specified action was **a cause** of the outcome. **This is a question of factual causation, not moral blameworthiness. An action can be a cause even if the actor had no malicious intent or knowledge of the risks.** If the action was a necessary and proximate cause, the answer is typically "Yes."
 
-⏱️ Time Elapsed: 157 min 37 sec (9457.63 seconds)
+Use the following examples to guide your reasoning:
+
+**Example 1 (Symmetric Cause):**
+Question: Did Billy cause the motion detector to go off?
+Reasoning: The outcome is the motion detector going off. The contributing factors are both Suzy and Billy arriving at the same time. Each arrival was necessary but not sufficient. Their causal roles are symmetric (the outcome required both). But for Billy, the outcome would not have occurred, but the same is true for Suzy. Therefore, singling out Billy is not justified.
+Answer: No
+
+**Example 2 (Temporal and Proximate Cause):**
+Question: Did Louie win the $100 bet because he made the layup?
+Reasoning: The outcome is winning the $100 bet. The contributing factors are: 1. Louie made a layup (beginning of game), 2. Louie made a 3-point shot (end of game). The bet condition was an inclusive "or." The outcome was achieved the moment the layup was made, satisfying the condition. The 3-pointer was causally redundant. But for the layup, would the outcome have occurred *at the time it did*? No. The layup was the proximate cause of the win. The two shots are not symmetric in the timeline.
+Answer: Yes
+
+**Example 3 (Proximate Cause vs. Background Condition):**
+Question: Did Mr. Carlson's choice of dish cause Karen's death?
+Reasoning: The outcome is Karen's death from an allergic reaction. Contributing factors include: Karen's disease (background condition), the restaurant's recipe (static factor), and Mr. Carlson's choice to order the Moules Mariniere (deliberate, proximate action). But for his choice, Karen would not have been exposed to wine and would not have died. His action was the necessary and proximate cause that set the fatal sequence in motion. While he is not morally blameworthy, his action was causally responsible for the outcome.
+Answer: Yes
+
+Now, apply this reasoning process to the following question:
+
+📊 SA Test Accuracy: 0.67
+
+⏱️ Time Elapsed: 21 min 43 sec (1303.41 seconds)
