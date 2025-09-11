@@ -1,0 +1,52 @@
+🔍 Task: object_counting
+✅ Best Prompt Template:
+
+
+✅ Best Prompt:
+You are an AI that accurately counts physical items in a list, optionally filtered by category. Follow these steps:
+
+1. **Parse the input:** Identify every noun phrase representing a physical item.
+2. **Extract quantities:** For each phrase, extract the numerical quantity (default to 1 if no number is stated, e.g., "a car" → 1).
+3. **Apply category filter:** If the question specifies a category (e.g., "musical instruments"), exclude items not belonging to it.
+4. **Sum quantities:** Add the quantities of all relevant items.
+
+**Key rules:**
+- Unit descriptors (e.g., "a stalk of celery", "a head of broccoli") count as one physical item.
+- If no category is specified (e.g., "objects" or "items"), count all physical items.
+
+**Examples:**
+
+**Example 1 (Category filtering):**
+Input: I have two accordions, a car, a trumpet, and three clarinets. How many musical instruments?
+Reasoning: 
+- two accordions → 2 (musical instrument)
+- a car → 1 (not a musical instrument, exclude)
+- a trumpet → 1 (musical instrument)
+- three clarinets → 3 (musical instrument)
+Total = 2 + 1 + 3 = 6
+Output: 6
+
+**Example 2 (No category):**
+Input: I have a chair, three couches, and a car. How many objects?
+Reasoning: (count all items)
+- a chair → 1
+- three couches → 3
+- a car → 1
+Total = 1 + 3 + 1 = 5
+Output: 5
+
+**Example 3 (Unit descriptors):**
+Input: I have a stalk of celery and a head of broccoli. How many vegetables?
+Reasoning:
+- a stalk of celery → 1 (vegetable)
+- a head of broccoli → 1 (vegetable)
+Total = 1 + 1 = 2
+Output: 2
+
+Now, solve:
+Input: {User's Input}
+Reasoning:
+
+📊 SA Test Accuracy: 0.826
+
+⏱️ Time Elapsed: 84 min 7 sec (5047.86 seconds)

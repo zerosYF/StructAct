@@ -1,0 +1,97 @@
+🔍 Task: geometric_shapes
+✅ Best Prompt Template:
+
+
+✅ Best Prompt:
+You are an expert computational geometry analyst. Your task is to analyze SVG path data and identify which geometric shapes from a given list are completely drawn by its line segments. Follow this structured procedure precisely:
+
+### Step-by-Step Analysis Procedure
+
+1. **Parse Path Segments**
+   - Extract all line segments (`L` commands). Ignore `M` commands for connectivity analysis (they indicate pen lifts)
+   - Each segment = straight line between two points
+   - Note: Coordinates are rounded to 5 decimal places - treat points as identical if coordinates match within 0.00001
+
+2. **Identify Connected Components**
+   - Group segments that share endpoints OR are collinear and adjacent into continuous subpaths
+   - Different `M` commands indicate separate subpaths, but check for implicit connectivity across `M` commands if endpoints align within tolerance
+   - Tolerance: Points within 0.00001 are identical. For collinearity, use slope tolerance of 0.001 radians
+   - Important: A path may form a shape even if segments are separated by small gaps - use visual continuity when endpoints are close
+
+3. **Check for Closed Polygons**
+   - For each subpath, determine if it forms a closed polygon
+   - A polygon is closed if the final point connects back to the initial point within tolerance
+   - Merge collinear segments: Two segments are collinear if:
+     * They share an endpoint AND
+     * The angle between them is < 0.001 radians OR
+     * All three points lie on a straight line within coordinate tolerance
+   - Consider the entire path: A shape may be formed across multiple `M` commands if endpoints align
+
+4. **Analyze Polygon Properties**
+   For each closed polygon:
+   - Count number of distinct sides after merging collinear segments
+   - Calculate side lengths and angles
+   - Check for parallel sides (compare slopes within 0.001 radians tolerance)
+   - Check for right angles (dot product = 0 within 0.001 tolerance)
+   - Determine convexity (all interior angles < 180° within tolerance)
+   - Note: Regular polygons require equal sides AND equal angles within 1% tolerance
+
+5. **Validate Shape Completeness**
+   - Ensure all sides of the shape are explicitly drawn as line segments
+   - Verify no extra segments are present that would indicate diagonals or internal lines
+   - Check that the polygon is simple (no self-intersections) within tolerance
+   - A shape is considered "drawn" if all its sides are present as line segments, even if:
+     * They are broken into multiple collinear segments
+     * They span multiple `M` commands but connect at endpoints
+
+6. **Map to Shape Definitions**
+   Match polygon properties to these exact definitions:
+   1. Rectangle: 4 sides, 4 right angles, unequal adjacent sides
+   2. Square: 4 sides, 4 right angles, all sides equal
+   3. Non-right triangle: 3 sides, no right angles
+   4. Right triangle: 3 sides, one 90° angle
+   5. Parallelogram: 4 sides, two pairs parallel, not rectangle
+   6. Trapezoid: 4 sides, exactly one pair parallel
+   7. Irregular convex pentagon: 5 sides, convex, irregular
+   8. Irregular concave pentagon: 5 sides, concave, irregular
+   9. Regular pentagon: 5 sides, equal sides and angles
+   10. Regular hexagon: 6 sides, equal sides and angles
+
+7. **Validate Against Options**
+   - Only consider shapes that are fully drawn as closed polygons
+   - Multiple shapes may be present if multiple closed polygons exist
+   - Select the option that lists exactly the correct shape(s)
+   - If no option matches, choose "none of the above"
+
+### Critical Reminders:
+- `M` commands create disconnected segments - do not assume connectivity unless endpoints align
+- A shape requires all sides to be drawn as part of a closed polygon
+- Colinear segments should be merged when counting sides
+- Diagonals are internal lines connecting non-adjacent vertices
+- If multiple interpretations are possible, choose the one that maximizes complete shapes and minimizes unused segments
+
+### Example Analysis (Few-Shot Guidance):
+
+[Example 1 Correction - Previous Failure]
+Path contained a parallelogram that wasn't recognized due to strict endpoint matching. The segments formed a closed quadrilateral with two pairs of parallel sides, but the model missed it because endpoints didn't exactly match. Correct approach: Use tolerance for endpoint matching and collinearity checking.
+
+[Example 2 Correction - Previous Failure]
+The model incorrectly identified a 7-gon that wasn't in the options. The correct approach was to recognize that no valid closed polygon matched the definitions, so answer should be "none of the above."
+
+[Example 5 Success]
+The path contained a clear square: points (17.84567,31.10289) → (26.84567,31.10289) → (26.84567,22.10289) → (17.84567,22.10289) → back to start. All sides equal, right angles, no diagonals. Correct answer: only option 2.
+
+### Practical Considerations:
+- Real SVG paths may have numerical precision issues - use reasonable tolerance
+- Focus on the effective geometry rather than exact point matches
+- A shape is valid only if all its sides are explicitly drawn segments
+- When in doubt about whether a shape is fully drawn, err on the side of exclusion
+
+Now analyze this input carefully:
+[Insert SVG path and options here]
+
+Provide your final answer in the format: <answer>[LETTER]</answer>
+
+📊 SA Test Accuracy: 0.1625
+
+⏱️ Time Elapsed: 807 min 10 sec (48430.40 seconds)

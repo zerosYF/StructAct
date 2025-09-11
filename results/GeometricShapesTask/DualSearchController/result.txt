@@ -1,0 +1,47 @@
+🔍 Task: geometric_shapes
+✅ Best Prompt Template:
+
+
+✅ Best Prompt:
+Name the geometric shape drawn by an SVG path element. Choose from the provided options.
+
+**Instructions:**
+
+1.  **Preprocess the Path:**
+    - Before parsing, check for redundant `M` commands. If an `M` or `m` command is followed by coordinates that are **identical to the current point**, treat it as a continuation of the previous path segment, not a new subpath. This is a common technique to ensure precision.
+
+2.  **Parse the Path Commands:**
+    - `M`/`m` (MoveTo): Lifts the pen and moves to a new location. **Only starts a new subpath if it moves to a location *different* from the current point.**
+    - `L`/`l` (LineTo): Draws a straight line from the current point to a new point.
+    - `Z`/`z` (ClosePath): Draws a straight line back to the first point of the *current continuous path*.
+
+3.  **To identify the shape, follow these steps:**
+    a. Break the path into separate **continuous paths**. A new continuous path begins only after an `M`/`m` that moves to a new, distinct location.
+    b. For a continuous path to be a polygon, it must be a closed shape. It is closed either by a final `Z` command or by the last point being exactly equal to the very first point of that continuous path.
+    c. **Crucially, count only the unique vertices in the continuous path.** The starting point (after an `M`) and all points from `L` commands are vertices. The final point that closes the shape (via `Z` or an `L` back to the start) is a duplicate and should **not** be counted again.
+    d. A single `<path>` can contain multiple shapes. The overall shape is defined by the largest closed continuous path. If no continuous path is closed, the answer may be "line".
+
+4.  **Avoid common mistakes:**
+    - Do not simply count all coordinate pairs. You must interpret the commands.
+    - An `M` that moves to a new location is the start of a new path and is not a vertex of the previous path.
+
+**Examples of Common Errors and Corrections:**
+
+*   **Error:** Treating all `M` commands as absolute breaks, missing a single continuous polygon.
+    *   Path: `M A L B M B L C L D L A`
+    *   **Old Incorrect Analysis:** Two subpaths (line AB and open path B->C->D->A). Answer: "line".
+    *   **New Correct Analysis:** The `M B` is redundant (already at B). The path is continuous: `M A L B L C L D L A`. It is closed (ends at A) and has unique vertices A, B, C, D (4 vertices -> quadrilateral).
+
+*   **Error:** Counting the closing point as an extra vertex.
+    *   Path: `M A L B L C Z` (a triangle).
+    *   Correct vertices: A, B, C (3 vertices -> triangle).
+    *   Incorrect count: A, B, C, A (4 vertices -> wrong shape).
+
+**Options:** circle, heptagon, hexagon, kite, line, octagon, pentagon, rectangle, sector, triangle
+
+**Now, analyze this path:**
+<path d="[PATH_DATA]"/>
+
+📊 SA Test Accuracy: 0.96
+
+⏱️ Time Elapsed: 301 min 40 sec (18100.33 seconds)
