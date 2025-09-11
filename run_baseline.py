@@ -22,6 +22,8 @@ from task.mmlu.case_hold import LegalHoldingTask
 from task.mmlu.arc import PhysicsMCQTask
 from task.bbeh.causal_understanding import CausalUnderstandingTask 
 from task.bbeh.geometric_shapes import GeometricShapesTask as BGeometricShapesTask
+from task.bbeh.temporal_sequence import TemporalSequenceTask as BTemporalSequenceTask
+from task.bbeh.object_counting import ObjectCountingTask as BObjectCountingTask
 
 from search.config import SearchConfig
 from search.evaluator import PromptEvaluator
@@ -43,6 +45,8 @@ TASK_REGISTRY = {
     "PhysicsMCQTask": PhysicsMCQTask,
     "CausalUnderstandingTask": CausalUnderstandingTask,
     "BGeometricShapesTask": BGeometricShapesTask,
+    "BTemporalSequenceTask":BTemporalSequenceTask,
+    "BObjectCountingTask":BObjectCountingTask,
 }
 
 

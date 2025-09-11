@@ -22,7 +22,7 @@ class BeamSearchController(SearchController):
         init_prompt = self.task.origin_prompt
         self.pool.initialize(self.task.get_train_mcts(), self.evaluator, init_prompt)
 
-        # 初始化根节点
+        PromptNode.reset_id()
         root = PromptNode(
             action_set=self.actions,
             action_seq=[],
@@ -33,7 +33,6 @@ class BeamSearchController(SearchController):
             sample_pool=self.pool
         )
 
-        # 使用计数器保证 heap 元素唯一，避免 PromptNode 比较报错
         counter = itertools.count()
         beam = [(-root.reward_value, next(counter), root)]
         best_node = root

@@ -3,8 +3,35 @@
 
 
 ✅ Best Prompt:
-Answer questions about causal attribution
+Answer questions about causal attribution, focusing on agentive causation and the role of inaction. Carefully analyze whether the outcome occurred specifically because of the agent's decision not to act.
 
-📊 SA Test Accuracy: 0.68
+**Reasoning Steps:**
+1.  **Identify the Sufficient Conditions:** Determine what conditions guarantee the outcome.
+2.  **Assess the Initial State:** Note the state of these conditions before the agent's decision.
+3.  **Analyze the Agent's Role:** The agent checks a condition and then chooses not to change it. Their potential action (changing it) introduces a risk of breaking a sufficient condition.
+4.  **Apply the Key Counterfactual:** Crucially, consider what would have happened if the agent *had* acted. Based on the narrative, the most plausible result of them changing the setting/position is that they would have broken the condition they just verified. The outcome is attributed to their inaction if it would likely *not* have occurred had they acted.
+5.  **Conclude:** The outcome happened *because* the agent did not act if their action would have prevented it. If the outcome was guaranteed by another unchangeable condition regardless of their action, then it did *not* happen because of their inaction.
 
-⏱️ Time Elapsed: 16 min 48 sec (1008.93 seconds)
+**Examples of Correct Reasoning:**
+
+**Example 1:**
+*   **Question:** Is the device fully charged because Wayne did not change the position of the device?
+*   **Sufficient Condition:** Plugged in AND on the charging pad.
+*   **Initial State:** Both conditions are true at 2:00 PM.
+*   **Agent's Role:** Wayne checks the pad and chooses not to change the device's position.
+*   **Counterfactual:** If Wayne *had* changed the position, he likely would have taken it off the pad, breaking a sufficient condition. The device would not have charged.
+*   **Conclusion:** Yes, the device is charged because he did not change its position. (<answer>Yes</answer>)
+
+**Example 2:**
+*   **Question:** Did David's clothes dry in sixty minutes because David did not change the temperature setting?
+*   **Sufficient Conditions:** MAX DRY cycle OR HIGH temperature.
+*   **Initial State:** Both conditions are true. The MAX DRY setting is already in place and is sufficient on its own.
+*   **Agent's Role:** David checks the temperature and chooses not to change it.
+*   **Counterfactual:** If David *had* changed the temperature (e.g., to LOW), the HIGH condition would be broken. However, the MAX DRY condition remains and is sufficient for the outcome. The clothes would still have dried.
+*   **Conclusion:** No, the clothes did not dry because he left the temperature on HIGH; they dried because the cycle was set to MAX DRY. His inaction was not the cause. (<answer>No</answer>)
+
+**Now, apply this reasoning to the following question:**
+
+📊 SA Test Accuracy: 0.65
+
+⏱️ Time Elapsed: 17 min 42 sec (1062.68 seconds)

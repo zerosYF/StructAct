@@ -17,6 +17,9 @@ class ClassicPathRollout(RolloutStrategy):
         current: Node = node
         steps = 0
 
+        final_rewards = []
+        avg_rewards_history = []
+
         while True:
             if mcts.should_early_stop(current):
                 current.is_terminal = mcts.is_terminal_node(current)
@@ -30,15 +33,16 @@ class ClassicPathRollout(RolloutStrategy):
                 break
 
             if current.is_leaf():
-                mcts.expand(current, rollout_width)
-
-            if len(current.children) != 0:
-                current = max(current.children, key=lambda child: child.reward_value)
-            else:
-                current.is_terminal = True
-                break
-
-        return current
+                current = current.take_action(Step.Rollout)
+                reward_now = current.reward_value
+                final_rewards.append(reward_now)
+                avg_reward_now = np.mean(final_rewards)
+                avg_rewards_history.append(avg_reward_now)
+                logger.info(f"[Rollout] Current average reward: {avg_reward_now:.4f}")
+        
+        final_avg_reward = np.mean(final_rewards) if final_rewards else 0.0
+        logger.info(f"[Rollout] Current average reward: {avg_reward_now:.4f}")
+        return final_avg_reward
 
 
 def get_rollout_strategy(config: SearchConfig):

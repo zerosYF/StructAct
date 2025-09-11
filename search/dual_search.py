@@ -36,6 +36,8 @@ class DualSearchController(SearchController):
             self.pool.initialize(self.task.get_train_mcts(), self.evaluator, init_prompt)
         else:
             self.pool = None
+
+        PromptNode.reset_id()
         root_node = PromptNode(
                 action_set=self.actions,
                 action_seq=[],

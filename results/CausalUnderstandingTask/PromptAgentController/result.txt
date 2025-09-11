@@ -1,0 +1,65 @@
+🔍 Task: causal_understanding
+✅ Best Prompt Template:
+
+
+✅ Best Prompt:
+You are an expert in causal reasoning. Your task is to analyze the given scenario and determine if the specified action caused the outcome. Your final answer must reflect the judgment that the majority of people would give.
+
+### Integrated Analytical Framework ###
+
+**Step 1: Apply the "But For" Test (Logical Necessity)**
+- Consider the actual world where the action (A) happened and the outcome (O) happened.
+- Construct the closest possible world where action A did *not* happen, making the *minimal change* required.
+- Ask: In this closest world, would outcome O still have occurred, in the way that it did, at the time that it did?
+- *If no*, then A is a necessary cause. *If yes*, then A is not necessary.
+
+**Step 2: Refine with Common-Sense Principles**
+- **Proximate Cause Salience:** People often identify the most immediate, direct, and unexpected trigger as the cause.
+- **Normality and Deviance:** Was A a normal part of the background context or a deviant interruption? Focus on *descriptive* normality (what usually happens).
+- **Causal Sufficiency:** Did A, by itself, create a high probability of O?
+- **Omission vs. Commission:** People are less likely to label an *omission* (failure to act) as "the cause" compared to a *commission* (active deed), especially if there was no clear duty to act.
+- **Robustness (Pre-emption):** Would O have happened anyway through another means? If another sufficient cause was already in place, A is not seen as the cause.
+
+**Step 3: Synthesize for Majority Judgment**
+- The "But For" test is a starting point. Common-sense principles often override it.
+- If "But For" suggests a cause that is an omission with no duty, or a normal background condition, it is likely not the majority's cause.
+- Find the cause that is both *salient* and *surprising* to people.
+
+**Step 4: Final Check**
+- Ask: "Is there another factor that is more direct, more deviant, and more sufficient that most people would point to instead?" If yes, then the answer is likely **No**.
+
+### Examples for Guidance ###
+
+[Example 1: Illustrating Omission vs. Commission and Pre-emption]
+**Input:** Question: Jack is driving five sick people to the hospital. He approaches a rock climber who is about to fall. If he slows down, the climber can use a cord to save himself, but the five sick people will die. Jack keeps driving quickly and the climber falls. Did Jack cause the climber to fall?
+**Reasoning:** 
+- *But For Test:* But for Jack not slowing down, the climber would not have fallen. Logically, his inaction is necessary.
+- *Common-Sense Refinement:* However, Jack's primary duty was to the five sick people. His action (driving on) was a normal response to this duty. The climber's fall was caused by gravity and loss of grip—Jack's omission did not actively create the danger but failed to prevent it. Most people would not say Jack *caused* the fall; they would see it as a tragic outcome of a forced choice.
+**Final Answer:** <answer>No</answer>
+
+[Example 2: Illustrating Pre-emption and Normality]
+**Input:** Question: Janet, whose job is to oil machines, forgets to oil one. Kate, who is not responsible for oiling, also does not oil it. The machine breaks down. Did Kate not oiling the machine cause it to break down?
+**Reasoning:**
+- *But For Test:* But for Kate not oiling the machine, would it have broken down? Yes, because Janet's failure had already pre-empted the outcome. The machine was already on a path to breakdown due to lack of oil. Kate's inaction was not necessary.
+- *Common-Sense Refinement:* Kate had no responsibility to act. Her inaction was normal and expected. The breakdown was sufficiently caused by Janet's deviant omission of her duty.
+**Final Answer:** <answer>No</answer>
+
+### Final Reasoning Steps ###
+1.  Identify the specific action (A) and the outcome (O).
+2.  Apply the "but for" test correctly, constructing the minimal change counterfactual.
+3.  Refine using the common-sense principles:
+    -   Is there a more salient proximate cause?
+    -   Was A normal or deviant?
+    -   Was A sufficient, or was the outcome pre-empted?
+    -   Was A an omission with no duty to act?
+4.  Synthesize to predict the majority opinion.
+5.  Perform the Final Check.
+
+**Final Answer Format:**
+After your reasoning, provide your final answer on a new line as: `<answer>Yes</answer>`, `<answer>No</answer>`, or `<answer>Ambiguous</answer>`.
+
+Now, analyze the following question. First, reason step by step as shown in the examples. Then, provide your final answer.
+
+📊 SA Test Accuracy: 0.5375
+
+⏱️ Time Elapsed: 24 min 23 sec (1463.53 seconds)

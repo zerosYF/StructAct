@@ -1,0 +1,36 @@
+🔍 Task: causal_understanding
+✅ Best Prompt Template:
+
+
+✅ Best Prompt:
+You are given a scenario about causality. Your task is to decide whether the action described caused the outcome. Final answer with **Yes**, **No**, or **Ambiguous**.
+
+**Reasoning Framework:**
+1.  **Identify the Question Type:** Determine if the question asks for a *logical* assessment (e.g., "necessary cause", "sufficient cause") or an *intuitive* assessment (e.g., "did it cause?", "what would most people say?"). This dictates the entire reasoning path.
+2.  **If the question is an INTUITIVE assessment (what most people would say):**
+    *   **A. Assess Duty & Normality:** Was the agent **supposed to** prevent the outcome? An agent failing their duty is a strong signal for causation (**Yes**). An agent with no duty is a strong signal against causation (**No**). **The absence of duty is a powerful factor that can make a counterfactually necessary action *not* seem causal.**
+    *   **B. Assess Outcome Valence:** Is the outcome positive (e.g., a light turning on) or negative (e.g., a system failing)? For negative outcomes with no duty, people are hesitant to assign blame to any one individual in symmetric scenarios.
+    *   **C. Apply the Counterfactual (But-For) Test:** Ask: "Would the outcome have occurred **if the specific action had NOT happened**?" This identifies necessary conditions.
+    *   **D. Check for Symmetry & Primacy:** Are multiple agents in identical positions (same duty, same action, same time)? In cases of **true symmetry** with a negative outcome and no duty, people's judgments are split; they see it as a collective accident (**Ambiguous**). If one agent acted first, people often assign more causation to that agent.
+    *   **E. Synthesize Intuition:** Combine these signals. **Duty is the primary cue.** A counterfactually necessary action by an agent with no duty in a symmetric scenario is typically **not** seen as causal by the majority (**No** or **Ambiguous**).
+3.  **If the question is a LOGICAL assessment (e.g., "necessary cause"):**
+    *   **A. Apply the Counterfactual (But-For) Test:** Ask: "Would the outcome have occurred **if the specific action had NOT happened**?" If the answer is no, the action is a necessary cause.
+    *   **B. Check for Preemption:** If multiple sufficient causes are possible, identify which event *first* directly produced the outcome. **A *potential* cause that is thwarted does not count as preemption; only an actualized alternative sufficient cause negates necessity.**
+    *   **C. Synthesize Logically:** Determine if the action was necessary. **In cases of symmetric overdetermination (e.g., two simultaneous sufficient causes), neither action is necessary (No).**
+4.  **Final Judgment:** For intuitive questions, ask: "Based on duty, outcome valence, counterfactuals, and symmetry, what would the majority of people conclude?"
+
+**Learn from Key Examples:**
+*   **Duty Overrides Counterfactual:** An employee *with duty* forgets to oil a machine. People say **Yes**. Another employee *with no duty* doesn't oil the same machine. People say **No**.
+*   **Logical Necessity & Preemption:** If an outcome would have happened anyway due to an independent sufficient cause, the action is **not** a necessary cause (**No**).
+*   **Symmetric Intuition (Negative Outcome):** Two employees with no duty perform simultaneous necessary actions for a negative outcome (e.g., crashing a server). People are split; the intuitive answer is **Ambiguous**. They do not say **Yes** for one individual.
+*   **NEW: Symmetric Intuition (Positive Outcome):** Two people simultaneously flip switches that together turn on a light. For this positive outcome, people are more likely to say each person caused it (**Yes**).
+
+**Avoid Common Mistakes:**
+*   **Mistake:** In intuitive judgments for negative outcomes, over-relying on the counterfactual test when duty is absent and the case is symmetric. This leads to an incorrect **Yes**.
+*   **Correction:** Let the absence of duty and the presence of symmetry guide you toward **Ambiguous** or **No**. The counterfactual test is secondary in these cases.
+
+**Output Format:** Always end your response with `<answer>Yes</answer>`, `<answer>No</answer>`, or `<answer>Ambiguous</answer>`.
+
+📊 SA Test Accuracy: 0.55
+
+⏱️ Time Elapsed: 15 min 48 sec (948.89 seconds)

@@ -30,6 +30,8 @@ class PromptAgentController(SearchController):
         return "", optimized_prompt
     
     def _mcts_workflow(self, init_prompt: str):
+        PromptNode.reset_id()
+
         root_node = PromptNode(
                 action_set=self.actions,
                 action_seq=[],

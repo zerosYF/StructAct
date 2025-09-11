@@ -45,17 +45,11 @@ class MCTS:
     def _rollout(self, node: Node):
         return self.rollout_strategy.rollout(node, self.expand_width, self)
 
-    def _backpropagate(self, expand_node:Node, final_node:Node):
+    def _backpropagate(self, expand_node:Node, avg_reward:float):
         with self.lock:
-            total_reward = 0.0
-            current = final_node
-            cum:bool = True
+            current = expand_node
             while current is not None:
-                current.update(total_reward)
-                if cum:
-                    if current == expand_node:
-                        cum = False
-                    total_reward += current.reward_value
+                current.update(avg_reward)
                 current = current.parent
 
 
@@ -78,14 +72,14 @@ class MCTS:
             for future in as_completed(future_to_child):
                 child = future_to_child[future]
                 try:
-                    final_node = future.result()
-                    results.append((child, final_node))
+                    avg_reward = future.result()
+                    results.append((child, avg_reward))
                 except Exception as e:
                     logger.error(f"⚠️ Error during rollout of {child}: {e}")
 
         logger.info("Step 4: Performing Backpropagate")
-        for child, final_node in results:
-            self._backpropagate(child, final_node)
+        for child, avg_reward in results:
+            self._backpropagate(child, avg_reward)
 
         logger.info("---------------End Iteration------------------")
 

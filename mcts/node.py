@@ -8,6 +8,7 @@ class Step(Enum):
 
 class Node(ABC):
     type:str = None
+    id_iter = itertools.count()
     def __init__(self, 
                  depth:int,
                  Q:float=0.0, 
@@ -15,6 +16,8 @@ class Node(ABC):
                  uct_value:float=0.0, 
                  parent=None, 
                  ):
+        
+        self.id = next(Node.id_iter)
         
         self.Q = Q  # Total reward of the node
         self.N = N    # Visit count of the node
@@ -31,6 +34,10 @@ class Node(ABC):
 
     def __eq__(self, other):
         return self is other
+    
+    @classmethod
+    def reset_id(cls):
+        cls.id_iter = itertools.count()
 
     def is_leaf(self):
         return len(self.children) == 0
