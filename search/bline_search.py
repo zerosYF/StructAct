@@ -45,14 +45,12 @@ class PromptAgentController(SearchController):
         visualizer = MCTSVisualizer(root_node)
         visualizer.start()
 
-        mcts_iters = self.config.mcts_iter_num_max
-        expand_width = self.config.width_threshold
-
         mcts = MCTS(
-            iter_num=mcts_iters,
+            iter_num=self.config.mcts_iter_num_max,
             max_depth=self.config.max_depth_threshold,
             min_depth=self.config.min_depth_threshold,
-            expand_width=expand_width, 
+            expand_width=self.config.width_threshold, 
+            rollout_length=self.config.rollout_threshold,
             exploration_weight=self.config.exploration_weight,
 
             expand_strategy=get_expand_strategy(self.config),
@@ -62,7 +60,7 @@ class PromptAgentController(SearchController):
         mcts.min_reward_threshold = root_node.reward_value
         mcts.increase_threshold(root_node.reward_value)
         logger.info("🏁 Start Search.")
-        for iter_id in range(mcts_iters):
+        for iter_id in range(self.config.mcts_iter_num_max):
             mcts.do_iter(root_node, iter_id)
 
         best_node: PromptNode = mcts.choose(root_node)

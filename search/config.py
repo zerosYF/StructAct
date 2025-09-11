@@ -16,6 +16,7 @@ class SearchConfig:
         self.min_depth_threshold: int = 3
 
         self.width_threshold: int = 3          # Number of children per expanded node
+        self.rollout_threshold:int = 3
         # Node expansion and rollout config
         self.batch_size: int = 5              # Batch size for training
 

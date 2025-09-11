@@ -11,6 +11,7 @@ class MCTS:
     def __init__(self, 
                  iter_num:int,
                  expand_width:int, 
+                 rollout_length:int,
                  exploration_weight:float,
                  max_depth:int,
                  min_depth:int,
@@ -26,6 +27,7 @@ class MCTS:
 
         self.exploration_weight = exploration_weight
         self.expand_width = expand_width
+        self.rollout_length = rollout_length
         self.max_depth = max_depth
         self.min_depth = min_depth
 
@@ -39,11 +41,11 @@ class MCTS:
             node = node.find_best_node(exploration_weight)
         return node
 
-    def expand(self, node: Node, expand_width=1) -> Node:
+    def _expand(self, node: Node, expand_width=1) -> Node:
         return self.expand_strategy.expand(node, expand_width, self)
 
-    def _rollout(self, node: Node):
-        return self.rollout_strategy.rollout(node, self.expand_width, self)
+    def _rollout(self, node: Node, rollout_length=3):
+        return self.rollout_strategy.rollout(node, rollout_length, self)
 
     def _backpropagate(self, expand_node:Node, avg_reward:float):
         with self.lock:
@@ -59,14 +61,14 @@ class MCTS:
         selected_node:Node = self._select(root, self.exploration_weight)
         logger.info(f"Selected leaf node type: {selected_node.type}")
         logger.info("Step 2: Performing Expand")
-        children = self.expand(selected_node, self.expand_width)
+        children = self._expand(selected_node, self.expand_width)
         rollout_targets = children if children else [selected_node]
 
         results = []
         logger.info("Step 3: Performing Rollout")
         with ThreadPoolExecutor(max_workers=len(rollout_targets)) as executor:
             future_to_child = {
-                executor.submit(self._rollout, child): child
+                executor.submit(self._rollout, child, self.rollout_length): child
                 for child in rollout_targets
             }
             for future in as_completed(future_to_child):

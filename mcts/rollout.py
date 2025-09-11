@@ -8,19 +8,19 @@ from logger import logger
 
 class RolloutStrategy(ABC):
     @abstractmethod
-    def rollout(self, node, rollout_width:int, mcts) -> float:
+    def rollout(self, node, rollout_length:int, mcts) -> float:
         """Perform a rollout starting from the given node and return the final reward"""
         pass
 
 class ClassicPathRollout(RolloutStrategy):
-    def rollout(self, node: Node, rollout_width:int, mcts):
+    def rollout(self, node: Node, rollout_length:int, mcts):
         current: Node = node
         steps = 0
 
         final_rewards = []
         avg_rewards_history = []
 
-        while True:
+        while steps < rollout_length:
             if mcts.should_early_stop(current):
                 current.is_terminal = mcts.is_terminal_node(current)
                 mcts.increase_threshold(current.reward_value)
