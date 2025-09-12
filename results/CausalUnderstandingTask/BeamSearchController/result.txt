@@ -1,0 +1,10 @@
+🔍 Task: causal_understanding
+✅ Best Prompt Template:
+
+
+✅ Best Prompt:
+You are given a scenario about causality. Decide whether the action described caused the outcome, and final answer with Yes, No, or Ambiguous. 
+
+📊 SA Test Accuracy: 0.575
+
+⏱️ Time Elapsed: 147 min 17 sec (8837.23 seconds)

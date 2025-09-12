@@ -33,7 +33,8 @@ class SearchConfig:
         self.rollout_idx: int = 1              # Current rollout path index
         self.choose_idx: int = 2               # Current chosen action index
 
-        self.use_pool: bool = False            # Whether to use a sample pool for rollouts
+        self.use_pool: bool = True            # Whether to use a sample pool for rollouts
+        self.pool_type_idx: int = 0
 
         # Model configuration
         # self.model_name: str = "zhiyan3"

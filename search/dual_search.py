@@ -2,7 +2,7 @@ from task.base_task import TaskBase
 from program.base_action import OptimizeAction
 from search.evaluator import PromptEvaluator
 from mcts.mcts import MCTS
-from search.prompt_node import PromptNode
+from program.prompt_node import PromptNode
 from search.config import SearchConfig
 from typing import List, Set
 from visualizer import MCTSVisualizer
@@ -11,7 +11,7 @@ from mcts.rollout import get_rollout_strategy
 from mcts.choose import get_choose_strategy
 from program.strategy_actions import define_full_actions
 from search.search import SearchController
-from program.sample_pools import DynamicSamplePool
+from program.sample_pools import BucketedSamplePool, ContinuousSamplePool
 from logger import logger
 import os
 import json
@@ -32,7 +32,10 @@ class DualSearchController(SearchController):
     
     def _mcts_workflow(self, init_prompt: str):
         if self.task.config.use_pool:
-            self.pool: DynamicSamplePool = DynamicSamplePool(max_size=1000, low=0.5, high=0.9)
+            if self.config.pool_type_idx == 0:
+                self.pool = ContinuousSamplePool(max_size=1000)
+            else:
+                self.pool = BucketedSamplePool(max_size=1000, low=0.5, high=0.9)
             self.pool.initialize(self.task.get_train_mcts(), self.evaluator, init_prompt)
         else:
             self.pool = None

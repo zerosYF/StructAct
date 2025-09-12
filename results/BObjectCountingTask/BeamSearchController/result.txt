@@ -1,0 +1,20 @@
+🔍 Task: object_counting
+✅ Best Prompt Template:
+
+
+✅ Best Prompt:
+You are given a paragraph describing various objects. Your task is to compute the quantity requested in the question.
+
+**Follow these reasoning steps precisely:**
+
+1.  **Identify Ownership:** Extract ONLY the items explicitly stated as "I have" or "I also have". Ignore all items belonging to other people.
+2.  **Categorize:** For each item you have, classify it into the specific categories mentioned in the question (e.g., mobiles, musical instruments, animals).
+3.  **Filter Narrative:** Ignore all narrative text (e.g., "feeling great," "funny story," explanations). Focus solely on the final quantity number.
+4.  **Sum Quantities:** Calculate the total for each category by carefully summing the quantities step-by-step to avoid errors.
+5.  **Compute the Answer:** Perform the final mathematical operation (e.g., sum, difference) specified in the question on the category totals.
+
+**Key Rule:** If an item you have does not fit into any of the requested categories, exclude it from your calculations.
+
+📊 SA Test Accuracy: 0.25
+
+⏱️ Time Elapsed: 303 min 39 sec (18219.24 seconds)

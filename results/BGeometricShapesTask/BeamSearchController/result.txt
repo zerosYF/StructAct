@@ -1,0 +1,52 @@
+🔍 Task: geometric_shapes
+✅ Best Prompt Template:
+
+
+✅ Best Prompt:
+You are given an SVG path element description and a list of candidate shapes. Decide which option(s) match the visualization of the path.
+
+### Instructions:
+1. **Extract all segments**: List all line segments from `M` (move to) and `L` (line to) commands. Note that each `M` starts a new subpath, but endpoints may connect across subpaths.
+2. **Merge collinear segments**: For each connected chain, merge consecutive segments that are collinear (slope difference tolerance 0.01) into single edges. Do not merge if the merged edge would distort the shape (e.g., length ratio > 10 compared to adjacent edges).
+3. **Build connected components**: Group segments into connected shapes based on shared endpoints (distance tolerance 0.001). Treat each connected component separately.
+4. **Check for closed polygons**: For each component, determine if it forms a closed polygon by connecting endpoints. A shape is closed only if all sides are explicitly drawn and the start and end points are within 0.001 units. Ignore open chains and degenerate cases (e.g., all points collinear).
+5. **Filter prominent shapes**: Discard shapes that are too small (area < 1.0 or perimeter < 5.0) or clearly decorative (e.g., arrowheads, ticks) unless they are part of a boundary.
+6. **Analyze geometric properties**: For each closed polygon:
+   - Count the number of sides after merging.
+   - Check parallelism: opposite sides must have direction vectors that are scalar multiples (tolerance 0.01 in slope).
+   - Check angles: use dot product to verify if ≈90° (|cosθ| < 0.01) for rectangles.
+   - Check convexity: all cross products of consecutive edges must have the same sign (within tolerance).
+   - Compare side lengths to distinguish squares from rectangles (equal sides within 0.01).
+   - For pentagons, determine convexity (no reflex angles) or concavity (at least one reflex angle).
+7. **Match to candidates**: Select all candidate shapes that exactly match the polygon's properties:
+   - Rectangle: four sides, opposite sides parallel, all angles ≈90°, and not all sides equal.
+   - Square: four sides, opposite sides parallel, all angles ≈90°, and all sides equal.
+   - Triangle: three sides. Check if right-angled (any dot product ≈0).
+   - Parallelogram: four sides, opposite sides parallel, without right angles.
+   - Trapezoid: exactly one pair of parallel sides.
+   - Pentagons: five sides, convex or concave.
+   - Hexagon: six sides, regular if all sides and angles equal.
+8. **Consider multiple shapes**: The visualization may include more than one closed shape; select all that apply. Ensure shapes are distinct and not subsets of larger shapes.
+9. **If no closed polygon** is found after these steps, choose "none of the above".
+
+### Key Rules:
+- Diagonals are only present if explicitly drawn in the path.
+- Ignore shapes that are not prominent or are clearly decorative.
+- Coordinates are rounded to 5 decimal places; use geometric tolerances to account for rounding.
+
+### Examples of Common Mistakes to Avoid:
+- **Example 1 (Failure)**: A path contained a parallelogram, trapezoid, and concave pentagon, but the model missed the trapezoid and pentagon by over-merging collinear segments and not checking all connected components. Always list all closed polygons after merging.
+- **Example 2 (Failure)**: A small triangle was incorrectly identified as a shape when it was decorative. Filter out small shapes (area < 1.0).
+- **Example 3 (Failure)**: A non-closed path was misinterpreted as a triangle. Ensure endpoints are within 0.001 units for closure.
+- **Example 4 (Success)**: A path with collinear points merged into a quadrilateral with one pair of parallel sides was correctly identified as a trapezoid.
+
+### Few-Shot Examples for Guidance:
+- **Example A**: Path: M 0,0 L 10,0 L 10,5 L 0,5 L 0,0 M 2,2 L 8,2 L 8,3 L 2,3 L 2,2. After merging, two rectangles: outer (candidate 1) and inner (candidate 1). But inner is too small (area=6) and decorative? Discard inner. Output: candidate 1.
+- **Example B**: Path: M 0,0 L 5,5 L 10,0 L 5,-5 L 0,0. Forms a diamond with sides equal and angles not 90°. After analysis: parallelogram (candidate 5) but not rectangle.
+- **Example C**: Path with multiple segments forming a concave pentagon and a rectangle. Both are prominent. Output: candidates 1 and 8.
+
+Now, apply these steps carefully to the given path and candidates.
+
+📊 SA Test Accuracy: 0.15
+
+⏱️ Time Elapsed: 1032 min 41 sec (61961.66 seconds)

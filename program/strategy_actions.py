@@ -1,7 +1,7 @@
 from model.model import getOptimModel, getEvalModel
 from task.base_task import TaskBase
 from program.base_action import OptimizeAction
-from program.sample_pools import PoolSample
+from program.sample_pools import PoolSample, SampleType, DynamicSamplePool
 import concurrent.futures
 
 # Preload models
@@ -16,7 +16,6 @@ class FailureDrivenAction(OptimizeAction):
         self.analyzer_model = analyzer_model
         self.rewriter_model = rewriter_model
         self.max_resample_attempts = 3
-        self.hard_ratio = 0.7  # hard样本占比
         self.sample_failure_counter = 0  # 连续失败次数
 
     def _batch_api_call(self, inputs: list):
@@ -29,11 +28,9 @@ class FailureDrivenAction(OptimizeAction):
         with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
             return list(executor.map(call, inputs))
 
-    def sample_and_evaluate(self, current_prompt, sample_pool):
+    def sample_and_evaluate(self, current_prompt, sample_pool:DynamicSamplePool):
         if sample_pool:
-            hard_k = int(self.task.config.batch_size * self.hard_ratio)
-            mix_k = self.task.config.batch_size - hard_k
-            samples = sample_pool.sample("hard", k=hard_k) + sample_pool.sample("mixed", k=mix_k)
+            samples = sample_pool.sample(type=SampleType.Negative, k=self.task.config.batch_size)
         else:
             raw_samples = self.task.sample_train_mcts(self.task.config.batch_size)
             samples = [PoolSample(r) for r in raw_samples]
@@ -132,7 +129,6 @@ class SuccessDrivenAction(OptimizeAction):
         self.reasoning_model = analyzer_model
         self.rewriter_model = rewriter_model
         self.max_resample = max_resample
-        self.success_ratio = 0.7  # success样本占比
         self.sample_failure_counter = 0  # 连续失败次数
 
     def _batch_api_call(self, inputs: list):
@@ -144,12 +140,10 @@ class SuccessDrivenAction(OptimizeAction):
         with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
             return list(executor.map(call, inputs))
 
-    def sample_and_evaluate(self, current_prompt, sample_pool):
+    def sample_and_evaluate(self, current_prompt, sample_pool:DynamicSamplePool):
 
         if sample_pool:
-            success_k = int(self.task.config.batch_size * self.success_ratio)
-            mix_k = self.task.config.batch_size - success_k
-            samples = sample_pool.sample("success", k=success_k) + sample_pool.sample("mixed", k=mix_k)
+            samples = sample_pool.sample(type=SampleType.Positive, k=self.task.config.batch_size)
         else:
             raw_samples = self.task.sample_train_mcts(self.task.config.batch_size)
             samples = [PoolSample(r) for r in raw_samples]

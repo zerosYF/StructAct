@@ -2,7 +2,7 @@ from task.base_task import TaskBase
 from program.base_action import OptimizeAction
 from search.evaluator import PromptEvaluator
 from mcts.mcts import MCTS
-from search.prompt_node import PromptNode
+from program.prompt_node import PromptNode
 from search.config import SearchConfig
 from typing import List, Set
 from visualizer import MCTSVisualizer

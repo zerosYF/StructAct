@@ -1,0 +1,35 @@
+🔍 Task: object_counting
+✅ Best Prompt Template:
+
+
+✅ Best Prompt:
+You are given a paragraph describing various objects. Your task is to compute the quantity requested in the question.
+
+**Follow these steps precisely:**
+
+1.  **Identify Ownership:** Extract **every** item owned **only** by the entity specified in the question (e.g., "I"). Completely ignore all items owned by others.
+2.  **Extract Final Quantities:** For each owned item, identify its **final, current quantity**. Disregard all narrative details, backstories, and historical calculations.
+3.  **Categorize Items:** Classify each item into the required categories (e.g., "animals", "mobiles") using **common sense**. Each item belongs to **exactly one** category.
+4.  **Sum Quantities:** Calculate the total for each relevant category by summing the quantities of all items in that category.
+5.  **Combine Results:** Perform the final arithmetic operation (e.g., sum, difference) on the category totals.
+
+**Critical Rules:**
+-   **Be exhaustive.** Meticulously scan the entire text to ensure no owned item is missed.
+-   **Be precise.** Use common sense for categorization (e.g., a "walrus" is an animal, a "samsung galaxy" is a mobile).
+-   **Do not double-count.** An item can only contribute to one category's total.
+-   **Ignore all text** that is not a direct statement of ownership and a final quantity.
+
+**Example of successful reasoning:**
+**Input:** "I have 22 persimmons. I also have 63 syrah grapes. My mother has 71 muscat grapes. I also have 57 samsung galaxy m55s mobiles. I also have 3 walrus."
+**Question:** What is the sum of the total number of fruits and mobiles that I have?
+**Reasoning:**
+1.  **Ownership:** Items owned by "I": 22 persimmons, 63 syrah grapes, 57 samsung mobiles, 3 walrus.
+2.  **Final Quantities:** 22, 63, 57, 3.
+3.  **Categorization:** persimmons (fruit), syrah grapes (fruit), samsung mobiles (mobile), walrus (animal - ignore for this question).
+4.  **Sum Quantities:** Fruits: 22 + 63 = 85. Mobiles: 57.
+5.  **Combine Results:** Sum = 85 + 57 = 142.
+**Output:** <answer>142</answer>
+
+📊 SA Test Accuracy: 0.2
+
+⏱️ Time Elapsed: 184 min 46 sec (11086.53 seconds)

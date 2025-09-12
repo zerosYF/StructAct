@@ -54,14 +54,16 @@ class TaskBase(ABC):
 
         if fs_cot:
             prompt = (
-                "You are a prompt converter. Your task is to convert multiple question-answer pairs "
-                "into few-shot examples that include explanation and final answer. "
+                "You are a prompt converter. \n"
+                f"Here are the examples without explanation:\n{fewshot_text}\n\n"
+                "Your task is to convert multiple question-answer pairs into few-shot examples that include explanation and final answer. "
                 "For each example, follow this format:\n\n"
                 "Question: \n<original question>\n"
                 "Explanation: \n<step-by-step reasoning>\n"
                 "Answer: \n<final answer> \n\n"
-                "Do not add any extra commentary or formatting. Keep the input question unchanged.\n"
-                f"n\nHere are the examples:\n{fewshot_text}\n\n"
+                "Do not add any extra commentary or formatting. "
+                "Keep the input question and answer unchanged.\n"
+                "Only output fewshot examples."
             )
             fewshot_text = getOptimModel().api_call(prompt)
 
@@ -69,23 +71,20 @@ class TaskBase(ABC):
     
     def generate_cot_instruction(self) -> str:
         return (
-            "Please think step by step, and explain your reasoning before choosing an answer. "
-            "Respond in the following format:\n"
-            "<explanation> ... </explanation>\n"
-            "<answer> ... </answer>"
+            "Please think step by step, and explain your reasoning before choosing an answer. \n"
         )
     
     def generate_default_instruction(self) -> str:
         return (
-            "Select the best answer based on the question and options. "
-            "Only output the final answer wrapped in <answer>...</answer> and nothing else. "
-            "Do not include chain-of-thought or explanations."
+            "Only output the final answer with nothing else. \n"
+            "Do not include chain-of-thought or explanations. \n"
         )
 
     # human zero-shot
     def generate_default_prompt(self) -> str:
         prompt_parts = [self.origin_prompt.strip()]
         prompt_parts.append(self.generate_default_instruction()) # 仅输出答案
+        prompt_parts.append(self.answer_format_prompt)
         return "\n".join(prompt_parts)
 
     # human few-shot
@@ -93,19 +92,22 @@ class TaskBase(ABC):
         prompt_parts = [self.origin_prompt.strip()]
         prompt_parts.append(self.generate_fewshot_examples(fs_cot=False))  # 普通少量示例
         prompt_parts.append(self.generate_default_instruction())  # 仅输出答案
+        prompt_parts.append(self.answer_format_prompt)
         return "\n".join(prompt_parts)
     
     # human few-shot with cot in examples
     def generate_cotfewshot_prompt(self) -> str:
         prompt_parts = [self.origin_prompt.strip()]
-        prompt_parts.append(self.generate_fewshot_examples(fs_cot=True))  # 少量示例 + 推理
+        prompt_parts.append(self.generate_fewshot_examples(fs_cot=True))  # 少量带推理示例
         prompt_parts.append(self.generate_default_instruction())  # 仅输出答案
+        prompt_parts.append(self.answer_format_prompt)
         return "\n".join(prompt_parts)
 
     # cot zero-shot
     def generate_cot_format_prompt(self) -> str:
         prompt_parts = [self.origin_prompt.strip()]
         prompt_parts.append(self.generate_cot_instruction())  # 链式推理格式
+        prompt_parts.append(self.answer_format_prompt)
         return "\n".join(prompt_parts)
 
     # cot few-shot
@@ -113,13 +115,15 @@ class TaskBase(ABC):
         prompt_parts = [self.origin_prompt.strip()]
         prompt_parts.append(self.generate_fewshot_examples(fs_cot=False))  # 少量示例
         prompt_parts.append(self.generate_cot_instruction())  # 链式推理格式
+        prompt_parts.append(self.answer_format_prompt)
         return "\n".join(prompt_parts)
 
     # cot few-shot with cot in examples
     def generate_cotfewshot_and_cot_format_prompt(self) -> str:
         prompt_parts = [self.origin_prompt.strip()]
-        prompt_parts.append(self.generate_fewshot_examples(fs_cot=True))  # 少量示例 + 推理
+        prompt_parts.append(self.generate_fewshot_examples(fs_cot=True))  # 少量带推理示例
         prompt_parts.append(self.generate_cot_instruction())  # 链式推理格式
+        prompt_parts.append(self.answer_format_prompt)
         return "\n".join(prompt_parts)
     
     @abstractmethod

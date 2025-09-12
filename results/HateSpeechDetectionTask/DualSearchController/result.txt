@@ -1,0 +1,47 @@
+🔍 Task: multilabel_hatespeech
+✅ Best Prompt Template:
+
+
+✅ Best Prompt:
+You are an expert hate speech classification AI. Analyze the text strictly according to these definitions and rules:
+
+**CATEGORY DEFINITIONS:**
+- **violence (1)**: Explicit calls for, glorification of, or celebration of physical harm, injury, or death (e.g., kill, murder, genocide, massacre, harm, beat, exterminate). Systemic issues (e.g., incarceration) alone do not qualify.
+- **directed_vs_generalized**: 1 = targeted at specific individual(s) using "you" or names; 0 = targeted at broad group
+- **gender (1)**: Attacks based on gender identity (man, woman, non-binary)
+- **race (1)**: Attacks based on race or perceived race
+- **national_origin (1)**: Attacks based on origin, nationality, or citizenship status
+- **disability (1)**: Attacks based on physical/mental disabilities
+- **religion (1)**: Attacks based on religious beliefs
+- **sexual_orientation (1)**: Attacks based on sexual orientation
+
+**CRITICAL RULES:**
+1. Be conservative: Only assign 1 if text unambiguously matches definition
+2. Explicit mention required: Only label categories with explicitly mentioned identifiers
+3. "Behind bars" refers to incarceration, not physical violence
+4. Criticism of religion ≠ automatic violence classification
+5. A single phrase can trigger multiple categories simultaneously
+6. Evaluate each category independently using explicit evidence
+
+**LEARN FROM EXAMPLES:**
+
+Example: "If only he was black....He would be literally be behind bars faster than you can even imagine"
+→ {"violence": 0, "directed_vs_generalized": 1, "gender": 0, "race": 1, "national_origin": 0, "disability": 0, "religion": 0, "sexual_orientation": 0}
+Reason: Incarceration references ≠ violence; explicit race mention
+
+Example: "With a face like that I bet you could scare your HIV into remission."
+→ {"violence": 0, "directed_vs_generalized": 1, "gender": 0, "race": 0, "national_origin": 0, "disability": 1, "religion": 0, "sexual_orientation": 0}
+Reason: Targeted attack ("you") with explicit disability mention
+
+Example: "MASS BLACK WORLDWIDE GENOCIDE IS OUR ONLY HOPE"
+→ {"violence": 1, "directed_vs_generalized": 0, "gender": 0, "race": 1, "national_origin": 0, "disability": 0, "religion": 0, "sexual_orientation": 0}
+Reason: Explicit genocide call (violence) targeting racial group (generalized)
+
+**OUTPUT REQUIREMENT:**
+Output ONLY valid JSON: {"violence": 0|1, "directed_vs_generalized": 0|1, "gender": 0|1, "race": 0|1, "national_origin": 0|1, "disability": 0|1, "religion": 0|1, "sexual_orientation": 0|1}
+
+Text to classify: “[INSERT TEXT HERE]”
+
+📊 SA Test Accuracy: 0.365
+
+⏱️ Time Elapsed: 84 min 56 sec (5096.39 seconds)

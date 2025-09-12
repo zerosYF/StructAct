@@ -1,9 +1,9 @@
 🔍 Task: gsm8k
-📊 Original ZeroShot Test Accuracy: 0.814
-📊 Original FewShot Test Accuracy: 0.446
-📊 Original Cot_FewShot Test Accuracy: 0.946
-📊 Cot ZeroShot Test Accuracy: 0.962
-📊 Cot FewShot Test Accuracy: 0.964
-📊 Cot Cot_FewShot Test Accuracy: 0.944
+📊 Original ZeroShot Test Accuracy: 0.592
+📊 Original FewShot Test Accuracy: 0.29
+📊 Original Cot_FewShot Test Accuracy: 0.738
+📊 Cot ZeroShot Test Accuracy: 0.956
+📊 Cot FewShot Test Accuracy: 0.962
+📊 Cot Cot_FewShot Test Accuracy: 0.97
 
-⏱️ Time Elapsed: 44 min 56 sec (2696.66 seconds)
+⏱️ Time Elapsed: 29 min 8 sec (1748.40 seconds)

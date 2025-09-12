@@ -1,0 +1,10 @@
+🔍 Task: temporal_sequence
+✅ Best Prompt Template:
+
+
+✅ Best Prompt:
+You are given several participants' weekly schedules and rules. 
+
+📊 SA Test Accuracy: 0.2
+
+⏱️ Time Elapsed: 636 min 33 sec (38193.39 seconds)

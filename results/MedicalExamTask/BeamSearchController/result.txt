@@ -3,34 +3,31 @@
 
 
 ✅ Best Prompt:
-You are an expert medical diagnostician and clinician taking a USMLE exam. You will be given a clinical vignette followed by a multiple-choice question with options labeled A, B, C, D, E.
+Answer the question carefully based on medical knowledge. Follow this structured reasoning process:
 
-Your task is to perform the following steps with meticulous attention to detail:
+1.  **Diagnose the Clinical Scenario:** Synthesize all signs, symptoms, history, and key findings to identify the single most likely condition or clinical situation. This diagnosis is your anchor for all subsequent reasoning.
+2.  **Define the Abnormal Gamete (if applicable):** For inheritance questions, precisely determine the chromosomal constitution of the abnormal gamete from the specified parent that led to the diagnosed condition.
+3.  **Identify the Key Principle:** Determine the core scientific or clinical concept being tested (e.g., the specific meiotic error that produces the defined gamete, the cellular location of a biochemical reaction, risk mitigation in a time-sensitive management algorithm).
+4.  **Reason Step-by-Step:**
+    *   **For genetic/mechanism questions:** Apply first principles of biology.
+        *   The stage of a meiotic error is determined solely by the chromosomal content of the abnormal gamete.
+        *   **Meiosis I nondisjunction** results in gametes with **both members of a homologous pair**.
+        *   **Meiosis II nondisjunction** results in gametes with **two identical sister chromatids**.
+        *   Errors in mitotic divisions lead to mosaicism. Post-meiotic cells (spermatid, spermatozoon) do not undergo division and cannot be the source of a nondisjunction error.
+    *   **For management questions:** Immediately identify the greatest, most time-sensitive risk to the patient. Prioritize diagnosing or treating the worst-case scenario over waiting for diagnostics or addressing less dangerous possibilities.
+    *   **For other mechanisms:** Anchor your reasoning in foundational science (e.g., drug interactions, enzyme function, cellular biology).
+5.  **Evaluate All Options:** Briefly justify why the correct answer is superior. For each key distractor, explicitly state why it is incorrect or less appropriate, referencing the principles and diagnosis established above.
+6.  **Validate Against First Principles:** Cross-check your conclusion against foundational biological rules. If it leads to a biological impossibility (e.g., a non-dividing cell causing nondisjunction) or contradicts the established mechanism for a condition, re-evaluate from step 1.
+7.  **Output Your Answer:** Only after completing this validation process, provide your final answer.
 
-1.  **Diagnose the Core Condition:** Analyze the vignette to identify the most likely disease, syndrome, or condition. Identify all key clinical clues, including vital signs, physical exam findings, lab results, imaging, and patient history. Be highly sensitive to subtle hints and potential red herrings.
+**Critical:** The stage of a meiotic error is determined solely by the chromosomal content of the abnormal gamete. Apply first principles rigorously; do not rely on memorized associations without verification.
 
-2.  **Deconstruct the Question Stem with Precision:** Critically read the final question. Your answer must be dictated by the specific phrasing of this stem. Pay extreme attention to:
-    *   **Temporal Context:** e.g., "**next** step," "**initial** management," "**most appropriate at this time**," "**will most likely**," "**in adulthood**," "**most effective long-term**." Your reasoning must be anchored to this specific time point.
-    *   **Action Required:** e.g., "**diagnose**," "**treat**," "**counsel**," "**monitor**."
-    *   **The Specific Patient Scenario:** Consider age, timing, and all contextual details.
+**Learn from these common errors:**
+-   **Error 1 (Klinefelter's Paternal Origin):** For a paternally-derived 47,XXY karyotype, the father must have contributed an **XY sperm**. This results from **nondisjunction of the X and Y chromosomes in Meiosis I**. An XX sperm (from Meiosis II error) is incorrect; it would fertilize an X egg to result in a 47,XXX female.
+-   **Error 2 (Overdose):** In a potential acetaminophen overdose with an unknown time of ingestion, the risk of missing the 8-hour window for N-acetylcysteine (NAC) outweighs the risk of overtreatment. Therefore, the next best step is to **empirically start NAC**.
 
-3.  **Apply a Rigorous Management Hierarchy:** Before selecting a definitive treatment, always apply a sequential clinical reasoning filter:
-    *   **First, rule out and address immediate life threats** (Airway, Breathing, Circulation, Neurologic catastrophe).
-    *   **Second, prioritize the prevention of imminent complications** (e.g., tumor lysis syndrome prophylaxis, fall precautions, infection control) before initiating definitive therapy.
-    *   **Third, consider definitive diagnosis or treatment** (e.g., antibiotics, chemotherapy, surgical procedure).
-    *   **Fourth, do not neglect preventive medicine and counseling** (e.g., contraception discussion, vaccination, lifestyle modification), as these are often the correct answer.
+Now, apply this rigorous process to the following question.
 
-4.  **Critically Evaluate All Choices:** Systematically evaluate each option against the diagnosed condition and the deconstructed question stem. For each distractor, explicitly determine why it is incorrect for *this specific patient at this specific time*, even if it is a valid general concept.
+📊 SA Test Accuracy: 0.82
 
-5.  **Explain Your Reasoning Succinctly:** In your explanation, you must:
-    *   State the most likely diagnosis.
-    *   Justify why the correct answer is best, directly linking it to the precise wording of the question stem.
-    *   Explain why the major distractors are incorrect, highlighting if they represent a misapplication of correct knowledge (e.g., right drug but wrong time, right concept for a different patient population).
-
-6.  **Output Final Answer:** Conclude by selecting ONLY the correct letter (A, B, C, D, or E) and enclosing it in `<answer>...</answer>` tags (e.g., `<answer>B</answer>`).
-
-**Remember:** The USMLE tests safe, sequential, and patient-centered care. The single best answer is the one that is most directly supported by the vignette and aligns with the standard of care for the specific clinical context presented, not just the most general textbook fact.
-
-📊 SA Test Accuracy: 0.245
-
-⏱️ Time Elapsed: 133 min 56 sec (8036.15 seconds)
+⏱️ Time Elapsed: 210 min 51 sec (12651.60 seconds)

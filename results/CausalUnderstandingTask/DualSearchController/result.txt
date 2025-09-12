@@ -3,34 +3,40 @@
 
 
 ✅ Best Prompt:
-You are given a scenario about causality. Your task is to decide whether the action described caused the outcome. Final answer with **Yes**, **No**, or **Ambiguous**.
+You are given a scenario about causality. Determine whether the specified action was **a cause** of the specified outcome. Your answer should reflect what the majority of people would conclude based on everyday notions of causality and responsibility.
 
-**Reasoning Framework:**
-1.  **Identify the Question Type:** Determine if the question asks for a *logical* assessment (e.g., "necessary cause", "sufficient cause") or an *intuitive* assessment (e.g., "did it cause?", "what would most people say?"). This dictates the entire reasoning path.
-2.  **If the question is an INTUITIVE assessment (what most people would say):**
-    *   **A. Assess Duty & Normality:** Was the agent **supposed to** prevent the outcome? An agent failing their duty is a strong signal for causation (**Yes**). An agent with no duty is a strong signal against causation (**No**). **The absence of duty is a powerful factor that can make a counterfactually necessary action *not* seem causal.**
-    *   **B. Assess Outcome Valence:** Is the outcome positive (e.g., a light turning on) or negative (e.g., a system failing)? For negative outcomes with no duty, people are hesitant to assign blame to any one individual in symmetric scenarios.
-    *   **C. Apply the Counterfactual (But-For) Test:** Ask: "Would the outcome have occurred **if the specific action had NOT happened**?" This identifies necessary conditions.
-    *   **D. Check for Symmetry & Primacy:** Are multiple agents in identical positions (same duty, same action, same time)? In cases of **true symmetry** with a negative outcome and no duty, people's judgments are split; they see it as a collective accident (**Ambiguous**). If one agent acted first, people often assign more causation to that agent.
-    *   **E. Synthesize Intuition:** Combine these signals. **Duty is the primary cue.** A counterfactually necessary action by an agent with no duty in a symmetric scenario is typically **not** seen as causal by the majority (**No** or **Ambiguous**).
-3.  **If the question is a LOGICAL assessment (e.g., "necessary cause"):**
-    *   **A. Apply the Counterfactual (But-For) Test:** Ask: "Would the outcome have occurred **if the specific action had NOT happened**?" If the answer is no, the action is a necessary cause.
-    *   **B. Check for Preemption:** If multiple sufficient causes are possible, identify which event *first* directly produced the outcome. **A *potential* cause that is thwarted does not count as preemption; only an actualized alternative sufficient cause negates necessity.**
-    *   **C. Synthesize Logically:** Determine if the action was necessary. **In cases of symmetric overdetermination (e.g., two simultaneous sufficient causes), neither action is necessary (No).**
-4.  **Final Judgment:** For intuitive questions, ask: "Based on duty, outcome valence, counterfactuals, and symmetry, what would the majority of people conclude?"
+**Reasoning Steps:**
 
-**Learn from Key Examples:**
-*   **Duty Overrides Counterfactual:** An employee *with duty* forgets to oil a machine. People say **Yes**. Another employee *with no duty* doesn't oil the same machine. People say **No**.
-*   **Logical Necessity & Preemption:** If an outcome would have happened anyway due to an independent sufficient cause, the action is **not** a necessary cause (**No**).
-*   **Symmetric Intuition (Negative Outcome):** Two employees with no duty perform simultaneous necessary actions for a negative outcome (e.g., crashing a server). People are split; the intuitive answer is **Ambiguous**. They do not say **Yes** for one individual.
-*   **NEW: Symmetric Intuition (Positive Outcome):** Two people simultaneously flip switches that together turn on a light. For this positive outcome, people are more likely to say each person caused it (**Yes**).
+1.  **Essential Requirement (But-for Test):** This is the definitive test. Ask: "Would the outcome have occurred **at the specific time and in the specific way it did** if the action had **not** happened?"
+    *   If the answer is **Yes** (the outcome would have happened anyway), then the action is **not a cause**. **Stop your reasoning here and answer `No`.** (Example: A redundant cause).
+    *   If the answer is **No** (the outcome would NOT have happened without the action), then the action is a **but-for cause**. Proceed to step 2 to check if people would still be *reluctant* to call it "a cause" due to normality or omission.
 
-**Avoid Common Mistakes:**
-*   **Mistake:** In intuitive judgments for negative outcomes, over-relying on the counterfactual test when duty is absent and the case is symmetric. This leads to an incorrect **Yes**.
-*   **Correction:** Let the absence of duty and the presence of symmetry guide you toward **Ambiguous** or **No**. The counterfactual test is secondary in these cases.
+2.  **Assigning Salience:** If the action passes the But-for test, people are more likely to call it "a cause" and assign responsibility if it was:
+    *   **Faulty:** A mistake, misconduct, or a deviation from instructions/plans.
+    *   **Intentional:** Done on purpose to bring about the outcome.
+    *   **Proximate:** The most direct and immediate event in the chain, not a distant background condition.
+    *   **An Action:** People are more likely to attribute causation to actions than to omissions, unless the omission violated a clear duty to act.
+    If the action was normal, non-faulty, and a distant background condition, people may be reluctant to call it "the cause," but it remains *a* cause.
 
-**Output Format:** Always end your response with `<answer>Yes</answer>`, `<answer>No</answer>`, or `<answer>Ambiguous</answer>`.
+**Final Decision Framework:**
+*   If the action **fails the But-for test**, answer `No`.
+*   If the action **passes the But-for test**, answer `Yes`, unless it was a **normal, non-faulty, distant background action or omission without a clear duty**. In these rare cases, answer `Ambiguous`.
+*   If two or more actions are equally but-for causes and the scenario does not clearly make one more salient (faulty, intentional, proximate), answer `Ambiguous`.
 
-📊 SA Test Accuracy: 0.55
+**Ground your reasoning in the facts provided.** Do not invent detailed counterfactual scenarios or assume probabilities not stated in the question.
 
-⏱️ Time Elapsed: 15 min 48 sec (948.89 seconds)
+**Important Examples to Consider:**
+- **Redundant Cause:** If a person does not change a setting, but the outcome would have happened anyway due to another condition, their inaction is `No`t a cause.
+- **Redundant Cause (Double Prevention):** If two independent actors each provide a sufficient condition for an outcome (e.g., both buy the only battery needed), neither action is a but-for cause. The answer for each is `No`.
+- **Normal vs. Faulty Action:** If a person buys an item normally (like a bookend) and this completes a pair only because another person stole a matching item, the purchase is a but-for cause. However, because the theft is faulty and salient, the majority would say the thief caused the possession of the pair, not the purchaser. The answer for the purchaser is `No`.
+- **Multiple Causes:** If two gardeners each apply a different chemical, and the combination causes harm, both are but-for causes. If neither acted faultily in the application itself (e.g., one just forgot to relay a rule), causation is shared and the answer for each is `Yes`.
+- **Pre-Existing Condition:** If a terminal illness guarantees death, and a medical error only changes the timing by a short period, the illness is the cause of the premature death (`Yes`), while the error is the cause of the immediate death.
+
+**Question:**
+{Question}
+
+After your reasoning, finalize your answer with `Yes`, `No`, or `Ambiguous`.
+
+📊 SA Test Accuracy: 0.4625
+
+⏱️ Time Elapsed: 88 min 25 sec (5305.18 seconds)
