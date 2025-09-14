@@ -1,0 +1,476 @@
+{
+  "config": {
+    "mcts_iters": 10,
+    "depth_threshold": 5,
+    "width_threshold": 3
+  },
+  "best_node": {
+    "action_sequence": [
+      "SuccessDrivenAction",
+      "SuccessDrivenAction"
+    ],
+    "prompt": "You are given a paragraph describing various objects. Your task is to compute the quantity requested in the question.\n\nImportant Instructions:\n- Focus only on items explicitly stated as being owned by \"I\" (e.g., \"I have\", \"I also have\"). Ignore all items owned by others.\n- For each item, classify it as either a \"musical instrument\" or an \"animal/insect\". If the question involves another category (e.g., cars, mobiles), identify that category as well.\n- Use only the final quantity mentioned for each item. Ignore any backstory, explanations, or intermediate quantities.\n- First, list all items that \"I\" have with their final quantities.\n- Second, classify each item into the relevant categories based on the question's requirements.\n- Third, sum the quantities for each required category.\n- Finally, perform the requested operation (e.g., absolute difference) using these sums.\n\nThink step by step. Be thorough to avoid missing any \"I have\" items.",
+    "depth": 2,
+    "Q": 2.033940207378628,
+    "N": 4
+  },
+  "search_tree": {
+    "id": 0,
+    "depth": 0,
+    "action_sequence": [],
+    "prompt": "You are given a paragraph describing various objects. Your task is to compute the quantity requested in the question.\n\n",
+    "Q": 12.313543740255442,
+    "N": 27,
+    "uct_value": 0.0,
+    "reward": 0.15,
+    "children": [
+      {
+        "id": 1,
+        "depth": 1,
+        "action_sequence": [
+          "SuccessDrivenAction"
+        ],
+        "prompt": "You are given a paragraph describing various objects. Your task is to compute the quantity requested in the question.\n\nImportant Instructions:\n- Focus only on items explicitly stated as being owned by \"I\" (e.g., \"I have\", \"I also have\").\n- For each item, classify it as either a \"musical instrument\" or an \"animal/insect\". Ignore all other categories.\n- Use only the final quantity mentioned for each item. Ignore any backstory or explanations about how the quantity was obtained.\n- First, list all musical instruments that \"I\" have and sum their quantities.\n- Second, list all animals/insects that \"I\" have and sum their quantities.\n- Finally, add these two sums to get the total.\n\nThink step by step.",
+        "Q": 4.673859414208547,
+        "N": 10,
+        "uct_value": 0.4719495003311675,
+        "reward": 0.2,
+        "children": [
+          {
+            "id": 2,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are given a paragraph describing various objects. Your task is to compute the quantity requested in the question.\n\nImportant Instructions:\n- Focus only on items explicitly stated as being owned by \"I\" (e.g., \"I have\", \"I also have\").\n- For each such item, determine if it belongs to any category mentioned in the question (e.g., \"animals/insects\", \"fruits\", \"mobiles\").\n- Use only the final quantity mentioned for each item. Ignore any backstory or explanations about how the quantity was obtained.\n- First, list all items that \"I\" have and their quantities.\n- Second, classify each item into the relevant categories based on the question.\n- Third, sum the quantities for each required category.\n- Finally, compute the answer as specified in the question (e.g., total sum, absolute difference).\n\nThink step by step.",
+            "Q": 0.594953372359407,
+            "N": 1,
+            "uct_value": 0.598558437773377,
+            "reward": 0.1,
+            "children": []
+          },
+          {
+            "id": 3,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are given a paragraph describing various objects. Your task is to compute the quantity requested in the final question.\n\n### Instructions: ###\n1.  **Focus on Ownership:** Only consider items explicitly stated as being owned by \"I\" (e.g., \"I have\", \"I also have\"). Ignore all items owned by others.\n2.  **Use Final Quantity:** For each owned item, use only the final numerical value provided. Ignore any backstory or explanation about how the quantity was obtained.\n3.  **Determine Relevant Categories:** Carefully read the final question to identify which categories of items you need to calculate (e.g., animals/insects and fruits, animals/insects and mobiles, etc.).\n4.  **Classify and Sum:** For each item \"I\" own, classify it into one of the categories specified in the question. Sum the quantities for each category separately.\n5.  **Compute the Answer:** Perform the exact arithmetic operation (sum or absolute difference) on the category totals as requested by the question.\n\nThink step by step. List all items \"I\" have, classify them according to the question's categories, sum each category, and then compute the final answer.",
+            "Q": 1.9301709675876992,
+            "N": 4,
+            "uct_value": 0.6818917711067104,
+            "reward": 0.2,
+            "children": [
+              {
+                "id": 4,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are given a paragraph describing various objects. Your task is to compute the quantity requested in the final question.\n\n### Instructions: ###\n1.  **Identify Ownership:** Extract every item explicitly stated as being owned by \"I\" (e.g., \"I have\", \"I also have\"). Ignore all items owned by others.\n2.  **Use Final Quantity:** For each owned item, use only the final numerical value provided. Ignore all backstories, explanations, or historical narratives.\n3.  **Determine Relevant Categories:** Read the final question carefully to identify exactly which categories you need (e.g., animals/insects and fruits, animals/insects and mobiles, etc.).\n4.  **Classify and Sum:** Classify each owned item into one of the question's categories. Sum the quantities for each category separately.\n5.  **Compute the Answer:** Perform the exact arithmetic operation (sum or absolute difference) on the category totals as requested.\n\n### Reasoning Steps: ###\n- First, list all items \"I\" own with their final quantities.\n- Second, identify the required categories from the question.\n- Third, classify each owned item into the appropriate category (or ignore if it doesn't belong).\n- Fourth, sum the quantities for each category.\n- Finally, apply the requested operation to the category totals.\n\nThink step by step. Be precise and systematic.",
+                "Q": 0.6089614206316529,
+                "N": 1,
+                "uct_value": 0.0,
+                "reward": 0.2,
+                "children": []
+              },
+              {
+                "id": 5,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are given a paragraph describing various objects. Your task is to compute the quantity requested in the final question.\n\n### Instructions: ###\n1.  **Focus on Ownership:** Only consider items explicitly stated as being owned by \"I\" (e.g., \"I have\", \"I also have\"). Ignore all items owned by others.\n2.  **Use Final Quantity:** For each owned item, use only the final numerical value provided. Ignore any backstory or explanation about how the quantity was obtained.\n3.  **Determine Relevant Categories:** Carefully read the final question to identify which categories you need to calculate (e.g., animals/insects and mobiles, animals/insects and fruits, etc.).\n4.  **Classify and Sum:** For each item \"I\" own, classify it into one of the categories specified in the question. Sum the quantities for each category separately. Ignore any items that do not belong to the specified categories.\n5.  **Compute the Answer:** Perform the exact arithmetic operation (sum or absolute difference) on the category totals as requested by the question.\n\nThink step by step:\n- First, list all items explicitly owned by \"I\" and their final quantities.\n- Second, classify each item into the relevant categories from the question.\n- Third, sum the quantities for each category.\n- Finally, compute the answer by applying the requested operation to the category totals.",
+                "Q": 0.6089614206316529,
+                "N": 1,
+                "uct_value": 0.0,
+                "reward": 0.25,
+                "children": []
+              },
+              {
+                "id": 6,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are given a paragraph describing various objects. Your task is to compute the quantity requested in the final question.\n\n### Instructions: ###\n1.  **Focus on Ownership:** Only consider items explicitly stated as being owned by \"I\" (e.g., \"I have\", \"I also have\"). Ignore all items owned by others.\n2.  **Use Final Quantity:** For each owned item, use only the final numerical value provided. Ignore any backstory or explanation about how the quantity was obtained.\n3.  **Determine Relevant Categories:** Carefully read the final question to identify which categories of items you need to calculate (e.g., animals/insects and fruits, animals/insects and mobiles, cars and fruits, etc.).\n4.  **Classify and Sum:** For each item \"I\" own, classify it into one of the categories specified in the question. Sum the quantities for each category separately.\n5.  **Compute the Answer:** Perform the exact arithmetic operation (sum or absolute difference) on the category totals as requested by the question.\n\nThink step by step. List all items \"I\" have, classify them according to the question's categories, sum each category, and then compute the final answer.",
+                "Q": 0.5839614206316529,
+                "N": 1,
+                "uct_value": 0.0,
+                "reward": 0.1,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 4,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are given a paragraph describing various objects. Your task is to compute the quantity requested in the question.\n\nImportant Instructions:\n- Focus only on items explicitly stated as being owned by \"I\" (e.g., \"I have\", \"I also have\"). Ignore all items owned by others.\n- For each item, classify it as either a \"musical instrument\" or an \"animal/insect\". If the question involves another category (e.g., cars, mobiles), identify that category as well.\n- Use only the final quantity mentioned for each item. Ignore any backstory, explanations, or intermediate quantities.\n- First, list all items that \"I\" have with their final quantities.\n- Second, classify each item into the relevant categories based on the question's requirements.\n- Third, sum the quantities for each required category.\n- Finally, perform the requested operation (e.g., absolute difference) using these sums.\n\nThink step by step. Be thorough to avoid missing any \"I have\" items.",
+            "Q": 2.033940207378628,
+            "N": 4,
+            "uct_value": 0.5120901118510464,
+            "reward": 0.3,
+            "children": [
+              {
+                "id": 5,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are given a paragraph describing various objects. Your task is to compute the quantity requested in the question.\n\nImportant Instructions:\n- Focus only on items explicitly stated as being owned by \"I\" (e.g., \"I have\", \"I also have\"). Ignore all items owned by others.\n- Use only the final quantity mentioned for each item. Ignore any backstory, explanations, or intermediate quantities.\n- First, list all items that \"I\" have with their final quantities.\n- Second, classify each item into the relevant categories based on the question's requirements. Ignore all categories not mentioned in the question.\n- Third, sum the quantities for each required category.\n- Finally, perform the requested operation (e.g., absolute difference, sum) using these sums.\n\nThink step by step. Be thorough to avoid missing any \"I have\" items.",
+                "Q": 0.6685511672286291,
+                "N": 1,
+                "uct_value": 0.0,
+                "reward": 0.25,
+                "children": []
+              },
+              {
+                "id": 6,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are given a paragraph describing various objects. Your task is to compute the quantity requested in the question.\n\n**Important Instructions:**\n- Focus only on items explicitly stated as being owned by \"I\" (e.g., \"I have\", \"I also have\"). Ignore all items owned by others.\n- Use only the final quantity mentioned for each item. Ignore any backstory, explanations, or intermediate quantities.\n- Classify each item only into the categories required by the question (e.g., \"animals/insects\", \"mobiles\", \"cars\", \"fruits\").\n- Follow these steps strictly:\n  1. List all items that \"I\" have with their final quantities.\n  2. Classify each item into the relevant categories based on the question.\n  3. Sum the quantities for each required category.\n  4. Perform the requested operation (e.g., absolute difference, sum) using these sums.\n- Be thorough to avoid missing any \"I have\" items. Scan the entire text.\n- Use common sense to interpret item names (e.g., \"blueberrys\" means blueberries).\n- Double-check your arithmetic and final answer.\n\nThink step by step. Be precise and complete.",
+                "Q": 0.5685511672286292,
+                "N": 1,
+                "uct_value": 0.0,
+                "reward": 0.15,
+                "children": []
+              },
+              {
+                "id": 7,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are given a paragraph describing various objects. Your task is to compute the quantity requested in the question.\n\n### Important Instructions:\n1.  **Extraction:** Identify all items explicitly stated as being owned by \"I\" (e.g., \"I have\", \"I also have\"). Ignore all items owned by others (e.g., \"my father has\", \"my sister has\").\n2.  **Final Quantity:** For each owned item, extract ONLY the final quantity stated at the end of its description. Disregard any backstory, explanations, or intermediate quantities.\n3.  **Question-Based Categorization:** Analyze the question to determine which two categories are relevant (e.g., \"musical instruments\" and \"animals/insects\", \"cars\" and \"mobiles\", \"fruits\" and \"animals/insects\"). You will need to identify both categories from the question.\n4.  **Categorization and Verification:** For every item you extracted:\n    *   Determine what the item is (e.g., \"bansuri\", \"iphone x\", \"raven\").\n    *   Classify it into one of the categories required by the question. If an item does not belong to either relevant category, it must be excluded from all sums.\n    *   **Explicitly verify the category.** For example, a \"camel\" is an animal, not a car. A \"nissan maxima\" is a car, not an animal. A \"violin\" is a musical instrument, not an animal.\n5.  **Handling Ambiguity:** If an item's name is ambiguous, compound, or contains a likely typo (e.g., \"26 vibraphone, steelpans\", \"toyota 4runnertoyota sequoia\"), use the following rule:\n    *   **The final quantity applies to the entire noun phrase.** Treat \"26 vibraphone, steelpans\" as a single entry with a quantity of 26. If the entire phrase describes objects from the same relevant category (e.g., both are musical instruments), count it once. If it describes objects from different categories, use the quantity for each respective category. If you cannot determine this, default to the given quantity for the entire phrase.\n6.  **Summation:**\n    *   Sum the quantities of all items belonging to the first relevant category.\n    *   Sum the quantities of all items belonging to the second relevant category.\n    *   Use these sums to perform the final requested operation (e.g., sum, absolute difference).\n7.  **Output Structure:** Present your final answer clearly within the tags `<answer>...</answer>`.\n\n### Process to Follow:\n- **Step 1:** List every \"I have\" item with its final quantity.\n- **Step 2:** From this list, identify and list all items that belong to the first category required by the question.\n- **Step 3:** From this list, identify and list all items that belong to the second category required by the question.\n- **Step 4:** Sum the quantities for the first category.\n- **Step 5:** Sum the quantities for the second category.\n- **Step 6:** Perform the final operation (e.g., |Sum1 - Sum2|).\n- **Step 7:** State the final answer.\n\nThink step by step. Be meticulous to avoid missing any \"I have\" items and to correctly classify them. Double-check your categorizations to ensure items are not misclassified (e.g., \"camels\" are animals, not cars).",
+                "Q": 0.4185511672286292,
+                "N": 1,
+                "uct_value": 0.0,
+                "reward": 0.0,
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "depth": 1,
+        "action_sequence": [
+          "FailureDrivenAction"
+        ],
+        "prompt": "You are an expert at parsing complex narratives and performing precise calculations. You will be given a paragraph describing objects owned by various people. Your task is to compute the exact quantity requested in the question.\n\n**CRITICAL INSTRUCTIONS:**\n1.  **Focus on Ownership:** ONLY count items explicitly stated as being owned by \"I\" or \"me\" (e.g., \"I have...\", \"I also have...\"). IGNORE all items owned by others (e.g., \"My friend has...\", \"My mother has...\").\n2.  **Use Final Quantities:** For any item \"I\" have, a story may be provided. IGNORE THE STORY'S NARRATIVE AND CALCULATIONS. Use ONLY the final, definitive quantity stated (e.g., \"...so eventually I am left with X of them now\" or \"...so at the end I am left with X of them\").\n3.  **Categorize Strictly:** Classify each of \"my\" items into the categories specified in the question (e.g., \"animals/insects\", \"cars\", \"mobiles\"). If an item's category is ambiguous, use common sense (e.g., a \"raven\" is an animal, a \"Honda Civic\" is a car).\n4.  **Follow These Steps:** Your response MUST follow this procedure:\n    a.  **Extract:** First, list every single item owned by \"I\" and its corresponding final quantity.\n    b.  **Categorize:** Place each item into the correct category as per the question.\n    c.  **Sum:** Calculate the sum for each category separately.\n    d.  **Compute:** Perform the final requested operation on these sums (e.g., add them, find the absolute difference).\n5.  **Show Your Work:** Present your extraction and calculations clearly before giving the final answer. This allows for verification and builds trust in your result.\n\n**Question:** <The question will be inserted here>\n**Paragraph:** <The paragraph will be inserted here>",
+        "Q": 4.797392023230044,
+        "N": 10,
+        "uct_value": 0.4843027612333172,
+        "reward": 0.2,
+        "children": [
+          {
+            "id": 3,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are an expert at parsing complex narratives and performing precise calculations. You will be given a paragraph describing objects owned by various people. Your task is to compute the exact quantity requested in the question.\n\n**CRITICAL INSTRUCTIONS:**\n1.  **Focus on Ownership:** ONLY count items explicitly stated as being owned by \"I\" or \"me\" (e.g., \"I have...\", \"I also have...\"). IGNORE all items owned by others (e.g., \"My friend has...\", \"My mother has...\").\n2.  **Use Final Quantities:** For any item \"I\" have, a story may be provided. IGNORE THE STORY'S NARRATIVE AND CALCULATIONS. Use ONLY the final, definitive quantity stated (e.g., \"...so eventually I am left with X of them now\" or \"...so at the end I am left with X of them\").\n3.  **Categorize Strictly:** Classify each of \"my\" items into the categories specified in the question (e.g., \"animals/insects\", \"cars\", \"fruits\"). Use the following common sense guidelines:\n    - **Animals/Insects:** Include mammals, birds, reptiles, amphibians, fish, insects, and other living creatures. Examples: eagle, dolphin, snake, ant, cod (fish).\n    - **Fruits:** Include edible plant parts like apples, grapes, berries, etc. Examples: apple, grape, blueberry, durian.\n    - **Cars:** Include motor vehicles with model names that include \"car\" or are known car models. Examples: Toyota Camry, Nissan Altima.\n    - **Musical Instruments:** Include devices used to make music. Examples: piano, guitar, bongo drums.\n    - For ambiguous terms, use this mapping:\n        - \"bongos\" -> musical instrument (not animal)\n        - \"cattles\" -> animal (assuming typo for \"cattle\")\n        - \"mbiras\" -> musical instrument\n        - \"clementinefigs\" -> fruit\n        - \"cherrys\" -> fruit (assuming typo for \"cherries\")\n        - \"mulberrys\" -> fruit\n        - \"groundhogs\" -> animal\n        - \"magpies\" -> animal\n    If an item does not fit any category in the question, exclude it from the sums.\n4.  **Follow These Steps:** Your response MUST follow this procedure:\n    a.  **Extract:** First, list every single item owned by \"I\" and its corresponding final quantity.\n    b.  **Categorize:** Place each item into the correct category as per the question and the guidelines above.\n    c.  **Sum:** Calculate the sum for each category separately.\n    d.  **Compute:** Perform the final requested operation on these sums (e.g., add them, find the absolute difference).\n5.  **Show Your Work:** Present your extraction and calculations clearly before giving the final answer. This allows for verification and builds trust in your result.\n\n**Example for Reference (Learn from Mistakes):**\n- **Input:** \"I have 59 bongos...\" \n- **Correct Categorization:** \"bongos\" are musical instruments, NOT animals. Do NOT count them in animals/insects.\n- **Input:** \"I have 36 cattles...\" \n- **Correct Categorization:** \"cattles\" are animals (assuming typo for cattle). Count them in animals/insects.\n\n**Question:** <The question will be inserted here>\n**Paragraph:** <The paragraph will be inserted here>",
+            "Q": 0.49489171734373083,
+            "N": 1,
+            "uct_value": 0.49876300013734837,
+            "reward": 0.1,
+            "children": []
+          },
+          {
+            "id": 4,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are an expert at parsing complex narratives and performing precise calculations. You will be given a paragraph describing objects owned by various people. Your task is to compute the exact quantity requested in the question.\n\n**CRITICAL INSTRUCTIONS:**\n1.  **Focus on Ownership:** ONLY count items explicitly stated as being owned by \"I\" or \"me\" (e.g., \"I have...\", \"I also have...\"). IGNORE all items owned by others (e.g., \"My friend has...\", \"My mother has...\").\n2.  **Use Final Quantities:** For any item \"I\" have, a story may be provided. IGNORE THE STORY'S NARRATIVE AND CALCULATIONS. Use ONLY the final, definitive quantity stated (e.g., \"...so eventually I am left with X of them now\" or \"...so at the end I am left with X of them\").\n3.  **Categorize Strictly:** Classify each of \"my\" items **based on the object's primary nature, not words in its name** into the categories specified in the question (e.g., \"animals/insects\", \"cars\", \"mobiles\").\n    *   **CRITICAL: BEWARE OF TRICKY NAMES.** An item like \"`37 nissan frintier cars`\" is an **animal** (the word \"cars\" is part of its name but it is not a vehicle). An item like \"`59 toyota 4runnertoyota sequoia cars`\" is an **animal**. Classify based on what the object is, not on keywords.\n    *   If an item's category is ambiguous, use common sense (e.g., a \"raven\" is an animal, a \"Honda Civic\" is a car). If you are unsure, note it in your reasoning.\n    *   **For combined items:** If a quantity is given for a phrase like \"X A, B\" (e.g., `65 vibraphone, steelpans`), treat the number `X` as the **total count** for that entire group of items. Do not multiply the quantity.\n4.  **Follow These Steps:** Your response MUST follow this procedure. **Do not skip any steps.**\n    a.  **Extract:** First, list every single item owned by \"I\" and its corresponding final quantity. **Present this list clearly.**\n    b.  **Categorize:** Place each item from your list into the correct category as per the question. **Present this categorization clearly.**\n    c.  **Sum:** Calculate the sum for each category separately. **Show your arithmetic.**\n    d.  **Compute:** Perform the final requested operation on these sums (e.g., add them, find the absolute difference).\n5.  **Show Your Work:** Present your extraction and calculations clearly before giving the final answer. This allows for verification and builds trust in your result.\n\n**Question:** <The question will be inserted here>\n**Paragraph:** <The paragraph will be inserted here>",
+            "Q": 1.9068789205878311,
+            "N": 4,
+            "uct_value": 0.48059100713367003,
+            "reward": 0.2,
+            "children": [
+              {
+                "id": 5,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert at parsing complex narratives and performing precise calculations. You will be given a paragraph describing objects owned by various people. Your task is to compute the exact quantity requested in the question.\n\n**CRITICAL INSTRUCTIONS:**\n1.  **Focus on Ownership:** ONLY count items explicitly stated as being owned by \"I\" or \"me\" (e.g., \"I have...\", \"I also have...\"). IGNORE all items owned by others (e.g., \"My friend has...\", \"My mother has...\").\n2.  **Use Final Quantities:** For any item \"I\" have, a story may be provided. IGNORE THE STORY'S NARRATIVE AND CALCULATIONS. Use ONLY the final, definitive quantity stated (e.g., \"...so eventually I am left with X of them now\" or \"...so at the end I am left with X of them\").\n3.  **Categorize Strictly:** Classify each of \"my\" items into the categories specified in the question based on these definitive rules:\n    *   **Cars/Vehicles:** Any item whose name contains a recognizable vehicle model (e.g., Honda Civic, Tesla Model S, Toyota Rav4) is a car. The word \"cars\" in the name is part of the model and does not change the category.\n    *   **Animals/Insects:** Any living creature, real or fictional. This includes all mammals, birds, reptiles, amphibians, fish, and insects.\n    *   **Musical Instruments:** Any device designed or used to create musical sounds (e.g., guitar, piano, violin, drum).\n    *   **Mobiles:** Mobile phones and smart devices (e.g., iPhone, Samsung Galaxy, Huawei Nova).\n    *   **For Combined Items:** If a quantity is given for a phrase like \"X A, B\" (e.g., `65 vibraphone, steelpans`), treat the number `X` as the **total count** for that entire group. Classify the group based on the category of the first item listed.\n4.  **Follow These Steps:** Your response MUST follow this procedure. **Do not skip any steps.**\n    a.  **Extract:** List every single item owned by \"I\" and its corresponding final quantity. **Present this list clearly.**\n    b.  **Verify:** Double-check the paragraph to ensure no item owned by 'I' has been missed. Pay special attention to sentences starting with 'I have...' or 'I also have...'.\n    c.  **Categorize:** Place each item from your list into the correct category as per the rules above. **Present this categorization in a table.**\n    d.  **Sum:** Calculate the sum for each category separately. **Show your arithmetic.**\n    e.  **Compute:** Perform the final requested operation on these sums (e.g., add them, find the absolute difference).\n5.  **Show Your Work:** Present your extraction and calculations clearly before giving the final answer.\n6.  **Final Answer:** Provide your final answer inside the tags `<answer>[number]</answer>`.\n\n**Question:** <The question will be inserted here>\n**Paragraph:** <The paragraph will be inserted here>",
+                "Q": 0.6928846233035889,
+                "N": 1,
+                "uct_value": 0.0,
+                "reward": 0.25,
+                "children": []
+              },
+              {
+                "id": 6,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert at parsing complex narratives and performing precise calculations. You will be given a paragraph describing objects owned by various people. Your task is to compute the exact quantity requested in the question.\n\n**CRITICAL INSTRUCTIONS:**\n1.  **Focus on Ownership:** ONLY count items explicitly stated as being owned by \"I\" or \"me\" (e.g., \"I have...\", \"I also have...\"). IGNORE all items owned by others (e.g., \"My friend has...\", \"My mother has...\").\n2.  **Use Final Quantities:** For any item \"I\" have, a story may be provided. IGNORE THE STORY'S NARRATIVE AND CALCULATIONS. Use ONLY the final, definitive quantity stated (e.g., \"...so eventually I am left with X of them now\" or \"...so at the end I am left with X of them\").\n3.  **Categorize Strictly & Authoritatively:** Classify each of \"my\" items **based solely on the object's primary, real-world nature** into the categories specified in the question (e.g., \"animals/insects\", \"cars\", \"mobiles\").\n    *   **DEFINITIVE RULE FOR TRICKY NAMES:** An object's name may contain words like \"cars\" or \"mobiles\". **YOU MUST IGNORE THESE WORDS.** Determine the category based on the core object.\n    *   **ANIMALS/INSECTS:** If the core object is a living creature (e.g., dog, bird, snake, insect, even if named \"nissan frontier cars\" or \"toyota sequoia cars\"), it is an **animal/insect**.\n    *   **CARS:** If the core object is a machine used for transportation (e.g., sedan, truck, SUV, explicitly identified by a real brand/model like \"Honda Civic\", \"Tesla Model S\"), it is a **car**.\n    *   **MOBILES:** If the core object is an electronic device for communication (e.g., phone, smartphone, explicitly identified by a real brand/model like \"iPhone\", \"Samsung Galaxy\"), it is a **mobile**.\n    *   **MUSICAL INSTRUMENTS:** If the core object is a device designed to create musical sound (e.g., guitar, drum, piano, violin), it is a **musical instrument**.\n    *   **FRUITS:** If the core object is a fruit (e.g., apple, grape, durian), it is a **fruit**.\n    *   **If still ambiguous,** classify it as per the most common sense interpretation based on the list above.\n4.  **For combined items:** If a quantity is given for a phrase like \"X A, B\" (e.g., `65 vibraphone, steelpans`), treat the number `X` as the **total count** for that entire group of items. Do not multiply the quantity. Classify the entire group based on the common category of the items (e.g., both vibraphone and steelpans are musical instruments).\n5.  **Focus on Requested Categories:** After categorization, IGNORE all items that do not belong to the categories explicitly mentioned in the question. For example, if the question asks for \"musical instruments and fruits\", disregard any extracted items that are \"cars\" or \"animals\".\n6.  **Follow These Steps:** Your response MUST follow this procedure. **Do not skip any steps.**\n    a.  **Extract:** First, list every single item owned by \"I\" and its corresponding final quantity. **Present this list clearly.**\n    b.  **Categorize:** Place each item from your list into the correct category **as defined in the rules above**. **Present this categorization clearly.**\n    c.  **Filter:** **STRICTLY IGNORE** any items that are not part of the categories mentioned in the question. **State this explicitly.**\n    d.  **Sum:** Calculate the sum for each of the requested categories separately. **Show your arithmetic.**\n    e.  **Compute:** Perform the final requested operation on these sums (e.g., add them, find the absolute difference).\n7.  **Show Your Work:** Present your extraction, categorization, filtering, and calculations clearly before giving the final answer. This allows for verification and builds trust in your result.\n\n**Question:** <The question will be inserted here>\n**Paragraph:** <The paragraph will be inserted here>",
+                "Q": 0.6178846233035888,
+                "N": 1,
+                "uct_value": 0.0,
+                "reward": 0.15,
+                "children": []
+              },
+              {
+                "id": 7,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert at parsing complex narratives and performing precise calculations. You will be given a paragraph describing objects owned by various people. Your task is to compute the exact quantity requested in the question.\n\n**CRITICAL INSTRUCTIONS:**\n1.  **Focus on Ownership:** ONLY count items explicitly stated as being owned by \"I\" or \"me\" (e.g., \"I have...\", \"I also have...\"). IGNORE all items owned by others (e.g., \"My friend has...\", \"My mother has...\").\n2.  **Use Final Quantities:** For any item \"I\" have, a story may be provided. IGNORE THE STORY'S NARRATIVE AND INTERMEDIATE CALCULATIONS. Use ONLY the final, definitive quantity stated (e.g., \"...so eventually I am left with X of them now\" or \"...so at the end I am left with X of them\").\n    *   **If there is a contradiction** between the introductory number and the final number in the story (e.g., \"I have 35 yaks... left with 20\"), **USE THE FINAL NUMBER** from the story. The introductory number is likely an error.\n3.  **Categorize Strictly:** Classify each of \"my\" items **based on the object's primary, real-world nature** into the categories specified in the question (e.g., \"animals/insects\", \"cars\", \"mobiles\").\n    *   **USE COMMON SENSE:** A \"raven\" is an animal. A \"Honda Civic\" is a car. A \"samsung galaxy\" is a mobile. A \"piano\" is a musical instrument.\n    *   **IGNORE TRICKY NAMES AND TYPOS:** The narrative may contain misspellings or misleading names. **You MUST use common sense to determine the category.**\n        *   **Example:** `37 nissan frintier cars` is a **car** (a Nissan Frontier vehicle). The word \"frintier\" is a common misspelling of \"frontier\". The word \"cars\" confirms it is a vehicle.\n        *   **Example:** `59 toyota 4runnertoyota sequoia cars` is a **car** (it refers to Toyota 4Runner and Toyota Sequoia vehicles).\n        *   **Example:** `65 vibraphone, steelpans` are **musical instruments**.\n    *   If an item's category is truly ambiguous after applying common sense, note it in your reasoning, but this should be extremely rare.\n    *   **For combined items:** If a quantity is given for a phrase like \"X A, B\" (e.g., `65 vibraphone, steelpans`), treat the number `X` as the **total count** for that entire group of items. Do not multiply the quantity.\n4.  **Follow These Steps:** Your response MUST follow this procedure. **Do not skip any steps.**\n    a.  **Extract:** First, list every single item owned by \"I\" and its corresponding final quantity. **Present this list clearly.**\n    b.  **Categorize:** Place each item from your list into the correct category as per the question. **Present this categorization clearly.**\n    c.  **Sum:** Calculate the sum for each category separately. **Show your arithmetic.**\n    d.  **Compute:** Perform the final requested operation on these sums (e.g., add them, find the absolute difference).\n5.  **Show Your Work:** Present your extraction and calculations clearly before giving the final answer. This allows for verification and builds trust in your result.\n\n**Question:** <The question will be inserted here>\n**Paragraph:** <The paragraph will be inserted here>",
+                "Q": 0.517884623303589,
+                "N": 1,
+                "uct_value": 0.0,
+                "reward": 0.15,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 5,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are an expert at parsing complex narratives and performing precise calculations. You will be given a paragraph describing objects owned by various people. Your task is to compute the exact quantity requested in the question.\n\n**CRITICAL INSTRUCTIONS:**\n1.  **Focus on Ownership:** ONLY count items explicitly stated as being owned by \"I\" or \"me\" (e.g., \"I have...\", \"I also have...\"). IGNORE all items owned by others (e.g., \"My friend has...\", \"My mother has...\").\n2.  **Use Final Quantities:** For any item \"I\" have, a story may be provided. IGNORE THE STORY'S NARRATIVE AND CALCULATIONS. Use ONLY the final, definitive quantity stated (e.g., \"...so eventually I am left with X of them now\" or \"...so at the end I am left with X of them\").\n3.  **Categorize Strictly:** Classify each of \"my\" items into the categories specified in the question. Use these guidelines:\n    - For cars: Include any item with \"car\" in the name or known car models (e.g., \"Toyota Camry\", \"Honda Accord\").\n    - For mobiles: Include any item with \"mobile\" in the name or known phone brands/models (e.g., \"iPhone\", \"Samsung Galaxy\").\n    - For fruits: Include any edible fruit (e.g., \"apple\", \"grape\", \"cranberry\"). Note: Brand names containing fruit words (e.g., \"iPhone\") are NOT fruits.\n    - For animals/insects: Include any living creature (e.g., \"dog\", \"ant\", \"eagle\").\n    - For musical instruments: Include any instrument (e.g., \"piano\", \"guitar\", \"drum\").\n    - If an item is misspelled (e.g., \"cherrys\"), use context to determine the correct category.\n4.  **Follow These Steps:** Your response MUST follow this procedure:\n    a.  **Extract:** First, list every single item owned by \"I\" and its corresponding final quantity. Scan thoroughly to ensure none are missed.\n    b.  **Categorize:** Place each item into the correct category as per the question. Exclude any item that doesn't fit the specified categories.\n    c.  **Sum:** Calculate the sum for each category separately. Add numbers carefully and verify your addition.\n    d.  **Compute:** Perform the final requested operation on these sums (e.g., add them, find the absolute difference).\n5.  **Show Your Work:** Present your extraction and calculations clearly before giving the final answer.\n\n**Examples of Common Mistakes to Avoid:**\n- Example 1: When asked for \"mobiles and cars,\" do not include animals or fruits.\n- Example 2: \"iPhone\" is a mobile, not a fruit, even though it contains \"apple\".\n- Example 3: \"Cranberrys\" (misspelled) should be categorized as fruit.\n- Example 4: Verify your sums carefully - arithmetic errors lead to wrong answers.\n\n**Question:** <The question will be inserted here>\n**Paragraph:** <The paragraph will be inserted here>",
+            "Q": 2.1141598517490032,
+            "N": 4,
+            "uct_value": 0.532411239923963,
+            "reward": 0.15,
+            "children": [
+              {
+                "id": 6,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert at parsing complex narratives and performing precise calculations. You will be given a paragraph describing objects owned by various people. Your task is to compute the exact quantity requested in the question.\n\n**CRITICAL INSTRUCTIONS:**\n1.  **Focus on Ownership:** ONLY count items explicitly stated as being owned by \"I\" or \"me\" (e.g., \"I have...\", \"I also have...\"). IGNORE all items owned by others (e.g., \"My friend has...\", \"My mother has...\").\n2.  **Use Final Quantities:** For any item \"I\" have, a story may be provided. IGNORE THE STORY'S NARRATIVE AND CALCULATIONS. Use ONLY the final, definitive quantity stated (e.g., \"...so eventually I am left with X of them now\" or \"...so at the end I am left with X of them\").\n3.  **Categorize Strictly:** Classify each of \"my\" items into the categories specified in the question. Use these guidelines:\n    - For cars: Include any item with \"car\" in the name or known car models (e.g., \"Toyota Camry\", \"Honda Accord\").\n    - For mobiles: Include any item with \"mobile\" in the name or known phone brands/models (e.g., \"iPhone\", \"Samsung Galaxy\"). Note: Brand names containing fruit words (e.g., \"iPhone\") are NOT fruits.\n    - For fruits: Include any edible fruit (e.g., \"apple\", \"grape\", \"cranberry\"). Note: Misspelled words (e.g., \"cherrys\") should be interpreted contextually as fruits.\n    - For animals/insects: Include any living creature (e.g., \"dog\", \"ant\", \"eagle\").\n    - For musical instruments: Include any instrument (e.g., \"piano\", \"guitar\", \"drum\").\n4.  **Follow These Steps:** Your response MUST follow this procedure:\n    a.  **Extract:** First, list every single item owned by \"I\" and its corresponding final quantity. Scan thoroughly to ensure none are missed.\n    b.  **Categorize:** Place each item into the correct category as per the question. Exclude any item that doesn't fit the specified categories.\n    c.  **Sum:** Calculate the sum for each category separately. Add numbers carefully and verify your addition step-by-step to avoid arithmetic errors.\n    d.  **Compute:** Perform the final requested operation on these sums (e.g., add them, find the absolute difference).\n5.  **Show Your Work:** Present your extraction and calculations clearly before giving the final answer.\n\n**Examples of Common Mistakes to Avoid:**\n- Example 1: When asked for \"mobiles and cars,\" do not include animals or fruits.\n- Example 2: \"iPhone\" is a mobile, not a fruit, even though it contains \"apple\".\n- Example 3: \"Cranberrys\" (misspelled) should be categorized as fruit.\n- Example 4: Verify your sums carefully - arithmetic errors lead to wrong answers.\n\n**Question:** <The question will be inserted here>\n**Paragraph:** <The paragraph will be inserted here>",
+                "Q": 0.5203116003573129,
+                "N": 1,
+                "uct_value": 0.5234831893744676,
+                "reward": 0.1,
+                "children": []
+              },
+              {
+                "id": 7,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert at parsing complex narratives and performing precise calculations. You will be given a paragraph describing objects owned by various people. Your task is to compute the exact quantity requested in the question.\n\n**CRITICAL INSTRUCTIONS:**\n1.  **Focus on Ownership:** ONLY count items explicitly stated as being owned by \"I\" or \"me\" (e.g., \"I have...\", \"I also have...\"). IGNORE all items owned by others (e.g., \"My friend has...\", \"My mother has...\"). Scan the text thoroughly to ensure no \"I\" items are missed.\n2.  **Use Final Quantities:** For any item \"I\" have, a story may be provided. IGNORE THE STORY'S NARRATIVE AND CALCULATIONS. Use ONLY the final, definitive quantity stated (e.g., \"...so eventually I am left with X of them now\" or \"...so at the end I am left with X of them\").\n3.  **Categorize Strictly:** Classify each of \"my\" items into the categories specified in the question. Use these guidelines:\n    - For cars: Include any item with \"car\" in the name or known car models (e.g., \"Toyota Camry\", \"Honda Accord\"). If unsure, assume it is a car only if \"car\" appears in the name.\n    - For mobiles: Include any item with \"mobile\" in the name or known phone brands/models (e.g., \"iPhone\", \"Samsung Galaxy\").\n    - For fruits: Include any edible fruit (e.g., \"apple\", \"grape\", \"cranberry\"). Note: Brand names containing fruit words (e.g., \"iPhone\") are NOT fruits.\n    - For animals/insects: Include any living creature (e.g., \"dog\", \"ant\", \"eagle\").\n    - For musical instruments: Include any instrument (e.g., \"piano\", \"guitar\", \"drum\").\n    - **Misspellings:** Correct common misspellings using this list:\n        - \"cherrys\" → cherries (fruit)\n        - \"strawberrys\" → strawberries (fruit)\n        - \"cranberrys\" → cranberries (fruit)\n        - \"raspberrys\" → raspberries (fruit)\n        - \"blueberrys\" → blueberries (fruit)\n        - \"butterflys\" → butterflies (animal/insect)\n    - **Compound Terms:** If an item appears to be a combination (e.g., \"elderberryoranges\"), treat it as a single entity. Use context to categorize (e.g., likely fruit).\n4.  **Follow These Steps:** Your response MUST follow this procedure:\n    a.  **Extract:** List every single item owned by \"I\" and its corresponding final quantity. Present this list clearly.\n    b.  **Categorize:** Place each item into the correct category as per the question. Exclude any item that doesn't fit the specified categories.\n    c.  **Sum:** Calculate the sum for each category separately. Add numbers carefully and verify your addition by summing twice to prevent arithmetic errors.\n    d.  **Compute:** Perform the final requested operation on these sums (e.g., add them, find the absolute difference).\n5.  **Show Your Work:** Present your extraction and calculations clearly before giving the final answer.\n\n**Examples of Common Mistakes to Avoid:**\n- Example 1: When asked for \"mobiles and cars,\" do not include animals or fruits.\n- Example 2: \"iPhone\" is a mobile, not a fruit, even though it contains \"apple\".\n- Example 3: \"Cranberrys\" (misspelled) should be categorized as fruit.\n- Example 4: \"elderberryoranges\" should be treated as a single fruit item.\n- Example 5: Verify your sums carefully - arithmetic errors lead to wrong answers.\n\n**Question:** <The question will be inserted here>\n**Paragraph:** <The paragraph will be inserted here>",
+                "Q": 0.620311600357313,
+                "N": 1,
+                "uct_value": 0.6234831893744677,
+                "reward": 0.15,
+                "children": []
+              },
+              {
+                "id": 8,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert at parsing complex narratives and performing precise calculations. You will be given a paragraph describing objects owned by various people. Your task is to compute the exact quantity requested in the question.\n\n**CRITICAL INSTRUCTIONS:**\n1.  **Focus on Ownership:** ONLY count items explicitly stated as being owned by \"I\" or \"me\" (e.g., \"I have...\", \"I also have...\"). IGNORE all items owned by others (e.g., \"My friend has...\", \"My mother has...\").\n2.  **Use Final Quantities:** For any item \"I\" have, a story may be provided. IGNORE THE STORY'S NARRATIVE AND CALCULATIONS. Use ONLY the final, definitive quantity stated (e.g., \"...so eventually I am left with X of them now\" or \"...so at the end I am left with X of them\").\n3.  **Categorize Strictly:** Classify each of \"my\" items into the categories specified in the question. Use these guidelines:\n    - For cars: Include any item with \"car\" in the name or known car models (e.g., \"Toyota Camry\", \"Honda Accord\").\n    - For mobiles: Include any item with \"mobile\" in the name or known phone brands/models (e.g., \"iPhone\", \"Samsung Galaxy\"). Note: Tablets labeled as \"mobiles\" are included.\n    - For fruits: Include any edible fruit (e.g., \"apple\", \"grape\", \"cranberry\"). Note: Brand names containing fruit words (e.g., \"iPhone\") are NOT fruits.\n    - For animals/insects: Include any living creature (e.g., \"dog\", \"ant\", \"eagle\").\n    - For musical instruments: Include any instrument (e.g., \"piano\", \"guitar\", \"drum\").\n    - If an item is misspelled (e.g., \"cherrys\", \"strawberrys\"), correct it based on context and categorize accordingly (e.g., \"cherries\" -> fruit).\n    - For compound items (e.g., \"vibraphone, steelpans\"), assume the quantity applies to each distinct type unless stated otherwise. Example: \"39 vibraphone, steelpans\" means 39 vibraphones and 39 steelpans (total 78).\n4.  **Follow These Steps:** Your response MUST follow this procedure:\n    a.  **Extract:** First, list every single item owned by \"I\" and its corresponding final quantity. Scan thoroughly and use a checklist to ensure none are missed.\n    b.  **Categorize:** Place each item into the correct category as per the question. Exclude any item that doesn't fit the specified categories.\n    c.  **Sum:** Calculate the sum for each category separately. Break large sums into smaller groups and double-check your addition to avoid errors.\n    d.  **Compute:** Perform the final requested operation on these sums (e.g., add them, find the absolute difference).\n    e.  **Verify:** Ensure all items are extracted and categorized correctly. Confirm that no items from others are included.\n5.  **Show Your Work:** Present your extraction and calculations clearly before giving the final answer.\n\n**Examples of Common Mistakes to Avoid:**\n- Example 1: When asked for \"mobiles and cars,\" do not include animals or fruits.\n- Example 2: \"iPhone\" is a mobile, not a fruit, even though it contains \"apple\".\n- Example 3: \"Cranberrys\" (misspelled) should be categorized as fruit.\n- Example 4: \"10 clementinefigs\" is likely a misspelling of \"clementines\" or \"clementine figs\" -> categorize as fruit.\n- Example 5: \"39 vibraphone, steelpans\" should be treated as 39 vibraphones and 39 steelpans -> total 78 musical instruments.\n- Example 6: Verify your sums carefully - arithmetic errors lead to wrong answers.\n\n**Question:** <The question will be inserted here>\n**Paragraph:** <The paragraph will be inserted here>",
+                "Q": 0.6453116003573129,
+                "N": 1,
+                "uct_value": 0.6484831893744676,
+                "reward": 0.1,
+                "children": [
+                  {
+                    "id": 9,
+                    "depth": 4,
+                    "action_sequence": [
+                      "FailureDrivenAction",
+                      "FailureDrivenAction",
+                      "FailureDrivenAction",
+                      "SuccessDrivenAction"
+                    ],
+                    "prompt": "You are an expert at parsing complex narratives and performing precise calculations. You will be given a paragraph describing objects owned by various people. Your task is to compute the exact quantity requested in the question.\n\n**CRITICAL INSTRUCTIONS:**\n1.  **Focus on Ownership:** ONLY count items explicitly stated as being owned by \"I\" or \"me\" (e.g., \"I have...\", \"I also have...\"). IGNORE all items owned by others (e.g., \"My friend has...\", \"My mother has...\").\n2.  **Use Final Quantities:** For any item \"I\" have, a story may be provided. IGNORE THE STORY'S NARRATIVE AND CALCULATIONS. Use ONLY the final, definitive quantity stated (e.g., \"...so eventually I am left with X of them now\" or \"...so at the end I am left with X of them\").\n3.  **Categorize Strictly:** Classify each of \"my\" items into the categories specified in the question. Use these guidelines:\n    - For cars: Include any item with \"car\" in the name or known car models (e.g., \"Toyota Camry\", \"Honda Accord\").\n    - For mobiles: Include any item with \"mobile\" in the name or known phone brands/models (e.g., \"iPhone\", \"Samsung Galaxy\"). Note: Tablets labeled as \"mobiles\" are included.\n    - For fruits: Include any edible fruit (e.g., \"apple\", \"grape\", \"cranberry\"). Note: Brand names containing fruit words (e.g., \"iPhone\") are NOT fruits.\n    - For animals/insects: Include any living creature (e.g., \"dog\", \"ant\", \"eagle\").\n    - For musical instruments: Include any instrument (e.g., \"piano\", \"guitar\", \"drum\").\n    - If an item is misspelled (e.g., \"cherrys\", \"strawberrys\"), correct it based on context and categorize accordingly (e.g., \"cherries\" -> fruit).\n    - For compound items (e.g., \"vibraphone, steelpans\"), assume the quantity applies to each distinct type unless stated otherwise. Example: \"39 vibraphone, steelpans\" means 39 vibraphones and 39 steelpans (total 78).\n4.  **Follow These Steps:** Your response MUST follow this procedure:\n    a.  **Extract:** First, list every single item owned by \"I\" and its corresponding final quantity. Scan thoroughly and use a checklist to ensure none are missed.\n    b.  **Categorize:** Place each item into the correct category as per the question. Exclude any item that doesn't fit the specified categories.\n    c.  **Sum:** Calculate the sum for each category separately. Break large sums into smaller groups and double-check your addition to avoid errors.\n    d.  **Compute:** Perform the final requested operation on these sums (e.g., add them, find the absolute difference).\n    e.  **Verify:** Ensure all items are extracted and categorized correctly. Confirm that no items from others are included.\n5.  **Show Your Work:** Present your extraction and calculations clearly before giving the final answer.\n\n**Examples of Common Mistakes to Avoid:**\n- Example 1: When asked for \"mobiles and cars,\" do not include animals or fruits.\n- Example 2: \"iPhone\" is a mobile, not a fruit, even though it contains \"apple\".\n- Example 3: \"Cranberrys\" (misspelled) should be categorized as fruit.\n- Example 4: \"10 clementinefigs\" is likely a misspelling of \"clementines\" or \"clementine figs\" -> categorize as fruit.\n- Example 5: \"39 vibraphone, steelpans\" should be treated as 39 vibraphones and 39 steelpans -> total 78 musical instruments.\n- Example 6: Verify your sums carefully - arithmetic errors lead to wrong answers.\n\n**Question:** <The question will be inserted here>\n**Paragraph:** <The paragraph will be inserted here>",
+                    "Q": 0.1,
+                    "N": 0,
+                    "uct_value": 0.0,
+                    "reward": 0.1,
+                    "children": []
+                  },
+                  {
+                    "id": 10,
+                    "depth": 4,
+                    "action_sequence": [
+                      "FailureDrivenAction",
+                      "FailureDrivenAction",
+                      "FailureDrivenAction",
+                      "FailureDrivenAction"
+                    ],
+                    "prompt": "You are an expert at parsing complex narratives and performing precise calculations. You will be given a paragraph describing objects owned by various people. Your task is to compute the exact quantity requested in the question.\n\n**CRITICAL INSTRUCTIONS:**\n1.  **Focus on Ownership:** ONLY count items explicitly stated as being owned by \"I\" or \"me\" (e.g., \"I have...\", \"I also have...\"). IGNORE all items owned by others (e.g., \"My friend has...\", \"My mother has...\").\n2.  **Use Final Quantities:** For any item \"I\" have, a story may be provided. IGNORE THE STORY'S NARRATIVE AND CALCULATIONS. Use ONLY the final, definitive quantity stated (e.g., \"...so eventually I am left with X of them now\" or \"...so at the end I am left with X of them\").\n3.  **Categorize Strictly:** Classify each of \"my\" items into the categories specified in the question. Use these guidelines:\n    - For cars: Include any item with \"car\" in the name or known car models (e.g., \"Toyota Camry\", \"Honda Accord\").\n    - For mobiles: Include any item with \"mobile\" in the name or known phone brands/models (e.g., \"iPhone\", \"Samsung Galaxy\"). Note: Tablets labeled as \"mobiles\" are included.\n    - For fruits: Include any edible fruit (e.g., \"apple\", \"grape\", \"cranberry\"). Note: Brand names containing fruit words (e.g., \"iPhone\") are NOT fruits.\n    - For animals/insects: Include any living creature (e.g., \"dog\", \"ant\", \"eagle\").\n    - For musical instruments: Include any instrument (e.g., \"piano\", \"guitar\", \"drum\").\n    - If an item is misspelled (e.g., \"cherrys\", \"strawberrys\"), correct it based on the closest common word that fits the current category being summed. If no obvious correction fits the category, EXCLUDE the item.\n    - For compound items:\n        - If an item description contains a comma (e.g., \"vibraphone, steelpans\"), it represents multiple distinct items. The quantity applies to each item (e.g., \"39 vibraphone, steelpans\" means 39 vibraphones and 39 steelpans -> total 78 musical instruments).\n        - For hyphenated or concatenated names (e.g., \"elderberryoranges\", \"toyota 4runnertoyota sequoia\"), treat them as a single item of a single type unless you can be certain they represent multiple distinct types.\n    - If an item is completely ambiguous and cannot be corrected with confidence, EXCLUDE it from your calculations.\n4.  **Follow These Steps:** Your response MUST follow this procedure:\n    a.  **Extract:** First, list every single item owned by \"I\" and its corresponding final quantity. Scan thoroughly and use a checklist to ensure none are missed.\n    b.  **Categorize:** Place each item into the correct category as per the question. Exclude any item that doesn't fit the specified categories.\n    c.  **Sum:** Calculate the sum for each category separately. To ensure accuracy, list all the quantities for a category in a clear, numbered list before adding them. Add the list twice to double-check your arithmetic.\n    d.  **Compute:** Perform the final requested operation on these sums (e.g., add them, find the absolute difference).\n    e.  **Verify:** Ensure all items are extracted and categorized correctly. Confirm that no items from others are included.\n    f.  **Sanity Check:** If your final answer is close to a round number but differs slightly (e.g., off by 2), re-check your arithmetic for the affected category with extreme care.\n5.  **Show Your Work:** Present your extraction and calculations clearly before giving the final answer.\n\n**Examples of Common Mistakes to Avoid:**\n- Example 1: When asked for \"mobiles and cars,\" do not include animals or fruits.\n- Example 2: \"iPhone\" is a mobile, not a fruit, even though it contains \"apple\".\n- Example 3: \"Cranberrys\" (misspelled) should be categorized as fruit.\n- Example 4: \"10 clementinefigs\" is likely a misspelling of \"clementines\" -> categorize as fruit.\n- Example 5: \"39 vibraphone, steelpans\" should be treated as 39 vibraphones and 39 steelpans -> total 78 musical instruments.\n- Example 6: \"elderberryoranges\" is a single fruit item -> count as 1 item.\n- Example 7: \"sazzes\" in the context of counting fruits should be interpreted as a misspelling of \"satsumas\" -> fruit. In the context of counting instruments, it should be interpreted as \"saz\" -> instrument.\n- Example 8: If an item is unknown and no correction is obvious (e.g., \"tars\" when asked for animals), exclude it.\n- Example 9: Verify your sums carefully - arithmetic errors lead to wrong answers.\n\n**Question:** <The question will be inserted here>\n**Paragraph:** <The paragraph will be inserted here>",
+                    "Q": 0.05,
+                    "N": 0,
+                    "uct_value": 0.0,
+                    "reward": 0.05,
+                    "children": []
+                  },
+                  {
+                    "id": 11,
+                    "depth": 4,
+                    "action_sequence": [
+                      "FailureDrivenAction",
+                      "FailureDrivenAction",
+                      "FailureDrivenAction",
+                      "FailureDrivenAction"
+                    ],
+                    "prompt": "You are an expert at parsing complex narratives and performing precise calculations. You will be given a paragraph describing objects owned by various people. Your task is to compute the exact quantity requested in the question.\n\n**CRITICAL INSTRUCTIONS:**\n1.  **Focus on Ownership:** ONLY count items explicitly stated as being owned by \"I\" or \"me\" (e.g., \"I have...\", \"I also have...\"). IGNORE all items owned by others (e.g., \"My friend has...\", \"My mother has...\").\n2.  **Use Final Quantities:** For any item \"I\" have, a story may be provided. IGNORE THE STORY'S NARRATIVE AND CALCULATIONS. Use ONLY the final, definitive quantity stated (e.g., \"...so eventually I am left with X of them now\" or \"...so at the end I am left with X of them\").\n3.  **Categorize Strictly:** Classify each of \"my\" items into the categories specified in the question. Use these guidelines:\n    - For cars: Include any item with \"car\" in the name or known car models (e.g., \"Toyota Camry\", \"Honda Accord\").\n    - For mobiles: Include any item with \"mobile\" in the name or known phone brands/models (e.g., \"iPhone\", \"Samsung Galaxy\"). Note: Tablets labeled as \"mobiles\" are included.\n    - For fruits: Include any edible fruit (e.g., \"apple\", \"grape\", \"cranberry\"). Note: Brand names containing fruit words (e.g., \"iPhone\") are NOT fruits.\n    - For animals/insects: Include any living creature (e.g., \"dog\", \"ant\", \"eagle\").\n    - For musical instruments: Include any instrument (e.g., \"piano\", \"guitar\", \"drum\").\n    - If an item is misspelled (e.g., \"cherrys\", \"strawberrys\"), correct it to the nearest common word (e.g., \"cherries\", \"strawberries\"). For compound misspellings (e.g., \"clementinefigs\"), assume it is one item unless it clearly matches two distinct categories (e.g., \"clementine\" and \"fig\" are both fruits).\n    - For compound items separated by commas (e.g., \"vibraphone, steelpans\"), assume the quantity applies to each distinct type. Example: \"39 vibraphone, steelpans\" means 39 vibraphones and 39 steelpans (total 78). If items are concatenated without commas (e.g., \"toyota4runnertoyotasequoia\"), treat them as a single entity unless the context clearly indicates multiple items.\n4.  **Follow These Steps:** Your response MUST follow this procedure:\n    a.  **Extract:** First, create a table listing every single item owned by \"I\" and its corresponding final quantity (columns: Item, Quantity). Scan thoroughly and use a checklist to ensure none are missed. Ignore duplicate entries (use the first occurrence only).\n    b.  **Categorize:** Place each item into the correct category as per the question. Exclude any item that doesn't fit the specified categories.\n    c.  **Sum:** Calculate the sum for each category separately. List all quantities explicitly and add them step-by-step in ascending order to avoid arithmetic errors.\n    d.  **Compute:** Perform the final requested operation on these sums (e.g., add them, find the absolute difference).\n    e.  **Verify:** Ensure all items are extracted and categorized correctly. Confirm that no items from others are included. Double-check arithmetic with a calculator-like approach.\n5.  **Show Your Work:** Present your extraction and calculations clearly before giving the final answer.\n\n**Examples of Common Mistakes to Avoid:**\n- Example 1: When asked for \"mobiles and cars,\" do not include animals or fruits.\n- Example 2: \"iPhone\" is a mobile, not a fruit, even though it contains \"apple\".\n- Example 3: \"Cranberrys\" (misspelled) should be categorized as fruit.\n- Example 4: \"10 clementinefigs\" should be treated as one fruit item (e.g., \"clementines\").\n- Example 5: \"39 vibraphone, steelpans\" should be treated as 39 vibraphones and 39 steelpans → total 78 musical instruments.\n- Example 6: \"12 toyota 4runnertoyota sequoia cars\" (no comma) → treat as 12 cars (single entity).\n- Example 7: Verify your sums carefully - arithmetic errors lead to wrong answers.\n\n**Question:** <The question will be inserted here>\n**Paragraph:** <The paragraph will be inserted here>",
+                    "Q": 0.1,
+                    "N": 0,
+                    "uct_value": 0.0,
+                    "reward": 0.1,
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "depth": 1,
+        "action_sequence": [
+          "FailureDrivenAction"
+        ],
+        "prompt": "You are an expert at processing complex descriptions of objects owned by various people. Your task is to compute the exact quantity requested in the question by carefully following the steps below.\n\n### CRITICAL INSTRUCTIONS:\n1.  **Identify Ownership:** The question specifies whose possessions to consider (e.g., \"that I have\"). You MUST ignore every object not owned by the specified person. Pay close attention to phrases like \"I have\", \"My brother has\", \"My aunt has\", etc.\n2.  **Categorize Precisely:** The question asks for specific categories (e.g., \"mobiles\", \"fruits\", \"animals/insects\"). You MUST ignore any object that does not perfectly fit the described category.\n3.  **Handle Ambiguity Conservatively:** If an item's description is ambiguous (e.g., \"26 vibraphone, steelpans\"), interpret it as the total number applying to the entire mentioned group. Do not multiply counts for listed items unless the text explicitly states otherwise (e.g., \"26 of each\").\n4.  **Follow This Reasoning Plan:**\n    a.  **Extract:** Go through the text line by line. For each sentence, identify the owner. If the owner matches the question's focus, then check if the object belongs to the requested category.\n    b.  **List:** Mentally compile two separate lists: one for each category mentioned in the question. Only include an item and its quantity if it meets both the ownership and category criteria.\n    c.  **Sum:** Calculate the total for each list separately. Double-check your arithmetic to ensure accuracy.\n    d.  **Compute:** Perform the final requested operation (sum or absolute difference) on the two totals.\n\n### Example Failures to Avoid:\n- **Incorrect Ownership:** If the question is \"what I have\", do NOT include items like \"My father has 21 camels\".\n- **Misclassification:** Do not count \"accordions\" as fruits, or \"apricots\" as mobiles.\n- **Overcounting Ambiguity:** For \"26 vibraphone, steelpans\", count it as 26 total items, not 52, unless the text says \"26 of each\".\n\n**Question:**\n{Question}\n\n**Paragraph:**\n{Paragraph}\n\nBegin your reasoning now.",
+        "Q": 3.2422923028168493,
+        "N": 7,
+        "uct_value": 0.46774818044371946,
+        "reward": 0.15,
+        "children": [
+          {
+            "id": 4,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are an expert at processing complex descriptions of objects owned by various people. Your task is to compute the exact quantity requested in the question by carefully following the steps below.\n\n### CRITICAL INSTRUCTIONS:\n1.  **Identify Ownership:** The question specifies whose possessions to consider (e.g., \"that I have\"). You MUST ignore every object not owned by the specified person. Pay close attention to phrases like \"I have\", \"My brother has\", \"My aunt has\", etc.\n2.  **Categorize Precisely:** The question asks for specific categories (e.g., \"mobiles\", \"fruits\", \"animals/insects\"). You MUST ignore any object that does not perfectly fit the described category.\n3.  **Handle Ambiguity Conservatively:** If an item's description is ambiguous (e.g., \"26 vibraphone, steelpans\"), interpret it as the total number applying to the entire mentioned group. Do not multiply counts for listed items unless the text explicitly states otherwise (e.g., \"26 of each\").\n4.  **Focus on Final Quantities:** Ignore all narratives about how quantities changed. Use only the final explicitly stated number (e.g., \"so at the end I am left with X\").\n5.  **Follow This Reasoning Plan:**\n    a.  **Extract:** Go through the text line by line. For each sentence, identify the owner. If the owner matches the question's focus, then check if the object belongs to the requested category.\n    b.  **List:** Mentally compile two separate lists: one for each category mentioned in the question. Only include an item and its quantity if it meets both the ownership and category criteria.\n    c.  **Sum:** Calculate the total for each list separately. Double-check your arithmetic by adding incrementally to ensure accuracy.\n    d.  **Compute:** Perform the final requested operation (sum or absolute difference) on the two totals.\n\n### Example Failures to Avoid:\n- **Incorrect Ownership:** If the question is \"what I have\", do NOT include items like \"My father has 21 camels\".\n- **Misclassification:** Do not count \"accordions\" as fruits, or \"apricots\" as mobiles. Tablets are not mobiles.\n- **Overcounting Ambiguity:** For \"26 vibraphone, steelpans\", count it as 26 total items, not 52, unless the text says \"26 of each\".\n- **Ignoring Final Quantities:** Do not recalculate based on narratives; use only the final stated number.\n\n**Question:**\n{Question}\n\n**Paragraph:**\n{Paragraph}\n\nBegin your reasoning now.",
+            "Q": 0.49343240694448637,
+            "N": 1,
+            "uct_value": 0.49660399596164106,
+            "reward": 0.0,
+            "children": []
+          },
+          {
+            "id": 5,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are an expert at processing complex descriptions of objects owned by various people. Your task is to compute the exact quantity requested in the question by carefully following the steps below.\n\n### CRITICAL INSTRUCTIONS:\n1.  **Identify Ownership:** The question specifies whose possessions to consider (e.g., \"that I have\"). You MUST ignore every object not owned by the specified person. Pay close attention to phrases like \"I have\", \"My brother has\", \"My aunt has\", etc.\n2.  **Categorize Precisely:** The question asks for specific categories (e.g., \"mobiles\", \"fruits\", \"animals/insects\"). You MUST ignore any object that does not perfectly fit the described category. Use the following definitions:\n    - **Musical instruments:** Devices created to make music (e.g., guitar, piano, drum, violin).\n    - **Fruits:** The sweet and fleshy product of a tree or plant that contains seed and can be eaten as food (e.g., apple, banana, mango).\n    - **Animals/insects:** All living creatures that are not humans (including mammals, birds, reptiles, amphibians, fish, insects, arachnids, etc.).\n    - **Cars:** Motor vehicles with four wheels designed for passenger transportation.\n    - **Mobiles:** Mobile phones or smartphones.\n    For other categories, use common sense and standard definitions.\n3.  **Handle Ambiguity Conservatively:** \n    - If an item's description is ambiguous (e.g., \"26 vibraphone, steelpans\"), interpret it as the total number applying to the entire mentioned group. Do not multiply counts for listed items unless the text explicitly states otherwise (e.g., \"26 of each\").\n    - If an item's name is misspelled (e.g., \"raspberrys\") or is a compound term (e.g., \"clementinefigs\"), use common sense to interpret it. If it clearly refers to a valid category, count it. If uncertain, ignore it.\n4.  **Narratives and Ownership:** When explanations are provided (e.g., \"initially I had...\"), only consider the final quantity stated. Ignore any intermediate ownership changes mentioned in the narrative.\n5.  **Follow This Reasoning Plan:**\n    a.  **Extract:** Go through the text line by line. For each sentence, identify the owner. If the owner matches the question's focus, then check if the object belongs to the requested category.\n    b.  **List:** Mentally compile two separate lists: one for each category mentioned in the question. Only include an item and its quantity if it meets both the ownership and category criteria.\n    c.  **Sum:** Calculate the total for each list separately. Break long lists into smaller groups to ensure arithmetic accuracy. Double-check your addition.\n    d.  **Compute:** Perform the final requested operation (sum or absolute difference) on the two totals.\n\n### Example Failures to Avoid:\n- **Incorrect Ownership:** If the question is \"what I have\", do NOT include items like \"My father has 21 camels\".\n- **Misclassification:** Do not count \"accordions\" as fruits, or \"apricots\" as mobiles. Do not count ambiguous terms like \"sazzes\" unless clearly defined.\n- **Overcounting Ambiguity:** For \"26 vibraphone, steelpans\", count it as 26 total items, not 52, unless the text says \"26 of each\".\n- **Arithmetic Errors:** Avoid mistakes in adding long lists by grouping numbers.\n\n**Question:**\n{Question}\n\n**Paragraph:**\n{Paragraph}\n\nBegin your reasoning now.",
+            "Q": 1.8489659553783977,
+            "N": 4,
+            "uct_value": 0.571603995961641,
+            "reward": 0.15,
+            "children": [
+              {
+                "id": 6,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert at processing complex descriptions of objects owned by various people. Your task is to compute the exact quantity requested in the question by carefully following the steps below.\n\n### CRITICAL INSTRUCTIONS:\n1.  **Identify Ownership:** The question specifies whose possessions to consider (e.g., \"that I have\"). You MUST ignore every object not owned by the specified person. Pay close attention to phrases like \"I have\", \"My brother has\", \"My aunt has\", etc.\n2.  **Categorize Precisely:** The question asks for specific categories (e.g., \"mobiles\", \"fruits\", \"animals/insects\"). You MUST ignore any object that does not perfectly fit the described category. Use the following definitions:\n    - **Musical instruments:** Devices created to make music (e.g., guitar, piano, drum, violin).\n    - **Fruits:** The sweet and fleshy product of a tree or plant that contains seed and can be eaten as food (e.g., apple, banana, mango).\n    - **Animals/insects:** All living creatures that are not humans (including mammals, birds, reptiles, amphibians, fish, insects, arachnids, etc.).\n    - **Cars:** Motor vehicles with four wheels designed for passenger transportation.\n    - **Mobiles:** Mobile phones or smartphones.\n    For other categories, use common sense and standard definitions.\n3.  **Handle Ambiguity Conservatively:** \n    - If an item's description is ambiguous (e.g., \"26 vibraphone, steelpans\"), interpret it as the total number applying to the entire mentioned group. Do not multiply counts for listed items unless the text explicitly states otherwise (e.g., \"26 of each\").\n    - If an item's name is misspelled (e.g., \"raspberrys\") or is a compound term (e.g., \"clementinefigs\"), use common sense to interpret it. If it clearly refers to a valid category, count it. If uncertain, ignore it.\n4.  **Narratives and Ownership:** When explanations are provided (e.g., \"initially I had...\"), only consider the final quantity stated. Ignore any intermediate ownership changes mentioned in the narrative.\n5.  **Follow This Reasoning Plan:**\n    a.  **Extract:** Go through the text line by line. For each sentence, identify the owner. If the owner matches the question's focus, then check if the object belongs to the requested category.\n    b.  **List:** Mentally compile two separate lists: one for each category mentioned in the question. Only include an item and its quantity if it meets both the ownership and category criteria.\n    c.  **Sum:** Calculate the total for each list separately. Break long lists into smaller groups to ensure arithmetic accuracy. Double-check your addition.\n    d.  **Compute:** Perform the final requested operation (sum or absolute difference) on the two totals.\n\n### Example Failures to Avoid:\n- **Incorrect Ownership:** If the question is \"what I have\", do NOT include items like \"My father has 21 camels\".\n- **Misclassification:** Do not count \"accordions\" as fruits, or \"apricots\" as mobiles. Do not count ambiguous terms like \"sazzes\" unless clearly defined.\n- **Overcounting Ambiguity:** For \"26 vibraphone, steelpans\", count it as 26 total items, not 52, unless the text says \"26 of each\".\n- **Arithmetic Errors:** Avoid mistakes in adding long lists by grouping numbers.\n\n**Question:**\n{Question}\n\n**Paragraph:**\n{Paragraph}\n\nBegin your reasoning now.",
+                "Q": 0.4601778494779703,
+                "N": 1,
+                "uct_value": 0.0,
+                "reward": 0.0,
+                "children": []
+              },
+              {
+                "id": 7,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert at processing complex descriptions of objects owned by various people. Your task is to compute the exact quantity requested in the question by carefully following the steps below.\n\n### CRITICAL INSTRUCTIONS:\n1.  **Identify Ownership:** The question specifies whose possessions to consider (e.g., \"that I have\"). You MUST ignore every object not owned by the specified person. Pay close attention to phrases like \"I have\", \"My brother has\", \"My aunt has\", etc.\n2.  **Categorize Precisely:** The question asks for specific categories (e.g., \"mobiles\", \"fruits\", \"animals/insects\"). You MUST ignore any object that does not perfectly fit the described category. Use the following definitions:\n    - **Musical instruments:** Devices created to make music (e.g., guitar, piano, drum, violin).\n    - **Fruits:** The sweet and fleshy product of a tree or plant that contains seed and can be eaten as food (e.g., apple, banana, mango).\n    - **Animals/insects:** All living creatures that are not humans (including mammals, birds, reptiles, amphibians, fish, insects, arachnids, etc.).\n    - **Cars:** Motor vehicles with four wheels designed for passenger transportation.\n    - **Mobiles:** Mobile phones or smartphones.\n    For other categories, use common sense and standard definitions.\n3.  **Handle Ambiguity Conservatively:** \n    - If an item's description is ambiguous (e.g., \"26 vibraphone, steelpans\"), interpret it as the total number applying to the entire mentioned group. Do not multiply counts for listed items unless the text explicitly states otherwise (e.g., \"26 of each\").\n    - If an item's name is misspelled (e.g., \"raspberrys\") or is a compound term (e.g., \"clementinefigs\"), use common sense to interpret it. If it clearly refers to a valid category, count it. If uncertain, ignore it.\n4.  **Narratives and Ownership:** When explanations are provided (e.g., \"initially I had...\"), only consider the final quantity stated. Ignore any intermediate ownership changes mentioned in the narrative.\n5.  **Follow This Reasoning Plan:**\n    a.  **Extract:** Go through the text line by line. For each sentence, identify the owner. If the owner matches the question's focus, then check if the object belongs to the requested category.\n    b.  **List:** Mentally compile two separate lists: one for each category mentioned in the question. Only include an item and its quantity if it meets both the ownership and category criteria.\n    c.  **Sum:** Calculate the total for each list separately. Break long lists into smaller groups to ensure arithmetic accuracy. Double-check your addition.\n    d.  **Compute:** Perform the final requested operation (sum or absolute difference) on the two totals.\n\n### Example Failures to Avoid:\n- **Incorrect Ownership:** If the question is \"what I have\", do NOT include items like \"My father has 21 camels\".\n- **Misclassification:** Do not count \"accordions\" as fruits, or \"apricots\" as mobiles. Do not count ambiguous terms like \"sazzes\" unless clearly defined.\n- **Overcounting Ambiguity:** For \"26 vibraphone, steelpans\", count it as 26 total items, not 52, unless the text says \"26 of each\".\n- **Arithmetic Errors:** Avoid mistakes in adding long lists by grouping numbers.\n\n**Question:**\n{Question}\n\n**Paragraph:**\n{Paragraph}\n\nBegin your reasoning now.",
+                "Q": 0.6101778494779704,
+                "N": 1,
+                "uct_value": 0.0,
+                "reward": 0.15,
+                "children": []
+              },
+              {
+                "id": 8,
+                "depth": 3,
+                "action_sequence": [
+                  "FailureDrivenAction",
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert at processing complex descriptions of objects owned by various people. Your task is to compute the exact quantity requested in the question by meticulously following the steps below.\n\n### CRITICAL INSTRUCTIONS:\n1.  **FIRST FILTER: Identify Ownership:** The question specifies whose possessions to consider (e.g., \"that I have\"). **YOU MUST IGNORE EVERY OBJECT NOT OWNED BY THE SPECIFIED PERSON.** This is the most common error. Process the text line-by-line. For each sentence, first ask: \"Who is the owner here?\" If it's not the correct owner, immediately discard and move on.\n\n2.  **SECOND FILTER: Categorize Precisely:** For each item owned by the correct person, check if it belongs to the requested category. Use strict definitions:\n    -   **Musical instruments:** Devices created to make music (e.g., guitar, piano, drum, violin).\n    -   **Fruits:** The sweet and fleshy product of a tree or plant that contains seed and can be eaten as food (e.g., apple, banana, mango).\n    -   **Animals/insects:** All living creatures that are not humans (including mammals, birds, reptiles, amphibians, fish, insects, arachnids, etc.).\n    -   **Cars:** Motor vehicles with four wheels designed for passenger transportation.\n    -   **Mobiles:** Mobile phones or smartphones.\n    For other categories, use common sense and standard definitions. **If an item's name is misspelled (e.g., \"raspberrys\") or is a compound term (e.g., \"clementinefigs\"), interpret it using common sense. Only count it if you are confident it fits a category. If uncertain, ignore it.**\n\n3.  **Handle Narratives:** When backstories are provided (e.g., \"initially I had...\"), **ONLY consider the final, stated quantity.** Disregard all intermediate numbers and calculations in the explanation.\n\n4.  **Reasoning Plan:**\n    a.  **EXTRACT:** Go through the `{Paragraph}` text sequentially. For each sentence:\n        -   Identify the owner.\n        -   **If owner matches `{Question}`'s focus:** Check the object against the requested categories.\n        -   **If it matches a category:** Note the item and its final quantity.\n        -   Ignore all other items.\n    b.  **ORGANIZE:** Mentally compile **two separate lists**: one for each category mentioned in the question. This prevents errors.\n    c.  **SUM:** Calculate the total for each list separately. **Break long lists into smaller groups to ensure arithmetic accuracy. Double-check your addition.**\n    d.  **COMPUTE:** Perform the final requested operation (`sum` or `absolute difference`) on the two totals.\n\n**Question:**\n`{Question}`\n\n**Paragraph:**\n`{Paragraph}`\n\nBegin your reasoning now.",
+                "Q": 0.4601778494779703,
+                "N": 1,
+                "uct_value": 0.0,
+                "reward": 0.1,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 6,
+            "depth": 2,
+            "action_sequence": [
+              "FailureDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are an expert at processing complex descriptions of objects owned by various people. Your task is to compute the exact quantity requested in the question by carefully following the steps below.\n\n### CRITICAL INSTRUCTIONS:\n1.  **Identify Ownership:** The question specifies whose possessions to consider (e.g., \"that I have\"). You MUST ignore every object not owned by the specified person. Pay close attention to phrases like \"I have\", \"My brother has\", \"My aunt has\", etc.\n2.  **Categorize Precisely:** The question asks for specific categories (e.g., \"mobiles\", \"fruits\", \"animals/insects\"). You MUST ignore any object that does not perfectly fit the described category.\n   - **Definition:** Musical instruments are devices created to make music (e.g., guitar, drum, piano). Fruits are edible, sweet products of plants (e.g., apple, banana, mango).\n   - **Ambiguity:** If an item's category is ambiguous or seems misspelled (e.g., \"sazzes\" might be \"sausages\"), do not count it unless you are certain. When in doubt, exclude it.\n3.  **Handle Ambiguity Conservatively:** \n   - For lists like \"26 vibraphone, steelpans\", interpret it as the total number applying to the entire group (26 total, not 52) unless explicitly stated otherwise (e.g., \"26 of each\").\n   - For compound terms like \"clementinefigs\", assume it is a single entity unless it clearly contains multiple items (e.g., \"apples and oranges\" would be two). If unsure, count as one.\n4.  **Follow This Reasoning Plan:**\n    a.  **Extract:** Go through the text line by line. For each sentence, identify the owner. If the owner matches the question's focus, then check if the object belongs to the requested category.\n    b.  **List:** Mentally compile two separate lists: one for each category mentioned in the question. Only include an item and its quantity if it meets both the ownership and category criteria.\n    c.  **Sum:** Calculate the total for each list separately. Double-check your arithmetic by adding step-by-step to ensure accuracy.\n    d.  **Compute:** Perform the final requested operation (sum or absolute difference) on the two totals.\n5.  **Review:** After compiling the lists, review them to ensure no item is misclassified or missed.\n\n### EXAMPLE FAILURES TO AVOID (FEW-SHOT):\n**Example 1 - Misclassification:**\n- Input: \"I have 35 sazzes.\" \n- Mistake: Counting \"sazzes\" as musical instruments (might be \"sausages\" - food).\n- Correction: Exclude ambiguous items like \"sazzes\" unless certain.\n\n**Example 2 - Compound Terms:**\n- Input: \"I have 50 clementinefigs.\"\n- Mistake: Assuming this represents 100 fruits (50 clementines + 50 figs).\n- Correction: Treat compound terms as single entities unless clearly multiple.\n\n**Example 3 - Ownership Error:**\n- Input: \"My father has 21 camels. I have 30 storks.\"\n- Question: \"What do I have?\"\n- Mistake: Including father's camels.\n- Correction: Strictly adhere to ownership specification.\n\n**Example 4 - Overcounting:**\n- Input: \"I have 65 vibraphone, steelpans.\"\n- Mistake: Counting as 130 items (65 each).\n- Correction: Treat as 65 total unless \"of each\" is specified.\n\n### FINAL CHECK:\nBefore answering, verify:\n- No items from wrong owners are included\n- No ambiguous items are counted\n- Compound terms are handled correctly\n- Arithmetic is double-checked\n\n**Question:**\n{Question}\n\n**Paragraph:**\n{Paragraph}\n\nBegin your reasoning now.",
+            "Q": 0.535099073611153,
+            "N": 1,
+            "uct_value": 0.5382706626283077,
+            "reward": 0.1,
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

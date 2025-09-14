@@ -15,7 +15,7 @@ class FailureDrivenAction(OptimizeAction):
         self.tester_model = tester_model
         self.analyzer_model = analyzer_model
         self.rewriter_model = rewriter_model
-        self.max_resample_attempts = 3
+        self.max_resample_attempts = 1
         self.sample_failure_counter = 0  # 连续失败次数
 
     def _batch_api_call(self, inputs: list):
@@ -123,7 +123,7 @@ class FailureDrivenAction(OptimizeAction):
 
 
 class SuccessDrivenAction(OptimizeAction):
-    def __init__(self, task, name="SuccessDrivenAction", max_resample=3):
+    def __init__(self, task, name="SuccessDrivenAction", max_resample=1):
         super().__init__(task, name)
         self.tester_model = tester_model
         self.reasoning_model = analyzer_model
