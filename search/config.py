@@ -49,4 +49,4 @@ class SearchConfig:
         self.optim_model_name:str = "deepseek-chat"
         self.optim_api_key: str = "12a83368c59545e6af1c0a17810cd675"
         self.optim_model_url:str = "https://api.deepseek.com/v1"
-        self.optim_model_temperature: float = 1.0
+        self.optim_model_temperature: float = 0.3

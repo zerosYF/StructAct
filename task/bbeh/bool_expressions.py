@@ -6,20 +6,17 @@ from logger import logger
 from task.base_task import TaskBase
 from search.config import SearchConfig
 
-
-class GeometricShapesTask(TaskBase):
+class BooleanExpressionsTask(TaskBase):
     def __init__(self, config: SearchConfig):
         super().__init__(config)
-        self.name = "geometric_shapes"
-        path = "dataset/BBEH/bbeh_by_task/geometric_shapes.json"  
+        self.name = "boolean_expressions"
+        path = "dataset/BBEH/bbeh_by_task/boolean_expressions.json"  
 
         with open(path, "r", encoding="utf-8") as f:
-            all_examples: List[Dict] = json.load(f) 
-
+            all_examples: List[Dict] = json.load(f)
 
         self.origin_prompt = (
-            "You are given an SVG path element description and a list of candidate shapes. "
-            "Decide which option(s) match the visualization of the path. "
+            "You are an assistant that determines which boolean expression evaluates to True. "
         )
         self.answer_format_prompt = "At the end of your response, include <answer>(A)</answer>, <answer>(B)</answer>, etc."
 
@@ -51,11 +48,16 @@ class GeometricShapesTask(TaskBase):
         return "\n\n".join(texts)
 
     def _normalize_answer(self, text: str) -> str:
+        """提取 <answer>...</answer> 中的内容，如果没有就直接取第一个 (A)/(B)/…"""
         if not text:
             return ""
         match = re.search(r"<answer>([\s\S]*?)</answer>", text, re.IGNORECASE)
         if match:
             return match.group(1).strip()
+        # 如果没有 <answer> 标签，则尝试匹配 (A) / (B) / (C) / (D) / (E)
+        match2 = re.search(r"\(([A-E])\)", text)
+        if match2:
+            return f"({match2.group(1)})"
         return ""
 
     def get_reward(self, output: str, target: str) -> float:

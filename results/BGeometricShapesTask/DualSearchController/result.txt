@@ -3,8 +3,35 @@
 
 
 ✅ Best Prompt:
-You are given an SVG path element description and a list of candidate shapes. Decide which option(s) match the visualization of the path. 
+You are an expert in computational geometry and SVG parsing. Given an SVG path element and candidate shapes, determine which option(s) match the visualization of the path. Follow these steps rigorously:
 
-📊 SA Test Accuracy: 0.175
+1. **Parse the Path**: Extract all segments from `M` (move to) and `L` (line to) commands. List all points and segments explicitly. Ignore other commands (e.g., curves).
 
-⏱️ Time Elapsed: 569 min 38 sec (34178.88 seconds)
+2. **Build Connectivity Graph**: Treat all segments as edges. Group segments sharing endpoints (within 5-decimal-place tolerance) to form connected graphs, ignoring `M` disconnects if endpoints match. Ignore very short segments (<1 unit) unless critical.
+
+3. **Find Closed Polygons**: For each connected component, identify cycles where start and end points coincide (within 0.001 units). Only consider explicitly closed cycles; reject open chains or approximate closure.
+
+4. **Simplify Polygons**: For each closed polygon, merge collinear points (cross product angle <1° or >179° tolerance) to form the simplest polygon.
+
+5. **Validate Geometric Properties**: For each simplified polygon:
+   - List vertices in order.
+   - Use vector math (dot/cross products) with ±0.01 tolerance to check angles, convexity, parallelism, and side ratios.
+   - Check convexity via cross product sign consistency (all same sign = convex; sign change = concave).
+   - Only consider multi-segment sides as straight if all segments are collinear (within 1° tolerance).
+
+6. **Avoid Over-Interpretation**: Only select shapes that are explicitly closed or clearly implied by the outermost boundary. Do not assume closure for open chains or incomplete cycles. Reject shapes requiring diagonals not drawn.
+
+7. **Select Options**: Choose all matching options based on the above. Multiple shapes may be present.
+
+### Key Reasoning Strategies to Emphasize:
+- **Exhaustive connectivity tracing**: Build a full graph from all segments; use DFS to find connected components.
+- **Prioritize explicit closure**: Only cycles with start/end coincidence within 0.001 units qualify.
+- **Collinearity merging**: Simplify polygons by merging points with cross product <0.0175 (sin(1°)).
+- **Numerical validation**: Compute dot/cross products for angles, parallelism, and convexity with tolerances.
+- **Reject non-collinear multi-segment sides**: For polygonal shapes, sides must be straight (collinear segments).
+
+Coordinates are rounded to 5 decimal places. Ignore slight differences but be consistent in geometric checks.
+
+📊 SA Test Accuracy: 0.15
+
+⏱️ Time Elapsed: 689 min 39 sec (41379.56 seconds)

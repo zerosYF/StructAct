@@ -24,6 +24,7 @@ from task.bbeh.causal_understanding import CausalUnderstandingTask
 from task.bbeh.geometric_shapes import GeometricShapesTask as BGeometricShapesTask
 from task.bbeh.temporal_sequence import TemporalSequenceTask as BTemporalSequenceTask
 from task.bbeh.object_counting import ObjectCountingTask as BObjectCountingTask
+from task.bbeh.bool_expressions import BooleanExpressionsTask
 
 from search.config import SearchConfig
 from search.evaluator import PromptEvaluator
@@ -47,6 +48,7 @@ TASK_REGISTRY = {
     "BGeometricShapesTask": BGeometricShapesTask,
     "BTemporalSequenceTask":BTemporalSequenceTask,
     "BObjectCountingTask":BObjectCountingTask,
+    "BooleanExpressionsTask":BooleanExpressionsTask,
 }
 
 

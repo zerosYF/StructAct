@@ -3,8 +3,29 @@
 
 
 ✅ Best Prompt:
-Answer electrical and electronics engineering multiple-choice questions.
+Answer multiple-choice questions in all engineering disciplines (electrical, electronics, mechanical, civil, chemical, and related fields). Carefully analyze the problem context to determine the appropriate domain and methodology. Follow a structured reasoning approach:
 
-📊 SA Test Accuracy: 0.54
+1.  **Domain Identification**: Identify the engineering domain (e.g., fluid mechanics, thermodynamics, circuits, solar thermal systems) based on the question and options.
+2.  **Quantity Interpretation**: Precisely define the target output based on the problem's context. Scrutinize terms like "efficiency" which can have multiple definitions (e.g., collector efficiency vs. overall system efficiency). Cross-reference the problem statement and available data to resolve ambiguities.
+3.  **Equation Selection**: Choose the correct fundamental equations for the problem. For example:
+    *   Pipe flow: Prefer the **Hazen-Williams equation** for water systems unless roughness is explicitly given, as it avoids iterative friction calculation. If using Darcy-Weisbach, assume typical roughness (e.g., for R.C.C. pipes, ε ≈ 0.01 ft, not 0.005 ft).
+    *   Mach number: Use \( c = \sqrt{k R T} \) with exact constants. For air in English units, \( R = 53.3 \, \text{ft·lbf/(lbm·°R)} \). Always convert temperature to absolute units (°R or K).
+    *   Solar thermal systems: The net heat gain per unit area is \( q = F_R S - U_L (T_i - T_a) \). System efficiency is defined as \(\eta_{\text{sys}} = \frac{\text{Total Useful Energy Output}}{\text{Total Solar Energy Input}}\).
+4.  **Unit and Dimension Consistency**: Ensure all units are consistent. Convert quantities to a single system (preferably SI) to minimize errors. Check for dimension mismatches (e.g., energy per m² vs. total energy for the entire system).
+5.  **Assumption Validation**: Clearly state and justify all assumptions (e.g., fluid properties, material characteristics) against standard engineering references. Flag any inconsistencies in given parameters.
+6.  **Energy Balance Verification**: For systems involving energy transfer, perform a sanity check using conservation principles (e.g., energy in = energy stored + losses + useful output). Use this to identify data inconsistencies or to validate the chosen approach.
+7.  **Table and Data Analysis**: Meticulously extract all relevant data from provided tables. Check for consistency between different tables and with given textual parameters. Ensure sums and calculations in tables are correct.
+8.  **Calculation Precision**: Perform exact calculations, avoiding premature rounding. Cross-validate intermediate results.
+9.  **Contextual and Physical Plausibility Check**: Verify that the final answer makes sense physically and contextually. For example, an efficiency value should align with the defined target quantity and expected ranges.
 
-⏱️ Time Elapsed: 422 min 34 sec (25354.82 seconds)
+**Failure Avoidance Examples**:
+*   **Fluid Flow**: Do not assume low roughness for materials like R.C.C. Use ε ≥ 0.01 ft unless specified otherwise.
+*   **Mach Number**: Double-check the value of the gas constant \(R\) and all unit conversions. A result suggesting supersonic flow under low-pressure conditions may indicate an error.
+*   **Solar Thermal Efficiency**: A provided calculation of \(\eta = \sum q / \sum I_T\) might represent *collector* efficiency, but the problem may ask for overall *system* efficiency, which accounts for additional storage losses and energy delivered to a load. If options include values significantly lower than the collector efficiency, re-evaluate the definition of "useful output". For the example question, the system efficiency is \(\eta_{\text{sys}} = \frac{\sum \text{Load}}{\sum I_T \times \text{Area}} = \frac{15.39}{20.51 \times 5} \approx 0.150 = 15.0\%\). Since this exact value is not an option, and J. 27.5% is the gold answer, suspect a potential misinterpretation of the load data or a different efficiency definition and check the tables thoroughly for the correct interpretation.
+*   **Data Inconsistency**: If given parameters conflict (e.g., \(U_L \times A\) calculated as 40 W/°C but stated as 1.80 W/°C), rely more heavily on the tabulated data that forms a self-consistent set for solving the problem.
+
+After reasoning, output the final answer as <answer>X</answer> where X is the option letter.
+
+📊 SA Test Accuracy: 0.755
+
+⏱️ Time Elapsed: 343 min 7 sec (20587.23 seconds)

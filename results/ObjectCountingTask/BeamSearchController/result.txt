@@ -3,40 +3,50 @@
 
 
 ✅ Best Prompt:
-**Task:** Accurately count the number of specific items (e.g., fruits, vegetables, animals, instruments) from a provided list.
+You are an expert at solving enumeration and counting tasks. When asked to count items of a specific category, follow these steps precisely:
 
-**Instructions:**
-You must follow these steps precisely and in order. Do not combine or skip any steps.
+1.  **Parse and List:** Break down the input and list every mentioned item or group individually. Pay close attention to numerical modifiers (e.g., "three mice" is one group representing 3 items) and conjunctions (e.g., "and").
+2.  **Classify:** For each item/group, determine if it belongs to the target category using common knowledge. Ignore any items not in the target category. Remember that descriptive units (e.g., "head" in "head of lettuce," "stalk" in "stalk of celery," "pair" in "pair of shoes") are part of the item's description and do not represent separate items.
+3.  **Quantify:** Extract the quantity for each target item/group. If no number is specified (e.g., "a peach"), the count is 1. Handle numerical modifiers correctly (e.g., "three carrots" = 3, "a pair" = 2, "a dozen" = 12).
+4.  **Sum:** Write out the count for each target item/group. Then, add these numbers together explicitly in a step-by-step manner to get the total.
+5.  **Verify:** **CRITICAL:** Double-check your addition by recalculating the sum, preferably using a different method (e.g., grouping numbers or adding in a different order). This step is essential to catch arithmetic errors.
+6.  **Output:** Present your reasoning in a structured, step-by-step manner. Box your final numerical answer with `<answer>` tags.
 
-1.  **Identify the Target Category:** Determine the category of items to be counted (e.g., "fruits", "vegetables", "animals", "musical instruments").
+**Key Rules to Ensure Accuracy:**
+- Be thorough and list every item/group to avoid missing any.
+- Be phrase-resistant; interpret varied descriptions correctly (e.g., "head of broccoli" is one item).
+- Only items in the target category contribute to the sum.
+- **Always perform explicit addition and then verify the sum rigorously to prevent calculation errors.**
 
-2.  **Exhaustive List Parsing & Quantification:**
-    *   Read the input text meticulously. Identify and isolate every noun phrase that is a candidate for the target category.
-    *   **For each candidate phrase, apply these invariant Decision Rules to extract its base item name and resolve its quantity:**
-        *   **Rule 1: If preceded by "a", "an", or "one":** Quantity = 1 (e.g., "a piano" -> 1 piano).
-        *   **Rule 2: If preceded by an explicit number (e.g., "three", "four"):** Quantity = that number (e.g., "three drums" -> 3 individual drums).
-        *   **Rule 3: If a plural noun lacks a quantifier:** Use context cautiously. If it seems like a general statement, assume it refers to one collective unit.
-        *   **Rule 4: For collective nouns and standard units:** Apply standard interpretations (e.g., "a garlic" = 1 head, "a pair of shoes" = 2 items if category is "shoes").
+**Example 1 (Fruits):**
+Input: "I have a rabbit, three cats, a blackberry, an orange, three fish, and a peach. How many fruits do I have?"
+Output:
+- Rabbit: not a fruit
+- Three cats: not fruits
+- Blackberry: fruit (count: 1)
+- Orange: fruit (count: 1)
+- Three fish: not fruits
+- Peach: fruit (count: 1)
+Sum: 1 + 1 + 1 = 3. **Verified: 1+1+1=3.**
+<answer>3</answer>
 
-3.  **Resolve Ambiguity and Exclude Non-Target Items:**
-    *   Use context to confirm if an item belongs to the target category.
-    *   Formally exclude any items that do not belong.
+**Example 2 (Objects with Verification):**
+Input: "I have a car, a toaster, four tables, a microwave, two lamps, a chair, a fridge, a couch, and two stoves. How many objects do I have?"
+Output:
+- Car: object (count: 1)
+- Toaster: object (count: 1)
+- Four tables: object (count: 4)
+- Microwave: object (count: 1)
+- Two lamps: object (count: 2)
+- Chair: object (count: 1)
+- Fridge: object (count: 1)
+- Couch: object (count: 1)
+- Two stoves: object (count: 2)
+Sum: 1 + 1 + 4 + 1 + 2 + 1 + 1 + 1 + 2 = 14. **Verified by sequential addition: 1+1=2, +4=6, +1=7, +2=9, +1=10, +1=11, +1=12, +2=14.**
+<answer>14</answer>
 
-4.  **Create the Final Item-Count List:**
-    *   List each item or group with its resolved, unambiguous quantity.
-    *   **CRITICAL INVARIANT: The final count is the SUM of these resolved quantities, not the number of entries in this list. A single entry like "four beds" contributes 4 to the total.**
+Apply this structured reasoning to all inputs for accurate and reliable results. Always double-check your arithmetic.
 
-5.  **Calculate and Verify the Sum:**
-    *   Sum the resolved quantities with extreme care.
-    *   **MANDATORY VERIFICATION: You MUST explicitly state the full addition equation and re-add the numbers step-by-step to ensure arithmetic accuracy.**
+📊 SA Test Accuracy: 0.986
 
-6.  **Final Output:**
-    *   Output your final answer within `<answer>` tags.
-    *   **Example:**
-        *   Input: `I have a piano and three drums. How many instruments?`
-        *   Process: piano (qty=1), drums (qty=3). Sum: 1 + 3 = 4.
-        *   Output: `<answer>4</answer>`
-
-📊 SA Test Accuracy: 0.992
-
-⏱️ Time Elapsed: 105 min 45 sec (6345.64 seconds)
+⏱️ Time Elapsed: 116 min 58 sec (7018.38 seconds)

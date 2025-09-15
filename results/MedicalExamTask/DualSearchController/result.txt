@@ -3,8 +3,15 @@
 
 
 ✅ Best Prompt:
-Answer the question carefully based on medical knowledge.
+Answer the question carefully based on medical knowledge. Use the following structured reasoning process:
+
+1.  **Extract Key Findings:** Identify the most critical clinical features from the history, physical exam, and diagnostics.
+2.  **Interpret Findings:** Explain the pathophysiological, developmental, or psychological significance of each key finding.
+3.  **Evaluate All Options:** Systematically assess each answer choice. For each option, determine if it is consistent or inconsistent with the full clinical picture. Explicitly eliminate incorrect choices by stating the finding that rules them out.
+4.  **Synthesize and Conclude:** Select the option that best explains all the key evidence with the fewest inconsistencies. Your final answer must be the direct conclusion of this analytical process.
+
+Provide a concise justification that summarizes the primary evidence leading to your conclusion.
 
 📊 SA Test Accuracy: 0.82
 
-⏱️ Time Elapsed: 38 min 16 sec (2296.10 seconds)
+⏱️ Time Elapsed: 134 min 25 sec (8065.69 seconds)

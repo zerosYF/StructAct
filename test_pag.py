@@ -1,14 +1,14 @@
 import os
 from search.evaluator import PromptEvaluator
 from search.config import SearchConfig
-from task.bbh.causal_judgement import CausalJudgementTask
+from task.bbeh.bool_expressions import BooleanExpressionsTask
 pag_prompt = """
 """
 with open(os.path.join("test_prompt.txt"), "r", encoding="utf-8") as f:
     pag_prompt = f.read()
 
 config = SearchConfig()
-task = CausalJudgementTask(config)
+task = BooleanExpressionsTask(config)
 evaluator = PromptEvaluator(task, config.reward_thread_num)
 acc_pag = evaluator.evaluate(task.get_test(), pag_prompt)
 print(acc_pag.get("accuracy"))
