@@ -11,7 +11,7 @@ from mcts.rollout import get_rollout_strategy
 from mcts.choose import get_choose_strategy
 from program.strategy_actions import define_full_actions
 from search.search import SearchController
-from program.sample_pools import BucketedSamplePool, ContinuousSamplePool
+from program.sample_pools import ContinuousSamplePool
 from logger import logger
 import os
 import json
@@ -32,10 +32,15 @@ class DualSearchController(SearchController):
     
     def _mcts_workflow(self, init_prompt: str):
         if self.task.config.use_pool:
-            if self.config.pool_type_idx == 0:
-                self.pool = ContinuousSamplePool(max_size=1000)
-            else:
-                self.pool = BucketedSamplePool(max_size=1000, low=0.5, high=0.9)
+            self.pool = ContinuousSamplePool(max_size=1000,
+                                                high_reward_threshold=self.config.high_reward_threshold,
+                                                low_reward_threshold=self.config.low_reward_threshold,
+                                                var_unstable=self.config.var_unstable,
+                                                informative_threshold=self.config.informative_threshold,
+                                                negative_informative_mag=self.config.negative_informative_mag,
+                                                negative_var_mag=self.config.negative_var_mag,
+                                                positive_informative_mag=self.config.positive_informative_mag,
+                                                positive_var_mag=self.config.positive_var_mag)
             self.pool.initialize(self.task.get_train_mcts(), self.evaluator, init_prompt)
         else:
             self.pool = None

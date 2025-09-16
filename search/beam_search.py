@@ -5,7 +5,7 @@ import itertools
 import logging
 from search.search import SearchController
 from program.prompt_node import PromptNode
-from program.sample_pools import BucketedSamplePool, ContinuousSamplePool
+from program.sample_pools import ContinuousSamplePool
 from program.strategy_actions import OptimizeAction, define_full_actions
 
 logger = logging.getLogger(__name__)
@@ -15,10 +15,7 @@ class BeamSearchController(SearchController):
         super().__init__(evaluator, config, task)
         self.beam_width = getattr(config, "beam_width", 5)
         self.max_depth = getattr(config, "max_depth", 5)
-        if self.config.pool_type_idx == 0:
-            self.pool = ContinuousSamplePool(max_size=1000)
-        else:
-            self.pool = BucketedSamplePool(max_size=1000, low=0.5, high=0.9)
+        self.pool = ContinuousSamplePool(max_size=1000)
         self.actions: Set[OptimizeAction] = define_full_actions(task)
     
     def search(self):

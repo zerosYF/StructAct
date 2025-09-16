@@ -44,13 +44,40 @@ class PoolSample:
         mean = self.reward
         return sum((r - mean) ** 2 for r in self.reward_history) / (n - 1)
 
-    def compute_informative_score(self, alpha=0.5, beta=0.3, gamma=0.2):
-        """基于难度、reward 增益、波动度的综合信息度指标"""
+    def compute_informative_score(self, window:int = 3):
+        """
+        信息度指标:
+        - difficulty: 基于 baseline 的难度
+        - reward_gain: 最近窗口内的平均增益 (比单次更稳健)
+        - variance: reward 的波动度
+        自动归一化三项后取平均，避免人工调参
+        """
+        if not self.reward_history:
+            self.informative_score = 0.0
+            return self.informative_score
+
+        # 1. difficulty (难度)
         difficulty = 1 - (self.baseline_reward or 0.0)
-        reward_gain = self.reward_history[-1] - (self.baseline_reward or 0.0)
-        self.informative_score = (
-            alpha * difficulty + beta * reward_gain + gamma * self.variance
-        )
+
+        # 2. reward_gain (最近窗口平均提升)
+        recent = self.reward_history[-window:] if len(self.reward_history) >= window else self.reward_history
+        avg_recent = sum(recent) / len(recent)
+        reward_gain = avg_recent - (self.baseline_reward or 0.0)
+
+        # 3. variance (波动)
+        var = self.variance
+
+        # ---- 自动归一化到 [0,1] ----
+        def normalize(x, max_val=1.0):
+            return min(max(x / (max_val + 1e-6), 0.0), 1.0)
+
+        diff_n = normalize(difficulty)
+        gain_n = normalize(reward_gain)
+        var_n  = normalize(var)
+
+        # 综合信息度 = 三者平均
+        self.informative_score = (diff_n + gain_n + var_n) / 3.0
+        return self.informative_score
 
 
 class DynamicSamplePool:

@@ -5,6 +5,7 @@ from program.sample_pools import DynamicSamplePool
 from typing import List, Set
 from logger import logger
 import numpy as np
+import math
 
 class PromptNode(Node):
     def __init__(self, 
@@ -33,15 +34,27 @@ class PromptNode(Node):
         self.pool = sample_pool
         self.reward_value: float = self.reward()
         self.Q = self.reward_value
+
+    def _softmax(vals: np.ndarray, temperature: float = 1.0):
+        vals = vals - np.max(vals)  # 防止 exp 溢出
+        exp_vals = np.exp(vals / max(temperature, 1e-6))
+        probs = exp_vals / np.sum(exp_vals)
+        return probs
     
-    def _weighted_random_choice(self, temperature: float = 1.0, balance_weight: float = 1.0):
-        """动作选择: 融合 failure/usage 与样本池状态 (cpool diagnostics)，带平滑。"""
+    def _weighted_random_choice(self, temperature: float = 1.0):
+        """
+        动作选择：融合失败/使用次数和样本池状态（cpool diagnostics），带平滑。
+        逻辑：
+        - 基础项：历史采样失败次数和使用次数降低概率（探索/避免重复）
+        - 样本池 bias：根据池子中成功/失败样本比例调节 Positive / Negative 动作偏好
+        - 极端情况抑制：当池子中成功/失败样本极少时，抑制对应动作
+        """
         actions: list[OptimizeAction] = list(self.action_set)
 
         # 基础项: failure + usage 抑制
         failure_counts = np.array([a.sample_failure_counter for a in actions])
         usage_counts = np.array([a.usage_count for a in actions])
-        base_logits = - (failure_counts + usage_counts) / temperature
+        base_logits = - (failure_counts + usage_counts)
 
         # 样本池状态，可选
         action_bias = np.zeros(len(actions))
@@ -56,33 +69,25 @@ class PromptNode(Node):
 
             # 用平滑函数 (tanh) 计算差异偏置
             diff = success_ratio - failure_ratio
-            smooth_diff = np.tanh(diff * 3.0)  # 3.0 控制曲线陡峭度，可调
+            # 曲线陡峭度随样本池规模调整
+            scale = math.log1p(cpool_diag.get("total_samples", 0.0))
+            smooth_diff = np.tanh(diff * scale)
+            # 样本池越大，说明统计结果越可靠，就可以更“自信”地放大 diff 值
+
+            entropy = - (
+                success_ratio * math.log(success_ratio + 1e-6) +
+                failure_ratio * math.log(failure_ratio + 1e-6)
+            )
 
             for i, a in enumerate(actions):
-                if a.name.lower().startswith("positive"):
-                    action_bias[i] = balance_weight * smooth_diff
-                elif a.name.lower().startswith("negative"):
-                    action_bias[i] = - balance_weight * smooth_diff
-
-            # 极端情况: 样本极少时强制压制
-            for i, a in enumerate(actions):
-                if a.name.lower().startswith("positive") and success_ratio < 0.05:
-                    action_bias[i] -= 5.0
-                if a.name.lower().startswith("negative") and failure_ratio < 0.05:
-                    action_bias[i] -= 5.0
+                if a.name.lower().startswith("SuccessDrivenAction"):
+                    action_bias[i] = entropy * smooth_diff
+                elif a.name.lower().startswith("FailureDrivenAction"):
+                    action_bias[i] = - entropy * smooth_diff
 
         # 融合
         logits = base_logits + action_bias
-
-        # softmax + 数值安全
-        logits = logits - np.max(logits)  # 防止 exp 溢出
-        exp_logits = np.exp(logits / max(temperature, 1e-6))
-        probs = exp_logits / exp_logits.sum()
-
-        # 修正浮点误差
-        probs = np.clip(probs, 0.0, 1.0)
-        probs[-1] = 1.0 - probs[:-1].sum()  # 强制和为1
-
+        probs = self._softmax(logits, temperature)
         selected_index = np.random.choice(len(actions), p=probs)
         return actions[selected_index]
 

@@ -10,9 +10,9 @@ class SearchConfig:
         self.shuffle_seed: int = 42        # Random seed for data shuffling
         # MCTS search control
         self.exploration_weight: float = 2.5   # Exploration factor in UCT formula
-        self.mcts_iter_num_max: int = 10         # Number of iterations in MCTS main loop
+        self.mcts_iter_num_max: int = 8         # Number of iterations in MCTS main loop
         self.mcts_iter_num_min: int = 0           # Minimum MCTS iterations
-        self.max_depth_threshold: int = 5          # Maximum search depth
+        self.max_depth_threshold: int = 4          # Maximum search depth
         self.min_depth_threshold: int = 3
 
         self.width_threshold: int = 3          # Number of children per expanded node
@@ -35,6 +35,17 @@ class SearchConfig:
 
         self.use_pool: bool = True            # Whether to use a sample pool for rollouts
         self.pool_type_idx: int = 0
+
+        self.high_reward_threshold = 0.9
+        self.low_reward_threshold = 0.3
+        self.var_unstable = 0.05
+        self.informative_threshold = 0.5
+
+        self.negative_informative_mag = 0.2
+        self.negative_var_mag = 0.5
+
+        self.positive_informative_mag = 0.5
+        self.positive_var_mag = 0.2
 
         # Model configuration
         # self.model_name: str = "zhiyan3"

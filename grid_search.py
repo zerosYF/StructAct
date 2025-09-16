@@ -1,0 +1,76 @@
+import json
+import itertools
+import logging
+from search.dual_search import DualSearchController
+from search.config import SearchConfig
+from search.evaluator import PromptEvaluator
+from task.bbeh.bool_expressions import BooleanExpressionsTask
+
+logger = logging.getLogger(__name__)
+
+def run_grid_search(controller_class, evaluator, config, task, 
+                    lam_candidates, theta_candidates, output_file="grid_search_results.json"):
+    """
+    网格搜索负反馈参数 lam / theta
+    controller_class: DualSearchController
+    evaluator: PromptEvaluator 实例
+    config: SearchConfig 实例
+    task: TaskBase 实例
+    lam_candidates, theta_candidates: 参数列表
+    """
+    results = []
+
+    for lam, theta in itertools.product(lam_candidates, theta_candidates):
+        logger.info(f"Running grid search with lam={lam}, theta={theta}...")
+
+        # 更新 config 中负反馈参数
+        config.negative_var_mag = lam
+        config.negative_informative_mag = theta
+
+        # 初始化控制器
+        controller = controller_class(evaluator, config, task)
+
+        # 运行搜索
+        best_prompt = controller.search()[1]  # search() 返回 ("", optimized_prompt)
+
+        # 评估结果
+        reward = evaluator.batch_reward(best_prompt, task.get_train_mcts())  # 可根据需求改为 batch_reward_n
+        avg_reward = sum(reward)/len(reward) if reward else 0.0
+
+        # 保存结果
+        result = {
+            "lam": lam,
+            "theta": theta,
+            "avg_reward": avg_reward,
+            "best_prompt": best_prompt
+        }
+        results.append(result)
+
+        logger.info(f"Finished lam={lam}, theta={theta}, avg_reward={avg_reward:.4f}")
+
+    # 保存到文件
+    with open(output_file, "w", encoding="utf-8") as f:
+        json.dump(results, f, indent=2, ensure_ascii=False)
+
+    logger.info(f"✅ Grid search completed. Results saved to {output_file}")
+    return results
+
+
+# --------------------------
+# 使用示例
+# --------------------------
+lam_candidates = [0.4, 0.5, 0.6]
+theta_candidates = [0.16, 0.2, 0.24]
+my_config = SearchConfig()
+my_task = BooleanExpressionsTask(my_config)
+my_evaluator = PromptEvaluator(my_task, my_config.reward_thread_num)
+
+results = run_grid_search(
+    controller_class=DualSearchController,
+    evaluator=my_evaluator,   # 你的 PromptEvaluator 实例
+    config=my_config,         # 你的 SearchConfig 实例
+    task=my_task,             # 你的 TaskBase 实例
+    lam_candidates=lam_candidates,
+    theta_candidates=theta_candidates,
+    output_file="negative_feedback_grid_search.json"
+)
