@@ -115,64 +115,78 @@ class ContinuousSamplePool(DynamicSamplePool):
     
     def compute_cpool(self):
         """
-        以阈值分池判断
+        compute_cpool:
+        - 不仅依赖绝对 reward 阈值
+        - 增加相对提升 (baseline 对比)
+        - 增加分位数判断 (避免低准确率阶段失效)
         """
-
+        import numpy as np
         total = len(self.samples)
         if total == 0:
             return 0.0
 
         # counters / aggregated scores
-        easy_score = 0.0            # sum of confidence-weighted easy-success
-        informative_score = 0.0    # sum of confidence-weighted informative-success
-        hard_score = 0.0           # sum of hard indicators
+        easy_score = 0.0
+        informative_score = 0.0
+        hard_score = 0.0
+
+
+        rewards = [s.reward for s in self.samples]
+        if rewards:
+            q_high = np.percentile(rewards, int(self.high_reward_threshold * 100))
+            q_low = np.percentile(rewards, int(self.low_reward_threshold * 100))
+        else:
+            q_high, q_low = 0.0, 0.0, 0.0
+
 
         for s in self.samples:
             # confidence for this sample's success probability
             conf_success = self._wilson_lower_bound(s.corrects, s.visits) if s.visits > 0 else 0.0
-            # classify by thresholds
-            is_high = s.reward >= self.high_reward_threshold
+
+            # -------- 1: 相对提升 --------
+            baseline_reward = getattr(s, "baseline_reward", 0.0)
+            improvement = s.reward - baseline_reward
+
+            # -------- 2: 分位数判断 --------
+            is_high = s.reward >= q_high or improvement > 0
+            is_low = s.reward <= q_low and improvement <= 0
+
+            # -------- 3: 稳定性加权 --------
             is_unstable = s.variance > self.var_unstable
 
-            # easy-success: high reward, low variance, baseline also high
-            # 样本池正向指标
+            # easy-success: 高 reward 或有提升，且稳定
             if is_high and not is_unstable:
                 easy_score += conf_success
 
-            # informative-success: high reward, informative_score high (baseline low often)
+            # informative-success: 高 reward/有提升，且 informative 高
             informative_flag = (s.informative_score or 0.0) >= self.informative_threshold
             if is_high and informative_flag:
                 informative_score += conf_success
 
-            # hard: low reward
-            is_low = s.reward < self.low_reward_threshold
+
+            # hard: reward 低且无提升
             if is_low:
                 hard_score += 1.0
 
-        # normalize to ratios in [0,1] style (divide by total)
+
+        # normalize to ratios in [0,1]
         easy_ratio = easy_score / total
         informative_ratio = informative_score / total
         hard_ratio = hard_score / total
-
         # linear combination
-        cpool_raw = (self.cpool_weights["easy"] * easy_ratio +
-                    self.cpool_weights["informative"] * informative_ratio  -
-                    self.cpool_weights["hard"] * hard_ratio)
+        cpool_raw = (1.0 * easy_ratio + 1.2 * informative_ratio - 1.0 * hard_ratio)
 
-        # optional normalization: map to [0,1] by sigmoid or clamping
-        # here use a soft clamp: sigmoid-like scaling
-        cpool = 1 / (1 + math.exp(-cpool_raw))  # sigmoid -> in (0,1)
-        # if you prefer linear clamp:
-        # cpool = max(0.0, min(1.0, cpool_raw))
+        # sigmoid scaling
+        cpool = 1 / (1 + math.exp(-cpool_raw))
 
-        # also return diagnostics if you want:
+
         diagnostics = {
-            "easy_ratio": easy_ratio,
-            "informative_ratio": informative_ratio,
-            "hard_ratio": hard_ratio,
-            "cpool_raw": cpool_raw,
-            "cpool": cpool,
-            "total_samples": total
+        "easy_ratio": easy_ratio,
+        "informative_ratio": informative_ratio,
+        "hard_ratio": hard_ratio,
+        "cpool_raw": cpool_raw,
+        "cpool": cpool,
+        "total_samples": total
         }
         logger.info(f"compute_cpool: {diagnostics}")
         return diagnostics

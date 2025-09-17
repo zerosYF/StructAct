@@ -5,60 +5,70 @@ from search.dual_search import DualSearchController
 from search.config import SearchConfig
 from search.evaluator import PromptEvaluator
 from task.bbeh.bool_expressions import BooleanExpressionsTask
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import os
+import copy
 
 logger = logging.getLogger(__name__)
 
+def worker(lam, theta, controller_class, evaluator, config, task, output_dir):
+    # 每个线程都用自己的 config 副本，避免冲突
+    from copy import deepcopy
+    local_config = deepcopy(config)
+    local_config.negative_var_mag = lam
+    local_config.negative_informative_mag = theta
+
+    controller = controller_class(evaluator, local_config, task)
+    best_prompt = controller.search()[1]
+    acc_sa = evaluator.evaluate(task.get_test(), best_prompt)
+
+    result = {
+        "lam": lam,
+        "theta": theta,
+        "avg_reward": acc_sa,
+        "best_prompt": best_prompt
+    }
+
+    # 保存单个结果
+    os.makedirs(output_dir, exist_ok=True)
+    out_file = os.path.join(output_dir, f"lam{lam}_theta{theta}.json")
+    with open(out_file, "w", encoding="utf-8") as f:
+        json.dump(result, f, indent=2, ensure_ascii=False)
+
+    return result  # 如果你不想汇总，可以删掉这一行
+
+
 def run_grid_search(controller_class, evaluator, config, task, 
-                    lam_candidates, theta_candidates, output_file="grid_search_results.json"):
+                    lam_candidates, theta_candidates, output_dir="grid_search_results",
+                    max_workers=4):
     """
-    网格搜索负反馈参数 lam / theta
-    controller_class: DualSearchController
-    evaluator: PromptEvaluator 实例
-    config: SearchConfig 实例
-    task: TaskBase 实例
-    lam_candidates, theta_candidates: 参数列表
+    网格搜索负反馈参数 lam / theta (多线程版本)
     """
-    results = []
+    tasks = list(itertools.product(lam_candidates, theta_candidates))
 
-    for lam, theta in itertools.product(lam_candidates, theta_candidates):
-        logger.info(f"Running grid search with lam={lam}, theta={theta}...")
-
-        # 更新 config 中负反馈参数
-        config.negative_var_mag = lam
-        config.negative_informative_mag = theta
-
-        # 初始化控制器
-        controller = controller_class(evaluator, config, task)
-
-        # 运行搜索
-        best_prompt = controller.search()[1]  # search() 返回 ("", optimized_prompt)
-
-        # 评估结果
-        reward = evaluator.batch_reward(best_prompt, task.get_train_mcts())  # 可根据需求改为 batch_reward_n
-        avg_reward = sum(reward)/len(reward) if reward else 0.0
-
-        # 保存结果
-        result = {
-            "lam": lam,
-            "theta": theta,
-            "avg_reward": avg_reward,
-            "best_prompt": best_prompt
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = {
+            executor.submit(worker, lam, theta, controller_class, evaluator, config, task, output_dir): (lam, theta)
+            for lam, theta in tasks
         }
-        results.append(result)
 
-        logger.info(f"Finished lam={lam}, theta={theta}, avg_reward={avg_reward:.4f}")
+        for future in as_completed(futures):
+            lam, theta = futures[future]
+            try:
+                result = future.result()
+                print(f"✅ Finished lam={lam}, theta={theta}, avg_reward={result['avg_reward']:.4f}")
+            except Exception as e:
+                print(f"❌ Error in lam={lam}, theta={theta}: {e}")
 
-    # 保存到文件
-    with open(output_file, "w", encoding="utf-8") as f:
-        json.dump(results, f, indent=2, ensure_ascii=False)
-
-    logger.info(f"✅ Grid search completed. Results saved to {output_file}")
-    return results
+    print(f"Grid search completed. Results saved to {output_dir}")
 
 
 # --------------------------
 # 使用示例
 # --------------------------
+# lam_candidates = [0.4]
+# theta_candidates = [0.16]
+
 lam_candidates = [0.4, 0.5, 0.6]
 theta_candidates = [0.16, 0.2, 0.24]
 my_config = SearchConfig()
@@ -72,5 +82,4 @@ results = run_grid_search(
     task=my_task,             # 你的 TaskBase 实例
     lam_candidates=lam_candidates,
     theta_candidates=theta_candidates,
-    output_file="negative_feedback_grid_search.json"
 )

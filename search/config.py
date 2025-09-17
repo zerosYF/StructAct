@@ -12,7 +12,7 @@ class SearchConfig:
         self.exploration_weight: float = 2.5   # Exploration factor in UCT formula
         self.mcts_iter_num_max: int = 8         # Number of iterations in MCTS main loop
         self.mcts_iter_num_min: int = 0           # Minimum MCTS iterations
-        self.max_depth_threshold: int = 4          # Maximum search depth
+        self.max_depth_threshold: int = 5          # Maximum search depth
         self.min_depth_threshold: int = 3
 
         self.width_threshold: int = 3          # Number of children per expanded node
@@ -30,7 +30,7 @@ class SearchConfig:
         self.reward_thread_num: int = 3       # Number of threads for reward evaluation
 
         # Debugging indicators (for tracing internal states)
-        self.rollout_idx: int = 1              # Current rollout path index
+        self.rollout_idx: int = 0              # Current rollout path index
         self.choose_idx: int = 2               # Current chosen action index
 
         self.use_pool: bool = True            # Whether to use a sample pool for rollouts
