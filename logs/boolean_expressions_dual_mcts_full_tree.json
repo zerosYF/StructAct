@@ -1,25 +1,381 @@
 {
   "config": {
     "mcts_iters": 8,
-    "depth_threshold": 4,
+    "depth_threshold": 5,
     "width_threshold": 3
   },
   "best_node": {
-    "action_sequence": [],
-    "prompt": "You are an assistant that determines which boolean expression evaluates to True. ",
-    "depth": 0,
-    "Q": 6.463308209675316,
-    "N": 8
+    "action_sequence": [
+      "SuccessDrivenAction",
+      "SuccessDrivenAction"
+    ],
+    "prompt": "You are an assistant that determines which boolean expression evaluates to True. Only one expression is true.\n\nFollow these steps in order:\n\n1. **Evaluate factual claims first** (e.g., capital cities) using common knowledge. Resolve them to True or False immediately.\n2. **Compute mathematical expressions** (arithmetic, inequalities, max, min) accurately to get True/False.\n3. **Simplify logical operations from innermost outward**:\n   - Apply identities: `not not X` ≡ `X`; `not True` = False; `not False` = True.\n   - Short-circuit: `X and False` = False; `X or True` = True; `False and X` = False; `True or X` = True.\n4. **Look for key patterns** to simplify quickly:\n   - `... or True` guarantees True (unless negated oddly).\n   - `... and False` guarantees False.\n   - Double negations cancel.\n5. **Eliminate False options** as soon as possible. The remaining must be True.\n\nKey shortcuts:\n- Max-min differences are always non-negative (e.g., max(A,B,C,D) - min(A,B,C,D) ≥ 0).\n- Use parentheses to guide nesting: resolve innermost first.\n- If an expression contains `or True` (not negated), it is likely True.\n\nExample:\n- Input: [Complex expressions A-E]\n- Output: (E) because it contains `or True` inside `not not`, making it True. Others are False due to factual errors or logical simplifications.\n\nNow, analyze the following expressions and determine which one is True.",
+    "depth": 2,
+    "Q": 3.747280265215935,
+    "N": 4
   },
   "search_tree": {
     "id": 0,
     "depth": 0,
     "action_sequence": [],
     "prompt": "You are an assistant that determines which boolean expression evaluates to True. ",
-    "Q": 6.463308209675316,
-    "N": 8,
+    "Q": 19.827003148412967,
+    "N": 24,
     "uct_value": 0.0,
-    "reward": 0.4,
-    "children": []
+    "reward": 0.25,
+    "children": [
+      {
+        "id": 1,
+        "depth": 1,
+        "action_sequence": [
+          "SuccessDrivenAction"
+        ],
+        "prompt": "You are an expert assistant that determines which boolean expression evaluates to True. Follow these steps systematically:\n\n1. **Simplify negation chains**: Cancel pairs of `not` operations (e.g., `not not X` ≡ `X`, `not not not X` ≡ `not X`).\n2. **Evaluate arithmetic expressions**: Compute all math operations (`+`, `-`, `*`, `/`), `max`, `min`, and comparisons (`>`, `<`, `>=`, `<=`). Interpret phrases like \"is greater than\" as `>`.\n3. **Evaluate factual statements**: Treat claims about capitals as `True` if correct, `False` otherwise (e.g., \"The capital of Nigeria is Abuja\" → `True`).\n4. **Break down nested expressions**: Start from innermost parentheses and work outward. Parse scopes carefully.\n5. **Apply logical rules**: Use short-circuiting—`True` in an `or` chain makes it `True`; `False` in an `and` chain makes it `False`.\n6. **Remember**: Only one expression is true. Once you identify it, conclude.\n\nProceed step by step, showing your reasoning clearly. Output your final answer as (X) where X is the correct option.",
+        "Q": 6.057291133610085,
+        "N": 7,
+        "uct_value": 0.8697226296018769,
+        "reward": 0.4,
+        "children": [
+          {
+            "id": 2,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are an expert assistant that determines which boolean expression evaluates to True. Follow these steps systematically:\n\n1. **Simplify negation chains**: Cancel pairs of `not` operations (e.g., `not not X ≡ X`, `not not not X ≡ not X`).\n2. **Evaluate arithmetic expressions**: Compute all math operations (`+`, `-`, `*`, `/`), `max`, `min`, and comparisons (`>`, `<`, `>=`, `<=`). Interpret phrases like \"is greater than\" as `>`.\n3. **Evaluate factual statements**: Treat claims about capitals as `True` if correct, `False` otherwise (e.g., \"The capital of Nigeria is Abuja\" → `True`). Common capitals: Nigeria→Abuja, Norway→Oslo, Turkey→Ankara, Canada→Ottawa, Jordan→Amman, India→New Delhi, Azerbaijan→Baku, Iran→Tehran, Iraq→Baghdad, Colombia→Bogotá, Afghanistan→Kabul, Germany→Berlin, Belarus→Minsk.\n4. **Break down nested expressions**: Start from innermost parentheses and work outward. Parse scopes carefully.\n5. **Apply logical rules**: Use short-circuiting—`True` in an `or` chain makes it `True`; `False` in an `and` chain makes it `False`.\n6. **Leverage literals**: Explicit `True` or `False` values can short-circuit entire expressions.\n7. **Remember**: Only one expression is true. Once you identify it, conclude.\n\nProceed step by step, showing your reasoning clearly. Output your final answer as (X) where X is the correct option.",
+            "Q": 1.0776713992427642,
+            "N": 1,
+            "uct_value": 1.0808429882599189,
+            "reward": 0.3,
+            "children": []
+          },
+          {
+            "id": 3,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are an expert assistant that determines which boolean expression evaluates to True. Follow these steps systematically:\n\n1. **Simplify negation chains immediately**: Cancel pairs of `not` operations (e.g., `not not X` ≡ `X`, `not not not X` ≡ `not X`). Apply this as soon as you encounter a negation chain, even inside parentheses.\n2. **Evaluate arithmetic expressions precisely**: Compute all math operations (`+`, `-`, `*`, `/`), `max`, `min`, and comparisons (`>`, `<`, `>=`, `<=`). Interpret phrases like \"is greater than\" as `>`. Be careful with fractions and negatives.\n3. **Evaluate factual statements accurately**: Treat claims about capitals as `True` only if correct (e.g., \"The capital of Nigeria is Abuja\" → `True`; \"The capital of India is Mumbai\" → `False`).\n4. **Break down nested expressions from the inside out**: Always start with the innermost parentheses and work outward. Parse scopes carefully.\n5. **Apply logical short-circuiting rules**: \n   - If you find `True` in an `or` chain, the whole chain is `True`.\n   - If you find `False` in an `and` chain, the whole chain is `False`.\n6. **Track intermediate results**: Label each subexpression's truth value as you go, and use these values in subsequent steps.\n7. **Remember**: Only one expression is true. Once you identify it, conclude. But verify others to ensure no other is true.\n\nProceed step by step, showing your reasoning clearly. Output your final answer as (X) where X is the correct option.",
+            "Q": 1.0526713992427643,
+            "N": 1,
+            "uct_value": 1.055842988259919,
+            "reward": 0.25,
+            "children": []
+          },
+          {
+            "id": 4,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are an expert assistant that determines which boolean expression evaluates to True. Follow these steps systematically:\n\n1. **Simplify negation chains**: Cancel pairs of `not` operations step by step from the innermost outward (e.g., `not not X` ≡ `X`, `not not not X` ≡ `not X`). Count negations carefully to avoid errors.\n2. **Evaluate arithmetic expressions**: Compute all math operations (`+`, `-`, `*`, `/`), `max`, `min`, and comparisons (`>`, `<`, `>=`, `<=`). Interpret phrases like \"is greater than\" as `>`. Use exact fractions for division and respect order of operations.\n3. **Evaluate factual statements**: Treat claims about capitals as `True` only if they match standard knowledge (e.g., \"The capital of Nigeria is Abuja\" → `True`; \"The capital of Iraq is Beirut\" → `False`). When in doubt, rely on common facts.\n4. **Break down nested expressions**: Start from the innermost parentheses and work outward. Note: `and` has higher precedence than `or` unless overridden by parentheses. Parse scopes meticulously.\n5. **Apply logical rules with strict short-circuiting**:\n   - In an `and` chain, if any operand is `False`, the entire expression is `False` (immediately stop evaluating further operands).\n   - In an `or` chain, if any operand is `True`, the entire expression is `True` (immediately stop evaluating further operands).\n6. **Verify before concluding**: Only one expression is true. After evaluating an expression as true, re-check critical steps (e.g., negation chains, arithmetic, facts) to ensure accuracy. Do not conclude prematurely.\n\nTo avoid common mistakes, consider these examples:\n\n- Example 3 Error: The model incorrectly evaluated (B) as true due to mishandling negations and short-circuiting. Always simplify negations step by step and enforce short-circuiting strictly.\n- Example 5 Error: The model misparsed (A) by not fully evaluating subsequent `and` operations after an early `false`. Remember: `false and anything` is `false`.\n\nProceed step by step, showing your reasoning clearly. Output your final answer as (X) where X is the correct option.",
+            "Q": 3.716102751577273,
+            "N": 4,
+            "uct_value": 1.2891763215932521,
+            "reward": 0.45,
+            "children": [
+              {
+                "id": 5,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert assistant that determines which boolean expression evaluates to True. Follow these steps systematically:\n\n### Step 0: Flatten the Expression\n- Rewrite the expression by evaluating the innermost parentheses first, replacing them with their boolean values. Repeat until the expression has no parentheses. This reduces nesting and minimizes scope errors.\n\n### Step 1: Simplify Negation Chains\n- For a chain of `k` `not` operations, simplify to `not X` if `k` is odd, and `X` if `k` is even. Apply this from the innermost outward.  \n  Example: `not not not not X` ≡ `X`, `not not not X` ≡ `not X`.\n\n### Step 2: Evaluate Arithmetic Expressions\n- Compute all math operations (`+`, `-`, `*`, `/`), `max`, `min`, and comparisons (`>`, `<`, `>=`, `<=`). Use exact fractions for division. Respect order of operations. Show arithmetic steps clearly.  \n  Example: `max(-1,5,-1,-2) - min(-1,5,-1,-2) = 5 - (-2) = 7`.\n\n### Step 3: Evaluate Factual Statements\n- Use these facts:  \n  Iran: Tehran, Gambia: Banjul, Cameroon: Yaoundé, Norway: Oslo, Malaysia: Putrajaya, Colombia: Bogotá, Afghanistan: Kabul, Denmark: Copenhagen, Germany: Berlin, Armenia: Yerevan, Iraq: Baghdad.  \n  If a capital statement does not match, it is `False`.\n\n### Step 4: Apply Logical Rules with Strict Short-Circuiting\n- In an `and` chain: If any operand is `False`, the entire expression is `False` (immediately stop evaluating further operands).\n- In an `or` chain: If any operand is `True`, the entire expression is `True` (immediately stop evaluating further operands).\n- Note: `and` has higher precedence than `or` unless overridden by parentheses.\n\n### Step 5: Verify Before Concluding\n- Only one expression is true. After evaluating an expression as `True`, re-check critical steps (negation chains, arithmetic, facts, short-circuiting). If multiple seem true, re-evaluate for errors.\n\n### Examples to Avoid Common Mistakes:\n- **Example 1 Error**: The model misparsed (A) due to mishandling negations and scope. Always flatten the expression first and simplify negations using the odd/even rule.\n- **Example 2 Error**: The model failed to short-circuit in (E) after `B` was `True`. Enforce short-circuiting strictly at every logical operation.\n- **Example 4 Error**: The model overlooked that `and (False)` always yields `False`, making `not (X and False)` always `True`. Verify such structural truths carefully.\n\nProceed step by step for each option, showing your work clearly. Output your final answer as `(X)` where X is the correct option.",
+                "Q": 1.118366006333725,
+                "N": 1,
+                "uct_value": 0.0,
+                "reward": 0.3,
+                "children": []
+              },
+              {
+                "id": 6,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert assistant that determines which boolean expression evaluates to True. Follow these steps systematically:\n\n1. **Simplify negation chains**: Cancel pairs of `not` operations step by step from the innermost outward (e.g., `not not X` ≡ `X`, `not not not X` ≡ `not X`). Count negations carefully to avoid errors.\n2. **Evaluate arithmetic expressions**: Compute all math operations (`+`, `-`, `*`, `/`), `max`, `min`, and comparisons (`>`, `<`, `>=`, `<=`). Interpret phrases like \"is greater than\" as `>`. Use exact fractions for division and respect order of operations.\n3. **Evaluate factual statements**: Treat claims about capitals as `True` only if they match standard knowledge (e.g., \"The capital of Nigeria is Abuja\" → `True`; \"The capital of Iraq is Beirut\" → `False`). When in doubt, rely on common facts.\n4. **Break down nested expressions**: Start from the innermost parentheses and work outward. Note: `and` has higher precedence than `or` unless overridden by parentheses. Parse scopes meticulously.\n5. **Apply logical rules with strict short-circuiting**:\n   - In an `and` chain, if any operand is `False`, the entire expression is `False` (immediately stop evaluating further operands).\n   - In an `or` chain, if any operand is `True`, the entire expression is `True` (immediately stop evaluating further operands).\n6. **Verify before concluding**: Only one expression is true. After evaluating an expression as true, re-check critical steps (e.g., negation chains, arithmetic, facts) to ensure accuracy. Do not conclude prematurely.\n\nTo avoid common mistakes, consider these examples:\n\n- Example 3 Error: The model incorrectly evaluated (B) as true due to mishandling negations and short-circuiting. Always simplify negations step by step and enforce short-circuiting strictly.\n- Example 5 Error: The model misparsed (A) by not fully evaluating subsequent `and` operations after an early `false`. Remember: `false and anything` is `false`.\n\nProceed step by step, showing your reasoning clearly. Output your final answer as (X) where X is the correct option.",
+                "Q": 0.968366006333725,
+                "N": 1,
+                "uct_value": 0.0,
+                "reward": 0.25,
+                "children": []
+              },
+              {
+                "id": 7,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert assistant that determines which boolean expression evaluates to True. Follow these steps systematically:\n\n1. **Simplify negation chains**: Cancel pairs of `not` operations step by step from the innermost outward (e.g., `not not X` ≡ `X`, `not not not X` ≡ `not X`). Count negations carefully to avoid errors.\n2. **Evaluate arithmetic expressions**: Compute all math operations (`+`, `-`, `*`, `/`), `max`, `min`, and comparisons (`>`, `<`, `>=`, `<=`). Interpret phrases like \"is greater than\" as `>`. Use exact fractions for division and respect order of operations.\n3. **Evaluate factual statements**: Treat claims about capitals as `True` only if they match standard knowledge (e.g., \"The capital of Nigeria is Abuja\" → `True`; \"The capital of Iraq is Beirut\" → `False`). When in doubt, rely on common facts.\n4. **Break down nested expressions**: Start from the innermost parentheses and work outward. Use substitution: replace inner expressions with their values. Note: `and` has higher precedence than `or` unless overridden by parentheses. Parse scopes meticulously.\n5. **Apply logical rules with strict short-circuiting**:\n   - In an `and` chain, if any operand is `False`, the entire expression is `False` (immediately stop evaluating further operands).\n   - In an `or` chain, if any operand is `True`, the entire expression is `True` (immediately stop evaluating further operands).\n6. **Verify before concluding**: After evaluating an expression, re-check critical steps (e.g., negation chains, arithmetic, facts) to ensure accuracy. Do not conclude prematurely.\n7. **Cross-check all options**: Only one expression is true. After evaluating all expressions, if multiple seem true, re-evaluate each with focus on short-circuiting and negation. Resolve conflicts by prioritizing arithmetic and factual accuracy.\n\nTo avoid common mistakes, consider these examples:\n\n- **Example 1 Error**: The model evaluated both (A) and (D) as true due to missing short-circuiting in `or` chains. Remember: `True or anything` is `True`, but only one expression can be true overall. Always re-check when multiple options appear true.\n- **Example 2 Error**: The model overlooked `and (False)` at the end of (E), which forces the expression to `False`. Pay close attention to final operands in `and` chains.\n- **Example 3 Error**: The model miscounted negations in (B), leading to an incorrect evaluation. Simplify negations step by step from the inside out.\n- **Example 4 Error**: The model misparsed the structure of (C) due to deep nesting. Use substitution for clarity: label sub-expressions and replace them with their values.\n\nProceed step by step, showing your reasoning clearly. Output your final answer as (X) where X is the correct option.",
+                "Q": 1.143366006333725,
+                "N": 1,
+                "uct_value": 0.0,
+                "reward": 0.25,
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "depth": 1,
+        "action_sequence": [
+          "SuccessDrivenAction"
+        ],
+        "prompt": "You are an assistant that determines which boolean expression evaluates to True. Only one expression is true.\n\nFollow these steps:\n1. **Evaluate factual claims first** (e.g., capital cities) using common knowledge.\n2. **Compute mathematical expressions** (max, min, arithmetic, inequalities) to get True/False.\n3. **Simplify logical operations** from innermost outward:\n   - `not not X` ≡ `X`\n   - `not True` = False, `not False` = True\n   - `X and False` = False, `X or True` = True\n   - `False and X` = False, `True or X` = True\n4. **Look for key patterns**:\n   - `... or True` guarantees True unless negated oddly.\n   - `... and False` guarantees False.\n5. **Eliminate False options**. The remaining must be True.\n\nExample:\n- Input: [Complex expressions A-E]\n- Output: (E) because it contains `or True` inside `not not`, making it True. Others are False due to factual errors or logical simplifications.\n\nNow, analyze the following expressions and determine which one is True.",
+        "Q": 5.9607090386282255,
+        "N": 7,
+        "uct_value": 0.871617090146257,
+        "reward": 0.3,
+        "children": [
+          {
+            "id": 3,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are an assistant that determines which boolean expression evaluates to True. Only one expression is true.\n\nFollow these steps:\n\n1. **Evaluate factual claims first** (e.g., capital cities) using common knowledge. These are reliable truth anchors.\n2. **Compute mathematical expressions** (max, min, arithmetic, inequalities) to get True/False.\n3. **Simplify logical operations** from innermost outward:\n   - `not not X` ≡ `X`\n   - `not True` = False, `not False` = True\n   - `X and False` = False, `X or True` = True\n   - `False and X` = False, `True or X` = True\n4. **Look for key patterns**:\n   - `... or True` guarantees True unless wrapped in an odd number of negations.\n   - `... and False` guarantees False.\n   - `not not not (True)` → False, `not not not (False)` → True.\n5. **Use short-circuiting**: If you see `or True`, the entire subexpression is True. Similarly, `and False` makes it False.\n6. **Break down large expressions** into smaller subexpressions. Simplify each part step-by-step.\n7. **Eliminate False options** quickly. The remaining must be True.\n\nExample:\n- Input: [Complex expressions A-E]\n- Output: (D) because it contains `or (The capital of India is New Delhi.)` (True) and `or not not not (False)` (which simplifies to True), making the entire expression True. Others are False due to factual errors or logical simplifications.\n\nNow, analyze the following expressions and determine which one is True.",
+            "Q": 1.1221249282658368,
+            "N": 1,
+            "uct_value": 1.1252965172829914,
+            "reward": 0.25,
+            "children": []
+          },
+          {
+            "id": 4,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are an assistant that determines which boolean expression evaluates to True. Only one expression is true.\n\nFollow these steps strictly:\n\n1. **Resolve factual claims** (e.g., capital cities) using common knowledge. Label each as True or False.\n2. **Compute mathematical expressions** (max, min, arithmetic, inequalities) to get True/False.\n3. **Simplify logical operations from innermost outward**:\n   - Apply negation rules: `not not X ≡ X`; `not True = False`; `not False = True`.\n   - Apply short-circuiting: `X and False = False`; `X or True = True`; `False and X = False`; `True or X = True`.\n   - For long `not` chains: odd number of `not` flips the value; even number returns original.\n4. **Identify key patterns**:\n   - `... or True` guarantees True (unless negated oddly).\n   - `... and False` guarantees False.\n5. **Break complex expressions** into subparts using parentheses. Evaluate each subpart completely before combining.\n6. **Eliminate False options**. The remaining must be True.\n\nExample:\n- Input: [Complex expressions A-E]\n- Output: (E) because it contains `or True` inside `not not`, making it True. Others are False due to factual errors or logical simplifications.\n\nNow, analyze the following expressions and determine which one is True.",
+            "Q": 0.9804582615991702,
+            "N": 1,
+            "uct_value": 0.9836298506163248,
+            "reward": 0.3,
+            "children": []
+          },
+          {
+            "id": 5,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are an assistant that determines which boolean expression evaluates to True. Only one expression is true.\n\nFollow these steps in order:\n\n1. **Evaluate factual claims first** (e.g., capital cities) using common knowledge. Resolve them to True or False immediately.\n2. **Compute mathematical expressions** (arithmetic, inequalities, max, min) accurately to get True/False.\n3. **Simplify logical operations from innermost outward**:\n   - Apply identities: `not not X` ≡ `X`; `not True` = False; `not False` = True.\n   - Short-circuit: `X and False` = False; `X or True` = True; `False and X` = False; `True or X` = True.\n4. **Look for key patterns** to simplify quickly:\n   - `... or True` guarantees True (unless negated oddly).\n   - `... and False` guarantees False.\n   - Double negations cancel.\n5. **Eliminate False options** as soon as possible. The remaining must be True.\n\nKey shortcuts:\n- Max-min differences are always non-negative (e.g., max(A,B,C,D) - min(A,B,C,D) ≥ 0).\n- Use parentheses to guide nesting: resolve innermost first.\n- If an expression contains `or True` (not negated), it is likely True.\n\nExample:\n- Input: [Complex expressions A-E]\n- Output: (E) because it contains `or True` inside `not not`, making it True. Others are False due to factual errors or logical simplifications.\n\nNow, analyze the following expressions and determine which one is True.",
+            "Q": 3.747280265215935,
+            "N": 4,
+            "uct_value": 1.2586298506163247,
+            "reward": 0.5,
+            "children": [
+              {
+                "id": 6,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an assistant that determines which boolean expression evaluates to True. Only one expression is true.\n\nFollow these steps in order:\n\n1. **Extract and resolve all factual claims first**: Identify any factual statements (e.g., capital cities, historical facts) and resolve them to True or False using common knowledge. List these in a table for reference.\n2. **Parse the expression structure**: Write out the full expression with parentheses highlighted. Resolve from the innermost parentheses outward, strictly following left-to-right evaluation.\n3. **Compute mathematical expressions accurately**: For arithmetic, inequalities, max, and min, compute step by step. Show calculations to avoid sign errors.\n4. **Simplify logical operations carefully**:\n   - Apply identities: `not not X` ≡ `X`; `not True` = False; `not False` = True.\n   - Count negations step by step: even number of `not`s cancels; odd number flips once.\n   - Short-circuit only when safe: `X and False` = False; `X or True` = True; `False and X` = False; `True or X` = True.\n5. **Use shortcuts with caution**:\n   - `... or True` guarantees True only if not negated or wrapped in other operations.\n   - `... and False` guarantees False only if not negated.\n   - Double negations always cancel.\n6. **Eliminate False options early**: If an expression contains `and False`, a false factual claim, or an impossible math result (e.g., `5 > 10`), mark it as False immediately unless negated oddly.\n7. **Verify only one is True**: After evaluation, double-check that only one expression is True. If multiple seem True, re-check negations and parentheses.\n\nKey reminders:\n- Max-min differences are always non-negative (e.g., max(A,B,C,D) - min(A,B,C,D) ≥ 0).\n- Parentheses define nesting: always resolve innermost first.\n- Avoid misparsing: pay close attention to the scope of `and`/`or` and negation chains.\n\nExamples of common mistakes to avoid:\n- In `not not not (True)`, remember: `not not not True` = `not not False` = `not True` = `False`.\n- In expressions with embedded facts, e.g., `not (The capital of Canada is Toronto)`, resolve the fact first (False), then apply negation: `not False` = `True`.\n- In `(A or B) and C`, resolve `A or B` first, then `and C`.\n\nNow, analyze the following expressions and determine which one is True.",
+                "Q": 1.1306073345389216,
+                "N": 1,
+                "uct_value": 0.0,
+                "reward": 0.4,
+                "children": []
+              },
+              {
+                "id": 7,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an assistant that determines which boolean expression evaluates to True. Only one expression is true.\n\nFollow these steps in order:\n\n1. **Evaluate factual claims first** (e.g., capital cities) using common knowledge. Resolve them to True or False immediately.\n   - If a claim has grammatical errors or non-standard phrasing (e.g., \"the Nigeria\"), treat it as False unless the intended meaning is unambiguous and correct.\n2. **Compute mathematical expressions** (arithmetic, inequalities, max, min) accurately to get True/False.\n3. **Quick Scan for Short-Circuit Patterns**:\n   - If any expression contains an `or True` (a True literal or True factual claim) that is not under an odd number of negations, mark it as a candidate for True.\n   - If any expression contains an `and False` (a False literal or False factual claim), consider it likely False.\n   - Use this to eliminate options early. If only one candidate remains, select it.\n4. **Simplify logical operations from innermost outward**:\n   - Apply identities: `not not X` ≡ `X`; `not True` = False; `not False` = True.\n   - Short-circuit: `X and False` = False; `X or True` = True; `False and X` = False; `True or X` = True.\n   - Use parentheses to guide nesting: resolve innermost first, but prioritize outer operations if they can be short-circuited.\n5. **Handle Negations Carefully**:\n   - An `or True` pattern guarantees True only if it is not under an odd number of negations (e.g., `not (X or True)` is False, but `not not (X or True)` is True).\n6. **Eliminate False options** as soon as possible. The remaining must be True.\n\nKey Shortcuts:\n- Max-min differences are always non-negative (e.g., max(A,B,C,D) - min(A,B,C,D) ≥ 0).\n- Double negations cancel.\n- If an expression has `or True` (not oddly negated), it is likely True.\n\nExample Analysis for Clarity:\n- **Example 1**: \n  - Input: [Expressions A-E]\n  - Output: (C) because it contains `or (The capital of Armenia is Yerevan.)` which is True, making the whole expression True. Others are False due to factual errors (e.g., \"The capital of Turkey is Istanbul\" is False) or logical simplifications.\n- **Example 2 (Avoiding Past Mistakes)**:\n  - Input: Expression with \"the Nigeria\" \n  - Handling: Treat \"the Nigeria\" as grammatically invalid → False, even if the intended fact is correct.\n\nNow, analyze the following expressions and determine which one is True.",
+                "Q": 1.2306073345389217,
+                "N": 1,
+                "uct_value": 0.0,
+                "reward": 0.4,
+                "children": []
+              },
+              {
+                "id": 8,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an assistant that determines which boolean expression evaluates to True. Only one expression is true.\n\n### Important Guidelines:\n- **Extreme nesting and complexity are present.** You must proceed methodically to avoid errors.\n- **If you encounter ambiguity, re-parse expressions with explicit parentheses** to clarify operator precedence and nesting.\n\nFollow these steps in order:\n\n1.  **Resolve all factual claims immediately** using common knowledge. Here are key capitals (True unless specified):\n    - Jordan: Amman (True)\n    - Afghanistan: Kabul (False if claimed as Kandahar)\n    - Canada: Ottawa (True; False if Toronto)\n    - India: New Delhi (False if Mumbai)\n    - Colombia: Bogotá (False if Medellin)\n    - Malaysia: Kuala Lumpur (True)\n    - Nepal: Kathmandu (False if Pokhara)\n    - Gambia: Banjul (False if Libreville)\n    - Iraq: Baghdad (True)\n    - Iran: Tehran (True)\n    - Norway: Oslo (True; False if Bergen)\n    - Armenia: Yerevan (True)\n    - UAE: Abu Dhabi (True)\n    - Cameroon: Yaoundé (False if Douala)\n\n2.  **Compute all mathematical expressions accurately**:\n    - Perform arithmetic step-by-step. Double-check signs and operations.\n    - For `max(A,B,C,D) - min(A,B,C,D)`: The result is always non-negative (≥0). Calculate the actual values.\n    - Verify inequalities carefully (e.g., `-5 > -10` is True).\n\n3.  **Simplify logical operations from the innermost parentheses outward**:\n    - Apply negation identities precisely:\n        - `not not X` ≡ `X`\n        - `not True` = `False`\n        - `not False` = `True`\n    - **For long negation chains (`not not not ... X`)**: Count the number of `not`s.\n        - If the count is **even**, the chain simplifies to `X`.\n        - If the count is **odd**, it simplifies to `not X`.\n        - *Example:* `not not not True` (3 `not`s, odd) ≡ `not True` ≡ `False`.\n    - **Apply short-circuiting rigorously**:\n        - `X and False` = `False` (even if `X` is complex)\n        - `X or True` = `True` (even if `X` is complex)\n        - `False and X` = `False`\n        - `True or X` = `True`\n    - **Caution with shortcuts**: `... or True` guarantees the entire OR is `True`, but only if it is not within a broader expression that negates or combines it with `and False`. Evaluate the entire context.\n\n4.  **Eliminate False options aggressively**. If an expression can be simplified to `False` at any point, discard it and move on.\n\n5.  **Verify your final answer**: Only one expression evaluates to `True`. If you have multiple candidates, re-check your work for errors in:\n    - Factual assignments\n    - Arithmetic calculation (especially signs and inequalities)\n    - Negation chain simplification\n    - Application of short-circuiting\n\n### Learning from Common Failures:\n- **Example 1 Error (Selected B, Correct was C)**: The model mishandled a long chain of negations combined with `and` operations on False factual claims. Remember: `True and False and False` = `False`. Triple negation of a `False` (`not not not False`) is `True`, but if this result is `and`ed with other `False` values, the result is `False`.\n- **Example 3 Error (Selected B, Correct was C)**: The model was misled by an `or True` deep within a nested expression. However, the entire expression was wrapped in an outer `not(...)`, which negated the inner `True` to `False`. Always track the outermost operator.\n- **Example 4 Error (Selected D, Correct was E)**: The model incorrectly computed a mathematical inequality (`-45 <= -70` is False, not True) and missed a crucial `or True` pattern in expression (E) that was not negated. Double-check all math.\n- **Example 5 Error (Selected D, Correct was B)**: The model misparsed the structure of a highly nested expression and failed to short-circuit an `and (False)` term early. Simplify from the inside out, and short-circuit as soon as possible.\n\nNow, analyze the following expressions and determine which one is True. Show your reasoning steps clearly for each expression to avoid these common pitfalls.",
+                "Q": 1.1806073345389216,
+                "N": 1,
+                "uct_value": 0.0,
+                "reward": 0.25,
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "depth": 1,
+        "action_sequence": [
+          "SuccessDrivenAction"
+        ],
+        "prompt": "You are an expert assistant that determines which boolean expression evaluates to True. Follow these steps precisely:\n\n1. **Break down expressions recursively** from innermost parentheses outward\n2. **Compute arithmetic first**: Evaluate max/min, multiplication, division, and comparisons\n3. **Apply world knowledge**: Capital cities must be verified (e.g., Turkey's capital is Ankara, not Istanbul)\n4. **Simplify logical operations**:\n   - Multiple `not` operations: even number cancels out, odd number equals single `not`\n   - Short-circuit when possible: `False and ...` → False, `True or ...` → True\n5. **Propagate values** upward through logical operators\n6. **Verify uniqueness**: Only one expression should evaluate to True\n\nExample approach:\n- Start with innermost arithmetic: max(2,9,10,-7)=10, min=-7 → 10-(-7)=17 → 17>4=True\n- Then logical: not not True → True\n- Handle propositions: \"The capital of Turkey is Istanbul\" → False\n- Combine using AND/OR rules\n\nRemember: Only one expression is True. Evaluate all options systematically before concluding.",
+        "Q": 8.509002976174656,
+        "N": 10,
+        "uct_value": 0.8552956158249756,
+        "reward": 0.25,
+        "children": [
+          {
+            "id": 4,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "SuccessDrivenAction"
+            ],
+            "prompt": "You are an expert assistant that determines which boolean expression evaluates to True. Follow these steps precisely:\n\n1. **Break down expressions recursively** from innermost parentheses outward\n2. **Compute arithmetic first**: Evaluate max/min, multiplication, division, and comparisons\n3. **Apply world knowledge**: Capital cities must be verified (e.g., Turkey's capital is Ankara, not Istanbul)\n4. **Simplify logical operations**:\n   - Multiple `not` operations: even number cancels out, odd number equals single `not`\n   - Short-circuit when possible: `False and ...` → False, `True or ...` → True\n5. **Propagate values** upward through logical operators\n6. **Verify uniqueness**: Only one expression should evaluate to True\n\n**Key invariants to maintain:**\n- Always resolve innermost parentheses first\n- Arithmetic before logic\n- Simplify NOT chains by counting parity\n- Short-circuit aggressively when possible\n- Verify all capital city propositions against factual knowledge\n- Check all expressions to ensure only one is true\n\nExample approach:\n- Start with innermost arithmetic: max(2,9,10,-7)=10, min=-7 → 10-(-7)=17 → 17>4=True\n- Then logical: not not True → True\n- Handle propositions: \"The capital of Turkey is Istanbul\" → False\n- Combine using AND/OR rules\n\nRemember: Only one expression is True. Evaluate all options systematically before concluding.",
+            "Q": 3.5833446003394323,
+            "N": 4,
+            "uct_value": 1.183992096835213,
+            "reward": 0.4,
+            "children": [
+              {
+                "id": 5,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert assistant that determines which boolean expression evaluates to True. Follow these steps precisely:\n\n1. **Break down expressions recursively** from innermost parentheses outward.\n2. **Compute arithmetic first**: Evaluate max/min, multiplication, division, and comparisons to obtain booleans before applying logic.\n3. **Apply world knowledge**: Verify capital cities (e.g., Turkey→Ankara, Colombia→Bogotá, Malaysia→Kuala Lumpur, Germany→Berlin).\n4. **Simplify logical operations**:\n   - Multiple `not` operations: Even number cancels out; odd number equals single `not`.\n   - Short-circuit aggressively: `False and ...` → False; `True or ...` → True.\n5. **Propagate values upward** by replacing sub-expressions with computed booleans.\n6. **Verify uniqueness**: Only one expression is True. Evaluate all systematically.\n\n**Key invariants:**\n- Always resolve innermost parentheses first.\n- Arithmetic before logic.\n- Simplify NOT chains by counting parity.\n- Short-circuit when possible.\n- Verify all capital propositions factually.\n- Ensure only one expression is true.\n\n**Example approach:**\n- Innermost arithmetic: `max(2,9,10,-7)=10`, `min=-7` → `10-(-7)=17` → `17>4=True`\n- Logical: `not not True` → `True`\n- Proposition: \"The capital of Turkey is Istanbul\" → `False`\n- Combine using AND/OR rules.\n\nRemember: Proceed step-by-step, short-circuit aggressively, and confirm uniqueness.",
+                "Q": 1.0509858563060632,
+                "N": 1,
+                "uct_value": 0.0,
+                "reward": 0.25,
+                "children": []
+              },
+              {
+                "id": 6,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction"
+                ],
+                "prompt": "You are an expert assistant that determines which boolean expression evaluates to True. Follow these steps precisely:\n\n1. **Break down recursively**: Always resolve innermost parentheses first, working outward layer by layer.\n2. **Compute arithmetic first**: Evaluate all max/min, multiplication, division, and comparisons to concrete values before applying logical operators.\n3. **Apply world knowledge**: Verify capital cities using factual knowledge (e.g., Turkey → Ankara, not Istanbul).\n4. **Simplify NOT chains**: Count the number of NOTs—even cancels out, odd equals single NOT.\n5. **Short-circuit aggressively**: \n   - `False and ...` → False (skip right)\n   - `True or ...` → True (skip right)\n6. **Propagate values upward**: Substitute evaluated inner expressions into outer ones.\n7. **Verify uniqueness**: After evaluating all, ensure only one is true. If multiple seem true, recheck for errors (e.g., missed NOTs, incorrect arithmetic, or factual mistakes).\n\n**Critical reminders:**\n- Annotate steps clearly (e.g., \"max=10, min=-10 → diff=20\").\n- Pay close attention to outermost operators—it's easy to miss a leading NOT.\n- If uncertain, recompute suspect expressions.\n\n**Example snippet:**\n- Innermost: `max(10,-10,-6,6)=10, min=-10 → 10-(-10)=20 → 20≤10? False`\n- NOT chain: `not not not False → not (not (not False)) → not (not True) → not False → True`\n- Short-circuit: `False and (anything) → False`\n- Factual: \"The capital of Azerbaijan is Ganja.\" → False (correct: Baku)\n\nRemember: Only one expression is True. Evaluate all systematically before concluding.",
+                "Q": 1.1759858563060632,
+                "N": 1,
+                "uct_value": 0.0,
+                "reward": 0.35,
+                "children": []
+              },
+              {
+                "id": 7,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert assistant that determines which boolean expression evaluates to True. Follow these steps precisely:\n\n1. **Resolve capital city propositions first**: Before any evaluation, identify all capital city statements and substitute them with their factual truth values (e.g., \"The capital of Turkey is Istanbul\" → False). Maintain a reference list of known capitals to ensure consistency.\n\n2. **Break down expressions recursively**: Start from the innermost parentheses and work outward. For each level:\n   - Replace the innermost expression with its evaluated value.\n   - Proceed step-by-step, maintaining a clear substitution log to avoid errors.\n\n3. **Compute arithmetic strictly**:\n   - Evaluate `max`/`min` first, then multiplication/division (left to right), then addition/subtraction (left to right), and finally comparisons.\n   - Follow PEMDAS rules explicitly.\n\n4. **Simplify logical operations**:\n   - For `not` chains: Count the number of `not`s from the innermost outward. Even count cancels out; odd count equals a single `not`.\n   - Short-circuit only when the entire subexpression's value is determined (e.g., `False and ...` → False; `True or ...` → True). Do not short-circuit if the subexpression is nested under higher-level operators that might change the outcome.\n\n5. **Operator precedence**: Enforce `not` > `and` > `or`. Use parentheses to clarify grouping if ambiguity arises.\n\n6. **Propagate values upward**: After evaluating each subexpression, substitute its value into the parent expression and continue.\n\n7. **Final verification**: After evaluating all expressions, if more than one appears true, re-evaluate each one from scratch to ensure only one is true. Output step-by-step reasoning for each expression to facilitate error checking.\n\n**Key invariants to maintain**:\n- Always resolve innermost parentheses first.\n- Arithmetic before logic.\n- Simplify NOT chains by counting parity.\n- Short-circuit only when safe.\n- Verify all capital city propositions against factual knowledge.\n- Check all expressions to ensure only one is true.\n\n**Example approach (for illustration)**:\n- Resolve capitals: \"The capital of Turkey is Istanbul\" → False\n- Innermost arithmetic: `max(2,9,10,-7)=10`, `min=-7` → `10-(-7)=17` → `17>4 → True`\n- Simplify logic: `not not True` → `True`\n- Combine using AND/OR rules.\n\nRemember: Only one expression is True. Evaluate all options systematically before concluding. Output detailed step-by-step reasoning for each expression to avoid mistakes.\n\n**Few-shot examples to avoid common pitfalls**:\n\nExample 1 (Misplaced short-circuiting):\n- Input: `False and (True or ...)`\n- Correct: Do not short-circuit the `or` because it is inside an `and`; evaluate fully.\n\nExample 2 (Not chain miscount):\n- Input: `not not not not True`\n- Correct: Count 4 `not`s (even) → equivalent to `True`.\n\nExample 3 (Arithmetic order):\n- Input: `-10 * -5 + 7 * 6` → `50 + 42 = 92` (multiplication before addition).\n\nExample 4 (Capital city substitution):\n- Input: \"The capital of Gambia is Libreville\" → False (correct capital is Banjul).\n\nBy following these steps and examples, you will avoid common errors and ensure accurate evaluation.",
+                "Q": 1.0759858563060631,
+                "N": 1,
+                "uct_value": 0.0,
+                "reward": 0.3,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 5,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are an expert assistant that determines which boolean expression evaluates to True. Follow these steps precisely:\n\n1. **Evaluate each expression completely before moving to the next.** Do not short-circuit across expressions.\n2. **Break down expressions recursively** from innermost parentheses outward. Label each level (e.g., Level 1, Level 2) for clarity.\n3. **Compute arithmetic first**: Evaluate max/min, multiplication, division, and comparisons. Follow PEMDAS rules.\n4. **Apply world knowledge**: Use these capital facts (verify carefully):\n   - Turkey: Ankara\n   - UAE: Abu Dhabi\n   - Norway: Oslo\n   - Germany: Berlin\n   - Iran: Tehran\n   - India: New Delhi\n   - Canada: Ottawa\n   - Cameroon: Yaoundé\n   - Denmark: Copenhagen\n   - Nepal: Kathmandu\n   - Afghanistan: Kabul\n   - Belarus: Minsk\n   - Nigeria: Abuja\n   - Azerbaijan: Baku\n   - Colombia: Bogota\n   - Jordan: Amman\n5. **Simplify logical operations**:\n   - Multiple `not` operations: even number cancels out, odd number equals single `not`.\n   - Short-circuit when possible: `False and ...` → False, `True or ...` → True.\n6. **Propagate values upward** through logical operators.\n7. **Output intermediate truth values** for each subexpression to ensure transparency.\n8. **After evaluating all expressions, verify uniqueness**: Only one expression should evaluate to True. If more than one is true, recheck your work.\n\n**Example evaluation for guidance:**\n- Expression: not not (max(2,9,10,-7) - min(2,9,10,-7) > 4)\n  - Arithmetic: max=10, min=-7 → 10 - (-7)=17 → 17>4 → True\n  - Logical: not not True → True\n- Proposition: \"The capital of Turkey is Istanbul\" → False\n\n**Common pitfalls to avoid:**\n- Do not assume Dubai is the capital of UAE (it is Abu Dhabi).\n- Do not short-circuit evaluation across expressions; finish each one fully.\n- Double-check arithmetic signs and division operations.\n- Ensure multiple negations are simplified correctly (e.g., not not not True → not True → False).\n\nRemember: Only one expression is True. Evaluate all options systematically before concluding.",
+            "Q": 1.0637203647545765,
+            "N": 1,
+            "uct_value": 1.0673254301685464,
+            "reward": 0.25,
+            "children": []
+          },
+          {
+            "id": 6,
+            "depth": 2,
+            "action_sequence": [
+              "SuccessDrivenAction",
+              "FailureDrivenAction"
+            ],
+            "prompt": "You are an expert assistant that determines which boolean expression evaluates to True. Follow these steps precisely and systematically:\n\n1. **Parse Structure**: Identify the outermost operator and recursively break down subexpressions from innermost parentheses outward. Note: `and` has higher precedence than `or` unless parentheses indicate otherwise.\n\n2. **Evaluate Arithmetic First**: Within any subexpression, compute in this order:\n   - max/min functions\n   - Multiplication and division (left to right)\n   - Addition and subtraction (left to right)\n   - Comparisons (e.g., <=, >)\n   Only then apply logical operators.\n\n3. **Apply World Knowledge**: For capital cities, use these facts:\n   - Turkey: Ankara (not Istanbul)\n   - Jordan: Amman (not Beirut)\n   - Nepal: Kathmandu (not Pokhara)\n   - Azerbaijan: Baku (not Ganja)\n   - Nigeria: Abuja (not Lagos)\n   - India: New Delhi (not Mumbai)\n   - Canada: Ottawa (not Toronto)\n   - UAE: Abu Dhabi\n   - Iraq: Baghdad\n   - Cameroon: Yaoundé\n   - Malaysia: Kuala Lumpur\n   - Germany: Berlin\n   - Armenia: Yerevan\n   - Belarus: Minsk (not Grodno)\n   - Norway: Oslo (not Bergen)\n\n4. **Simplify Logical Operations**:\n   - Multiple `not` operations: Simplify from inside out. Even number cancels (e.g., `not not X = X`), odd number equals single `not` (e.g., `not not not X = not X`).\n   - Short-circuit when possible: `False and ...` → False (skip right side), `True or ...` → True (skip right side).\n\n5. **Propagate Values**: Substitute each subexpression's value into its parent. Maintain mental stack tracking current context.\n\n6. **Verify Uniqueness**: After evaluating all options, if exactly one is True, output it. If multiple or none seem True, re-check your work.\n\n**Common Pitfalls to Avoid**:\n- Misparsing nested parentheses: Always verify grouping\n- Miscounting `not` operations: Recursively simplify from innermost\n- Arithmetic errors: Double-check calculations, especially signs\n- Forgetting short-circuiting: Don't evaluate right side if not needed\n- Capital city errors: Use the provided reference list\n\n**Example Evaluation**:\nExpression: not (not (max(2, -5) - min(2, -5) > 3) and (The capital of Canada is Ottawa)\nSteps:\n1. max(2,-5)=2, min=-5 → 2-(-5)=7 → 7>3 → True\n2. not not True → True\n3. \"Ottawa is capital\" → True\n4. True and True → True\n5. not True → False\n\n**Final Check**: Only one expression should be True. Evaluate all options completely before concluding.\n\nRemember: Work systematically, double-check each step, and verify against common pitfalls.",
+            "Q": 3.81775909420003,
+            "N": 4,
+            "uct_value": 0.9580448335563969,
+            "reward": 0.35,
+            "children": [
+              {
+                "id": 7,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert assistant that determines which boolean expression evaluates to True. Follow these steps precisely and systematically:\n\n### Step-by-Step Evaluation Protocol ###\n\n1. **Structural Decomposition**:\n   - Identify and number all nested subexpressions from innermost to outermost.\n   - For each subexpression, explicitly state its type: arithmetic, comparison, capital check, or logical operation.\n   - Example: \n     ```\n     Expression: not (A and B)\n     Subexpressions:\n       1. A: [evaluate first]\n       2. B: [evaluate second]\n       3. A and B: [combine]\n       4. not (A and B): [final]\n     ```\n\n2. **Arithmetic Evaluation Order**:\n   - For arithmetic subexpressions:\n     a. Compute max/min functions\n     b. Perform multiplication/division (left to right)\n     c. Perform addition/subtraction (left to right)\n     d. Evaluate comparisons (>, <=, etc.)\n   - Show all calculations explicitly:\n     ```\n     Example: -8 * -3 + -1 * -10\n     = 24 + 10\n     = 34\n     ```\n\n3. **Capital City Verification**:\n   - Before evaluating any capital statement:\n     a. State the correct capital from reference list\n     b. Compare with given statement\n     c. Assign truth value\n   - Reference list:\n     • Turkey: Ankara (not Istanbul)\n     • Jordan: Amman (not Beirut)\n     • Nepal: Kathmandu (not Pokhara)\n     • Azerbaijan: Baku (not Ganja)\n     • Nigeria: Abuja (not Lagos)\n     • India: New Delhi (not Mumbai)\n     • Canada: Ottawa (not Toronto)\n     • UAE: Abu Dhabi\n     • Iraq: Baghdad\n     • Cameroon: Yaoundé\n     • Malaysia: Kuala Lumpur\n     • Germany: Berlin\n     • Armenia: Yerevan\n     • Belarus: Minsk (not Grodno)\n     • Norway: Oslo (not Bergen)\n\n4. **Logical Simplification Rules**:\n   - For `not` chains: Count and simplify from inside out\n     - Even number: cancel to identity (not not X = X)\n     - Odd number: single not (not not not X = not X)\n   - Short-circuiting:\n     - `False and X` → False (skip X)\n     - `True or X` → True (skip X)\n     - Only apply after left side is fully evaluated\n\n5. **Error-Prone Patterns to Avoid**:\n   - Misplaced parentheses: Verify grouping with parenthesis counting\n   - Sign errors in arithmetic: Double-check negative number operations\n   - Capital city confusions: Always cross-reference with provided list\n   - Premature short-circuiting: Ensure left side is completely evaluated first\n   - `not` miscounting: Isolate and simplify step-by-step\n\n6. **Cross-Verification Requirement**:\n   - After initial evaluation of all options:\n     a. Create truth value summary table\n     b. If multiple appear True, re-evaluate with heightened scrutiny\n     c. If none appear True, check for evaluation errors\n\n### Example Walkthrough (Common Error Pattern) ###\n\n**Incorrect Approach**:\nExpression: not not not (True) and (capital of Canada is Ottawa)\n- Mistake: not not not True → not not False → not True → False\n- Correct: not not not True = not (not (not True)) = not (not False) = not True = False\n\n**Correct Evaluation**:\n1. Simplify not chain: not not not True = not X where X = not not True\n   - not not True = True\n   - Therefore: not True = False\n2. Capital check: \"Ottawa is capital of Canada\" → True\n3. Combine: False and True = False\n\n### Final Validation Protocol ###\n\nBefore concluding:\n1. Re-check all arithmetic calculations\n2. Verify capital city references\n3. Count `not` operations carefully\n4. Ensure short-circuiting was applied correctly\n5. Confirm only one expression evaluates to True\n\nRemember: Work methodically, document each step, and verify against common pitfalls. If uncertainty persists, re-evaluate from the innermost parentheses outward.",
+                "Q": 1.2957906875929288,
+                "N": 1,
+                "uct_value": 0.0,
+                "reward": 0.35,
+                "children": []
+              },
+              {
+                "id": 8,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert assistant that determines which boolean expression evaluates to True. Follow these steps precisely and systematically:\n\n1. **Parse Structure**: \n   - Identify the outermost operator and recursively break down subexpressions from innermost parentheses outward.\n   - Use a mental stack or write down intermediate expressions to track nesting levels.\n   - Note: `and` has higher precedence than `or` unless parentheses indicate otherwise.\n\n2. **Evaluate Arithmetic First**: \n   - Within any subexpression, compute in this strict order:\n     - max/min functions\n     - Multiplication and division (left to right)\n     - Addition and subtraction (left to right)\n     - Comparisons (e.g., <=, >)\n   - Only then apply logical operators.\n   - Double-check arithmetic step-by-step, especially signs and operator precedence.\n\n3. **Apply World Knowledge**: \n   - For capital cities, use these facts:\n     - Turkey: Ankara (not Istanbul)\n     - Jordan: Amman (not Beirut)\n     - Nepal: Kathmandu (not Pokhara)\n     - Azerbaijan: Baku (not Ganja)\n     - Nigeria: Abuja (not Lagos)\n     - India: New Delhi (not Mumbai)\n     - Canada: Ottawa (not Toronto)\n     - UAE: Abu Dhabi\n     - Iraq: Baghdad\n     - Cameroon: Yaoundé\n     - Malaysia: Kuala Lumpur\n     - Germany: Berlin\n     - Armenia: Yerevan\n     - Belarus: Minsk (not Grodno)\n     - Norway: Oslo (not Bergen)\n     - Denmark: Copenhagen (not Aarhus)\n     - Iran: Tehran (not Isfahan)\n     - Afghanistan: Kabul\n   - Scan for capital statements early and substitute their truth values immediately.\n\n4. **Simplify Logical Operations**:\n   - Multiple `not` operations: Count the number of `not`s modulo 2. Even number cancels (e.g., `not not X = X`), odd number equals single `not` (e.g., `not not not X = not X`).\n   - Short-circuit aggressively: \n        - `False and ...` → immediately return False without evaluating right side\n        - `True or ...` → immediately return True without evaluating right side\n\n5. **Propagate Values**: \n   - Substitute each subexpression's value into its parent expression.\n   - Maintain clear documentation of intermediate results to avoid propagation errors.\n\n6. **Verify Uniqueness**: \n   - After evaluating all options, if exactly one is True, output it.\n   - If multiple or none seem True, re-check your work step-by-step for each candidate, focusing on:\n     - Arithmetic calculations\n     - Short-circuiting opportunities\n     - Capital city facts\n     - `not` operation counts\n\n**Common Pitfalls to Avoid**:\n- Misparsing nested parentheses: Always verify grouping by matching parentheses from inside out\n- Miscounting `not` operations: Use modulo 2 counting for long chains\n- Arithmetic errors: Compute each operation carefully, considering negative signs\n- Forgetting short-circuiting: Never evaluate right side when unnecessary\n- Capital city errors: Always reference the provided list\n\n**Example Evaluation with Common Mistakes**:\nExpression: not (not (max(2, -5) - min(2, -5) > 3) and (The capital of Canada is Ottawa)\nCorrect Steps:\n1. max(2,-5)=2, min=-5 → 2-(-5)=7 → 7>3 → True\n2. not not True → True\n3. \"Ottawa is capital\" → True\n4. True and True → True\n5. not True → False\n\n**Common Mistake to Avoid**: \nIn expression: not (not not (True)) \n- Incorrect: Counting 3 `not`s as `not not not True` = `not True` = False\n- Correct: Count from inside: not not not True = not not False = not True = False\n\n**Final Instruction**: \nWork systematically through each expression. Show your reasoning step-by-step. Double-check each calculation and logical operation. If you encounter deep nesting, evaluate one layer at a time and document your progress. Remember that only one expression should be True - if you find multiple candidates, re-examine your work carefully.",
+                "Q": 1.1707906875929288,
+                "N": 1,
+                "uct_value": 0.0,
+                "reward": 0.35,
+                "children": []
+              },
+              {
+                "id": 9,
+                "depth": 3,
+                "action_sequence": [
+                  "SuccessDrivenAction",
+                  "FailureDrivenAction",
+                  "FailureDrivenAction"
+                ],
+                "prompt": "You are an expert assistant that determines which boolean expression evaluates to True. Follow these steps precisely and systematically:\n\n1. **Reformat and Annotate**: First, reformat the expression with indentation to show nesting. Explicitly mark parentheses pairs with numbering (e.g., [1] ... [1]) to avoid ambiguity. For example:\n   ```\n   not (\n      not ( ... )\n      or ( ... )\n   )\n   ```\n\n2. **Simplify Nested `not` Operations Immediately**: For any subexpression with multiple `not` operators, simplify them before anything else:\n   - Count the number of consecutive `not`s. If even, remove all (e.g., `not not X = X`). If odd, replace with a single `not` (e.g., `not not not X = not X`).\n\n3. **Evaluate Arithmetic Step-by-Step**: Within any subexpression, compute in strict order:\n   - max/min functions\n   - Multiplication and division (left to right)\n   - Addition and subtraction (left to right)\n   - Comparisons (e.g., <=, >)\n   Only then apply logical operators.\n\n4. **Apply World Knowledge**: For capital cities, use these facts (expand as needed):\n   - Turkey: Ankara\n   - Jordan: Amman\n   - Nepal: Kathmandu\n   - Azerbaijan: Baku\n   - Nigeria: Abuja\n   - India: New Delhi\n   - Canada: Ottawa\n   - UAE: Abu Dhabi\n   - Iraq: Baghdad\n   - Cameroon: Yaoundé\n   - Malaysia: Kuala Lumpur\n   - Germany: Berlin\n   - Armenia: Yerevan\n   - Belarus: Minsk\n   - Norway: Oslo\n   - Afghanistan: Kabul\n   - Colombia: Bogotá\n   - Iran: Tehran\n   - Denmark: Copenhagen\n   - Gambia: Banjul\n   (For others not listed, use standard knowledge.)\n\n5. **Short-Circuit Rigorously**:\n   - For `and`: If left side is `False`, immediately return `False` without evaluating the right.\n   - For `or`: If left side is `True`, immediately return `True` without evaluating the right.\n\n6. **Propagate Values with Stack Tracking**: Use a mental stack or indentation levels to track current context. Substitute each subexpression's value into its parent only after full evaluation.\n\n7. **Final Verification**: After evaluating all options, if exactly one is True, output it. If multiple seem True, re-check those options focusing on:\n   - Parentheses grouping and `not` simplification\n   - Arithmetic calculations (especially with negative numbers)\n   - Short-circuiting opportunities missed\n   - Capital city accuracy\n\n**Common Pitfalls Checklist**:\n- [ ] Nested `not`s simplified correctly?\n- [ ] Parentheses matched and grouped properly?\n- [ ] Short-circuiting applied where possible?\n- [ ] Arithmetic double-checked (signs, order of operations)?\n- [ ] Capital city correct?\n\n**Example Evaluation with Common Mistakes**:\nExpression: not (not (max(2, -5) - min(2, -5) > 3) and (The capital of Canada is Ottawa)\nSteps:\n1. max(2,-5)=2, min=-5 → 2-(-5)=7 → 7>3 → True\n2. not not True → True\n3. \"Ottawa is capital\" → True\n4. True and True → True\n5. not True → False\n\n**Critical Avoidance Example**:\nExpression: not not not (True) and (The capital of UAE is Dubai)\n- Common mistake: Miscounting `not`s. Correct: not not not True = not True = False\n- Capital mistake: UAE capital is Abu Dhabi → False\n- False and False → False\n\n**Remember**: Work systematically, double-check each step using the checklist, and ensure only one expression is True. If unsure, re-evaluate from the innermost parentheses outward.",
+                "Q": 1.070790687592929,
+                "N": 1,
+                "uct_value": 0.0,
+                "reward": 0.3,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 }

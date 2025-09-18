@@ -35,7 +35,7 @@ class PromptNode(Node):
         self.reward_value: float = self.reward()
         self.Q = self.reward_value
 
-    def _softmax(vals: np.ndarray, temperature: float = 1.0):
+    def _softmax(self, vals: np.ndarray, temperature: float = 1.0):
         vals = vals - np.max(vals)  # 防止 exp 溢出
         exp_vals = np.exp(vals / max(temperature, 1e-6))
         probs = exp_vals / np.sum(exp_vals)
@@ -90,6 +90,19 @@ class PromptNode(Node):
         probs = self._softmax(logits, temperature)
         selected_index = np.random.choice(len(actions), p=probs)
         return actions[selected_index]
+    
+    def cpool_mapping(self, cpool: float, k: float = 3.0) -> float:
+        """
+        将 cpool 值 (0~1) 平滑映射到 [0.5, 2] 范围
+        - cpool 越大，探索系数越大
+        - k 控制增长的快慢
+        """
+        return 0.5 + 1.5 * (1 - np.exp(-k * cpool))
+    
+    def get_exploration_weight(self, exploration_weight=1.41):
+        if self.pool:
+            return self.cpool_mapping(self.pool.compute_cpool())
+        return super().get_exploration_weight(exploration_weight)
 
     def take_action(self, step_type:Step):
         # Then apply the strategy-level semantic transformation.
@@ -121,8 +134,7 @@ class PromptNode(Node):
         return score
     
     def q_value(self, last_q, rollout_reward):
-        bias = self.pool.compute_cpool()["cpool"] if self.pool else 0.0
-        return last_q + rollout_reward + bias
+        return last_q + rollout_reward
     
     def serialize(self, node_id:int):
         node_dict = {

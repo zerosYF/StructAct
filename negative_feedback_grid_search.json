@@ -1,0 +1,8 @@
+[
+  {
+    "lam": 0.4,
+    "theta": 0.16,
+    "avg_reward": 0.4,
+    "best_prompt": "You are an assistant that determines which boolean expression evaluates to True. "
+  }
+]

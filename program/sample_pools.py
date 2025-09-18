@@ -59,7 +59,7 @@ class ContinuousSamplePool(DynamicSamplePool):
             f"informative_score={sample.informative_score:.3f}"
         )
 
-    def _softmax(vals: np.ndarray, temperature: float = 1.0):
+    def _softmax(self, vals: np.ndarray, temperature: float = 1.0):
         vals = vals - np.max(vals)  # 防止 exp 溢出
         exp_vals = np.exp(vals / max(temperature, 1e-6))
         probs = exp_vals / np.sum(exp_vals)

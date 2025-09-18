@@ -48,6 +48,9 @@ class Node(ABC):
     
     def average_q(self):
         return self.Q / self.N if self.N > 0 else 0.0
+    
+    def get_exploration_weight(self, exploration_weight=1.41):
+        return exploration_weight
 
     def compute_uct(self, exploration_weight):
         if self.parent is None:
@@ -60,7 +63,7 @@ class Node(ABC):
         return self.uct_value
 
     def find_best_node(self, exploration_weight=1.41):
-        return max(self.children, key=lambda child: child.compute_uct(exploration_weight))
+        return max(self.children, key=lambda child: child.compute_uct(self.get_exploration_weight(exploration_weight)))
 
     @abstractmethod
     def reward(self):
