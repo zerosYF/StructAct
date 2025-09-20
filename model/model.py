@@ -20,7 +20,6 @@ class Model:
                 model=self.model_name,
                 messages=[{"role": "user", "content": input}],
                 temperature=self.termperature,
-                timeout=15
             )
             output = response.choices[0].message.content.strip()
             # logger.info(

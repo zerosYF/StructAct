@@ -10,7 +10,7 @@ class SearchConfig:
         self.shuffle_seed: int = 42        # Random seed for data shuffling
         # MCTS search control
         self.exploration_weight: float = 2.5   # Exploration factor in UCT formula
-        self.mcts_iter_num_max: int = 8         # Number of iterations in MCTS main loop
+        self.mcts_iter_num_max: int = 4         # Number of iterations in MCTS main loop
         self.mcts_iter_num_min: int = 0           # Minimum MCTS iterations
         self.max_depth_threshold: int = 5          # Maximum search depth
         self.min_depth_threshold: int = 3

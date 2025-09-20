@@ -101,7 +101,7 @@ class PromptNode(Node):
     
     def get_exploration_weight(self, exploration_weight=1.41):
         if self.pool:
-            return self.cpool_mapping(self.pool.compute_cpool())
+            return self.cpool_mapping(self.pool.compute_cpool()['cpool'])
         return super().get_exploration_weight(exploration_weight)
 
     def take_action(self, step_type:Step):
