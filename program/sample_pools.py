@@ -174,7 +174,7 @@ class ContinuousSamplePool(DynamicSamplePool):
         informative_ratio = informative_score / total
         hard_ratio = hard_score / total
         # linear combination
-        cpool_raw = (1.0 * easy_ratio + 1.2 * informative_ratio - 1.0 * hard_ratio)
+        cpool_raw = easy_ratio - 1.2 * (informative_ratio + hard_ratio)
 
         # sigmoid scaling
         cpool = 1 / (1 + math.exp(-cpool_raw))

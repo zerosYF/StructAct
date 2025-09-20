@@ -20,6 +20,7 @@ class Model:
                 model=self.model_name,
                 messages=[{"role": "user", "content": input}],
                 temperature=self.termperature,
+                timeout=15
             )
             output = response.choices[0].message.content.strip()
             # logger.info(
@@ -34,6 +35,8 @@ class Model:
                 return "__FILTERED__"
             else:
                 raise
+        except Exception as e:
+            logger.warning(f"request error {e}...")
 
 config = SearchConfig()
 eval_model = Model(config.eval_model_name, config.eval_api_key, config.eval_model_url, config.eval_model_temperature)

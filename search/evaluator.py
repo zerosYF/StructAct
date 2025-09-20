@@ -36,20 +36,23 @@ class PromptEvaluator:
         total = len(test_data)
 
         def _evaluate_one(item):
-            question, gold = self.task.extract_tuple(item)
-            final_input = self.task.inject_final_input(final_prompt, question)
-            output = self.model.api_call(final_input)
+            try:
+                question, gold = self.task.extract_tuple(item)
+                final_input = self.task.inject_final_input(final_prompt, question)
+                output = self.model.api_call(final_input)
 
-            if output == "__FILTERED__":
-                return None
+                if output == "__FILTERED__":
+                    return None
 
-            correct = int(self.task.get_reward(output, gold) > 0)
-            return {
-                "prompt": final_prompt,
-                "output": output,
-                "answer": gold,
-                "correct": correct,
-            }
+                correct = int(self.task.get_reward(output, gold) > 0)
+                return {
+                    "prompt": final_prompt,
+                    "output": output,
+                    "answer": gold,
+                    "correct": correct,
+                }
+            except Exception as e:
+                logger.error(f"evaluate error:{e}")
 
         with ThreadPoolExecutor(max_workers=self.thread_num) as executor:
             results = list(executor.map(_evaluate_one, test_data))
