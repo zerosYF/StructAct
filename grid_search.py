@@ -65,8 +65,8 @@ def run_grid_search(controller_class, evaluator, config, task,
 # --------------------------
 # 使用示例
 # --------------------------
-lam_candidates = [0.4]
-theta_candidates = [0.16]
+# lam_candidates = [0.4]
+# theta_candidates = [0.16]
 
 # lam_candidates = [0.4]
 # theta_candidates = [0.2]
@@ -89,8 +89,8 @@ theta_candidates = [0.16]
 # lam_candidates = [0.6]
 # theta_candidates = [0.2]
 
-# lam_candidates = [0.6]
-# theta_candidates = [0.24]
+lam_candidates = [0.6]
+theta_candidates = [0.24]
 
 my_config = SearchConfig()
 my_task = BooleanExpressionsTask(my_config)
