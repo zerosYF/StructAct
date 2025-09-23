@@ -26,4 +26,5 @@ plt.scatter(lam, theta, c='red', marker='o')  # 标出原始采样点
 plt.title("Smoothed Accuracy Heatmap (theta vs lambda)")
 plt.xlabel("lambda")
 plt.ylabel("theta")
+plt.savefig("accuracy_heatmap.png", dpi=300, bbox_inches='tight')  # 保存为 PNG，300dpi
 plt.show()

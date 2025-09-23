@@ -57,7 +57,7 @@ class PoolSample:
             return self.informative_score
 
         # 1. difficulty (难度)
-        difficulty = 1 - (self.baseline_reward or 0.0)
+        difficulty = (self.baseline_reward or 0.0) * (1 - (self.baseline_reward or 0.0))
 
         # 2. reward_gain (最近窗口平均提升)
         recent = self.reward_history[-window:] if len(self.reward_history) >= window else self.reward_history
