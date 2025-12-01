@@ -1,9 +1,0 @@
-🔍 Task: temporal_sequence
-📊 Original ZeroShot Test Accuracy: 0.0125
-📊 Original FewShot Test Accuracy: 0.0125
-📊 Original Cot_FewShot Test Accuracy: 0.0375
-📊 Cot ZeroShot Test Accuracy: 0.2625
-📊 Cot FewShot Test Accuracy: 0.2375
-📊 Cot Cot_FewShot Test Accuracy: 0.1625
-
-⏱️ Time Elapsed: 136 min 3 sec (8163.53 seconds)

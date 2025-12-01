@@ -1,9 +1,0 @@
-🔍 Task: penguins_in_a_table
-📊 Original ZeroShot Test Accuracy: 0.5569620253164557
-📊 Original FewShot Test Accuracy: 0.6835443037974683
-📊 Original Cot_FewShot Test Accuracy: 0.7088607594936709
-📊 Cot ZeroShot Test Accuracy: 0.9240506329113924
-📊 Cot FewShot Test Accuracy: 0.9240506329113924
-📊 Cot Cot_FewShot Test Accuracy: 0.8481012658227848
-
-⏱️ Time Elapsed: 7 min 34 sec (454.65 seconds)

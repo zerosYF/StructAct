@@ -1,9 +1,0 @@
-🔍 Task: object_counting
-📊 Original ZeroShot Test Accuracy: 0.0
-📊 Original FewShot Test Accuracy: 0.0
-📊 Original Cot_FewShot Test Accuracy: 0.0375
-📊 Cot ZeroShot Test Accuracy: 0.175
-📊 Cot FewShot Test Accuracy: 0.2125
-📊 Cot Cot_FewShot Test Accuracy: 0.175
-
-⏱️ Time Elapsed: 34 min 52 sec (2092.35 seconds)

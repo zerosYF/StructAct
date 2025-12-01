@@ -1,9 +1,0 @@
-🔍 Task: causal_understanding
-📊 Original ZeroShot Test Accuracy: 0.425
-📊 Original FewShot Test Accuracy: 0.4625
-📊 Original Cot_FewShot Test Accuracy: 0.5875
-📊 Cot ZeroShot Test Accuracy: 0.525
-📊 Cot FewShot Test Accuracy: 0.575
-📊 Cot Cot_FewShot Test Accuracy: 0.55
-
-⏱️ Time Elapsed: 8 min 46 sec (526.48 seconds)

@@ -1,9 +1,0 @@
-🔍 Task: boolean_expressions
-📊 Original ZeroShot Test Accuracy: 0.3375
-📊 Original FewShot Test Accuracy: 0.2375
-📊 Original Cot_FewShot Test Accuracy: 0.175
-📊 Cot ZeroShot Test Accuracy: 0.475
-📊 Cot FewShot Test Accuracy: 0.375
-📊 Cot Cot_FewShot Test Accuracy: 0.3625
-
-⏱️ Time Elapsed: 102 min 41 sec (6161.94 seconds)

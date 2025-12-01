@@ -1,9 +1,0 @@
-🔍 Task: simple_math_reasoning
-📊 Original ZeroShot Test Accuracy: 1.0
-📊 Original FewShot Test Accuracy: 0.98
-📊 Original Cot_FewShot Test Accuracy: 1.0
-📊 Cot ZeroShot Test Accuracy: 1.0
-📊 Cot FewShot Test Accuracy: 1.0
-📊 Cot Cot_FewShot Test Accuracy: 1.0
-
-⏱️ Time Elapsed: 7 min 19 sec (439.06 seconds)

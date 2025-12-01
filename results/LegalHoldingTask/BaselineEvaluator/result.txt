@@ -1,9 +1,0 @@
-🔍 Task: legal_holding
-📊 Original ZeroShot Test Accuracy: 0.64
-📊 Original FewShot Test Accuracy: 0.67
-📊 Original Cot_FewShot Test Accuracy: 0.655
-📊 Cot ZeroShot Test Accuracy: 0.67
-📊 Cot FewShot Test Accuracy: 0.71
-📊 Cot Cot_FewShot Test Accuracy: 0.71
-
-⏱️ Time Elapsed: 26 min 37 sec (1597.51 seconds)

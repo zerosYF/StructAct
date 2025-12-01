@@ -1,9 +1,0 @@
-🔍 Task: epistemic_reasoning
-📊 Original ZeroShot Test Accuracy: 0.65
-📊 Original FewShot Test Accuracy: 0.674
-📊 Original Cot_FewShot Test Accuracy: 0.78
-📊 Cot ZeroShot Test Accuracy: 0.836
-📊 Cot FewShot Test Accuracy: 0.818
-📊 Cot Cot_FewShot Test Accuracy: 0.858
-
-⏱️ Time Elapsed: 41 min 19 sec (2479.50 seconds)
