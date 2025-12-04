@@ -88,7 +88,4 @@ class QuickRollout(RolloutStrategy):
 
 
 def get_rollout_strategy(config: SearchConfig):
-    if config.rollout_idx == 0:
-        return ClassicPathRollout()
-    else:
-        return QuickRollout()
+    return ClassicPathRollout()

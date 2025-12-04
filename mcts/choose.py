@@ -96,7 +96,4 @@ class MaxPathBestNodeStrategy(ChooseStrategy):
             return []
 
 def get_choose_strategy(config: SearchConfig):
-    if config.choose_idx == 0:
-        return MaxQNStrategy()
-    else:
-        return MaxPathBestNodeStrategy()
+    return MaxPathBestNodeStrategy()

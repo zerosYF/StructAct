@@ -29,23 +29,18 @@ class SearchConfig:
         # Multi-threaded reward evaluation
         self.reward_thread_num: int = 3       # Number of threads for reward evaluation
 
-        # Debugging indicators (for tracing internal states)
-        self.rollout_idx: int = 0              # Current rollout path index
-        self.choose_idx: int = 2               # Current chosen action index
-
         self.use_pool: bool = True            # Whether to use a sample pool for rollouts
-        self.pool_type_idx: int = 0
 
-        self.high_reward_threshold = 0.9
-        self.low_reward_threshold = 0.3
-        self.var_unstable = 0.05
-        self.informative_threshold = 0.5
+        self.high_reward_threshold = 0.9         #Net
+        self.low_reward_threshold = 0.3          #Net
+        self.var_unstable = 0.05                 #Net
+        self.informative_threshold = 0.5         #Net
 
-        self.negative_informative_mag = 0.2
-        self.negative_var_mag = 0.5
+        self.negative_informative_mag = 0.2      #Net
+        self.negative_var_mag = 0.5              #Net
 
-        self.positive_informative_mag = 0.5
-        self.positive_var_mag = 0.2
+        self.positive_informative_mag = 0.5      #Net
+        self.positive_var_mag = 0.2              #Net
 
         # Model configuration
         # self.model_name: str = "zhiyan3"
