@@ -5,23 +5,9 @@ import numpy as np
 from collections import deque
 import random
 import time
+from micronet.net import SurrogateNet
 
-class SurrogateNet(nn.Module):
-    def __init__(self, input_dim, hidden=[64,32]):
-        super().__init__()
-        layers = []
-        last = input_dim
-        for h in hidden:
-            layers.append(nn.Linear(last, h))
-            layers.append(nn.ReLU())
-            last = h
-        layers.append(nn.Linear(last, 1))
-        self.net = nn.Sequential(*layers)
-
-    def forward(self, x):
-        return self.net(x).squeeze(-1)  # shape (batch,)
-
-class SurrogateModel:
+class SurrogateController:
     """
     Lightweight surrogate/regressor to predict expected reward given pool state + action.
     Simple API:
@@ -29,14 +15,13 @@ class SurrogateModel:
       - predict(features, action_id) -> float
       - train_step(batch_size=32, epochs=1)
     """
-    def __init__(self, input_dim, device=None, lr=1e-3, buffer_size=2000):
+    def __init__(self, input_dim, lr=1e-3, device=None, buffer_size=2000):
         self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
         self.net = SurrogateNet(input_dim).to(self.device)
         self.opt = optim.Adam(self.net.parameters(), lr=lr)
         self.replay = deque(maxlen=buffer_size)
         self.loss_fn = nn.MSELoss()
         self.last_train_ts = 0
-        self.train_interval = 10.0  # seconds, safe default
         self.min_train_samples = 64
 
     def add_transition(self, features: np.ndarray, reward: float):
@@ -82,7 +67,7 @@ class SurrogateModel:
 
 import numpy as np
 
-def build_pool_action_features(pool_diag: dict, pool_obj, action_name: str, global_params: dict = None, action_id: int = 0, n_actions: int = 2):
+def build_pool_action_features(pool_diag: dict, pool_obj, global_params: dict = None, action_id: int = 0, n_actions: int = 2):
     """
     构建特征向量（numpy 1d）：
     - pool_diag: compute_cpool() 返回的 diagnostics

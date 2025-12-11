@@ -20,11 +20,8 @@ class SearchConfig:
         # Node expansion and rollout config
         self.batch_size: int = 5              # Batch size for training
 
-        # RNN Controller settings
-        self.rnn_iter_num: int = 400        # Number of training iterations for RNN
-        self.rnn_hidden_dim: int = 128         # Hidden dimension of RNN
-        self.rnn_lr: float = 3e-4              # Learning rate for RNN (increased from 1e-4)
-        self.rnn_rl_reward_scale = 10          # Reward scale (reduced from 100 to avoid large value loss)
+        self.net_iter_num: int = 400        # Number of training iterations for RNN
+        self.net_lr: float = 3e-4              # Learning rate for RNN (increased from 1e-4)
 
         # Multi-threaded reward evaluation
         self.reward_thread_num: int = 3       # Number of threads for reward evaluation
