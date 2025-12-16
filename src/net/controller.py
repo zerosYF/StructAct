@@ -4,7 +4,7 @@ import torch.optim as optim
 from collections import deque
 import random
 import numpy as np
-from micronet.parameters import ParamBundle
+from src.net.parameters import ParamBundle
 
 class MultiHeadSurrogateNet(nn.Module):
     """

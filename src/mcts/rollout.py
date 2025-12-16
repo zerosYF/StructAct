@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-from search.config import SearchConfig
-from search.evaluator import PromptEvaluator
+from src.config import SearchConfig
+from src.evaluator import PromptEvaluator
 from mcts.node import Node, Step
 import numpy as np
 import random

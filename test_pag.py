@@ -1,6 +1,6 @@
 import os
-from search.evaluator import PromptEvaluator
-from search.config import SearchConfig
+from src.evaluator import PromptEvaluator
+from src.config import SearchConfig
 from task.bbeh.bool_expressions import BooleanExpressionsTask
 pag_prompt = """
 """

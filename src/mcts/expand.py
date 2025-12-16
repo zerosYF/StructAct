@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List
 from mcts.node import Node, Step
-from search.config import SearchConfig
+from src.config import SearchConfig
 import threading
 import numpy as np
 from logger import logger

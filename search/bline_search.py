@@ -1,15 +1,15 @@
 from task.base_task import TaskBase
-from program.base_action import OptimizeAction
-from search.evaluator import PromptEvaluator
-from mcts.mcts import MCTS
-from program.prompt_node import PromptNode
-from search.config import SearchConfig
+from src.action.base_action import OptimizeAction
+from src.evaluator import PromptEvaluator
+from src.mcts.mcts import MCTS
+from src.action.prompt_node import PromptNode
+from src.config import SearchConfig
 from typing import List, Set
 from visualizer import MCTSVisualizer
-from mcts.expand import get_expand_strategy
-from mcts.rollout import get_rollout_strategy
-from mcts.choose import get_choose_strategy
-from program.strategy_actions import define_failure_actions
+from src.mcts.expand import get_expand_strategy
+from src.mcts.rollout import get_rollout_strategy
+from src.mcts.choose import get_choose_strategy
+from src.action.strategy_actions import define_failure_actions
 from search.search import SearchController
 from logger import logger
 import os

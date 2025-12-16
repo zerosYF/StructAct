@@ -29,8 +29,8 @@ from task.bbeh.bool_expressions import BooleanExpressionsTask
 from search.dual_search import DualSearchController
 from search.beam_search import BeamSearchController
 from search.bline_search import PromptAgentController
-from search.config import SearchConfig
-from search.evaluator import PromptEvaluator
+from src.config import SearchConfig
+from src.evaluator import PromptEvaluator
 
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 

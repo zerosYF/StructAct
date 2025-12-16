@@ -1,7 +1,7 @@
 from model.model import getOptimModel, getEvalModel
 from task.base_task import TaskBase
-from program.base_action import OptimizeAction
-from program.sample_pools import PoolSample, SampleType, DynamicSamplePool
+from src.action.base_action import OptimizeAction
+from src.pool.sample_pools import PoolSample, SampleType, DynamicSamplePool
 import concurrent.futures
 
 # Preload models

@@ -1,8 +1,8 @@
 import random
 from collections import deque
 from logger import logger
-from program.sample_pool import PoolSample, DynamicSamplePool, SampleType
-from micronet.parameters import ParamBundle
+from src.pool.sample_pool import PoolSample, DynamicSamplePool, SampleType
+from src.net.parameters import ParamBundle
 import math
 import numpy as np
     

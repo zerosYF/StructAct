@@ -1,9 +1,9 @@
 from task.base_task import TaskBase
-from program.base_action import OptimizeAction
-from search.evaluator import PromptEvaluator
-from search.config import SearchConfig
+from src.action.base_action import OptimizeAction
+from src.evaluator import PromptEvaluator
+from src.config import SearchConfig
 from typing import List, Set
-from program.strategy_actions import define_full_actions
+from src.action.strategy_actions import define_full_actions
 import math
 from abc import abstractmethod, ABC
 import time

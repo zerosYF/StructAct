@@ -4,7 +4,7 @@ import re
 from typing import List, Dict
 from logger import logger
 from task.base_task import TaskBase
-from search.config import SearchConfig
+from src.config import SearchConfig
 
 class BooleanExpressionsTask(TaskBase):
     def __init__(self, config: SearchConfig):

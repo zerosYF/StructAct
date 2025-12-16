@@ -5,7 +5,7 @@ import math
 import numpy as np
 from abc import abstractmethod
 from enum import Enum
-from micronet.parameters import ParamBundle
+from src.net.parameters import ParamBundle
 
 class SampleType(Enum):
     Positive = "positive"

@@ -2,8 +2,8 @@ import json
 import itertools
 import logging
 from search.dual_search import DualSearchController
-from search.config import SearchConfig
-from search.evaluator import PromptEvaluator
+from src.config import SearchConfig
+from src.evaluator import PromptEvaluator
 from task.bbeh.bool_expressions import BooleanExpressionsTask
 
 logger = logging.getLogger(__name__)

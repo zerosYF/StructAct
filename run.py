@@ -1,7 +1,7 @@
 from task.bbh.penguins_table import PenguinsTableTask
 from search.dual_search import SearchController
-from search.config import SearchConfig
-from search.evaluator import PromptEvaluator
+from src.config import SearchConfig
+from src.evaluator import PromptEvaluator
 from logger import logger
 import time
 

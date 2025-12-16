@@ -1,5 +1,5 @@
 from openai import OpenAI
-from search.config import SearchConfig
+from src.config import SearchConfig
 from openai import BadRequestError
 from logger import logger
 class Model:

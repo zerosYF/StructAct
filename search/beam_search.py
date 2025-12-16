@@ -4,9 +4,9 @@ import heapq
 import itertools
 import logging
 from search.search import SearchController
-from program.prompt_node import PromptNode
-from program.sample_pools import ContinuousSamplePool
-from program.strategy_actions import OptimizeAction, define_full_actions
+from src.action.prompt_node import PromptNode
+from src.pool.sample_pools import ContinuousSamplePool
+from src.action.strategy_actions import OptimizeAction, define_full_actions
 
 logger = logging.getLogger(__name__)
 

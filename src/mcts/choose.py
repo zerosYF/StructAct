@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from mcts.node import Node
-from search.config import SearchConfig
+from src.config import SearchConfig
 import math
 from logger import logger
 

@@ -26,8 +26,8 @@ from task.bbeh.temporal_sequence import TemporalSequenceTask as BTemporalSequenc
 from task.bbeh.object_counting import ObjectCountingTask as BObjectCountingTask
 from task.bbeh.bool_expressions import BooleanExpressionsTask
 
-from search.config import SearchConfig
-from search.evaluator import PromptEvaluator
+from src.config import SearchConfig
+from src.evaluator import PromptEvaluator
 
 TASK_REGISTRY = {
     "CausalJudgementTask": CausalJudgementTask,

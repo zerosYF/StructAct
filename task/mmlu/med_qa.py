@@ -4,7 +4,7 @@ import re
 import string
 from typing import List, Dict, Any
 from task.base_task import TaskBase
-from search.config import SearchConfig
+from src.config import SearchConfig
 from logger import logger
 
 class MedicalExamTask(TaskBase):

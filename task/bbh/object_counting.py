@@ -1,7 +1,7 @@
 import random
 from typing import Dict, List
 from task.base_task import TaskBase
-from search.config import SearchConfig
+from src.config import SearchConfig
 import json
 import re
 from logger import logger

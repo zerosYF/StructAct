@@ -1,6 +1,6 @@
 from typing import Dict, List, Any
 from abc import ABC, abstractmethod
-from search.config import SearchConfig
+from src.config import SearchConfig
 from model.model import getOptimModel
 import random
 class TaskBase(ABC):
