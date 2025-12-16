@@ -2,6 +2,7 @@ import random
 from collections import deque
 from logger import logger
 from program.sample_pool import PoolSample, DynamicSamplePool, SampleType
+from micronet.parameters import ParamBundle
 import math
 import numpy as np
     
@@ -11,31 +12,25 @@ class ContinuousSamplePool(DynamicSamplePool):
     - Negative 动作：从失败/不稳定样本中抽取 -> 用于反思改写
     - Positive 动作：从成功/稳定样本中抽取 -> 用于归纳改写
     """
-    def __init__(self, max_size=1000, 
+    def __init__(self, 
+                 param_bundle: ParamBundle,
+                 max_size=1000, 
                  high_reward_threshold=0.9,
                  low_reward_threshold=0.3,
                  var_unstable=0.05,
                  informative_threshold=0.5,
-
-                 negative_informative_mag=0.2,
-                 negative_var_mag=0.5,
-                 positive_informative_mag=0.5,
-                 positive_var_mag=0.2,
                  ):
+        self.param_bundle = param_bundle
         self.max_size = max_size
         self.samples:list[PoolSample] = []
         self.order = deque()
 
+        # 分位法控制
         self.high_reward_threshold = high_reward_threshold
         self.low_reward_threshold = low_reward_threshold
-        self.var_unstable = var_unstable
+        
+        self.var_unstable = var_unstable  # variance归一化尺度
         self.informative_threshold = informative_threshold
-
-        self.negative_informative_mag = negative_informative_mag
-        self.negative_var_mag = negative_var_mag
-
-        self.positive_informative_mag = positive_informative_mag
-        self.positive_var_mag = positive_var_mag
 
     def _evict_oldest(self):
         '''
@@ -46,9 +41,9 @@ class ContinuousSamplePool(DynamicSamplePool):
         old = self.order.popleft()
         self.samples = [s for s in self.samples if s != old]
 
-    def add_or_update(self, sample: PoolSample, is_correct):
+    def add_or_update(self, sample: PoolSample, is_correct, informative_weights):
         sample.update(is_correct)
-        sample.compute_informative_score()
+        sample.compute_informative_score(informative_weights)
         if sample not in self.samples:
             self.samples.append(sample)
         self.order.append(sample)
@@ -59,13 +54,14 @@ class ContinuousSamplePool(DynamicSamplePool):
             f"informative_score={sample.informative_score:.3f}"
         )
 
-    def _softmax(self, vals: np.ndarray, temperature: float = 1.0):
-        vals = vals - np.max(vals)  # 防止 exp 溢出
-        exp_vals = np.exp(vals / max(temperature, 1e-6))
-        probs = exp_vals / np.sum(exp_vals)
-        return probs
 
     def sample(self, type: SampleType, k=5, temperature=1.0):
+        def _softmax(vals: np.ndarray, temperature:float):
+            vals = vals - np.max(vals)  # 防止 exp 溢出
+            exp_vals = np.exp(vals / max(temperature, 1e-6))
+            probs = exp_vals / np.sum(exp_vals)
+            return probs
+
         """根据动作抽样样本"""
         if not self.samples:
             return []
@@ -81,14 +77,14 @@ class ContinuousSamplePool(DynamicSamplePool):
             scores.append((s, sc))
 
         vals = np.array([sc for _, sc in scores])
-        probs = self._softmax(vals, temperature)
+        probs = _softmax(vals, temperature)
         selected = np.random.choice(
             [s for s, _ in scores], size=min(k, len(scores)), replace=False, p=probs
         )
         return list(selected)
     
     # -------- 动作优先级函数 --------
-    def priority_for_negative(self, sample: PoolSample):
+    def priority_for_negative(self, sample: PoolSample, weights):
         """
         负反馈动作优先级：
         - 奖励越低，越值得反思
@@ -96,11 +92,16 @@ class ContinuousSamplePool(DynamicSamplePool):
         - informative 高，说明样本对任务有启发性
         """
         var_norm = min(1.0, sample.variance / (self.var_unstable + 1e-6))
-        return ((1 - sample.reward) 
-            + self.negative_informative_mag * sample.informative_score 
-            +  self.negative_var_mag * var_norm)
+        reward_term = 1.0 - sample.reward
+        var_term = +var_norm
 
-    def priority_for_positive(self, sample: PoolSample):
+        return (
+            weights[0] * reward_term +
+            weights[1] * sample.informative_score +
+            weights[2] * var_term
+        )
+
+    def priority_for_positive(self, sample: PoolSample, weights):
         """
         正反馈动作优先级：
         - reward 高于 baseline，说明有改进
@@ -108,10 +109,13 @@ class ContinuousSamplePool(DynamicSamplePool):
         - variance 小，说明表现稳定
         """
         var_penalty = min(1.0, sample.variance / (self.var_unstable + 1e-6))
-        reward_gain = sample.reward - (sample.baseline_reward or 0.0)
-        return (reward_gain 
-            + self.positive_informative_mag * sample.informative_score
-            - self.positive_var_mag * var_penalty)
+        reward_term = sample.reward - (sample.baseline_reward or 0.0)
+        var_term = -var_penalty
+        return (
+            weights[0] * reward_term +
+            weights[1] * sample.informative_score +
+            weights[2] * var_term
+        )
     
     def compute_cpool(self):
         """
@@ -173,8 +177,7 @@ class ContinuousSamplePool(DynamicSamplePool):
         easy_ratio = easy_score / total
         informative_ratio = informative_score / total
         hard_ratio = hard_score / total
-        # linear combination
-        cpool_raw = easy_ratio - 1.2 * (informative_ratio + hard_ratio)
+        cpool_raw = easy_ratio - (informative_ratio + hard_ratio)
 
         # sigmoid scaling
         cpool = 1 / (1 + math.exp(-cpool_raw))
@@ -205,7 +208,7 @@ class ContinuousSamplePool(DynamicSamplePool):
         lower = (centre - z * root) / denom
         return max(0.0, lower)
 
-    def initialize(self, dataset, evaluator, current_prompt: str):
+    def initialize(self, dataset, evaluator, current_prompt: str, informative_weights):
             """批量初始化"""
             logger.info(f"Initializing pool with {len(dataset)} samples...")
             rewards = evaluator.batch_reward_n(current_prompt, dataset)
@@ -213,7 +216,7 @@ class ContinuousSamplePool(DynamicSamplePool):
                 s = PoolSample(raw)
                 s.update(r)
                 s.baseline_reward = r
-                s.compute_informative_score()
+                s.compute_informative_score(informative_weights)
                 self.samples.append(s)
                 self.order.append(s)
                 if len(self.order) > self.max_size:

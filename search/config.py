@@ -20,24 +20,20 @@ class SearchConfig:
         # Node expansion and rollout config
         self.batch_size: int = 5              # Batch size for training
 
-        self.net_iter_num: int = 400        # Number of training iterations for RNN
-        self.net_lr: float = 3e-4              # Learning rate for RNN (increased from 1e-4)
+        self.net_iter_num: int = 2        # Number of training iterations for net
+        self.net_lr: float = 3e-4              # Learning rate for net (increased from 1e-4)
+        self.net_device: str = "cpu"         # Device for net training
+        self.net_buffer_size: int = 5000     # Replay buffer size for net training
 
         # Multi-threaded reward evaluation
         self.reward_thread_num: int = 3       # Number of threads for reward evaluation
 
         self.use_pool: bool = True            # Whether to use a sample pool for rollouts
 
-        self.high_reward_threshold = 0.9         #Net
-        self.low_reward_threshold = 0.3          #Net
-        self.var_unstable = 0.05                 #Net
-        self.informative_threshold = 0.5         #Net
-
-        self.negative_informative_mag = 0.2      #Net
-        self.negative_var_mag = 0.5              #Net
-
-        self.positive_informative_mag = 0.5      #Net
-        self.positive_var_mag = 0.2              #Net
+        self.high_reward_threshold = 0.9         
+        self.low_reward_threshold = 0.3          
+        self.var_unstable = 0.05                 
+        self.informative_threshold = 0.5         
 
         # Model configuration
         # self.model_name: str = "zhiyan3"

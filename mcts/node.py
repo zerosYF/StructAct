@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from enum import Enum
+from micronet.parameters import ParamBundle
 import itertools
 import math
 class Step(Enum):
@@ -69,7 +70,7 @@ class Node(ABC):
     def reward(self):
         pass   
     @abstractmethod
-    def take_action(self, step_type:Step=Step.Expand):
+    def take_action(self, params_bundle:ParamBundle, step_type:Step=Step.Expand):
         pass
     @abstractmethod
     def q_value(self, last_q, rollout_reward):

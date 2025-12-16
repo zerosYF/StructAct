@@ -2,6 +2,8 @@ from program.base_action import OptimizeAction
 from search.evaluator import PromptEvaluator
 from mcts.node import Node, Step
 from program.sample_pools import DynamicSamplePool
+from micronet.parameters import ParamBundle
+from micronet.controller import MultiHeadSurrogateController
 from typing import List, Set
 from logger import logger
 import numpy as np
@@ -13,6 +15,7 @@ class PromptNode(Node):
                  action_seq: List[OptimizeAction], 
                  trajectory_prompts: List[str],
                  prompt: str, 
+                 net_controller: MultiHeadSurrogateController,
                  evaluator: PromptEvaluator, 
                  depth: int, 
 
@@ -28,6 +31,7 @@ class PromptNode(Node):
         self.evaluator: PromptEvaluator = evaluator
         self.trajectory_prompts: List[str] = trajectory_prompts
         self.current_prompt: str = prompt
+        self.net_controller: MultiHeadSurrogateController = net_controller
         logger.info(f"📜 Get new node at depth {depth} using action {action_seq[-1].name if len(action_seq) > 0 else None}")
         
         self.action_seq: List[OptimizeAction] = action_seq
@@ -35,13 +39,14 @@ class PromptNode(Node):
         self.reward_value: float = self.reward()
         self.Q = self.reward_value
 
-    def _softmax(self, vals: np.ndarray, temperature: float = 1.0):
-        vals = vals - np.max(vals)  # 防止 exp 溢出
-        exp_vals = np.exp(vals / max(temperature, 1e-6))
-        probs = exp_vals / np.sum(exp_vals)
-        return probs
     
-    def _weighted_random_choice(self, temperature: float = 1.0):
+    def _weighted_random_choice(self, alpha, temperature=1.0) -> OptimizeAction:
+        def _softmax(vals: np.ndarray, temperature: float):
+            vals = vals - np.max(vals)  # 防止 exp 溢出
+            exp_vals = np.exp(vals / max(temperature, 1e-6))
+            probs = exp_vals / np.sum(exp_vals)
+            return probs
+
         """
         动作选择：融合失败/使用次数和样本池状态（cpool diagnostics），带平滑。
         逻辑：
@@ -86,27 +91,27 @@ class PromptNode(Node):
                     action_bias[i] = - entropy * smooth_diff
 
         # 融合
-        logits = base_logits + action_bias
-        probs = self._softmax(logits, temperature)
+        logits = base_logits + alpha * action_bias
+        probs = _softmax(logits, temperature)
         selected_index = np.random.choice(len(actions), p=probs)
         return actions[selected_index]
     
-    def cpool_mapping(self, cpool: float, k: float = 3.0) -> float:
-        """
-        将 cpool 值 (0~1) 平滑映射到 [0.5, 2] 范围
-        - cpool 越大，探索系数越大
-        - k 控制增长的快慢
-        """
-        return 0.5 + 1.5 * (1 - np.exp(-k * cpool))
-    
     def get_exploration_weight(self, exploration_weight=1.41):
+        def cpool_mapping(cpool: float, k: float = 3.0) -> float:
+            """
+            将 cpool 值 (0~1) 平滑映射到 [0.5, 2] 范围
+            - cpool 越大，探索系数越大
+            - k 控制增长的快慢
+            """
+            return 0.5 + 1.5 * (1 - np.exp(-k * cpool))
         if self.pool:
-            return self.cpool_mapping(self.pool.compute_cpool()['cpool'])
+            return cpool_mapping(self.pool.compute_cpool()['cpool'])
         return super().get_exploration_weight(exploration_weight)
 
     def take_action(self, step_type:Step):
         # Then apply the strategy-level semantic transformation.
-        action:OptimizeAction = self._weighted_random_choice()
+        params_bundle = self.net_controller.predict_and_apply()
+        action:OptimizeAction = self._weighted_random_choice(params_bundle.get_mcts_alpha().item())
         new_prompt = action.do(
             current_prompt=self.current_prompt, 
             trajectory_prompts=self.trajectory_prompts, 
@@ -131,6 +136,7 @@ class PromptNode(Node):
         val_samples = self.evaluator.task.get_eval()
         score = self.evaluator.batch_reward(self.current_prompt, val_samples)
         logger.info(f"🎯 [Reward] Prompt evaluation score = {score:.4f}, Action sequence = {[a.name for a in self.action_seq]}")
+        self.net_controller.reforce(score)
         return score
     
     def q_value(self, last_q, rollout_reward):

@@ -1,9 +1,9 @@
 import pandas as pd
 
 # 输入 Parquet 文件路径
-parquet_file = "arc.parquet"  # 替换为你的文件路径
+parquet_file = "combi1.parquet"  # 替换为你的文件路径
 # 输出 JSONL 文件路径
-jsonl_file = "arc.jsonl"
+jsonl_file = "combi1.jsonl"
 
 # 读取 Parquet 文件
 df = pd.read_parquet(parquet_file)

@@ -3,6 +3,8 @@ from program.base_action import OptimizeAction
 from search.evaluator import PromptEvaluator
 from mcts.mcts import MCTS
 from program.prompt_node import PromptNode
+from micronet.parameters import ParamBundle
+from micronet.controller import MultiHeadSurrogateController
 from search.config import SearchConfig
 from typing import List, Set
 from visualizer import MCTSVisualizer
@@ -26,11 +28,17 @@ class DualSearchController(SearchController):
 
     def search(self):
         init_prompt = self.task.origin_prompt
-
-        optimized_prompt = self._mcts_workflow(init_prompt)
+        params_bundle = ParamBundle()
+        net_controller = MultiHeadSurrogateController(
+            param_bundle=params_bundle,
+            lr=self.config.net_lr,
+            device=self.config.net_device,
+            buffer_size=self.config.net_buffer_size
+        )
+        optimized_prompt = self._mcts_workflow(init_prompt, net_controller)
         return "", optimized_prompt
     
-    def _mcts_workflow(self, init_prompt: str):
+    def _mcts_workflow(self, init_prompt: str, net_controller: MultiHeadSurrogateController) -> str:
         if self.task.config.use_pool:
             self.pool = ContinuousSamplePool(max_size=1000,
                                                 high_reward_threshold=self.config.high_reward_threshold,
@@ -41,7 +49,7 @@ class DualSearchController(SearchController):
                                                 negative_var_mag=self.config.negative_var_mag,
                                                 positive_informative_mag=self.config.positive_informative_mag,
                                                 positive_var_mag=self.config.positive_var_mag)
-            self.pool.initialize(self.task.get_train_mcts(), self.evaluator, init_prompt)
+            self.pool.initialize(self.task.get_train_mcts(), self.evaluator, init_prompt, net_controller.bundle.get_informative_weights())
         else:
             self.pool = None
 
@@ -51,6 +59,7 @@ class DualSearchController(SearchController):
                 action_seq=[],
                 trajectory_prompts=[],
                 prompt=init_prompt,
+                net_controller=net_controller,
                 evaluator=self.evaluator,
                 depth=0,
                 sample_pool=self.pool
