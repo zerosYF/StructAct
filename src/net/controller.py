@@ -37,10 +37,10 @@ class MultiHeadSurrogateController:
     """
     多头控制器，强化训练 ParamBundle
     """
-    def __init__(self, param_bundle: ParamBundle, lr=1e-3, device=None, buffer_size=2000):
+    def __init__(self, lr=1e-3, device=None, buffer_size=2000):
         self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
-        self.bundle = param_bundle  # ParamBundle
-        self.input_dim = len(param_bundle.to_tensor())
+        self.bundle = ParamBundle()
+        self.input_dim = len(self.bundle.to_tensor())
         self.net = MultiHeadSurrogateNet(self.input_dim).to(self.device)
         self.opt = optim.Adam(self.net.parameters(), lr=lr)
         self.replay = deque(maxlen=buffer_size)

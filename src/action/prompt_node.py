@@ -14,7 +14,6 @@ class PromptNode(Node):
                  action_seq: List[OptimizeAction], 
                  trajectory_prompts: List[str],
                  prompt: str, 
-                 net_controller: MultiHeadSurrogateController,
                  evaluator: PromptEvaluator, 
                  depth: int, 
 
@@ -30,7 +29,6 @@ class PromptNode(Node):
         self.evaluator: PromptEvaluator = evaluator
         self.trajectory_prompts: List[str] = trajectory_prompts
         self.current_prompt: str = prompt
-        self.net_controller: MultiHeadSurrogateController = net_controller
         logger.info(f"📜 Get new node at depth {depth} using action {action_seq[-1].name if len(action_seq) > 0 else None}")
         
         self.action_seq: List[OptimizeAction] = action_seq
@@ -39,7 +37,7 @@ class PromptNode(Node):
         self.Q = self.reward_value
 
     
-    def _weighted_random_choice(self, alpha, temperature=1.0) -> OptimizeAction:
+    def _weighted_random_choice(self, alpha=1.0, temperature=1.0) -> OptimizeAction:
         def _softmax(vals: np.ndarray, temperature: float):
             vals = vals - np.max(vals)  # 防止 exp 溢出
             exp_vals = np.exp(vals / max(temperature, 1e-6))
@@ -109,7 +107,7 @@ class PromptNode(Node):
 
     def take_action(self, step_type:Step):
         # Then apply the strategy-level semantic transformation.
-        params_bundle = self.net_controller.predict_and_apply()
+        params_bundle = self.pool.get_net_controller().predict_and_apply()
         action:OptimizeAction = self._weighted_random_choice(params_bundle.get_mcts_alpha().item())
         new_prompt = action.do(
             current_prompt=self.current_prompt, 
@@ -135,7 +133,7 @@ class PromptNode(Node):
         val_samples = self.evaluator.task.get_eval()
         score = self.evaluator.batch_reward(self.current_prompt, val_samples)
         logger.info(f"🎯 [Reward] Prompt evaluation score = {score:.4f}, Action sequence = {[a.name for a in self.action_seq]}")
-        self.net_controller.reforce(score)
+        self.pool.get_net_controller().reforce(score)
         return score
     
     def q_value(self, last_q, rollout_reward):

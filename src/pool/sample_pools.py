@@ -2,7 +2,7 @@ import random
 from collections import deque
 from logger import logger
 from src.pool.sample_pool import PoolSample, DynamicSamplePool, SampleType
-from src.net.parameters import ParamBundle
+from src.net.controller import MultiHeadSurrogateController
 import math
 import numpy as np
     
@@ -13,17 +13,20 @@ class ContinuousSamplePool(DynamicSamplePool):
     - Positive 动作：从成功/稳定样本中抽取 -> 用于归纳改写
     """
     def __init__(self, 
-                 param_bundle: ParamBundle,
                  max_size=1000, 
                  high_reward_threshold=0.9,
                  low_reward_threshold=0.3,
                  var_unstable=0.05,
                  informative_threshold=0.5,
                  ):
-        self.param_bundle = param_bundle
         self.max_size = max_size
         self.samples:list[PoolSample] = []
         self.order = deque()
+        self.net_controller = MultiHeadSurrogateController(
+            lr=self.config.net_lr,
+            device=self.config.net_device,
+            buffer_size=self.config.net_buffer_size
+        )
 
         # 分位法控制
         self.high_reward_threshold = high_reward_threshold
@@ -41,9 +44,9 @@ class ContinuousSamplePool(DynamicSamplePool):
         old = self.order.popleft()
         self.samples = [s for s in self.samples if s != old]
 
-    def add_or_update(self, sample: PoolSample, is_correct, informative_weights):
+    def add_or_update(self, sample: PoolSample, is_correct):
         sample.update(is_correct)
-        sample.compute_informative_score(informative_weights)
+        sample.compute_informative_score(self.net_controller.bundle.get_informative_weights().tolist())
         if sample not in self.samples:
             self.samples.append(sample)
         self.order.append(sample)
@@ -67,11 +70,12 @@ class ContinuousSamplePool(DynamicSamplePool):
             return []
 
         scores = []
+        weights = self.net_controller.bundle.get_pool_weights().tolist()
         for s in self.samples:
             if type == SampleType.Negative:
-                sc = self.priority_for_negative(s)
+                sc = self.priority_for_negative(s, weights)
             elif type == SampleType.Positive:
-                sc = self.priority_for_positive(s)
+                sc = self.priority_for_positive(s, weights)
             else:
                 raise ValueError(f"Unknown action {type}")
             scores.append((s, sc))
@@ -84,7 +88,7 @@ class ContinuousSamplePool(DynamicSamplePool):
         return list(selected)
     
     # -------- 动作优先级函数 --------
-    def priority_for_negative(self, sample: PoolSample, weights):
+    def priority_for_negative(self, sample: PoolSample, weights:list):
         """
         负反馈动作优先级：
         - 奖励越低，越值得反思
@@ -101,7 +105,7 @@ class ContinuousSamplePool(DynamicSamplePool):
             weights[2] * var_term
         )
 
-    def priority_for_positive(self, sample: PoolSample, weights):
+    def priority_for_positive(self, sample: PoolSample, weights:list):
         """
         正反馈动作优先级：
         - reward 高于 baseline，说明有改进
@@ -207,16 +211,20 @@ class ContinuousSamplePool(DynamicSamplePool):
         root = math.sqrt(max(0.0, phat * (1 - phat) / n + z2 / (4 * n * n)))
         lower = (centre - z * root) / denom
         return max(0.0, lower)
+    
+    def get_net_controller(self):
+        return self.net_controller
 
-    def initialize(self, dataset, evaluator, current_prompt: str, informative_weights):
+    def initialize(self, dataset, evaluator, current_prompt: str):
             """批量初始化"""
             logger.info(f"Initializing pool with {len(dataset)} samples...")
             rewards = evaluator.batch_reward_n(current_prompt, dataset)
+            init_informative_weights = self.net_controller.bundle.get_informative_weights().tolist()
             for raw, r in zip(dataset, rewards):
                 s = PoolSample(raw)
                 s.update(r)
                 s.baseline_reward = r
-                s.compute_informative_score(informative_weights)
+                s.compute_informative_score(init_informative_weights)
                 self.samples.append(s)
                 self.order.append(s)
                 if len(self.order) > self.max_size:

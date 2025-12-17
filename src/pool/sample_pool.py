@@ -5,7 +5,7 @@ import math
 import numpy as np
 from abc import abstractmethod
 from enum import Enum
-from src.net.parameters import ParamBundle
+from src.net.controller import MultiHeadSurrogateController
 
 class SampleType(Enum):
     Positive = "positive"
@@ -13,12 +13,11 @@ class SampleType(Enum):
 
 
 class PoolSample:
-    def __init__(self, raw_sample: dict, param_bundle: ParamBundle):
+    def __init__(self, raw_sample: dict):
         self.raw = raw_sample  # question/answer/choices
         self.reward_history = []
         self.baseline_reward = 0.0
         self.informative_score = 0.0
-        self.param_bundle = param_bundle
 
     def update(self, is_correct: float):
         """is_correct 可以是 0/1 或 [0,1] reward"""
@@ -105,4 +104,7 @@ class DynamicSamplePool:
         pass
     @abstractmethod
     def initialize(self, dataset, evaluator, current_prompt: str):
+        pass
+    @abstractmethod
+    def get_net_controller(self) -> MultiHeadSurrogateController:
         pass
