@@ -11,7 +11,7 @@ from src.mcts.rollout import get_rollout_strategy
 from src.mcts.choose import get_choose_strategy
 from src.action.strategy_actions import define_failure_actions
 from search.search import SearchController
-from logger import logger
+from src.logger import logger
 import os
 import json
 

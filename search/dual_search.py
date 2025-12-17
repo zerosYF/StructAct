@@ -12,7 +12,7 @@ from src.mcts.choose import get_choose_strategy
 from src.action.strategy_actions import define_full_actions
 from search.search import SearchController
 from src.pool.sample_pools import ContinuousSamplePool
-from logger import logger
+from src.logger import logger
 import os
 import json
 

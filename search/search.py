@@ -6,8 +6,7 @@ from typing import List, Set
 from src.action.strategy_actions import define_full_actions
 import math
 from abc import abstractmethod, ABC
-import time
-from logger import logger
+
 class SearchController(ABC):
     def __init__(self, 
                  evaluator: PromptEvaluator, 

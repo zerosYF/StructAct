@@ -2,13 +2,11 @@ from abc import ABC
 from typing import List, Set, Tuple
 import heapq
 import itertools
-import logging
+from src.logger import logger
 from search.search import SearchController
 from src.action.prompt_node import PromptNode
 from src.pool.sample_pools import ContinuousSamplePool
 from src.action.strategy_actions import OptimizeAction, define_full_actions
-
-logger = logging.getLogger(__name__)
 
 class BeamSearchController(SearchController):
     def __init__(self, evaluator, config, task):

@@ -1,6 +1,6 @@
 import random
 from collections import deque
-from logger import logger
+from src.logger import logger
 from src.pool.sample_pool import PoolSample, DynamicSamplePool, SampleType
 from src.net.controller import MultiHeadSurrogateController
 import math
