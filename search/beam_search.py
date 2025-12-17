@@ -1,12 +1,10 @@
-from abc import ABC
-from typing import List, Set, Tuple
-import heapq
-import itertools
 from src.logger import logger
 from search.search import SearchController
 from src.action.prompt_node import PromptNode
 from src.pool.sample_pools import ContinuousSamplePool
 from src.action.strategy_actions import OptimizeAction, define_full_actions
+import heapq
+import itertools
 
 class BeamSearchController(SearchController):
     def __init__(self, evaluator, config, task):
@@ -14,7 +12,7 @@ class BeamSearchController(SearchController):
         self.beam_width = getattr(config, "beam_width", 5)
         self.max_depth = getattr(config, "max_depth", 5)
         self.pool = ContinuousSamplePool(max_size=1000)
-        self.actions: Set[OptimizeAction] = define_full_actions(task)
+        self.actions: set[OptimizeAction] = define_full_actions(task)
     
     def search(self):
         init_prompt = self.task.origin_prompt

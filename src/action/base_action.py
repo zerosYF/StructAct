@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
 from model.model import Model, getEvalModel
 from task.base_task import TaskBase
-import logging 
+from src.logger import logger
+import time
 
 class OptimizeAction(ABC):
     def __init__(self, task: TaskBase, name: str = None):
@@ -9,20 +10,6 @@ class OptimizeAction(ABC):
         self.task = task
         self.usage_count = 0
         self.log_file = "logs/optimization_log.txt"
-        self._setup_logger()
-
-    def _setup_logger(self):
-        self.logger = logging.getLogger(self.name or "OptimizeAction")
-        self.logger.setLevel(logging.INFO)
-        
-        file_handler = logging.FileHandler(self.log_file, mode='w', encoding='utf-8')
-        file_handler.setLevel(logging.INFO)
-        
-        formatter = logging.Formatter('%(asctime)s - %(message)s')
-        file_handler.setFormatter(formatter)
-        
-        if not self.logger.handlers:
-            self.logger.addHandler(file_handler)
 
     @abstractmethod
     def do(self, 
@@ -39,8 +26,8 @@ class OptimizeAction(ABC):
             structure: current prompt structural template
         """
         self.usage_count += 1
-        self.logger.info(f"📊 Current Template_description:\n{template_description}")
-        self.logger.info(f"📊 Current Prompt:\n{current_prompt}")
+        logger.info(f"📊 Current Template_description:\n{template_description}")
+        logger.info(f"📊 Current Prompt:\n{current_prompt}")
 
 
 class StructureSyncAction(OptimizeAction):
@@ -69,8 +56,6 @@ class StructureSyncAction(OptimizeAction):
             You can not alter the template settings.\n
             Just output revise prompt without other text.\n
         """
-        import time
-        from logger import logger
         start_time = time.time()
         rewritten_prompt = self.rewriter_model.api_call(rewrite_prompt)
         end_time = time.time()

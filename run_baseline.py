@@ -1,7 +1,5 @@
-# baseline_evaluator.py
 import os
 import time
-import argparse
 import traceback
 from logger import logger
 

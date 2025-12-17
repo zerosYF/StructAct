@@ -1,10 +1,3 @@
-import os
-import time
-import argparse
-import traceback
-import multiprocessing
-from logger import logger
-
 from task.base_task import TaskBase
 from task.bbh.causal_judgement import CausalJudgementTask
 from task.bbh.epistemic import EpistemicTask
@@ -29,8 +22,15 @@ from task.bbeh.bool_expressions import BooleanExpressionsTask
 from search.dual_search import DualSearchController
 from search.beam_search import BeamSearchController
 from search.bline_search import PromptAgentController
+
 from src.config import SearchConfig
 from src.evaluator import PromptEvaluator
+from src.logger import logger
+
+import os
+import time
+import argparse
+import traceback
 
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
@@ -64,13 +64,17 @@ CONTROLLER_REGISTRY = {
 }
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Run prompt search on selected tasks.")
+    parser = argparse.ArgumentParser(description="Run prompt search on a single task.")
     parser.add_argument(
-        "--task", nargs="+", required=True, choices=TASK_REGISTRY.keys(),
-        help="Tasks to run. Choose one or more from: " + ", ".join(TASK_REGISTRY.keys())
+        "--task",
+        required=True,
+        choices=TASK_REGISTRY.keys(),
+        help="Task to run."
     )
     parser.add_argument(
-        "--controller", required=True, choices=CONTROLLER_REGISTRY.keys(),
+        "--controller",
+        required=True,
+        choices=CONTROLLER_REGISTRY.keys(),
         help="Controller to use for search."
     )
     return parser.parse_args()
@@ -114,16 +118,6 @@ def run_task(args):
         traceback.print_exc()
 
 
-def run_all(task_names: list[str], controller_name: str):
-    num_workers = min(len(task_names), multiprocessing.cpu_count())
-    print(f"🚦 Running {len(task_names)} tasks with {controller_name} using {num_workers} workers...\n")
-
-    with multiprocessing.Pool(processes=num_workers) as pool:
-        pool.map(run_task, [(task_name, controller_name) for task_name in task_names])
-
-    print("🎉 All tasks completed.")
-
-
 if __name__ == "__main__":
     args = parse_args()
-    run_all(args.task, args.controller)
+    run_task((args.task, args.controller))

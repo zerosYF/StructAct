@@ -4,7 +4,6 @@ from src.evaluator import PromptEvaluator
 from src.mcts.mcts import MCTS
 from src.action.prompt_node import PromptNode
 from src.config import SearchConfig
-from typing import List, Set
 from visualizer import MCTSVisualizer
 from src.mcts.expand import get_expand_strategy
 from src.mcts.rollout import get_rollout_strategy
@@ -22,7 +21,7 @@ class DualSearchController(SearchController):
                  config: SearchConfig, 
                  task: TaskBase):
         super().__init__(evaluator, config, task)
-        self.actions: Set[OptimizeAction] = define_full_actions(task)
+        self.actions: set[OptimizeAction] = define_full_actions(task)
 
     def search(self):
         init_prompt = self.task.origin_prompt
