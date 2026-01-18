@@ -1,7 +1,7 @@
 from src.logger import logger
 from search.search import SearchController
 from src.action.prompt_node import PromptNode
-from src.pool.sample_pools import ContinuousSamplePool
+from pool.sample_pool import ContinuousSamplePool
 from src.action.strategy_actions import OptimizeAction, define_full_actions
 import heapq
 import itertools

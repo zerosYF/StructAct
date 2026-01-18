@@ -19,6 +19,7 @@ class SearchConfig:
         self.rollout_threshold:int = 3
         # Node expansion and rollout config
         self.batch_size: int = 5              # Batch size for training
+        self.max_sample_num: int = 1         # Max attempts to generate valid samples  
 
         self.net_iter_num: int = 2        # Number of training iterations for net
         self.net_lr: float = 3e-4              # Learning rate for net (increased from 1e-4)

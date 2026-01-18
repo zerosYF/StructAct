@@ -1,24 +1,24 @@
 from abc import ABC, abstractmethod
-from model.model import Model, getEvalModel
 from task.base_task import TaskBase
 from src.logger import logger
-import time
 
 class OptimizeAction(ABC):
-    def __init__(self, task: TaskBase, name: str = None):
+    def __init__(self, task: TaskBase, name: str = None, max_sample_num: int = 1):
         self.name = name
         self.task = task
         self.usage_count = 0
+        self.sample_failure_count = 0
+        self.max_sample_num = max_sample_num
         self.log_file = "logs/optimization_log.txt"
 
     @abstractmethod
     def do(self, 
-           current_prompt: str, trajectory_prompts: list[str] = None,  
-           template_description: str = None, sample_pool=None) -> str:
+           current_prompt: str, 
+           trajectory_prompts: list[str] = None,  
+           sample_pool=None) -> str:
         """
         Args:
             current_prompt: the current prompt string
-            template_description: the structural template description
         Returns:
             updated prompt string
         Note:
@@ -26,41 +26,7 @@ class OptimizeAction(ABC):
             structure: current prompt structural template
         """
         self.usage_count += 1
-        logger.info(f"📊 Current Template_description:\n{template_description}")
         logger.info(f"📊 Current Prompt:\n{current_prompt}")
 
-
-class StructureSyncAction(OptimizeAction):
-    def __init__(self, task, name="StructureSyncAction"):
-        super().__init__(task, name)
-        self.rewriter_model: Model = getEvalModel()
-
-    def do(self, current_prompt, trajectory_prompts, template_description, sample_pool=None):
-
-        # Sample examples for filling content (e.g., few-shot, constraints, etc.)
-        samples = self.task.sample_train_mcts(self.task.config.batch_size)
-
-        # Construct few-shot example fragment (extract real QA pairs)
-        example_texts = self.task.samples2text(samples)
-
-        rewrite_prompt = f"""
-            ###Task Description
-            I'm writing a prompt for a language model designed for a task.\n
-            ###
-            My current prompt:\n{current_prompt}\n
-            My template  description:\n{template_description}\n
-            There are a list of former prompts including the current prompt, and each prompt is modified from its former prompts:\n{trajectory_prompts}\n
-            Your revision must strictly follow my prompt template description.\n
-            There are some examples QA pairs you can use to get information:\n{example_texts}\n
-            Please help me revise my current prompt based on the given template description.\n
-            You can not alter the template settings.\n
-            Just output revise prompt without other text.\n
-        """
-        start_time = time.time()
-        rewritten_prompt = self.rewriter_model.api_call(rewrite_prompt)
-        end_time = time.time()
-        logger.info(f"⏱️ [StructureSyncAction] LLM api calling/infer time: {end_time - start_time:.2f} seconds")
-        super().do(rewritten_prompt, trajectory_prompts, template_description, sample_pool)
-        return rewritten_prompt
 
     

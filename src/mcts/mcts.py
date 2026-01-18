@@ -120,7 +120,6 @@ class MCTS:
                 "width_threshold": self.expand_width,
             },
             "best_node": {
-                "action_sequence": [a.name for a in best_node.action_seq],
                 "prompt": best_node.current_prompt,
                 "depth": best_node.depth,
                 "Q": best_node.Q,

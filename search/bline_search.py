@@ -63,9 +63,6 @@ class PromptAgentController(SearchController):
             mcts.do_iter(root_node, iter_id)
 
         best_node: PromptNode = mcts.choose(root_node)
-        logger.info("🏁 Search completed. Selected best action sequence:")
-        for i, action in enumerate(best_node.action_seq):
-            logger.info(f"  Step {i+1}: {action.name}")
         best_prompt = best_node.current_prompt
 
         result_dict = mcts.serialize(root_node)

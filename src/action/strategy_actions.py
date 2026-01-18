@@ -1,8 +1,7 @@
 from model.model import getOptimModel, getEvalModel
 from task.base_task import TaskBase
 from src.action.base_action import OptimizeAction
-from src.pool.sample_pools import PoolSample, SampleType, DynamicSamplePool
-import concurrent.futures
+from pool.sample_pool import PoolSample, SampleType, DynamicSamplePool
 
 # Preload models
 tester_model = getEvalModel()
@@ -10,23 +9,11 @@ analyzer_model = getOptimModel()
 rewriter_model = getOptimModel()
 
 class FailureDrivenAction(OptimizeAction):
-    def __init__(self, task: TaskBase, name="FailureDrivenAction"):
-        super().__init__(task, name)
+    def __init__(self, task: TaskBase, name="FailureDrivenAction", max_sample_num=1):
+        super().__init__(task, name, max_sample_num)
         self.tester_model = tester_model
         self.analyzer_model = analyzer_model
         self.rewriter_model = rewriter_model
-        self.max_resample_attempts = 1
-        self.sample_failure_counter = 0  # 连续失败次数
-
-    def _batch_api_call(self, inputs: list):
-        def call(x):
-            try:
-                return self.tester_model.api_call(x)
-            except Exception as e:
-                return f"[ERROR] {str(e)}"
-
-        with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
-            return list(executor.map(call, inputs))
 
     def sample_and_evaluate(self, current_prompt, sample_pool:DynamicSamplePool):
         if sample_pool:
@@ -43,14 +30,14 @@ class FailureDrivenAction(OptimizeAction):
             golds.append(gold)
             final_inputs.append(self.task.inject_final_input(current_prompt, inp))
 
-        outputs = self._batch_api_call(final_inputs)
+        outputs = self.tester_model.batch_api_call(final_inputs)
 
         if sample_pool:
             for s, out, gold in zip(samples, outputs, golds):
                 reward = 1 if self.task.get_reward(out, gold) else 0
                 sample_pool.add_or_update(s, reward)
 
-        return samples, inputs, outputs, golds
+        return inputs, outputs, golds
 
     def format_wrong_examples(self, inputs, outputs, golds):
         return "\n\n".join([
@@ -108,13 +95,13 @@ class FailureDrivenAction(OptimizeAction):
     def do(self, current_prompt, trajectory_prompts, sample_pool=None):
         attempts = 0
         wrong_examples = None
-        while not wrong_examples and attempts < self.max_resample_attempts:
-            _, inputs, outputs, golds = self.sample_and_evaluate(current_prompt, sample_pool)
+        while not wrong_examples and attempts < self.max_sample_num:
+            inputs, outputs, golds = self.sample_and_evaluate(current_prompt, sample_pool)
             wrong_examples = self.format_wrong_examples(inputs, outputs, golds)
             attempts += 1
 
         if not wrong_examples:
-            self.sample_failure_counter += 1
+            self.sample_failure_count += 1
             return current_prompt
 
         rewritten_prompt = self.analyze_and_rewrite(current_prompt, wrong_examples, trajectory_prompts)
@@ -123,25 +110,13 @@ class FailureDrivenAction(OptimizeAction):
 
 
 class SuccessDrivenAction(OptimizeAction):
-    def __init__(self, task, name="SuccessDrivenAction", max_resample=1):
-        super().__init__(task, name)
+    def __init__(self, task, name="SuccessDrivenAction", max_sample_num=1):
+        super().__init__(task, name, max_sample_num)
         self.tester_model = tester_model
         self.reasoning_model = analyzer_model
         self.rewriter_model = rewriter_model
-        self.max_resample = max_resample
-        self.sample_failure_counter = 0  # 连续失败次数
-
-    def _batch_api_call(self, inputs: list):
-        def call(x):
-            try:
-                return self.tester_model.api_call(x)
-            except Exception as e:
-                return f"[ERROR] {str(e)}"
-        with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
-            return list(executor.map(call, inputs))
 
     def sample_and_evaluate(self, current_prompt, sample_pool:DynamicSamplePool):
-
         if sample_pool:
             samples = sample_pool.sample(type=SampleType.Positive, k=self.task.config.batch_size)
         else:
@@ -156,14 +131,14 @@ class SuccessDrivenAction(OptimizeAction):
             golds.append(gold)
             final_inputs.append(self.task.inject_final_input(current_prompt, inp))
 
-        outputs = self._batch_api_call(final_inputs)
+        outputs = self.tester_model.batch_api_call(final_inputs)
 
         if sample_pool:
             for s, out, gold in zip(samples, outputs, golds):
                 reward = 1 if self.task.get_reward(out, gold) else 0
                 sample_pool.add_or_update(s, reward)
 
-        return samples, inputs, outputs, golds
+        return inputs, outputs, golds
 
     def format_success_examples(self, inputs, outputs, golds):
         correct_blocks = []
@@ -223,13 +198,13 @@ class SuccessDrivenAction(OptimizeAction):
     def do(self, current_prompt, trajectory_prompts, sample_pool=None):
         attempts = 0
         success_examples_text = None
-        while not success_examples_text and attempts < self.max_resample:
-            _, inputs, outputs, golds = self.sample_and_evaluate(current_prompt, sample_pool)
+        while not success_examples_text and attempts < self.max_sample_num:
+            inputs, outputs, golds = self.sample_and_evaluate(current_prompt, sample_pool)
             success_examples_text = self.format_success_examples(inputs, outputs, golds)
             attempts += 1
 
         if not success_examples_text:
-            self.sample_failure_counter += 1
+            self.sample_failure_count += 1
             return current_prompt
 
         rewritten_prompt = self.analyze_and_rewrite(current_prompt, success_examples_text, trajectory_prompts)
@@ -239,11 +214,11 @@ class SuccessDrivenAction(OptimizeAction):
     
 def define_full_actions(task: TaskBase):
     return [
-        FailureDrivenAction(task),
-        SuccessDrivenAction(task),
+        FailureDrivenAction(task, max_sample_num=task.config.max_sample_num),
+        SuccessDrivenAction(task, max_sample_num=task.config.max_sample_num),
     ]
 
 def define_failure_actions(task: TaskBase):
     return [
-        FailureDrivenAction(task),
+        FailureDrivenAction(task, max_sample_num=task.config.max_sample_num),
     ]

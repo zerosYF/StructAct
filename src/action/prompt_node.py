@@ -1,16 +1,18 @@
 from src.action.base_action import OptimizeAction
 from src.evaluator import PromptEvaluator
 from src.mcts.node import Node, Step
-from src.pool.sample_pools import DynamicSamplePool
+from pool.sample_pool import DynamicSamplePool
 from src.logger import logger
 from typing import List, Set
 import numpy as np
+import torch
+import torch.nn.functional as F
 import math
 
 class PromptNode(Node):
     def __init__(self, 
                  action_set: Set[OptimizeAction],
-                 action_seq: List[OptimizeAction], 
+                 last_action: OptimizeAction, 
                  trajectory_prompts: List[str],
                  prompt: str, 
                  evaluator: PromptEvaluator, 
@@ -25,27 +27,20 @@ class PromptNode(Node):
         super().__init__(depth=depth, Q=Q, N=N, uct_value=uct_value, parent=parent)
         self.type = prompt
         self.action_set: Set[OptimizeAction] = action_set
+        self.last_action: OptimizeAction = last_action
         self.evaluator: PromptEvaluator = evaluator
         self.trajectory_prompts: List[str] = trajectory_prompts
         self.current_prompt: str = prompt
-        logger.info(f"📜 Get new node at depth {depth} using action {action_seq[-1].name if len(action_seq) > 0 else None}")
+        logger.info(f"📜 Get new node at depth {depth} using action {last_action.name if last_action else None}")
         
-        self.action_seq: List[OptimizeAction] = action_seq
         self.pool = sample_pool
         self.reward_value: float = self.reward()
         self.Q = self.reward_value
 
     
     def _weighted_random_choice(self, alpha=1.0, temperature=1.0) -> OptimizeAction:
-        def _softmax(vals: np.ndarray, temperature: float):
-            vals = vals - np.max(vals)  # 防止 exp 溢出
-            exp_vals = np.exp(vals / max(temperature, 1e-6))
-            probs = exp_vals / np.sum(exp_vals)
-            return probs
-
         """
-        动作选择：融合失败/使用次数和样本池状态（cpool diagnostics），带平滑。
-        逻辑：
+        动作选择：融合失败和使用次数，样本池状态（cpool diagnostics），带平滑。
         - 基础项：历史采样失败次数和使用次数降低概率（探索/避免重复）
         - 样本池 bias：根据池子中成功/失败样本比例调节 Positive / Negative 动作偏好
         - 极端情况抑制：当池子中成功/失败样本极少时，抑制对应动作
@@ -53,7 +48,7 @@ class PromptNode(Node):
         actions: list[OptimizeAction] = list(self.action_set)
 
         # 基础项: failure + usage 抑制
-        failure_counts = np.array([a.sample_failure_counter for a in actions])
+        failure_counts = np.array([a.sample_failure_count for a in actions])
         usage_counts = np.array([a.usage_count for a in actions])
         base_logits = - (failure_counts + usage_counts)
 
@@ -88,7 +83,7 @@ class PromptNode(Node):
 
         # 融合
         logits = base_logits + alpha * action_bias
-        probs = _softmax(logits, temperature)
+        probs = F.softmax(torch.tensor(logits) / temperature, dim=0).numpy()
         selected_index = np.random.choice(len(actions), p=probs)
         return actions[selected_index]
     
@@ -105,7 +100,6 @@ class PromptNode(Node):
         return super().get_exploration_weight(exploration_weight)
 
     def take_action(self, step_type:Step):
-        # Then apply the strategy-level semantic transformation.
         params_bundle = self.pool.get_net_controller().predict_and_apply()
         action:OptimizeAction = self._weighted_random_choice(params_bundle.get_mcts_alpha().item())
         new_prompt = action.do(
@@ -117,7 +111,7 @@ class PromptNode(Node):
         logger.info(f"📊 Current Prompt:\n{new_prompt}")
         new_child = PromptNode(
             action_set=self.action_set,
-            action_seq=self.action_seq + [action],
+            last_action=action,
             trajectory_prompts=self.trajectory_prompts + [self.current_prompt],
             prompt=new_prompt,
             evaluator=self.evaluator,
@@ -131,7 +125,7 @@ class PromptNode(Node):
     def reward(self):
         val_samples = self.evaluator.task.get_eval()
         score = self.evaluator.batch_reward(self.current_prompt, val_samples)
-        logger.info(f"🎯 [Reward] Prompt evaluation score = {score:.4f}, Action sequence = {[a.name for a in self.action_seq]}")
+        logger.info(f"🎯 [Reward] Prompt evaluation score = {score:.4f}")
         self.pool.get_net_controller().reforce(score)
         return score
     
@@ -142,7 +136,7 @@ class PromptNode(Node):
         node_dict = {
             "id": node_id,
             "depth": self.depth,
-            "action_sequence": [a.name for a in self.action_seq],
+            "last_action": self.last_action.name if self.depth > 0 else None,
             "prompt": self.current_prompt,
             "Q": self.Q,
             "N": self.N, 

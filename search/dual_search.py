@@ -10,7 +10,7 @@ from src.mcts.rollout import get_rollout_strategy
 from src.mcts.choose import get_choose_strategy
 from src.action.strategy_actions import define_full_actions
 from search.search import SearchController
-from src.pool.sample_pools import ContinuousSamplePool
+from pool.sample_pool import ContinuousSamplePool
 from src.logger import logger
 import os
 import json
@@ -73,9 +73,6 @@ class DualSearchController(SearchController):
             mcts.do_iter(root_node, iter_id)
 
         best_node: PromptNode = mcts.choose(root_node)
-        logger.info("🏁 Search completed. Selected best action sequence:")
-        for i, action in enumerate(best_node.action_seq):
-            logger.info(f"  Step {i+1}: {action.name}")
         best_prompt = best_node.current_prompt
 
         result_dict = mcts.serialize(root_node)

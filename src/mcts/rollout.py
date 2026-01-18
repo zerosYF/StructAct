@@ -1,9 +1,7 @@
 from abc import ABC, abstractmethod
 from src.config import SearchConfig
-from src.evaluator import PromptEvaluator
 from mcts.node import Node, Step
 import numpy as np
-import random
 from logger import logger
 
 class RolloutStrategy(ABC):

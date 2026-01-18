@@ -2,6 +2,7 @@ from openai import OpenAI
 from src.config import SearchConfig
 from openai import BadRequestError
 from logger import logger
+import concurrent.futures
 class Model:
     def __init__(self, model_name:str, api_key:str, base_url:str=None, termperature:float=0.0):
         self.client = OpenAI(
@@ -36,7 +37,17 @@ class Model:
                 raise
         except Exception as e:
             logger.warning(f"request error {e}...")
+    
+    def batch_api_call(self, inputs: list, workers: int = 8):
+        def call(x):
+            try:
+                return self.api_call(x)
+            except Exception as e:
+                return f"[ERROR] {str(e)}"
 
+        with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as executor:
+            return list(executor.map(call, inputs))
+        
 config = SearchConfig()
 eval_model = Model(config.eval_model_name, config.eval_api_key, config.eval_model_url, config.eval_model_temperature)
 optim_model = Model(config.optim_model_name, config.optim_api_key, config.optim_model_url, config.optim_model_temperature)
