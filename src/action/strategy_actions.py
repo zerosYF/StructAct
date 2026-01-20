@@ -1,7 +1,7 @@
 from model.model import getOptimModel, getEvalModel
 from task.base_task import TaskBase
 from src.action.base_action import OptimizeAction
-from pool.sample_pool import PoolSample, SampleType, DynamicSamplePool
+from pool.pool import PoolSample, SampleType, DynamicSamplePool
 
 # Preload models
 tester_model = getEvalModel()
@@ -35,7 +35,7 @@ class FailureDrivenAction(OptimizeAction):
         if sample_pool:
             for s, out, gold in zip(samples, outputs, golds):
                 reward = 1 if self.task.get_reward(out, gold) else 0
-                sample_pool.add_or_update(s, reward)
+                sample_pool.observe(s, reward)
 
         return inputs, outputs, golds
 
@@ -136,7 +136,7 @@ class SuccessDrivenAction(OptimizeAction):
         if sample_pool:
             for s, out, gold in zip(samples, outputs, golds):
                 reward = 1 if self.task.get_reward(out, gold) else 0
-                sample_pool.add_or_update(s, reward)
+                sample_pool.observe(s, reward)
 
         return inputs, outputs, golds
 

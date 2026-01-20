@@ -10,7 +10,7 @@ from src.mcts.rollout import get_rollout_strategy
 from src.mcts.choose import get_choose_strategy
 from src.action.strategy_actions import define_full_actions
 from search.search import SearchController
-from pool.sample_pool import ContinuousSamplePool
+from pool.pool import DynamicSamplePool
 from src.logger import logger
 import os
 import json
@@ -30,8 +30,7 @@ class DualSearchController(SearchController):
     
     def _mcts_workflow(self, init_prompt: str) -> str:
         if self.task.config.use_pool:
-            self.pool = ContinuousSamplePool(
-                max_size=1000,
+            self.pool = DynamicSamplePool(
                 high_reward_threshold=self.config.high_reward_threshold,
                 low_reward_threshold=self.config.low_reward_threshold,
                 var_unstable=self.config.var_unstable,
@@ -71,6 +70,9 @@ class DualSearchController(SearchController):
         mcts.increase_threshold(root_node.reward_value)
         for iter_id in range(self.config.mcts_iter_num_max):
             mcts.do_iter(root_node, iter_id)
+            if self.config.use_pool and self.pool:
+                self.pool.step()
+                logger.info(f"🔶 Sample Pool Status after MCTS Iteration {iter_id+1}:\n{self.pool}")
 
         best_node: PromptNode = mcts.choose(root_node)
         best_prompt = best_node.current_prompt

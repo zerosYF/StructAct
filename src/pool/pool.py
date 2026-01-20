@@ -1,27 +1,32 @@
-import random
-from collections import deque
 from src.logger import logger
 from pool.sample import PoolSample, SampleType
 from src.net.controller import MultiHeadSurrogateController
 import math
 import numpy as np
+import torch
+import torch.nn.functional as F
     
 class DynamicSamplePool:
     """
-    样本池：存储任务样本，并根据正/负反馈动作需求进行采样。
-    - Negative 动作：从失败/不稳定样本中抽取 -> 用于反思改写
-    - Positive 动作：从成功/稳定样本中抽取 -> 用于归纳改写
+    Sample Pool = external belief state
+    - search only reads
+    - environment feedback updates belief slowly
     """
-    def __init__(self, 
-                 max_size=1000, 
+    def __init__(self,  
                  high_reward_threshold=0.9,
                  low_reward_threshold=0.3,
                  var_unstable=0.05,
                  informative_threshold=0.5,
+                 pool_update_interval=10,
+                 ema_alpha=0.1,
                  ):
-        self.max_size = max_size
         self.samples:list[PoolSample] = []
-        self.order = deque()
+        self.pending_updates:list[tuple[PoolSample, float]] = []
+
+        self.pool_step = 0
+        self.pool_update_interval = pool_update_interval
+        self.ema_alpha = ema_alpha
+
         self.net_controller = MultiHeadSurrogateController(
             lr=self.config.net_lr,
             device=self.config.net_device,
@@ -31,40 +36,43 @@ class DynamicSamplePool:
         # 分位法控制
         self.high_reward_threshold = high_reward_threshold
         self.low_reward_threshold = low_reward_threshold
-        
         self.var_unstable = var_unstable  # variance归一化尺度
         self.informative_threshold = informative_threshold
-
-    def _evict_oldest(self):
-        '''
-        样本池容量控制维护 
-        '''
-        if not self.order:
+    
+    def observe(self, sample:PoolSample, reward:float):
+        self.pending_updates.append((sample, reward))
+    
+    def step(self):
+        self.pool_step += 1
+        if self.pool_step % self.pool_update_interval == 0:
+            self._flush_update()
+    
+    def _flush_update(self):
+        if not self.pending_updates:
             return
-        old = self.order.popleft()
-        self.samples = [s for s in self.samples if s != old]
+        logger.info(f"Flushing {len(self.pending_updates)} pending updates to sample pool...")
+        informative_weights = self.net_controller.bundle.get_informative_weights().tolist()
 
-    def add_or_update(self, sample: PoolSample, is_correct):
-        sample.update(is_correct)
-        sample.compute_informative_score(self.net_controller.bundle.get_informative_weights().tolist())
-        if sample not in self.samples:
-            self.samples.append(sample)
-        self.order.append(sample)
-        while len(self.order) > self.max_size:
-            self._evict_oldest()
-        logger.info(
-            f"Sample updated: visits={sample.visits}, reward={sample.reward:.3f}, "
-            f"informative_score={sample.informative_score:.3f}"
-        )
-
+        for sample, reward in self.pending_updates:
+            self._ema_update(sample, reward)
+            sample.compute_informative_score(informative_weights)
+            if sample not in self.samples:
+                self.samples.append(sample)
+        self.pending_updates.clear()
+    
+    def _ema_update(self, sample: PoolSample, reward: float):
+        alpha = self.ema_alpha
+        if sample.visits == 0:
+            sample.reward = reward
+            sample.variance = 0.0
+        else:
+            delta = reward - sample.reward
+            sample.reward += alpha * delta
+            sample.variance = (1 - alpha) * (sample.variance + alpha * delta * delta)
+        sample.visits += 1
+        sample.corrects += float(reward >= 0.5)
 
     def sample(self, type: SampleType, k=5, temperature=1.0):
-        def _softmax(vals: np.ndarray, temperature:float):
-            vals = vals - np.max(vals)  # 防止 exp 溢出
-            exp_vals = np.exp(vals / max(temperature, 1e-6))
-            probs = exp_vals / np.sum(exp_vals)
-            return probs
-
         """根据动作抽样样本"""
         if not self.samples:
             return []
@@ -81,7 +89,7 @@ class DynamicSamplePool:
             scores.append((s, sc))
 
         vals = np.array([sc for _, sc in scores])
-        probs = _softmax(vals, temperature)
+        probs = F.softmax(torch.tensor(vals)/ max(temperature, 1e-6), dim=0).numpy()
         selected = np.random.choice(
             [s for s, _ in scores], size=min(k, len(scores)), replace=False, p=probs
         )
@@ -201,6 +209,7 @@ class DynamicSamplePool:
     def _wilson_lower_bound(self, successes, n, z=1.96):
         """
             把访问少但表面成功的样本打低分，避免噪声样本把 easy_ratio / informative_ratio 抬高。
+            在小样本阶段抑制对全局判断的过度影响。
         """
         if n == 0:
             return 0.0
@@ -226,7 +235,4 @@ class DynamicSamplePool:
                 s.baseline_reward = r
                 s.compute_informative_score(init_informative_weights)
                 self.samples.append(s)
-                self.order.append(s)
-                if len(self.order) > self.max_size:
-                    self._evict_oldest()
             logger.info(f"Pool initialized with {len(self.samples)} samples.")

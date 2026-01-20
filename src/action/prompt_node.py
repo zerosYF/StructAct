@@ -1,7 +1,7 @@
 from src.action.base_action import OptimizeAction
 from src.evaluator import PromptEvaluator
 from src.mcts.node import Node, Step
-from pool.sample_pool import DynamicSamplePool
+from pool.pool import DynamicSamplePool
 from src.logger import logger
 from typing import List, Set
 import numpy as np
@@ -83,7 +83,7 @@ class PromptNode(Node):
 
         # 融合
         logits = base_logits + alpha * action_bias
-        probs = F.softmax(torch.tensor(logits) / temperature, dim=0).numpy()
+        probs = F.softmax(torch.tensor(logits) / max(temperature, 1e-6), dim=0).numpy()
         selected_index = np.random.choice(len(actions), p=probs)
         return actions[selected_index]
     
