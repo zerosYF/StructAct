@@ -4,6 +4,11 @@ from typing import Dict
 
 class ParamBundle(nn.Module):
     """
+    ParamBundle = 被 controller 操作的「环境参数状态」
+    controller 永远不直接预测 ParamBundle
+    只预测 ΔParamBundle
+    """
+    """
     可学习参数管理器（只保留学习参数）
 
     - Informative Score Head: 3 个参数 (diff, gain, var)
@@ -45,19 +50,13 @@ class ParamBundle(nn.Module):
             self.pool_logits,
             self.mcts_alpha.unsqueeze(0)
         ], dim=0)
-
-    def update_from_tensor(self, tensor: torch.Tensor):
-        """从网络输出写回参数（顺序必须与 to_tensor 对齐）"""
-        idx = 0
-        def _assign(param: nn.Parameter):
-            nonlocal idx
-            n = param.numel()
-            param.data.copy_(tensor[idx: idx + n])
-            idx += n
-
-        _assign(self.informative_logits)
-        _assign(self.pool_logits)
-        self.mcts_alpha.data.copy_(tensor[idx])
+    
+    def apply_delta(self, delta: torch.Tensor, lr: float = 0.1):
+        """应用网络预测的参数增量"""
+        with torch.no_grad():
+            self.informative_logits += lr * delta[0:3]
+            self.pool_logits += lr * delta[3:6]
+            self.mcts_alpha += lr * delta[6]
 
     # ===========================
     # getter / 系统接口

@@ -100,7 +100,7 @@ class PromptNode(Node):
         return super().get_exploration_weight(exploration_weight)
 
     def take_action(self, step_type:Step):
-        params_bundle = self.pool.get_net_controller().predict_and_apply()
+        params_bundle = self.pool.get_net_controller().act_and_apply()
         action:OptimizeAction = self._weighted_random_choice(params_bundle.get_mcts_alpha().item())
         new_prompt = action.do(
             current_prompt=self.current_prompt, 

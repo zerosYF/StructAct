@@ -1,10 +1,11 @@
 from src.logger import logger
 from pool.sample import PoolSample, SampleType
-from src.net.controller import MultiHeadSurrogateController
+from src.net.controller import SurrogateNetController
 import math
 import numpy as np
 import torch
 import torch.nn.functional as F
+from config import SearchConfig
     
 class DynamicSamplePool:
     """
@@ -13,21 +14,21 @@ class DynamicSamplePool:
     - environment feedback updates belief slowly
     """
     def __init__(self,  
+                 config:SearchConfig,
                  high_reward_threshold=0.9,
                  low_reward_threshold=0.3,
                  var_unstable=0.05,
                  informative_threshold=0.5,
                  pool_update_interval=10,
-                 ema_alpha=0.1,
                  ):
+        self.config = config
         self.samples:list[PoolSample] = []
         self.pending_updates:list[tuple[PoolSample, float]] = []
 
         self.pool_step = 0
         self.pool_update_interval = pool_update_interval
-        self.ema_alpha = ema_alpha
 
-        self.net_controller = MultiHeadSurrogateController(
+        self.net_controller = SurrogateNetController(
             lr=self.config.net_lr,
             device=self.config.net_device,
             buffer_size=self.config.net_buffer_size
@@ -54,23 +55,11 @@ class DynamicSamplePool:
         informative_weights = self.net_controller.bundle.get_informative_weights().tolist()
 
         for sample, reward in self.pending_updates:
-            self._ema_update(sample, reward)
+            sample.update(reward)
             sample.compute_informative_score(informative_weights)
             if sample not in self.samples:
                 self.samples.append(sample)
         self.pending_updates.clear()
-    
-    def _ema_update(self, sample: PoolSample, reward: float):
-        alpha = self.ema_alpha
-        if sample.visits == 0:
-            sample.reward = reward
-            sample.variance = 0.0
-        else:
-            delta = reward - sample.reward
-            sample.reward += alpha * delta
-            sample.variance = (1 - alpha) * (sample.variance + alpha * delta * delta)
-        sample.visits += 1
-        sample.corrects += float(reward >= 0.5)
 
     def sample(self, type: SampleType, k=5, temperature=1.0):
         """根据动作抽样样本"""
@@ -104,7 +93,7 @@ class DynamicSamplePool:
         - informative 高，说明样本对任务有启发性
         """
         var_norm = min(1.0, sample.variance / (self.var_unstable + 1e-6))
-        reward_term = 1.0 - sample.reward
+        reward_term = 1.0 - sample.mean
         var_term = +var_norm
 
         return (
@@ -121,7 +110,7 @@ class DynamicSamplePool:
         - variance 小，说明表现稳定
         """
         var_penalty = min(1.0, sample.variance / (self.var_unstable + 1e-6))
-        reward_term = sample.reward - (sample.baseline_reward or 0.0)
+        reward_term = sample.mean - (sample.base_mean or 0.0)
         var_term = -var_penalty
         return (
             weights[0] * reward_term +
@@ -136,7 +125,6 @@ class DynamicSamplePool:
         - 增加相对提升 (baseline 对比)
         - 增加分位数判断 (避免低准确率阶段失效)
         """
-        import numpy as np
         total = len(self.samples)
         if total == 0:
             return 0.0
@@ -147,7 +135,7 @@ class DynamicSamplePool:
         hard_score = 0.0
 
 
-        rewards = [s.reward for s in self.samples]
+        rewards = [s.mean for s in self.samples]
         if rewards:
             q_high = np.percentile(rewards, int(self.high_reward_threshold * 100))
             q_low = np.percentile(rewards, int(self.low_reward_threshold * 100))
@@ -157,15 +145,14 @@ class DynamicSamplePool:
 
         for s in self.samples:
             # confidence for this sample's success probability
-            conf_success = self._wilson_lower_bound(s.corrects, s.visits) if s.visits > 0 else 0.0
+            conf_success = s.wilson_lower_bound()
 
             # -------- 1: 相对提升 --------
-            baseline_reward = getattr(s, "baseline_reward", 0.0)
-            improvement = s.reward - baseline_reward
+            improvement = s.mean - s.base_mean
 
             # -------- 2: 分位数判断 --------
-            is_high = s.reward >= q_high or improvement > 0
-            is_low = s.reward <= q_low and improvement <= 0
+            is_high = s.mean >= q_high or improvement > 0
+            is_low = s.mean <= q_low and improvement <= 0
 
             # -------- 3: 稳定性加权 --------
             is_unstable = s.variance > self.var_unstable
@@ -206,20 +193,6 @@ class DynamicSamplePool:
         logger.info(f"compute_cpool: {diagnostics}")
         return diagnostics
     
-    def _wilson_lower_bound(self, successes, n, z=1.96):
-        """
-            把访问少但表面成功的样本打低分，避免噪声样本把 easy_ratio / informative_ratio 抬高。
-            在小样本阶段抑制对全局判断的过度影响。
-        """
-        if n == 0:
-            return 0.0
-        phat = successes / n
-        z2 = z * z
-        denom = 1 + z2 / n
-        centre = phat + z2 / (2 * n)
-        root = math.sqrt(max(0.0, phat * (1 - phat) / n + z2 / (4 * n * n)))
-        lower = (centre - z * root) / denom
-        return max(0.0, lower)
     
     def get_net_controller(self):
         return self.net_controller
@@ -232,7 +205,7 @@ class DynamicSamplePool:
             for raw, r in zip(dataset, rewards):
                 s = PoolSample(raw)
                 s.update(r)
-                s.baseline_reward = r
+                s.freeze_baseline()
                 s.compute_informative_score(init_informative_weights)
                 self.samples.append(s)
             logger.info(f"Pool initialized with {len(self.samples)} samples.")
