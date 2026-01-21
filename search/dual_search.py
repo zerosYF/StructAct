@@ -4,7 +4,7 @@ from src.evaluator import PromptEvaluator
 from src.mcts.mcts import MCTS
 from src.action.prompt_node import PromptNode
 from src.config import SearchConfig
-from visualizer import MCTSVisualizer
+from visualizer import UnifiedVisualizer
 from src.mcts.expand import get_expand_strategy
 from src.mcts.rollout import get_rollout_strategy
 from src.mcts.choose import get_choose_strategy
@@ -51,8 +51,10 @@ class DualSearchController(SearchController):
                 sample_pool=self.pool
             )
         
-        visualizer = MCTSVisualizer(root_node)
-        visualizer.start()
+        vis = UnifiedVisualizer()
+        vis.set_root(root_node, max_nodes=200)
+
+        vis.start()
 
         mcts = MCTS(
             iter_num=self.config.mcts_iter_num_max,

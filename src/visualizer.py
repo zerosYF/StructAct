@@ -6,79 +6,13 @@ import hashlib
 import threading
 import time
 from matplotlib.gridspec import GridSpec
-import warnings
+import numpy as np
+from src.net.parameters import ParamBundle
 
 def hash_str(s: str) -> str:
     return hashlib.md5(s.encode()).hexdigest()[:6]
 
-class RNNVisualizer:
-    def __init__(self, interval=2.0):
-        self.interval = interval
-        self.rewards = []
-        self.entropies = []
-        self._stop_event = threading.Event()
-        self._force_update = False
-        self._thread = threading.Thread(target=self._run)
-
-    def start(self, title="RNN Training Progress"):
-        self.title = title
-        self._thread.start()
-
-    def stop(self):
-        self._stop_event.set()
-        self._thread.join()
-
-    def log_train(self, reward: float, entropy: float):
-        self.rewards.append(reward)
-        self.entropies.append(entropy)
-        self._force_update = True
-
-    def _run(self):
-        with warnings.catch_warnings():
-            warnings.filterwarnings("ignore", message="Starting a Matplotlib GUI outside of the main thread")
-            plt.ion()
-            fig = plt.figure(figsize=(8, 5), num=self.title)
-
-        ax = fig.add_subplot(111)
-        ax2 = ax.twinx()
-
-        while not self._stop_event.is_set():
-            self._draw(ax, ax2)
-            fig.tight_layout()
-            fig.canvas.draw()
-            fig.canvas.flush_events()
-
-            if self._force_update:
-                time.sleep(0.1)
-                self._force_update = False
-            else:
-                time.sleep(self.interval)
-
-        plt.ioff()
-        plt.show()
-
-    def _draw(self, ax, ax2):
-        ax.clear()
-        ax2.clear()
-
-        if not self.rewards:
-            ax.set_title("Waiting for RNN data...")
-            return
-
-        x = list(range(1, len(self.rewards) + 1))
-        ax.set_title(f"RNN Training (Epoch {len(self.rewards)})")
-        ax.set_xlabel("Epoch")
-        ax.set_ylabel("Reward", color="green")
-        ax.plot(x, self.rewards, "o-", color="green", label="Reward")
-        ax.tick_params(axis="y", labelcolor="green")
-
-        ax2.set_ylabel("Entropy", color="blue")
-        ax2.plot(x, self.entropies, "s-", color="blue", label="Entropy")
-        ax2.tick_params(axis="y", labelcolor="blue")
-
-        ax.grid(True, alpha=0.3)
-
-class MCTSVisualizer:
+class UnifiedVisualizer:
     def __init__(self, root=None, interval=2.0, max_nodes=100, max_children=5):
         self.root = root
         self.interval = interval
@@ -87,9 +21,50 @@ class MCTSVisualizer:
         self._stop_event = threading.Event()
         self._thread = threading.Thread(target=self._run)
 
+        self.info_weights = []
+        self.pool_weights = []
+        self.alphas = []
+
+        self.info_entropy = []
+        self.pool_entropy = []
+        self.delta_norms = []
+
     def set_root(self, root, max_nodes=100):
         self.root = root
         self.max_nodes = max_nodes
+    
+    def log(self, bundle: ParamBundle):
+        info_w = bundle.get_informative_weights().detach().cpu().numpy()
+        pool_w = bundle.get_pool_weights().detach().cpu().numpy()
+        alpha = bundle.mcts_alpha.detach().cpu().item()
+
+        self.info_weights.append(info_w)
+        self.pool_weights.append(pool_w)
+        self.alphas.append(alpha)
+
+        # ---------- 熵 ----------
+        def entropy(p):
+            return -np.sum(p * np.log(p + 1e-8))
+
+        self.info_entropy.append(entropy(info_w))
+        self.pool_entropy.append(entropy(pool_w))
+
+        # ---------- 参数变化幅度 ----------
+        if len(self.info_weights) > 1:
+            prev = np.concatenate([
+                self.info_weights[-2],
+                self.pool_weights[-2],
+                [self.alphas[-2]]
+            ])
+            curr = np.concatenate([
+                info_w,
+                pool_w,
+                [alpha]
+            ])
+            self.delta_norms.append(np.linalg.norm(curr - prev))
+        else:
+            self.delta_norms.append(0.0)
+
 
     def start(self, title="MCTS Visualization"):
         self.title = title
@@ -100,16 +75,19 @@ class MCTSVisualizer:
         self._thread.join()
 
     def _run(self):
-        with warnings.catch_warnings():
-            warnings.filterwarnings("ignore", message="Starting a Matplotlib GUI outside of the main thread")
-            plt.ion()
-            fig = plt.figure(figsize=(14, 9), num=self.title)
-        ax = fig.add_subplot(111)
+        plt.ion()
+        fig = plt.figure(figsize=(12, 8), num=self.title)
+        gs = GridSpec(2, 1, height_ratios=[1, 2]) 
+        ax_train = fig.add_subplot(gs[0])
+        ax_train_ = ax_train.twinx()
+        ax_tree = fig.add_subplot(gs[1])
 
         while not self._stop_event.is_set():
-            ax.clear()
+            ax_train.clear()
+            self._draw_train_curve(ax_train, ax_train_)
+
             if self.root:
-                self._draw_tree(ax, self.root)
+                self._draw_tree(ax_tree, self.root)
 
             fig.tight_layout()
             fig.canvas.draw()
@@ -118,6 +96,44 @@ class MCTSVisualizer:
 
         plt.ioff()
         plt.show()
+    
+    def _draw_train_curve(self, ax_l, ax_r):
+        if not self.info_weights:
+            ax_l.set_title("waiting for controller data...")
+            return
+
+        x = np.arange(len(self.info_weights))
+
+        ax_l.clear()
+        ax_l.set_title("Controller Convergence Monitor")
+        ax_l.set_xlabel("Step")
+
+        # ===== 左轴：参数 =====
+        info = np.array(self.info_weights)
+        pool = np.array(self.pool_weights)
+
+        ax_l.plot(x, info[:, 0], label="info_diff")
+        ax_l.plot(x, info[:, 1], label="info_gain")
+        ax_l.plot(x, info[:, 2], label="info_var")
+
+        ax_l.plot(x, pool[:, 0], "--", label="pool_easy")
+        ax_l.plot(x, pool[:, 1], "--", label="pool_info")
+        ax_l.plot(x, pool[:, 2], "--", label="pool_hard")
+
+        ax_l.plot(x, self.alphas, "-.", label="mcts_alpha", linewidth=2)
+
+        ax_l.set_ylabel("Parameter Value")
+        ax_l.legend(loc="upper left", fontsize=8)
+
+        # ===== 右轴：熵 & Δθ =====
+        ax_r.cla()
+        ax_r.set_ylabel("Entropy / Δθ")
+
+        ax_r.plot(x, self.info_entropy, color="purple", label="info_entropy")
+        ax_r.plot(x, self.pool_entropy, color="brown", label="pool_entropy")
+        ax_r.plot(x, self.delta_norms, color="black", label="Δθ_norm")
+
+        ax_r.legend(loc="upper right", fontsize=8)
 
     def _draw_tree(self, ax, root):
         G = nx.DiGraph()

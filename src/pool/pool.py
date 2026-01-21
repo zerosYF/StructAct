@@ -1,6 +1,6 @@
 from src.logger import logger
 from pool.sample import PoolSample, SampleType
-from src.net.controller import SurrogateNetController
+from src.net.controller import MetaSearchController
 import math
 import numpy as np
 import torch
@@ -28,7 +28,7 @@ class DynamicSamplePool:
         self.pool_step = 0
         self.pool_update_interval = pool_update_interval
 
-        self.net_controller = SurrogateNetController(
+        self.net_controller = MetaSearchController(
             lr=self.config.net_lr,
             device=self.config.net_device,
             buffer_size=self.config.net_buffer_size

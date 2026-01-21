@@ -40,9 +40,6 @@ class PromptAgentController(SearchController):
                 depth=0,
                 sample_pool=None
             )
-        
-        visualizer = MCTSVisualizer(root_node)
-        visualizer.start()
 
         mcts = MCTS(
             iter_num=self.config.mcts_iter_num_max,

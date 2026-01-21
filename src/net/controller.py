@@ -1,12 +1,10 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from collections import deque
-import random
 import numpy as np
 from src.net.parameters import ParamBundle
 
-class SurrogateNet(nn.Module):
+class MetaSearchNet(nn.Module):
     """
     Gaussian Policy Network
     输出每个参数的 Δθ 分布
@@ -33,7 +31,7 @@ class SurrogateNet(nn.Module):
         std = torch.exp(self.log_std)
         return mu, std
 
-class SurrogateNetController:
+class MetaSearchController:
     """
     控制器，强化训练 ParamBundle
     """
@@ -41,7 +39,7 @@ class SurrogateNetController:
         self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
         self.bundle = ParamBundle()
         self.input_dim = len(self.bundle.to_tensor())
-        self.net = SurrogateNet(self.input_dim).to(self.device)
+        self.net = MetaSearchNet(self.input_dim).to(self.device)
         self.opt = optim.Adam(self.net.parameters(), lr=lr)
         self.lr = lr
         
