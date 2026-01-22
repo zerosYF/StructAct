@@ -4,7 +4,6 @@ from src.evaluator import PromptEvaluator
 from src.mcts.mcts import MCTS
 from src.action.prompt_node import PromptNode
 from src.config import SearchConfig
-from visualizer import MCTSVisualizer
 from src.mcts.expand import get_expand_strategy
 from src.mcts.rollout import get_rollout_strategy
 from src.mcts.choose import get_choose_strategy
@@ -26,7 +25,7 @@ class PromptAgentController(SearchController):
         init_prompt = self.task.origin_prompt
 
         optimized_prompt = self._mcts_workflow(init_prompt)
-        return "", optimized_prompt
+        return optimized_prompt
     
     def _mcts_workflow(self, init_prompt: str):
         PromptNode.reset_id()

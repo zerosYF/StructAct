@@ -4,8 +4,6 @@ from mcts.choose import ChooseStrategy
 from mcts.rollout import RolloutStrategy
 from logger import logger
 from mcts.node import Node
-from threading import Lock
-from concurrent.futures import ThreadPoolExecutor, as_completed
 
 class MCTS:
     def __init__(self, 
@@ -34,7 +32,6 @@ class MCTS:
         self.expand_strategy = expand_strategy
         self.rollout_strategy = rollout_strategy
         self.choose_strategy = choose_strategy
-        self.lock = Lock()
 
     def _select(self, node: Node, exploration_weight=1.41) -> list[Node]:
         while not node.is_leaf() and not self.is_terminal_node(node):
@@ -48,12 +45,10 @@ class MCTS:
         return self.rollout_strategy.rollout(node, rollout_length, self)
 
     def _backpropagate(self, expand_node:Node, avg_reward:float):
-        with self.lock:
-            current = expand_node
-            while current is not None:
-                current.update(avg_reward)
-                current = current.parent
-
+        current = expand_node
+        while current is not None:
+            current.update(avg_reward)
+            current = current.parent
 
     def do_iter(self, root: Node, iter_id:int):
         logger.info(f"--------------Start Iteration:{iter_id}----------------")
@@ -63,21 +58,14 @@ class MCTS:
         logger.info("Step 2: Performing Expand")
         children = self._expand(selected_node, self.expand_width)
         rollout_targets = children if children else [selected_node]
-
         results = []
         logger.info("Step 3: Performing Rollout")
-        with ThreadPoolExecutor(max_workers=len(rollout_targets)) as executor:
-            future_to_child = {
-                executor.submit(self._rollout, child, self.rollout_length): child
-                for child in rollout_targets
-            }
-            for future in as_completed(future_to_child):
-                child = future_to_child[future]
-                try:
-                    avg_reward = future.result()
-                    results.append((child, avg_reward))
-                except Exception as e:
-                    logger.error(f"⚠️ Error during rollout of {child}: {e}")
+        for child in rollout_targets:
+            try:
+                avg_reward = self._rollout(child, self.rollout_length)
+                results.append((child, avg_reward))
+            except Exception as e:
+                logger.error(f"⚠️ Error during rollout of {child}: {e}")
 
         logger.info("Step 4: Performing Backpropagate")
         for child, avg_reward in results:

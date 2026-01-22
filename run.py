@@ -21,7 +21,7 @@ from task.bbeh.bool_expressions import BooleanExpressionsTask
 
 from search.dual_search import DualSearchController
 from search.beam_search import BeamSearchController
-from search.bline_search import PromptAgentController
+from search.single_search import PromptAgentController
 
 from src.config import SearchConfig
 from src.evaluator import PromptEvaluator
@@ -93,7 +93,7 @@ def run_task(args):
         logger.info(f"🚀 Running task: {task.name} with {controller_name}")
         start_time = time.time()
 
-        best_template, best_prompt = controller.search()
+        best_prompt = controller.search()
 
         acc_sa = evaluator.evaluate(task.get_test(), best_prompt)
 
@@ -106,7 +106,6 @@ def run_task(args):
 
         with open(os.path.join(result_dir, "result.txt"), "w", encoding="utf-8") as f:
             f.write(f"🔍 Task: {task.name}\n")
-            f.write(f"✅ Best Prompt Template:\n{best_template}\n\n")
             f.write(f"✅ Best Prompt:\n{best_prompt}\n\n")
             f.write(f"📊 SA Test Accuracy: {acc_sa.get('accuracy')}\n")
             f.write(f"\n⏱️ Time Elapsed: {int(minutes)} min {int(seconds)} sec ({duration:.2f} seconds)\n")

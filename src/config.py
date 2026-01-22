@@ -21,7 +21,6 @@ class SearchConfig:
         self.batch_size: int = 5              # Batch size for training
         self.max_sample_num: int = 1         # Max attempts to generate valid samples  
 
-        self.net_iter_num: int = 2        # Number of training iterations for net
         self.net_lr: float = 3e-4              # Learning rate for net (increased from 1e-4)
         self.net_device: str = "cpu"         # Device for net training
         self.net_buffer_size: int = 5000     # Replay buffer size for net training

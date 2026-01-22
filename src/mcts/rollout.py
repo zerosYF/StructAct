@@ -31,7 +31,7 @@ class ClassicPathRollout(RolloutStrategy):
                 break
 
             if current.is_leaf():
-                current = current.take_action(mcts.params_bundle, Step.Rollout)
+                current = current.take_action(Step.Rollout)
                 reward_now = current.reward_value
                 final_rewards.append(reward_now)
                 avg_reward_now = np.mean(final_rewards)

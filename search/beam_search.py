@@ -1,7 +1,7 @@
 from src.logger import logger
 from search.search import SearchController
 from src.action.prompt_node import PromptNode
-from pool.pool import ContinuousSamplePool
+from pool.pool import DynamicSamplePool
 from src.action.strategy_actions import OptimizeAction, define_full_actions
 import heapq
 import itertools
@@ -11,7 +11,7 @@ class BeamSearchController(SearchController):
         super().__init__(evaluator, config, task)
         self.beam_width = getattr(config, "beam_width", 5)
         self.max_depth = getattr(config, "max_depth", 5)
-        self.pool = ContinuousSamplePool(max_size=1000)
+        self.pool = DynamicSamplePool()
         self.actions: set[OptimizeAction] = define_full_actions(task)
     
     def search(self):
@@ -55,4 +55,4 @@ class BeamSearchController(SearchController):
                 break
 
         logger.info(f"✅ Beam Search Finished. Best score = {best_score:.4f}")
-        return "", best_node.current_prompt
+        return best_node.current_prompt
